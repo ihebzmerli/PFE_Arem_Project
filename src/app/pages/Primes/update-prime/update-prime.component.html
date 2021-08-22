@@ -1,0 +1,157 @@
+  <form (ngSubmit) = "onSubmitPrime()" #primeForm="ngForm">
+    <div class="offset-sm-2 col-sm-9">
+    <nb-card>
+      <nb-card-header>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Prime?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../prime-list']"/>
+        <p></p>
+        Modification De Prime<p>Date de la dernière modification:<p>
+          &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{prime.derMvt | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+      </nb-card-header>
+      <nb-card-body>
+          
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="raison" class="label">Raison</label>
+                <input type="text" nbInput fullWidth class="form-control" #raison="ngModel" id="raison" name="raison" required pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="5" [(ngModel)]="prime.raison" />
+                <div style="font-size: 12px;" [hidden]="raison.valid || raison.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!raison.hasError('minlength')">Raison doit étre au moin 5 carractére.</div>
+                  <div [hidden]="!raison.hasError('maxlength')">Raison ne doit pas dépassé les 30 carractére.</div>
+                  <div [hidden]="!raison.hasError('required')">Raison est obligatoire.</div>
+                  <div [hidden]="!raison.hasError('pattern')">Raison ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="categorie" class="label">Categorie</label>
+                <input type="text" nbInput fullWidth class="form-control" #categorie="ngModel" id="categorie" name="categorie" required pattern="^[a-zA-Z0-9 ]+$" maxlength="5" minlength="1" [(ngModel)]="prime.categorie" />
+                <div style="font-size: 12px;" [hidden]="categorie.valid || categorie.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!categorie.hasError('minlength')">Categorie doit étre au moin 10 carractére.</div>
+                  <div [hidden]="!categorie.hasError('maxlength')">Categorie ne doit pas dépassé les 200 carractére.</div>
+                  <div [hidden]="!categorie.hasError('required')">Categorie est obligatoire.</div>
+                  <div [hidden]="!categorie.hasError('pattern')">Categorie ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="objMin" class="label">Obj Min</label>
+                <input type="number" step="5" nbInput fullWidth class="form-control" #objMin="ngModel" id="objMin" name="objMin" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="prime.objMin" />
+                <div style="font-size: 12px;" [hidden]="objMin.valid || objMin.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!objMin.hasError('min')">objMin doit étre positive.</div>
+                  <div [hidden]="!objMin.hasError('max')">objMin ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!objMin.hasError('required')">objMin est obligatoire.</div>
+                  <div [hidden]="!objMin.hasError('pattern')">objMin ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">  
+                <label for="objMax" class="label">Obj Max</label>
+                <input type="number" step="5" nbInput fullWidth class="form-control" #objMax="ngModel" id="objMax" name="objMax" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="prime.objMax" />
+                <div style="font-size: 12px;" [hidden]="objMax.valid || objMax.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!objMax.hasError('min')">ObjMax doit étre positive.</div>
+                  <div [hidden]="!objMax.hasError('max')">ObjMax ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!objMax.hasError('required')">ObjMax est obligatoire.</div>
+                  <div [hidden]="!objMax.hasError('pattern')">ObjMax ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="ca" class="label">C~A</label>
+                <input type="number" step="10" nbInput fullWidth class="form-control" #ca="ngModel" id="ca" name="ca" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="prime.ca" />
+                <div style="font-size: 12px;" [hidden]="ca.valid || ca.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!ca.hasError('min')">chiffre Affaire doit étre positive.</div>
+                  <div [hidden]="!ca.hasError('max')">chiffre Affaire ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!ca.hasError('required')">chiffre Affaire est obligatoire.</div>
+                  <div [hidden]="!ca.hasError('pattern')">chiffre Affaire ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="caN1" class="label">C~A N1</label>
+                <input type="number" step="10" nbInput fullWidth class="form-control" #caN1="ngModel" id="caN1" name="caN1" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="prime.caN1" />
+                <div style="font-size: 12px;" [hidden]="caN1.valid || caN1.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!caN1.hasError('min')">chiffre Affaire N1 doit étre positive.</div>
+                  <div [hidden]="!caN1.hasError('max')">chiffre Affaire N1 ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!caN1.hasError('required')">chiffre Affaire N1 est obligatoire.</div>
+                  <div [hidden]="!caN1.hasError('pattern')">chiffre Affaire N1 ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="mort" class="label">Mort</label>
+                <input type="number" step="5" nbInput fullWidth class="form-control" #mort="ngModel" id="mort" name="mort" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="prime.mort" />
+                <div style="font-size: 12px;" [hidden]="mort.valid || mort.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!mort.hasError('min')">Mort doit étre positive.</div>
+                  <div [hidden]="!mort.hasError('max')">Mort ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!mort.hasError('required')">Mort est obligatoire.</div>
+                  <div [hidden]="!mort.hasError('pattern')">Mort ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="artSpec" class="label">Art~ Spec</label>
+                <input type="text" nbInput fullWidth class="form-control" #artSpec="ngModel" id="artSpec" name="artSpec" required pattern="^[a-zA-Z0-9 ]+$" maxlength="12" minlength="2" [(ngModel)]="prime.artSpec" />
+                <div style="font-size: 12px;" [hidden]="artSpec.valid || artSpec.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!artSpec.hasError('minlength')">Article Spec doit étre au moin 10 carractére.</div>
+                  <div [hidden]="!artSpec.hasError('maxlength')">Article Spec ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!artSpec.hasError('required')">Article Spec est obligatoire.</div>
+                  <div [hidden]="!artSpec.hasError('pattern')">Article Spec ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="prime" class="label">Prime</label>
+                <input type="number" step="10" min="0" nbInput fullWidth class="form-control" #prime="ngModel" id="prime" name="prime" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="prime.prime" />
+                <div style="font-size: 12px;" [hidden]="prime.valid || prime.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!prime.hasError('min')">Prime doit étre positive.</div>
+                  <div [hidden]="!prime.hasError('max')">Prime ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!prime.hasError('required')">Prime est obligatoire.</div>
+                  <div [hidden]="!prime.hasError('pattern')">Prime ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="bloc" class="label">Bloc</label>
+                <input type="text" nbInput fullWidth class="form-control" #bloc="ngModel" id="bloc" name="bloc" required pattern="^[a-zA-Z0-9 ]+$" maxlength="2" minlength="1" [(ngModel)]="prime.bloc" />
+                <div style="font-size: 12px;" [hidden]="bloc.valid || bloc.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!bloc.hasError('minlength')">Bloc doit étre au moin 10 carractére.</div>
+                  <div [hidden]="!bloc.hasError('maxlength')">Bloc ne doit pas dépassé les 200 carractére.</div>
+                  <div [hidden]="!bloc.hasError('required')">Bloc est obligatoire.</div>
+                  <div [hidden]="!bloc.hasError('pattern')">Bloc ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="nbArt" class="label">Nb Art~</label>
+                <input type="number" nbInput fullWidth class="form-control" #nbArt="ngModel" id="nbArt" name="nbArt" required pattern="^(0|[1-9][0-9]*)$" max="9999999" min="0" [(ngModel)]="prime.nbArt" />
+                <div style="font-size: 12px;" [hidden]="nbArt.valid || nbArt.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!nbArt.hasError('min')">Nombre Article doit étre positive.</div>
+                  <div [hidden]="!nbArt.hasError('max')">Nombre Article ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!nbArt.hasError('required')">Nombre Article est obligatoire.</div>
+                  <div [hidden]="!nbArt.hasError('pattern')">Nombre Article ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="marge" class="label">Marge</label>
+                <input type="number" nbInput fullWidth class="form-control" #marge="ngModel" id="marge" name="marge" required pattern="^(0|[1-9][0-9]*)$" max="9999999" min="0" [(ngModel)]="prime.marge" />
+                <div style="font-size: 12px;" [hidden]="marge.valid || marge.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!marge.hasError('minlength')">Marge doit étre au moin 10 lettres longue.</div>
+                  <div [hidden]="!marge.hasError('maxlength')">Marge ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!marge.hasError('required')">Marge est obligatoire.</div>
+                  <div [hidden]="!marge.hasError('pattern')">Marge ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+            </div>
+      </nb-card-body>
+    </nb-card>
+    <div class="col-sm-6">
+      <button [disabled]="primeForm.invalid" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+        Modifier la prime</button>
+      <button nbButton (click)="primeForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+        Annuler</button> 
+    </div>
+  </div>
+</form>

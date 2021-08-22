@@ -1,0 +1,276 @@
+
+<nb-card>
+  <nb-card-body>
+      <div>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Chariots?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../../chariot-list']"/>
+        <p></p>
+        <h4>Details de Chariot</h4>
+        <nb-card-header>
+              <div><b [@jibniwimchi]>N~ Chariot : </b>{{ chariot.numChar }}</div>
+
+              <div><b [@jibniwimchi]>Etat Chariot : </b>{{ chariot.etat_char }}</div>
+          </nb-card-header>
+         
+      </div>
+        <p>table les Articles et bon des Preparations</p>
+
+        <p-table #dt1 [value]="artpreps" dataKey="id"
+            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['numBon','codArt','qutPrep','datPrep','nonTrouve','chrono','prepara','prep','poste','centre']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex">
+                    <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                    <span class="p-input-icon-left p-ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        N~ Bon Préparation
+                        <div>
+                          <p-columnFilter type="text" field="numBon" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Code Article
+                        <div>
+                          <p-columnFilter type="text" field="codArt" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Quantité Preparé 
+                        <div>
+                          <p-columnFilter type="numeric" field="qutPrep" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Date Preparation
+                        <div> 
+                          <p-columnFilter type="date" field="datPrep" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        non Trouve
+                        <div> 
+                          <p-columnFilter type="text" field="nonTrouve" display="menu"></p-columnFilter>
+                        </div>  
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Chrono
+                        <div>
+                          <p-columnFilter type="date" field="chrono" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>  
+                    
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Preparateur
+                        <div>
+                          <p-columnFilter field="prepara" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">Choix Preparateur</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="agentsPrepara" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
+
+                        </div>
+                      </div>
+                    </th> 
+                    
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Validateur de chariot
+                        <div>
+                          <p-columnFilter field="prep" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">Choix Validateur</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="agentsPrep" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Poste
+                        <div>
+                          <p-columnFilter type="text" field="poste" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Centre
+                        <div>
+                          <p-columnFilter type="text" field="centre" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                </tr>
+            </ng-template>
+
+
+            <ng-template pTemplate="body" let-artprep>
+                  <tr>
+                  
+                    <td>
+                      <label (click)="showPositionDialogNumBon('left')">{{ artprep.numBon | uppercase }}</label>
+                      <p-dialog header="Définition numéro de Bon Preparation" [(visible)]="displayPositionNumBon" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>C'est le numéro de bon de préparation associer à l'Article.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionNumBon=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogCodArt('left')">{{ artprep.codArt | uppercase}}</label>
+                      <p-dialog header="Définition Code Article pris chariot" [(visible)]="displayPositionCodArt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le code d'Article qu' été associer au chariot dans la préparation.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionCodArt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="!artprep.qutPrep" (click)="showPositionDialogQutPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.qutPrep < artprep.marge" (click)="showPositionDialogQutPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(228, 13, 13);" >{{ artprep.qutPrep }}</b></label>
+                      <label *ngIf="artprep.qutPrep > artprep.marge" (click)="showPositionDialogQutPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(44, 214, 10);" >{{ artprep.qutPrep }}</b></label>
+                      <p-dialog header="Définition Qutité Preparer" [(visible)]="displayPositionQutPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Quantité d'Article préparé par le préparateur avec ce chariot.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionQutPrep=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="!artprep.datPrep" (click)="showPositionDialogDatPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label (click)="showPositionDialogDatPrep('left')">{{ artprep.datPrep | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                      <p-dialog header="Définition Date de Preparation" [(visible)]="displayPositionDatPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>date de préparation avec ce chariot.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionDatPrep=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="!artprep.nonTrouve" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);">Pas mentionné</b></label>
+                      <label *ngIf="artprep.nonTrouve==true" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(214, 10, 10);" nbPopover="La quantité préparer est inferieur à la marge préparation d'Article" nbPopoverTrigger="hint" nbPopoverPlacement="left">Article n'est pas trouver</b></label>
+                      <label *ngIf="artprep.nonTrouve==false" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(74, 214, 10);" nbPopover="La quantité préparer est superieur à la marge de préparation d'Article" nbPopoverTrigger="hint" nbPopoverPlacement="left">Article est trouver</b></label>
+                      <p-dialog header="Définition Non Trouve" [(visible)]="displayPositionNonTrouve" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>si l'Article non trouver cette valeur va étre positive.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionNonTrouve=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="!artprep.chrono" (click)="showPositionDialogChrono('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label (click)="showPositionDialogChrono('left')">{{ artprep.chrono | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                      <p-dialog header="Définition Chrono" [(visible)]="displayPositionChrono" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le Chrono est le temps pris par le chariot d'étre préparer par le préparateur et pointer par le validateur de chariot  .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionChrono=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>  
+                    <td>
+                      <label *ngIf="!artprep.prepara" (click)="showPositionDialogPrepara('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label (click)="showPositionDialogPrepara('left')">{{ artprep.prepara }}</label>
+                      <p-dialog header="Définition Prepara" [(visible)]="displayPositionPrepara" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le Preparateur qui va préparer l Article dans le chariot .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrepara=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td> 
+                    <td>
+                      <label *ngIf="!artprep.prep" (click)="showPositionDialogPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label (click)="showPositionDialogPrep('left')">{{ artprep.prep }}</label>
+                      <p-dialog header="Définition Validateur Chariot" [(visible)]="displayPositionPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le Validateur de chariot c'est l agent qui va prendre le chariot a partire de la préparation à la fase pointage .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrep=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>   
+                    <td>
+                      <label *ngIf="!artprep.poste" (click)="showPositionDialogPoste('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label (click)="showPositionDialogPoste('left')">{{ artprep.poste }}</label>
+                      <p-dialog header="Définition Poste de pointage de chariot" [(visible)]="displayPositionPoste" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La Poste est la partie de pointage de chariot .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPoste=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>  
+                    <td>
+                      <label *ngIf="!artprep.centre" (click)="showPositionDialogCentre('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label (click)="showPositionDialogCentre('left')">{{ artprep.centre }}</label>
+                      <p-dialog header="Définition centre de chariot" [(visible)]="displayPositionCentre" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Centre de pointage de chariot .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionCentre=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>                
+                  </tr>
+            </ng-template>
+          
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="10">No achat found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+      </nb-card-body>
+</nb-card>

@@ -1,0 +1,102 @@
+<div *ngIf="isLoggedIn; else loggedOut">
+  Logged in.
+</div>
+
+<ng-template #loggedOut>
+  <h1 id="title" class="title">Login</h1>
+  <p class="sub-title">le bienvenu , Veuillez enter votre Nom d'utilisateur et le mot de passe.</p>
+  
+  <form  name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate aria-labelledby="title">
+
+
+    <div class="form-control-group">
+      <span class="p-float-label">
+          <input type="text" class="form-control" id="username" name="username" [(ngModel)]="form.username" #username="ngModel"
+            required 
+            [status]="username.dirty ? (username.invalid  ? 'danger' : 'success') : 'basic'" 
+            pInputText/>
+          <div *ngIf="f.submitted && username.invalid">
+            <div *ngIf="username.errors.required">Nom d'utilisateur est obligatoir</div>
+          </div>
+          <label class="label" for="username">Nom d'utilisateur</label>
+      </span>
+    </div>
+  
+    <div class="form-control-group">
+      <span *ngIf="!pass2" class="p-float-label">
+        &nbsp;<img src="assets/images/toulsImages/Eye.png" width="20" style="vertical-align: middle" nbPopover="Afficher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+          <input type="password" class="form-control" id="password" name="password" [(ngModel)]="form.password" #password="ngModel"
+            required minlength="6" 
+            [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'" 
+            pInputText />
+          <label class="label" for="password">mot de passe</label>
+          <div *ngIf="f.submitted && password.invalid">
+            <div *ngIf="password.errors.required">mot de passe est obligatoir</div>
+            <div *ngIf="password.errors.minlength">mot de passe doit avoir au moin 6 carractére</div>
+          </div>
+          <span class="label-with-link">
+            <a class="forgot-password caption-2" routerLink="../request-password">mot de passe oublier?</a>
+          </span>
+      </span>
+
+      <span *ngIf="pass2" class="p-float-label">
+        &nbsp;<img src="assets/images/toulsImages/noEye.png" width="20" style="vertical-align: middle" nbPopover="Cacher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+        <input type="text" class="form-control" id="password" name="password" [(ngModel)]="form.password" #password="ngModel"
+          required minlength="6" 
+          [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'" 
+          pInputText />
+        <label class="label" for="password">mot de passe</label>
+        <div *ngIf="f.submitted && password.invalid">
+          <div *ngIf="password.errors.required">mot de passe est obligatoir</div>
+          <div *ngIf="password.errors.minlength">mot de passe doit avoir au moin 6 carractére</div>
+        </div>
+        <span class="label-with-link">
+          <a class="forgot-password caption-2" routerLink="../request-password">mot de passe oublier?</a>
+        </span>
+    </span>
+    </div>
+  
+    <div class="form-control-group accept-group">
+      <nb-checkbox name="rememberMe" [(ngModel)]="user.rememberMe" *ngIf="rememberMe">Souviens de moi</nb-checkbox>
+    </div>
+  
+    <button nbButton 
+      fullWidth 
+      [status]="primary" 
+      [size]="large" 
+      class="appearance-filled full-width size-large status-primary shape-rectangle btn-disabled nb-transition"
+      [disabled]="f.submitted && !f.form.valid"
+      [class.btn-pulse]="submitted">
+      Connexion
+    </button>
+  </form>
+  
+  <section *ngIf="socialLinks && socialLinks.length > 0" class="links" aria-label="Social sign in">
+    or enter with:
+    <div class="socials">
+      <ng-container *ngFor="let socialLink of socialLinks">
+        <a *ngIf="socialLink.link"
+           [routerLink]="socialLink.link"
+           [attr.target]="socialLink.target"
+           [attr.class]="socialLink.icon"
+           [class.with-icon]="socialLink.icon">
+          <nb-icon *ngIf="socialLink.icon; else title" [icon]="socialLink.icon"></nb-icon>
+          <ng-template #title>{{ socialLink.title }}</ng-template>
+        </a>
+        <a *ngIf="socialLink.url"
+           [attr.href]="socialLink.url"
+           [attr.target]="socialLink.target"
+           [attr.class]="socialLink.icon"
+           [class.with-icon]="socialLink.icon">
+          <nb-icon *ngIf="socialLink.icon; else title" [icon]="socialLink.icon"></nb-icon>
+          <ng-template #title>{{ socialLink.title }}</ng-template>
+        </a>
+      </ng-container>
+    </div>
+  </section>
+  
+  <section class="another-action" aria-label="Register">
+    Ne pas avoir de compte? <a class="text-link" href="auth/register">S'inscrire</a>
+  </section>
+  
+</ng-template>

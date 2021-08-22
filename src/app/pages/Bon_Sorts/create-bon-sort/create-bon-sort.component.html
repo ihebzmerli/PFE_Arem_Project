@@ -1,0 +1,1188 @@
+<div class="accordions-container row offset-sm-2 col-sm-9" *ngIf="!ArticleWindow && !ChariotWindow">
+  <form (ngSubmit) = "onSubmitBon()" #bonSortForm="ngForm">
+    <nb-accordion>
+      <nb-accordion-item #item>
+        <nb-accordion-item-header>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Bon de Sortie?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../bon-sort-list']"/>
+          <p></p>
+          <h6>Ajouter Bon De Sortie</h6>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+            <div class="full-name-inputs">
+              <div class="col-sm-6"> 
+                <label for="numBon" class="label">N° BON</label> 
+                <input type="text" nbInput fullWidth placeholder="numBon" [(ngModel)]="bonsort.numBon" id="numBon" name="numBon" required #numBon="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$" maxlength="100" minlength="11"/>
+                <div style="font-size: 12px;" [hidden]="numBon.valid || numBon.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!numBon.hasError('minlength')">N~ Bon doit étre au moin 10 lettres longue.</div>
+                  <div [hidden]="!numBon.hasError('maxlength')">N~ Bon ne doit pas dépassé les 100 lettres longue.</div>
+                  <div [hidden]="!numBon.hasError('required')">N~ Bon est obligatoire.</div>
+                  <div [hidden]="!numBon.hasError('pattern')">N~ Bon doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label for="datBon" class="label">Date BON</label>                    <p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{bonsort.datBon | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+                  
+              </div>
+            </div>
+          <label for="raison" class="label">raison</label> 
+          <textarea rows="5" nbInput fullWidth shape="round" placeholder="raison" [(ngModel)]="bonsort.raison" #raison="ngModel" name="raison" required pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="10" ></textarea>
+          <div style="font-size: 12px;" [hidden]="raison.valid || raison.pristine" class="alert alert-danger p-2">
+            <div [hidden]="!raison.hasError('minlength')">Raison doit étre au moin 10 lettres longue.</div>
+            <div [hidden]="!raison.hasError('maxlength')">Raison ne doit pas dépassé les 200 lettres longue.</div>
+            <div [hidden]="!raison.hasError('required')">Raison est obligatoire.</div>
+            <div [hidden]="!raison.hasError('pattern')">Raison ne doit contenir que des lettres et des nombres.</div>
+          </div>
+
+
+            <div class="full-name-inputs">
+              <div class="col-sm-6"> 
+                <label for="montRem" class="label">Mont Rem</label> 
+                <input type="number" nbInput fullWidth placeholder="montRem" [(ngModel)]="bonsort.montRem" #montRem="ngModel" id="montRem" name="montRem" pattern="^(0|[1-9][0-9]*)$" min="0" required />
+                <div style="font-size: 12px;" [hidden]="montRem.valid || montRem.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!montRem.hasError('min')">mont Rem doit étre positive.</div>
+                  <div [hidden]="!montRem.hasError('required')">mont Rem est obligatoire.</div>
+                  <div [hidden]="!montRem.hasError('pattern')">Le mont Rem ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="col-sm-6"> 
+                <label for="tauxRem" class="label">Taux Rem</label> 
+                <input type="number" nbInput fullWidth placeholder="tauxRem" [(ngModel)]="bonsort.tauxRem" #tauxRem="ngModel" id="tauxRem" name="tauxRem" pattern="^(0|[1-9][0-9]*)$" min="0" required />
+                <div style="font-size: 12px;" [hidden]="tauxRem.valid || tauxRem.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!tauxRem.hasError('min')">taux Rem doit étre positive.</div>
+                  <div [hidden]="!tauxRem.hasError('required')">taux Rem est obligatoire.</div>
+                  <div [hidden]="!tauxRem.hasError('pattern')">Le taux Rem ne doit contenir que des nombres.</div>
+                </div>
+              </div>  
+            </div>
+
+
+            <div class="full-name-inputs">
+              <div class="col-sm-6"> 
+                <label for="montTva" class="label">Mont Tva</label> 
+                <input type="number" nbInput fullWidth placeholder="montTva" [(ngModel)]="bonsort.montTva" #montTva="ngModel" name="montTva" id="montTva" pattern="^(0|[1-9][0-9]*)$" min="0" required />
+                <div style="font-size: 12px;" [hidden]="montTva.valid || montTva.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!montTva.hasError('min')">mont Tva doit étre positive.</div>
+                  <div [hidden]="!montTva.hasError('required')">mont Tva est obligatoire.</div>
+                  <div [hidden]="!montTva.hasError('pattern')">Le mont Tva ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="col-sm-6"> 
+                <label for="centre" class="label">Centre</label> 
+                <input type="text" nbInput fullWidth placeholder="centre" [(ngModel)]="bonsort.centre" #centre="ngModel" name="centre" id="centre" pattern="^[a-zA-Z0-9\s]+$" required minlength="5" maxlength="48"/>
+                <div style="font-size: 12px;" [hidden]="centre.valid || centre.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!centre.hasError('minlength')">centre doit étre au moin 5 lettres longue.</div>
+                  <div [hidden]="!centre.hasError('maxlength')">centre ne doit pas dépassé les 48 lettres longue.</div>
+                  <div [hidden]="!centre.hasError('required')">centre est obligatoire.</div>
+                  <div [hidden]="!centre.hasError('pattern')">Le centre ne doit contenir que des lettres majuscule et des nombres.</div>
+                </div>
+              </div> 
+            </div> 
+
+              <div class="full-name-inputs"> 
+                <div class="col-sm-6">        
+                  <label for="observ" class="label">Observ</label> 
+                  <input type="text" nbInput fullWidth placeholder="observ" [(ngModel)]="bonsort.observ" #observ="ngModel" name="observ" id="observ" pattern="^[a-zA-Z0-9\s]+$" required minlength="5" maxlength="49" />  
+                  <div style="font-size: 12px;" [hidden]="observ.valid || observ.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!observ.hasError('minlength')">Observ doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!observ.hasError('maxlength')">Observ ne doit pas dépassé les 49 lettres longue.</div>
+                    <div [hidden]="!observ.hasError('required')">Observ est obligatoire.</div>
+                    <div [hidden]="!observ.hasError('pattern')">Le Observ ne doit contenir que des lettres majuscule et des nombres.</div>
+                  </div>
+                </div> 
+                <div class="col-sm-6">
+                  <label for="vehicule" class="label">Vehicule</label> 
+                  <nb-select fullWidth selected="SelectVehicule" [(ngModel)]="bonsort.vehicule" placeholder="Vehicule" required [ngModelOptions]="{standalone: true}">
+                    <nb-option value="NULL">-Select</nb-option>
+                    <nb-option *ngFor="let itemsVehicule of VehiculeList" [value]="itemsVehicule"><span>{{ itemsVehicule.matricule }}</span></nb-option>
+                  </nb-select>
+                </div>
+              </div>
+
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+  
+
+      <nb-accordion-item>
+        <nb-accordion-item-header>
+          <h6>XBASES & XTVAS</h6>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+            <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase1" class="label">X Base1</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" [(ngModel)]="bonsort.xbase1" placeholder="xbase1" #xbase1="ngModel" id="xbase1" name="xbase1" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase1.valid || xbase1.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase1.hasError('min')">X base1 doit étre positive.</div>
+                    <div [hidden]="!xbase1.hasError('required')">X base1 est obligatoire.</div>
+                    <div [hidden]="!xbase1.hasError('pattern')">X base1 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva1" class="label">X Tva1</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" [(ngModel)]="bonsort.xtva1" placeholder="xtva1" #xtva1="ngModel" id="xtva1" name="xtva1" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xtva1.valid || xtva1.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva1.hasError('min')">X tva1 doit étre positive.</div>
+                    <div [hidden]="!xtva1.hasError('required')">X tva1 est obligatoire.</div>
+                    <div [hidden]="!xtva1.hasError('pattern')">X tva1 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase2" class="label">X Base2</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" [(ngModel)]="bonsort.xbase2" placeholder="xbase2" #xbase2="ngModel" id="xbase2" name="xbase2" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase2.valid || xbase2.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase2.hasError('min')">X base2 doit étre positive.</div>
+                    <div [hidden]="!xbase2.hasError('required')">X base2 est obligatoire.</div>
+                    <div [hidden]="!xbase2.hasError('pattern')">X base2 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva2" class="label">X Tva2</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" [(ngModel)]="bonsort.xtva2" placeholder="xtva2" #xtva2="ngModel" id="xtva2" name="xtva2" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xtva2.valid || xtva2.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva2.hasError('min')">X tva2 doit étre positive.</div>
+                    <div [hidden]="!xtva2.hasError('required')">X tva2 est obligatoire.</div>
+                    <div [hidden]="!xtva2.hasError('pattern')">X tva2 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>    
+              <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase3" class="label">X Base3</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" placeholder="xbase3" [(ngModel)]="bonsort.xbase3" #xbase3="ngModel" id="xbase3" name="xbase3" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase3.valid || xbase3.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase3.hasError('min')">X base3 doit étre positive.</div>
+                    <div [hidden]="!xbase3.hasError('required')">X base3 est obligatoire.</div>
+                    <div [hidden]="!xbase3.hasError('pattern')">X base3 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="xtva3" class="label">X Tva3</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" placeholder="xtva3" [(ngModel)]="bonsort.xtva3" #xtva3="ngModel" id="xtva3" name="xtva3" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xtva3.valid || xtva3.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva3.hasError('min')">X tva3 doit étre positive.</div>
+                    <div [hidden]="!xtva3.hasError('required')">X tva3 est obligatoire.</div>
+                    <div [hidden]="!xtva3.hasError('pattern')">X tva3 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase4" class="label">X Base4</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" placeholder="xbase4" [(ngModel)]="bonsort.xbase4" #xbase4="ngModel" id="xbase4" name="xbase4" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase4.valid || xbase4.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase4.hasError('min')">X base4 doit étre positive.</div>
+                    <div [hidden]="!xbase4.hasError('required')">X base4 est obligatoire.</div>
+                    <div [hidden]="!xbase4.hasError('pattern')">X base4 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="xtva4" class="label">X Tva4</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" placeholder="xtva4" [(ngModel)]="bonsort.xtva4" #xtva4="ngModel" id="xtva4" name="xtva4" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xtva4.valid || xtva4.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva4.hasError('min')">X tva4 doit étre positive.</div>
+                    <div [hidden]="!xtva4.hasError('required')">X tva4 est obligatoire.</div>
+                    <div [hidden]="!xtva4.hasError('pattern')">X tva4 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase5" class="label">X Base5</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" placeholder="xbase5" [(ngModel)]="bonsort.xbase5" #xbase5="ngModel" id="xbase5" name="xbase5" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase5.valid || xbase5.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase5.hasError('min')">X base5 doit étre positive.</div>
+                    <div [hidden]="!xbase5.hasError('required')">X base5 est obligatoire.</div>
+                    <div [hidden]="!xbase5.hasError('pattern')">X base5 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>  
+              </div> 
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+        <div class="col-sm-6">
+          <button [disabled]=!bonSortForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+            Ajouter bon sortie</button>
+          <button nbButton (click)="bonSortForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+            Annuler</button> 
+        </div>
+      </form>
+    </div>
+
+
+
+
+<div class="accordions-container row offset-sm-2 col-sm-9" *ngIf="ArticleWindow">
+  <form (ngSubmit) = "onSubmitArtBon()" #artSortForm="ngForm">
+    <nb-accordion>
+      <nb-accordion-item #item>
+        <nb-accordion-item-header>
+          <h6>les Articles</h6>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>        
+        <!-- if Article existe ------------>
+
+            <div>
+              <div>
+                  <div class="full-name-inputs">
+                    <div class="col-sm-4">
+                Les Marques:<nb-select fullWidth fieldSize="small" [(ngModel)]="article.marque" required (selectedChange)="getModeleFromMarque($event)" [ngModelOptions]="{standalone: true}">
+                      <nb-option value="0">-Select</nb-option>
+                      <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
+                    </nb-select>
+                    </div>
+
+                    <div class="col-sm-4">
+                      Les Modeles:<nb-select id="model" name="model" [(ngModel)]="article.model" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonSort($event)" required #model="ngModel" [ngModelOptions]="{standalone: true}">
+                        <nb-option value="0">-Select</nb-option>
+                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
+                    </nb-select>
+                    </div>
+
+                    <div class="col-sm-4">
+                Les Articles:<nb-select fullWidth fieldSize="small" [(ngModel)]="article.codArt" required (selectedChange)="getArticleFromStockBS($event)" [ngModelOptions]="{standalone: true}">
+                    <nb-option value="0">-Select</nb-option>
+                    <nb-option *ngFor="let itemsArticle of ArticleListWithMarque" [value]="itemsArticle.codArt"><span *ngIf="(itemsArticle.qutStk===0 || itemsArticle.qutStk==null) && (itemsArticle.qutStk2===0 || itemsArticle.qutStk2==null) && (itemsArticle.stkGar===0 || itemsArticle.stkGar==null) && (itemsArticle.stkIni===0 || itemsArticle.stkIni==null) && (itemsArticle.analStk===0 || itemsArticle.analStk==null) && (itemsArticle.nbjStk===0 || itemsArticle.nbjStk==null) && (itemsArticle.vSstk===0 || itemsArticle.vSstk==null) && (itemsArticle.comStk===0 || itemsArticle.comStk==null) && (itemsArticle.xanalStk===0 || itemsArticle.xanalStk==null) && (itemsArticle.stkAtrsf===0 || itemsArticle.stkAtrsf==null) && (itemsArticle.stkTrsf===0 || itemsArticle.stkTrsf==null) && (itemsArticle.stkReel===0 || itemsArticle.stkReel==null) && (itemsArticle.stkRes===0 || itemsArticle.stkRes==null) && (itemsArticle.stkNp===0 || itemsArticle.stkNp==null); else stockExiste" style="color: darkred;">Code Article: {{ itemsArticle.codArt}} </span><ng-template #stockExiste>Code Article: {{ itemsArticle.codArt}} </ng-template></nb-option>
+                    </nb-select>
+                    </div>
+                </div>  
+              </div>
+              <div>
+                <button type="button" (click)="togglepreviewPhotoArticle()" class="btn btn-outline-primary">
+                  {{previewPhotoArticle? "Hide ": "Show "}} Article
+                </button>
+              </div>
+              <div *ngIf="previewPhotoArticle">
+                <div class="p-grid p-align-center">
+                    <div class="p-col-1">
+                        <p-button icon="pi pi-refresh" (onClick)="refresh()"></p-button>
+                        <p-button icon="pi pi-search" (onClick)="togglepreviewPhotoAllArticle()"></p-button>
+                    </div>
+                  </div>
+                  <div *ngIf="!previewPhotoAllArticle">
+                    <div class="p-col-10">
+                        <p-paginator [first]="first" [rows]="1" [totalRecords]="totalRecords2" (onPageChange)="onPageChange($event)"
+                        [showJumpToPageDropdown]="true" [showPageLinks]="false"></p-paginator>
+                    </div>
+                    <div *ngIf="!ArticleGeted" class="image-gallery">
+                      <h2>mercie de choisir un Article</h2>
+                    </div>
+                    <div *ngIf="ArticleGeted" class="image-gallery">
+                      <img src="assets/images/imgArticles/{{ArticleGeted.codArt}}/{{ArticleGeted.codArt}}.png" height="400" width="400"/>
+                  </div>
+                  </div>
+              
+                <div *ngIf="previewPhotoAllArticle">
+                  <p-orderList [value]="ArticleList" [listStyle]="{'height':'auto'}" header="List des Articles" filterBy="codArt" filterPlaceholder="Filter by codArt" [dragdrop]="true">
+                    <ng-template let-article pTemplate="item">
+                        <div class="article-item">
+                            <div class="image-container">
+                                    <img src="/assets/images/imgArticles/{{article.codArt}}/{{article.codArt}}.png" [alt]="article.codArt" class="article-image" />
+                            </div>
+                            <div class="article-list-detail">
+                                <h5 class="p-mb-2">{{article.codArt}}</h5>
+                                <h6 class="p-mb-2">marque: ({{article.marque}})</h6>
+                                <i class="pi pi-tag article-category-icon"></i>
+                                <span class="article-category">{{article.desArt}}</span>
+                            </div>
+                            <div class="article-list-action">
+                                <h6 class="p-mb-2">${{article.prixVen}}</h6>
+                                <h6 class="p-mb-2">${{article.prixArem}}</h6>
+                                <!-- <span [class]="'article-badge status-' + article.inventoryStatus.toLowerCase()">{{article.inventoryStatus}}</span> -->
+                            </div>
+                        </div>
+                    </ng-template>
+                  </p-orderList>
+                </div>
+              </div>  
+<!--
+              <button (click)="openWindowForm()">Type Stock</button>:
+  
+              <input type="text" nbInput fullWidth fieldSize="small" placeholder="Type Stock" id="TypeStock" name="TypeStock" disabled />
+              <nb-select fullWidth placeholder="Multiple Select">
+                <nb-option *ngFor="let number of [0,1,2,3,4]">{{number}}</nb-option>
+              </nb-select>
+              <li *ngFor='let in of counter(3) ;let i = index; i'>{{i}}</li>
+-->              
+              <div class="full-name-inputs">
+                <div>
+                    <label for="stock 1" class="label">Quantité des Articles de stock 1:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.qutStk===0 || itemsQutStk.qutStk==null || itemsQutStk.qutStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.qutStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.qutStk }}</span></b>
+                    <input type="number" nbInput fullWidth fieldSize="small" placeholder="qutStk" [(ngModel)]="artsort.qutStk" id="qutStk" name="qutStk" #qutStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.qutStk">
+                    <div style="font-size: 12px;" [hidden]="qutStk.valid || qutStk.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!qutStk.hasError('min')">Qut Stk doit étre positive.</div>
+                      <div [hidden]="!qutStk.hasError('max')">Qut Stk doit étre inferieur au max de Stock.</div>
+                      <div [hidden]="!qutStk.hasError('required')">Qut Stk est obligatoire.</div>
+                      <div [hidden]="!qutStk.hasError('pattern')">Qut Stk ne doit contenir que des nombres.</div>
+                    </div>
+                </div>
+                <div>
+                    <label for="stock 2" class="label">Quantité des Articles de stock 2:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.qutStk2===0 || itemsQutStk.qutStk2==null || itemsQutStk.qutStk2==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.qutStk2 > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.qutStk2 }}</span></b>
+                    <input type="number" nbInput fullWidth fieldSize="small" placeholder="qutStk2" [(ngModel)]="artsort.qutStk2" id="qutStk2" name="qutStk2" #qutStk2="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.qutStk2">
+                    <div style="font-size: 12px;" [hidden]="qutStk2.valid || qutStk2.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!qutStk2.hasError('min')">Qut Stk2 doit étre positive.</div>
+                      <div [hidden]="!qutStk2.hasError('max')">Qut Stk2 doit étre inferieur au max de Stock.</div>
+                      <div [hidden]="!qutStk2.hasError('required')">Qut Stk2 est obligatoire.</div>
+                      <div [hidden]="!qutStk2.hasError('pattern')">Qut Stk2 ne doit contenir que des nombres.</div>
+                    </div>
+                </div>
+              </div>
+
+              <div class="full-name-inputs"> 
+                <div>
+                        <label for="stock Gar" class="label">Quantité des Articles de stock Gar:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.stkGar===0 || itemsQutStk.stkGar==null || itemsQutStk.stkGar==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.stkGar > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.stkGar }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stkGar" [(ngModel)]="artsort.stkGar" id="stkGar" name="stkGar" #stkGar="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkGar">
+                        <div style="font-size: 12px;" [hidden]="stkGar.valid || stkGar.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!stkGar.hasError('min')">Qtk Gar doit étre positive.</div>
+                          <div [hidden]="!stkGar.hasError('max')">Qtk Gar doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!stkGar.hasError('required')">Qtk Gar est obligatoire.</div>
+                          <div [hidden]="!stkGar.hasError('pattern')">Qtk Gar ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+
+                <div>
+                        <label for="stock Initial" class="label">Quantité des Articles de stock Initial:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.stkIni===0 ||itemsQutStk.stkIni==null || itemsQutStk.stkIni==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.stkIni > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.stkIni }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stkIni" [(ngModel)]="artsort.stkIni" id="stkIni" name="stkIni" #stkIni="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkIni">
+                        <div style="font-size: 12px;" [hidden]="stkIni.valid || stkIni.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!stkIni.hasError('min')">Stk Ini doit étre positive.</div>
+                          <div [hidden]="!stkIni.hasError('max')">Stk Ini doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!stkIni.hasError('required')">Stk Ini est obligatoire.</div>
+                          <div [hidden]="!stkIni.hasError('pattern')">Stk Ini ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+              </div>   
+              <div class="full-name-inputs"> 
+                <div>
+                        <label for="stock Anal" class="label">Quantité des Articles de stock Anal:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.analStk===0 || itemsQutStk.analStk==null || itemsQutStk.analStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.analStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.analStk }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="analStk" [(ngModel)]="artsort.analStk" id="analStk" name="analStk" #analStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.analStk">
+                        <div style="font-size: 12px;" [hidden]="analStk.valid || analStk.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!analStk.hasError('min')">anal Stk doit étre positive.</div>
+                          <div [hidden]="!analStk.hasError('max')">anal Stk doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!analStk.hasError('required')">anal Stk est obligatoire.</div>
+                          <div [hidden]="!analStk.hasError('pattern')">anal Stk ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+
+                <div>
+                        <label for="stock Nbj" class="label">Quantité des Articles de stock Nbj:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.nbjStk===0 || itemsQutStk.nbjStk==null || itemsQutStk.nbjStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.nbjStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.nbjStk }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="nbjStk" [(ngModel)]="artsort.nbjStk" id="nbjStk" name="nbjStk" #nbjStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.nbjStk">
+                        <div style="font-size: 12px;" [hidden]="nbjStk.valid || nbjStk.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!nbjStk.hasError('min')">Nbj Stk doit étre positive.</div>
+                          <div [hidden]="!nbjStk.hasError('max')">Nbj Stk doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!nbjStk.hasError('required')">Nbj Stk est obligatoire.</div>
+                          <div [hidden]="!nbjStk.hasError('pattern')">Nbj Stk ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+              </div>
+              <div class="full-name-inputs">   
+                <div>
+                        <label for="stock V_S" class="label">Quantité des Articles de stock V_S:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.vSstk===0 || itemsQutStk.vSstk==null || itemsQutStk.vSstk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.vSstk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.vSstk }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="vSstk" [(ngModel)]="artsort.vSstk" id="vSstk" name="vSstk" #vSstk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.vSstk">
+                        <div style="font-size: 12px;" [hidden]="vSstk.valid || vSstk.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!vSstk.hasError('min')">vS stk doit étre positive.</div>
+                          <div [hidden]="!vSstk.hasError('max')">vS stk doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!vSstk.hasError('required')">vS stk est obligatoire.</div>
+                          <div [hidden]="!vSstk.hasError('pattern')">vS stk ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+
+                <div>
+                        <label for="stock Com" class="label">Quantité des Articles de stock Com:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.comStk===0 || itemsQutStk.comStk==null || itemsQutStk.comStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.comStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.comStk }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="comStk" [(ngModel)]="artsort.comStk" id="comStk" name="comStk" #comStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.comStk">
+                        <div style="font-size: 12px;" [hidden]="comStk.valid || comStk.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!comStk.hasError('min')">com Stk doit étre positive.</div>
+                          <div [hidden]="!comStk.hasError('max')">com Stk doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!comStk.hasError('required')">com Stk est obligatoire.</div>
+                          <div [hidden]="!comStk.hasError('pattern')">com Stk ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+              </div>
+
+              <div class="full-name-inputs"> 
+                <div>
+                        <label for="stock Xanal" class="label">Quantité des Articles de stock Xanal:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.xanalStk===0 || itemsQutStk.xanalStk==null || itemsQutStk.xanalStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.xanalStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.xanalStk }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="xanalStk" [(ngModel)]="artsort.xanalStk" id="xanalStk" name="xanalStk" #xanalStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.xanalStk">
+                        <div style="font-size: 12px;" [hidden]="xanalStk.valid || xanalStk.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!xanalStk.hasError('min')">X anal Stk doit étre positive.</div>
+                          <div [hidden]="!xanalStk.hasError('max')">X anal Stk doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!xanalStk.hasError('required')">X anal Stk est obligatoire.</div>
+                          <div [hidden]="!xanalStk.hasError('pattern')">X anal Stk ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+
+                <div>
+                        <label for="stock Atrsf" class="label">Quantité des Articles de stock Atrsf:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.stkAtrsf===0 || itemsQutStk.stkAtrsf==null || itemsQutStk.stkAtrsf==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.stkAtrsf > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.stkAtrsf }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stkAtrsf" [(ngModel)]="artsort.stkAtrsf" id="stkAtrsf" name="stkAtrsf" #stkAtrsf="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkAtrsf">
+                        <div style="font-size: 12px;" [hidden]="stkAtrsf.valid || stkAtrsf.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!stkAtrsf.hasError('min')">Stk Atrsf doit étre positive.</div>
+                          <div [hidden]="!stkAtrsf.hasError('max')">Stk Atrsf doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!stkAtrsf.hasError('required')">Stk Atrsf est obligatoire.</div>
+                          <div [hidden]="!stkAtrsf.hasError('pattern')">Stk Atrsf ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+              </div> 
+              
+              <div class="full-name-inputs"> 
+                <div>
+                        <label for="stock Trsf" class="label">Quantité des Articles de stock Trsf:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.stkTrsf===0 || itemsQutStk.stkTrsf==null || itemsQutStk.stkTrsf==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.stkTrsf > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.stkTrsf }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stkTrsf" [(ngModel)]="artsort.stkTrsf" id="stkTrsf" name="stkTrsf" #stkTrsf="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkTrsf">
+                        <div style="font-size: 12px;" [hidden]="stkTrsf.valid || stkTrsf.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!stkTrsf.hasError('min')">Stk Trsf doit étre positive.</div>
+                          <div [hidden]="!stkTrsf.hasError('max')">Stk Trsf doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!stkTrsf.hasError('required')">Stk Trsf est obligatoire.</div>
+                          <div [hidden]="!stkTrsf.hasError('pattern')">Stk Trsf ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+
+                <div>
+                        <label for="stock Réel" class="label">Quantité des Articles de stock Réel:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.stkReel===0 || itemsQutStk.stkReel==null || itemsQutStk.stkReel==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.stkReel > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.stkReel }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stkReel" [(ngModel)]="artsort.stkReel" id="stkReel" name="stkReel" #stkReel="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkReel">
+                        <div style="font-size: 12px;" [hidden]="stkReel.valid || stkReel.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!stkReel.hasError('min')">Stk Reel doit étre positive.</div>
+                          <div [hidden]="!stkReel.hasError('max')">Stk Reel doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!stkReel.hasError('required')">Stk Reel est obligatoire.</div>
+                          <div [hidden]="!stkReel.hasError('pattern')">Stk Reel ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+              </div>
+              
+              <div class="full-name-inputs"> 
+                <div>
+                        <label for="stock Res" class="label">Quantité des Articles de stock Res:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.stkRes===0 || itemsQutStk.stkRes==null || itemsQutStk.stkRes==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.stkRes > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.stkRes }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stkRes" [(ngModel)]="artsort.stkRes" id="stkRes" name="stkRes" #stkRes="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkRes">
+                        <div style="font-size: 12px;" [hidden]="stkRes.valid || stkRes.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!stkRes.hasError('min')">Stk Res doit étre positive.</div>
+                          <div [hidden]="!stkRes.hasError('max')">Stk Res doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!stkRes.hasError('required')">Stk Res est obligatoire.</div>
+                          <div [hidden]="!stkRes.hasError('pattern')">Stk Res ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+
+                <div>
+                        <label for="stock Np" class="label">Quantité des Articles de stock Np:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.stkNp===0 || itemsQutStk.stkNp==null || itemsQutStk.stkNp==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.stkNp > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.stkNp }}</span></b>
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stkNp" [(ngModel)]="artsort.stkNp" id="stkNp" name="stkNp" #stkNp="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkNp">
+                        <div style="font-size: 12px;" [hidden]="stkNp.valid || stkNp.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!stkNp.hasError('min')">Stk Np doit étre positive.</div>
+                          <div [hidden]="!stkNp.hasError('max')">Stk Np doit étre inferieur au max de Stock.</div>
+                          <div [hidden]="!stkNp.hasError('required')">Stk Np est obligatoire.</div>
+                          <div [hidden]="!stkNp.hasError('pattern')">Stk Np ne doit contenir que des nombres.</div>
+                        </div>
+                </div>
+              </div>
+                  
+                <div class="col-sm-6">
+                  <label for="calculeArticles" class="label">Calcule des Articles</label>
+                  <input type="text" nbInput fullWidth fieldSize="small" id="sumArticles" name="sumArticles" disabled />
+                </div>    
+            <div class="col-sm-12">
+              <label for="SumcalculeArticles" class="label">Calcule la sum des Articles</label>
+              <input type="text" nbInput fullWidth placeholder="0" id="sumAllArticles" name="sumAllArticles" disabled />
+            </div>
+            
+          </div>
+
+          <nb-card>
+            <nb-card-header><label for="Actions" class="label">Actions</label></nb-card-header>
+            <nb-card-body>
+              <div class="full-name-inputs">
+                <div class="buttons-row">
+                  <button nbButton type="button" (click)="onResetArtSortExistForm()" status="info" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                    Ajouter d'autre Article</button>
+                  <button [disabled]=!artSortForm.form.valid nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                    Ajouter dérniére Article</button>
+                  <button nbButton type="button" (click)="artSortForm.reset()" status="danger" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                    Annuler</button>
+                </div>
+              </div>
+            </nb-card-body>
+          </nb-card>
+
+<!--  PROGRESSIVE  bar  -->
+
+          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+          <p class="p-m-0"> 
+            <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+          </p>
+          </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+  </form>
+</div>
+ 
+<div *ngIf="ChariotWindow">
+  <form (ngSubmit) = "onSubmitChariotArticle()" #ChariotArticleForm="ngForm">
+    <div class="offset-sm-1 col-sm-10">
+      <nb-card>
+        <nb-card-header>les affectation des Chariot & Preprateur</nb-card-header>
+        <nb-card-body>
+          <div>
+            <div>
+                      <table class="table table-bordered table-striped">
+
+                        <thead>
+                          <tr>
+                            <th>
+                              <div style="text-align: center" class="field-multiple-drag">
+                                <b class="p-mb-3 p-text-light">L'Article</b>
+                              </div>
+                            </th>
+                            <th>
+                              <div style="text-align: center" class="field-multiple-drag">
+                                <b class="p-mb-3 p-text-light">Quantité</b>
+                              </div>
+                            </th>
+                            <th>
+                              <div style="text-align: center" class="field-multiple-drag">
+                                <b class="p-mb-3 p-text-light">Centre</b>
+                              </div>
+                            </th>
+                            <th>
+                              <div style="text-align: center" class="field-multiple-drag">
+                                <b class="p-mb-3 p-text-light">Zone</b>
+                              </div>
+                            </th>
+                            <th>
+                              <div style="text-align: center" class="field-multiple-drag">
+                                Preparateur
+                              </div>
+                            </th>
+                            <th>
+                              <div style="text-align: center" class="field-multiple-drag">
+                                chariot
+                              </div>
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                                <!--   0 liste to show -->
+                          <tr *ngIf="lastAdd>=1">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[0].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[0].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center0="ngModel" [(ngModel)]="centerAdd0" placeholder="Centre0" (selectedChange)="CentreSwitchDisable_0($event)" (selectedChange)="getZoneArticleByCentre0($event,ListArtSortForChariot[0].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix0" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_0($event)" (selectedChange)="getAllPreparateur0($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle0" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur0="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_0($event)" [(ngModel)]="preparateurAdd0" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList0" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar0="ngModel" (selectedChange)="CharSwitchDisable_0($event)" [(selected)]="SnumCharAdd0" placeholder="Chariot" [(ngModel)]="numCharAdd0" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider0(ListArtSortForChariot[0].id,SnumCharAdd0,preparateurAdd0,SelectZoneChoix0,centerAdd0)" [disabled]="isDisabled0" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+
+                          <!--   1 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=2">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[1].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[1].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center1="ngModel" [(ngModel)]="centerAdd1" placeholder="Centre1" (selectedChange)="CentreSwitchDisable_1($event)" (selectedChange)="getZoneArticleByCentre1($event,ListArtSortForChariot[1].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix1" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_1($event)" (selectedChange)="getAllPreparateur1($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle1" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur1="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_1($event)" [(ngModel)]="preparateurAdd1" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList1" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar1="ngModel" (selectedChange)="CharSwitchDisable_1($event)" [(selected)]="SnumCharAdd1" placeholder="Chariot" [(ngModel)]="numCharAdd1" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider1(ListArtSortForChariot[1].id,SnumCharAdd1,preparateurAdd1,SelectZoneChoix1,centerAdd1)" [disabled]="isDisabled1" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+                          <!--   2 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=3">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[2].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[2].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center2="ngModel" [(ngModel)]="centerAdd2" placeholder="Centre" (selectedChange)="CentreSwitchDisable_2($event)" (selectedChange)="getZoneArticleByCentre2($event,ListArtSortForChariot[2].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix2" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_2($event)" (selectedChange)="getAllPreparateur2($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle2" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur2="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_2($event)" [(ngModel)]="preparateurAdd2" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList2" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar2="ngModel" (selectedChange)="CharSwitchDisable_2($event)" [(selected)]="SnumCharAdd2" placeholder="Chariot" [(ngModel)]="numCharAdd2" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider2(ListArtSortForChariot[2].id,SnumCharAdd2,preparateurAdd2,SelectZoneChoix2,centerAdd2)" [disabled]="isDisabled2" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+                                     <!--   3 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=4">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[3].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[3].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center3="ngModel" [(ngModel)]="centerAdd3" placeholder="Centre" (selectedChange)="CentreSwitchDisable_3($event)" (selectedChange)="getZoneArticleByCentre3($event,ListArtSortForChariot[3].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix3" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_3($event)" (selectedChange)="getAllPreparateur3($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle3" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur3="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_3($event)" [(ngModel)]="preparateurAdd3" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList3" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar3="ngModel" (selectedChange)="CharSwitchDisable_3($event)" [(selected)]="SnumCharAdd3" placeholder="Chariot" [(ngModel)]="numCharAdd3" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider3(ListArtSortForChariot[3].id,SnumCharAdd3,preparateurAdd3,SelectZoneChoix3,centerAdd3)" [disabled]="isDisabled3" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+                                      <!--   4 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=5">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[4].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[4].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center4="ngModel" [(ngModel)]="centerAdd4" placeholder="Centre" (selectedChange)="CentreSwitchDisable_4($event)" (selectedChange)="getZoneArticleByCentre4($event,ListArtSortForChariot[4].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix4" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_4($event)" (selectedChange)="getAllPreparateur4($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle4" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur4="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_4($event)" [(ngModel)]="preparateurAdd4" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList4" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar4="ngModel" (selectedChange)="CharSwitchDisable_4($event)" [(selected)]="SnumCharAdd4" placeholder="Chariot" [(ngModel)]="numCharAdd4" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider4(ListArtSortForChariot[4].id,SnumCharAdd4,preparateurAdd4,SelectZoneChoix4,centerAdd4)" [disabled]="isDisabled4" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+                          <!--   5 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=6">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[5].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[5].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center5="ngModel" [(ngModel)]="centerAdd5" placeholder="Centre" (selectedChange)="CentreSwitchDisable_5($event)" (selectedChange)="getZoneArticleByCentre5($event,ListArtSortForChariot[5].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix5" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_5($event)" (selectedChange)="getAllPreparateur5($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle5" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur5="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_5($event)" [(ngModel)]="preparateurAdd5" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList5" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar5="ngModel" (selectedChange)="CharSwitchDisable_5($event)" [(selected)]="SnumCharAdd5" placeholder="Chariot" [(ngModel)]="numCharAdd5" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider5(ListArtSortForChariot[5].id,SnumCharAdd5,preparateurAdd5,SelectZoneChoix5,centerAdd5)" [disabled]="isDisabled5" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+                          
+                          <!--   START 6 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=7">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[6].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[6].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center6="ngModel" [(ngModel)]="centerAdd6" placeholder="Centre" (selectedChange)="CentreSwitchDisable_6($event)" (selectedChange)="getZoneArticleByCentre6($event,ListArtSortForChariot[6].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix6" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_6($event)" (selectedChange)="getAllPreparateur6($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle6" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur6="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_6($event)" [(ngModel)]="preparateurAdd6" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList6" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar6="ngModel" (selectedChange)="CharSwitchDisable_6($event)" [(selected)]="SnumCharAdd6" placeholder="Chariot" [(ngModel)]="numCharAdd6" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider6(ListArtSortForChariot[6].id,SnumCharAdd6,preparateurAdd6,SelectZoneChoix6,centerAdd6)" [disabled]="isDisabled6" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+                              <!--   END 6 liste to show -->
+
+                             <!--   START 7 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=8">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[7].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[7].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center7="ngModel" [(ngModel)]="centerAdd7" placeholder="Centre" (selectedChange)="CentreSwitchDisable_7($event)" (selectedChange)="getZoneArticleByCentre7($event,ListArtSortForChariot[7].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix7" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_7($event)" (selectedChange)="getAllPreparateur7($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle7" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur7="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_7($event)" [(ngModel)]="preparateurAdd7" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList7" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar7="ngModel" (selectedChange)="CharSwitchDisable_7($event)" [(selected)]="SnumCharAdd7" placeholder="Chariot" [(ngModel)]="numCharAdd7" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider7(ListArtSortForChariot[7].id,SnumCharAdd7,preparateurAdd7,SelectZoneChoix7,centerAdd7)" [disabled]="isDisabled7" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+                              <!--   END 7 liste to show -->
+
+                         <!--   START 8 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=9">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[8].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[8].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center8="ngModel" [(ngModel)]="centerAdd8" placeholder="Centre" (selectedChange)="CentreSwitchDisable_8($event)" (selectedChange)="getZoneArticleByCentre8($event,ListArtSortForChariot[8].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix8" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_8($event)" (selectedChange)="getAllPreparateur8($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle8" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur8="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_8($event)" [(ngModel)]="preparateurAdd8" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList8" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar8="ngModel" (selectedChange)="CharSwitchDisable_8($event)" [(selected)]="SnumCharAdd8" placeholder="Chariot" [(ngModel)]="numCharAdd8" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider8(ListArtSortForChariot[8].id,SnumCharAdd8,preparateurAdd8,SelectZoneChoix8,centerAdd8)" [disabled]="isDisabled8" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+                              <!--   END 8 liste to show -->
+                              <!--   START 9 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=10">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[9].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[9].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center9="ngModel" [(ngModel)]="centerAdd9" placeholder="Centre" (selectedChange)="CentreSwitchDisable_9($event)" (selectedChange)="getZoneArticleByCentre9($event,ListArtSortForChariot[9].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix9" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_9($event)" (selectedChange)="getAllPreparateur9($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle9" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur9="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_9($event)" [(ngModel)]="preparateurAdd9" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList9" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar9="ngModel" (selectedChange)="CharSwitchDisable_9($event)" [(selected)]="SnumCharAdd9" placeholder="Chariot" [(ngModel)]="numCharAdd9" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider9(ListArtSortForChariot[9].id,SnumCharAdd9,preparateurAdd9,SelectZoneChoix9,centerAdd9)" [disabled]="isDisabled9" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+                              <!--   END 9 liste to show -->
+                              <!--   START 10 liste to show -->
+
+
+                          <tr *ngIf="lastAdd>=11">
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[10].codArt }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align: center" class="field-multiple-drag">
+                                  {{ ListArtSortForChariot[10].qutSortie }}
+                                </div> 
+                            </td>  
+                            <td>
+                              <div style="text-align: center" class="field-multiple-drag">
+
+                                <nb-select fullWidth style="max-width: 100%;width: 100%;padding: 8px;" fieldSize="small" size="small" #center10="ngModel" [(ngModel)]="centerAdd10" placeholder="Centre" (selectedChange)="CentreSwitchDisable_10($event)" (selectedChange)="getZoneArticleByCentre10($event,ListArtSortForChariot[10].codArt)" [ngModelOptions]="{standalone: true}">
+                                  <nb-option value="Ghazella 1">Ghazella 1</nb-option>
+                                  <nb-option value="Charguia">Charguia</nb-option>
+                                  <nb-option value="Souse">Souse</nb-option>
+                                  <nb-option value="Sfax">Sfax</nb-option>
+                                </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" selected="SelectZoneChoix10" placeholder="Zone" (selectedChange)="ZoneSwitchDisable_10($event)" (selectedChange)="getAllPreparateur10($event)" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsZone of ZoneArticle10" [value]="itemsZone"><span>{{ itemsZone }}</span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur10="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_10($event)" [(ngModel)]="preparateurAdd10" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList10" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <div>
+                                  <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" #numChar10="ngModel" (selectedChange)="CharSwitchDisable_10($event)" [(selected)]="SnumCharAdd10" placeholder="Chariot" [(ngModel)]="numCharAdd10" required [ngModelOptions]="{standalone: true}">
+                                      <nb-option value="NULL">-Select</nb-option>
+                                      <nb-option *ngFor="let itemsChariot of ChariotList" [value]="itemsChariot"><span *ngIf="itemsChariot.etat_char =='en_panne'" style="color: darkred;">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }}</span></span><span *ngIf="itemsChariot.etat_char =='occuper'" style="color: rgb(187, 154, 6);">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp; <span style="font-size: 10px;">Etat: {{ itemsChariot.etat_char }} </span></span><span *ngIf="itemsChariot.etat_char =='en_attente'">N~: {{ itemsChariot.numChar }} &nbsp;&nbsp;<span style="font-size: 10px;"> Etat: {{ itemsChariot.etat_char }} </span></span></nb-option>
+                                  </nb-select>
+                              </div>
+                            </td> 
+                            <td>
+                              <button type="button" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" (click)="TestValider10(ListArtSortForChariot[10].id,SnumCharAdd10,preparateurAdd10,SelectZoneChoix10,centerAdd10)" [disabled]="isDisabled10" outline> 
+                                Valider</button>
+                            </td>
+                          </tr>
+
+                              <!--   END 10 liste to show -->
+                        </tbody>
+                      </table>
+            </div>
+          </div>
+          <button [disabled]=!ChariotArticleForm.form.valid nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+            Comfirmer tout</button>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </form>
+</div>

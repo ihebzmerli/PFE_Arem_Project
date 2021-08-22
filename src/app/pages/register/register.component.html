@@ -1,0 +1,273 @@
+<h1 id="title" class="title">S'inscrire</h1>
+
+<div *ngIf="isSignedUp; else signupForm">
+  Votre inscription est réussie. Veuillez vous connecter !<a class="text-link" routerLink="../login">Connexion</a>
+</div>
+
+
+
+<!--
+
+<nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">
+  <p class="alert-title"><b>Oh snap!</b></p>
+  <ul class="alert-message-list">
+    <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
+  </ul>
+</nb-alert>
+
+<nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success" role="alert">
+  <p class="alert-title"><b>Hooray!</b></p>
+  <ul class="alert-message-list">
+    <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
+  </ul>
+</nb-alert>
+
+-->
+<ng-template #signupForm>
+  <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" aria-labelledby="title" novalidate>
+
+    <div class="form-control-group">
+      <span class="p-float-label">
+        <input nbInput
+              type="text" 
+              class="form-control"
+              [(ngModel)]="form.lastname"
+              #lastname="ngModel"
+              id="input-lastname"
+              name="lastname"
+              autofocus
+              fullWidth
+              fieldSize="large"
+              required
+              pattern="^[a-zA-Z\s]+$"
+              maxlength="50" 
+              minlength="5"
+              [status]="lastname.dirty ? (lastname.invalid  ? 'danger' : 'success') : 'basic'" 
+              pInputText>
+              <div style="font-size: 12px;" [hidden]="lastname.valid || lastname.pristine" class="alert alert-danger p-2">
+                <div [hidden]="!lastname.hasError('minlength')">Nom de famille complet doit contenir de 5 caractères.</div>
+                <div [hidden]="!lastname.hasError('maxlength')">Nom de famille complet doit contenir à 50 caractères.</div>
+                <div [hidden]="!lastname.hasError('required')">Nom de famille complet est requis !</div>
+                <div [hidden]="!lastname.hasError('pattern')">Nom de famille complet doit contenir que des lettres.</div>
+              </div>
+        <label class="label" for="input-lastname">Nom de famille:</label>
+      </span>
+    </div>
+
+    <div class="form-control-group">
+      <span class="p-float-label">
+        <input nbInput
+              type="text" 
+              class="form-control"
+              [(ngModel)]="form.firstname"
+              #firstname="ngModel"
+              id="input-name"
+              name="firstname"
+              autofocus
+              fullWidth
+              fieldSize="large"
+              required
+              pattern="^[a-zA-Z\s]+$"
+              maxlength="50" 
+              minlength="3"
+              [status]="firstname.dirty ? (firstname.invalid  ? 'danger' : 'success') : 'basic'"
+              pInputText>
+              <div style="font-size: 12px;" [hidden]="firstname.valid || firstname.pristine" class="alert alert-danger p-2">
+                <div [hidden]="!firstname.hasError('minlength')">Prénom complet doit contenir de 3 caractères.</div>
+                <div [hidden]="!firstname.hasError('maxlength')">Prénom complet doit contenir à 50 caractères.</div>
+                <div [hidden]="!firstname.hasError('required')">Prénom complet est requis !</div>
+                <div [hidden]="!firstname.hasError('pattern')">Prénom complet doit contenir que des lettres.</div>
+              </div>
+        <label class="label" for="input-firstname">Prénom:</label>
+      </span>
+    </div>
+
+    <div class="form-control-group">
+      <span class="p-float-label">
+        <input nbInput
+              type="text" 
+              class="form-control"
+              [(ngModel)]="form.username"
+              #username="ngModel"
+              id="username"
+              name="username"
+              pattern=".+@.+..+"
+              fullWidth
+              fieldSize="large"
+              required
+              pattern="^[a-zA-Z0-9\s]+$"
+              maxlength="50" 
+              minlength="3"
+              [status]="username.dirty ? (username.invalid  ? 'danger' : 'success') : 'basic'"
+              pInputText>
+              <div style="font-size: 12px;" [hidden]="username.valid || username.pristine" class="alert alert-danger p-2">
+                <div [hidden]="!username.hasError('minlength')">Nom d'utilisateur complet doit contenir de 3 caractères.</div>
+                <div [hidden]="!username.hasError('maxlength')">Nom d'utilisateur complet doit contenir à 50 caractères.</div>
+                <div [hidden]="!username.hasError('required')">Nom d'utilisateur complet est requis !</div>
+                <div [hidden]="!username.hasError('pattern')">Nom d'utilisateur complet doit contenir que des lettres.</div>
+              </div>
+        <label class="label" for="input-email">Nom d'utilisateur: </label>
+      </span>
+    </div>
+
+
+    <div class="form-control-group">
+      <span class="p-float-label">
+        <input nbInput
+              type="email" 
+              class="form-control"
+              [(ngModel)]="form.email"
+              #email="ngModel"
+              id="email"
+              name="email"
+              pattern=".+@.+..+"
+              fullWidth
+              fieldSize="large"
+              required
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$"
+              maxlength="50" 
+              minlength="7"
+              [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : 'basic'"
+              pInputText>
+              <div style="font-size: 12px;" [hidden]="email.valid || email.pristine" class="alert alert-danger p-2">
+                <div [hidden]="!email.hasError('minlength')">L'e-mail complet doit contenir de 7 caractères.</div>
+                <div [hidden]="!email.hasError('maxlength')">L'e-mail complet doit contenir à 50 caractères.</div>
+                <div [hidden]="!email.hasError('required')">L'e-mail complet est requis !</div>
+                <div [hidden]="!email.hasError('pattern')">L'e-mail complet doit étre un email.</div>
+              </div>
+        <label class="label" for="input-email">Adresse e-mail: </label>
+      </span>
+    </div>
+
+
+    <div class="form-control-group">
+      <span class="p-float-label">
+        <!--at least one uppercase letter, one lowercase letter, one number and one special character:-->
+        <input nbInput
+              class="form-control"
+              [(ngModel)]="form.password"
+              #password="ngModel"
+              type="password"
+              id="input-password"
+              name="password"
+              fullWidth
+              fieldSize="large"
+              required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$"
+              maxlength="100" 
+              minlength="7"
+              [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
+              pInputText>
+              <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">
+                <div [hidden]="!password.hasError('minlength')">Mot de passe complet doit contenir de 7 caractères.</div>
+                <div [hidden]="!password.hasError('maxlength')">Mot de passe complet doit contenir à 100 caractères.</div>
+                <div [hidden]="!password.hasError('required')">Mot de passe complet est requis !</div>
+                <div [hidden]="!password.hasError('pattern')">Mot de passe complet doit contenir au moin une lettre majuscule, une lettres miniscule, un nombre et.</div>
+              </div>
+        <label class="label" for="input-password">Mot de passe: </label>
+      </span>
+    </div>
+
+    <div class="form-control-group">
+      <span class="p-float-label">   
+        <!--at least one uppercase letter, one lowercase letter, one number and one special character:--> 
+        <input nbInput
+              class="form-control"
+              [(ngModel)]="form.confirmPassword"
+              #rePass="ngModel"
+              type="password"
+              id="input-re-password"
+              name="rePass"
+              fullWidth
+              fieldSize="large"
+              required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$"
+              maxlength="100" 
+              minlength="7"
+              [status]="rePass.dirty ? (rePass.invalid || password.value != rePass.value  ? 'danger' : 'success') : 'basic'"
+              pInputText>
+              <div style="font-size: 12px;" [hidden]="rePass.valid || rePass.pristine" class="alert alert-danger p-2">
+                <div [hidden]="!rePass.hasError('minlength')">La confirmation du mot de passe complet doit contenir de 7 caractères.</div>
+                <div [hidden]="!rePass.hasError('maxlength')">La confirmation du mot de passe complet doit contenir à 100 caractères.</div>
+                <div [hidden]="!rePass.hasError('required')">La confirmation du mot de passe complet est requise !</div>
+                <div [hidden]="!rePass.hasError('pattern')">La confirmation du mot de passe complet doit contenir que des lettres.</div>
+                <div [hidden]="!rePass.hasError('status')" *ngIf="password.value != rePass.value">La confirmation du mot de passe n est pas le meme de précédent.</div>
+              </div>
+        <label class="label" for="input-re-password">Répéter le mot de passe:</label>
+      </span>
+    </div>
+  <!--
+    <div class="form-control-group accept-group" *ngIf="getConfigValue('forms.register.terms')">
+      <nb-checkbox name="terms" [(ngModel)]="form.terms" [required]="getConfigValue('forms.register.terms')">
+        Accepter <a href="#" target="_blank"><strong>Termes et Conditions</strong></a>
+      </nb-checkbox>
+    </div>
+  -->
+    <button nbButton
+            fullWidth
+            [status]="primary"
+            [size]="large"
+            class="appearance-filled full-width size-large status-primary shape-rectangle btn-disabled nb-transition"
+            [disabled]="f.submitted || !f.form.valid"
+            [class.btn-pulse]="submitted">
+            S'inscrire
+    </button>
+  </form>
+
+  <section class="another-action" aria-label="Sign in">
+    Vous avez déjà un compte? <a class="text-link" routerLink="../login">Connexion</a>
+  </section>
+</ng-template>
+
+
+
+<!-- 
+<div *ngIf="isSignedUp; else signupForm">
+  Your registration is successful. Please login!
+</div>
+
+<ng-template #signupForm>
+  <div class="row col-sm-6" style="max-width:350px;">
+    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+      <div class="form-group">
+        <label for="name">Your name</label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="form.name" #name="ngModel" required />
+        <div *ngIf="f.submitted && name.invalid">
+          <div *ngIf="name.errors.required">Name is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel"
+          required />
+        <div *ngIf="f.submitted && username.invalid">
+          <div *ngIf="username.errors.required">Username is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel" required email />
+        <div *ngIf="f.submitted && email.invalid">
+          <div *ngIf="email.errors.required">Email is required</div>
+          <div *ngIf="email.errors.email">Email must be a valid email address</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel"
+          required minlength="6" />
+        <div *ngIf="f.submitted && password.invalid">
+          <div *ngIf="password.errors.required">Password is required</div>
+          <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary">Register</button>
+        <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-warning">
+          Signup failed!<br/>{{errorMessage}}
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+-->

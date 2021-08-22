@@ -1,0 +1,157 @@
+<div class="accordions-container row offset-sm-2 col-sm-9">
+      <form [formGroup]="livreurForm" (ngSubmit) = "onSubmit()">
+        <nb-card>
+          <nb-card-header>
+            <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des livreurs ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../livreur-list']"/>
+            <p></p> Ajouter Livreur<p>Date de création:<input type="text" nbInput class="form-control" formControlName="date" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" disabled/></p></nb-card-header>
+          <nb-card-body>
+            <div class="accordions-container row offset-sm-2 col-sm-9">
+              
+              <div class="form-row">
+                  <div class="form-group col">
+                    <b>NOM</b>
+                    <input type="text" nbInput fullWidth placeholder="NOM" class="form-control" formControlName="nom" [ngClass]="{ 'is-invalid': submitted && f.nom.errors }" />
+                    <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
+                      <div *ngIf="f.nom.errors.required">Nom est obligatoire.</div>
+                      <div *ngIf="f.nom.errors.minlength">Nom doit étre au moin 6 lettres longue.</div>
+                      <div *ngIf="f.nom.errors.maxlength">Nom ne doit pas dépassé à 50 lettres longue.</div>
+                      <div *ngIf="f.nom.errors.pattern">Nom ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <b>NUM_REC</b>
+                    <input type="number" min="0" nbInput fullWidth placeholder="NUM_REC" class="form-control" formControlName="numrec" [ngClass]="{ 'is-invalid': submitted && f.numrec.errors }" />
+                    <div *ngIf="submitted && f.numrec.errors" class="invalid-feedback">
+                      <div *ngIf="f.numrec.errors.required">NUM_REC est obligatoire.</div> 
+                      <div *ngIf="f.numrec.errors.pattern">NUM_REC doit étre un nombre positive.</div> 
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <b>CENTRE</b>
+                    <input type="text" nbInput fullWidth placeholder="CENTRE" class="form-control" formControlName="centre" [ngClass]="{ 'is-invalid': submitted && f.centre.errors }" />
+                    <div *ngIf="submitted && f.centre.errors" class="invalid-feedback">
+                      <div *ngIf="f.centre.errors.required">la centre est obligatoire.</div> 
+                      <div *ngIf="f.centre.errors.minlength">Nom doit étre au moin 5 lettres longue.</div>
+                      <div *ngIf="f.centre.errors.maxlength">Nom ne doit pas dépassé à 50 lettres longue.</div>
+                      <div *ngIf="f.centre.errors.pattern">Nom ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>             
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <b>OBJECTIF</b>
+                    <input type="number" step="50" nbInput fullWidth placeholder="OBJECTIF" class="form-control" formControlName="objectif" [ngClass]="{ 'is-invalid': submitted && f.objectif.errors }" />
+                    <div *ngIf="submitted && f.objectif.errors" class="invalid-feedback">
+                      <div *ngIf="f.objectif.errors.required">OBJECTIF est obligatoire.</div> 
+                      <div *ngIf="f.objectif.errors.pattern">OBJECTIF doit étre un nombre positive.</div> 
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <b>DAT_RECLAM</b>
+                    <input nbInput fullWidth [nbDatepicker]="dateTimePicker2" placeholder="DAT_RECLAM" class="form-control" formControlName="datreclam" [ngClass]="{ 'is-invalid': submitted && f.datreclam.errors }" />
+                    <nb-datepicker #dateTimePicker2></nb-datepicker>
+                    <div *ngIf="submitted && f.datreclam.errors" class="invalid-feedback">
+                      <div *ngIf="f.datreclam.errors.required">DAT_RECLAM is est obligatoire.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <b>DAT_REPON</b>
+                    <input nbInput fullWidth [nbDatepicker]="dateTimePicker3" placeholder="DAT_REPON" class="form-control" formControlName="datrepon" [ngClass]="{ 'is-invalid': submitted && f.datrepon.errors }" />
+                    <nb-datepicker #dateTimePicker3></nb-datepicker>
+                    <div *ngIf="submitted && f.datrepon.errors" class="invalid-feedback">
+                      <div *ngIf="f.datrepon.errors.required">DAT_REPON est obligatoire.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="OBS_RECLAM" class="label">OBS_RECLAM</label>
+                    <input type="text" nbInput fullWidth placeholder="OBS_RECLAM" class="form-control" formControlName="obsreclam" [ngClass]="{ 'is-invalid': submitted && f.obsreclam.errors }" />
+                    <div *ngIf="submitted && f.obsreclam.errors" class="invalid-feedback">
+                      <div *ngIf="f.obsreclam.errors.required">OBS_RECLAM est obligatoire.</div>
+                      <div *ngIf="f.obsreclam.errors.minlength">OBS_RECLAM doit étre au moin 5 lettres longue.</div>
+                      <div *ngIf="f.obsreclam.errors.maxlength">OBS_RECLAM ne doit pas dépassé à 200 lettres longue.</div>
+                      <div *ngIf="f.obsreclam.errors.pattern">OBS_RECLAM ne doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>    
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="OBSERV" class="label">OBSERV</label>
+                    <input type="text" nbInput fullWidth placeholder="OBSERV" class="form-control" formControlName="observ" [ngClass]="{ 'is-invalid': submitted && f.observ.errors }" />
+                    <div *ngIf="submitted && f.observ.errors" class="invalid-feedback">
+                      <div *ngIf="f.observ.errors.required">OBS_RECLAM est obligatoire.</div>
+                      <div *ngIf="f.observ.errors.minlength">OBS_RECLAM doit étre au moin 5 lettres longue.</div>
+                      <div *ngIf="f.observ.errors.maxlength">OBS_RECLAM ne doit pas dépassé à 100 lettres longue.</div>
+                      <div *ngIf="f.observ.errors.pattern">OBS_RECLAM ne doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="QUT_ART" class="label">QUT_ART</label>
+                    <input type="number" step="50" min="0" nbInput fullWidth placeholder="QUT_ART" class="form-control" formControlName="qutart" [ngClass]="{ 'is-invalid': submitted && f.qutart.errors }" />
+                    <div *ngIf="submitted && f.qutart.errors" class="invalid-feedback">
+                      <div *ngIf="f.qutart.errors.required">QUT_ART est obligatoire.</div> 
+                      <div *ngIf="f.qutart.errors.pattern">QUT_ART doit étre un nombre positive.</div>            
+                    </div>
+                  </div>
+                </div>
+
+                  <div class="form-row">
+                    <div class="form-group col">
+                      <label for="RECLAM" class="label">RECLAM</label>
+                      <input type="number" step="50" min="0" nbInput fullWidth placeholder="RECLAM" class="form-control" formControlName="reclam" [ngClass]="{ 'is-invalid': submitted && f.reclam.errors }" />
+                      <div *ngIf="submitted && f.reclam.errors" class="invalid-feedback">
+                        <div *ngIf="f.reclam.errors.required">RECLAM est obligatoire.</div> 
+                        <div *ngIf="f.reclam.errors.pattern">RECLAM doit étre un nombre positive.</div>            
+                      </div>
+                    </div>
+                    <div class="form-group col">
+                      <label for="TYP_MVT" class="label">TYP_MVT</label>
+                      <input type="text" nbInput fullWidth placeholder="TYP_MVT" class="form-control" formControlName="typmvt" [ngClass]="{ 'is-invalid': submitted && f.typmvt.errors }" />
+                      <div *ngIf="submitted && f.typmvt.errors" class="invalid-feedback">
+                        <div *ngIf="f.typmvt.errors.required">TYP_MVT est obligatoire.</div>
+                        <div *ngIf="f.typmvt.errors.maxlength">TYP_MVT ne doit pas dépassé à 4 lettres longue.</div>
+                        <div *ngIf="f.typmvt.errors.pattern">TYP_MVT ne doit contenir que des lettres et des chiffre.</div>            
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col">
+                      <label for="TYP_MVT" class="label">TYP_MVT</label>
+                      <input type="text" nbInput class="form-control" formControlName="nature" [ngClass]="{ 'is-invalid': submitted && f.nature.errors }" disabled/>
+                    </div>
+                    <div class="form-group col">
+                      <label for="prime" class="label">Prime</label>
+                        <p-dropdown [style]="{'minWidth':'100%'}" [options]="PrimeList" [(ngModel)]="selectedPrime" optionLabel="raison" [filter]="true" filterBy="raison" [showClear]="true" placeholder="Choisir Prime" [ngModelOptions]="{standalone: true}">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value"  *ngIf="selectedPrime">
+                                  <div>{{selectedPrime.raison}}</div><span>{{selectedPrime.categorie}}</span>
+                              </div>
+                          </ng-template>
+                          <ng-template let-prime pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{prime.raison}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown> 
+                    </div>
+                  </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+        <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+          Ajouter livreur</button>
+          <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+          Annuler</button>
+      </form>
+</div>
+

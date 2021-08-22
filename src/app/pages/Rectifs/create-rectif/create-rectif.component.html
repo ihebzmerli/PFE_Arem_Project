@@ -1,0 +1,30 @@
+<div class="row">
+  <form (ngSubmit) = "onSubmit()">
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>Ajouter Rectif</nb-card-header>
+        <nb-card-body>
+          <input type="text" nbInput fullWidth placeholder="DATE" [(ngModel)]="rectif.date" id="DATE" name="DATE">
+          <input type="text" nbInput fullWidth placeholder="NUM_DOC" [(ngModel)]="rectif.numDoc" id="NUM_DOC" name="NUM_DOC">
+           <input type="text" nbInput fullWidth placeholder="QUT_ART" [(ngModel)]="rectif.qutArt" id="QUT_ART" name="QUT_ART">
+          <input type="text" nbInput fullWidth placeholder="PRIX_ACH" [(ngModel)]="rectif.prixAch" id="PRIX_ACH" name="PRIX_ACH">
+          <textarea rows="5" nbInput fullWidth shape="round"  placeholder="OBSERV" [(ngModel)]="rectif.observ" id="OBSERV" name="OBSERV"></textarea>
+          <input type="text" nbInput fullWidth placeholder="TYP_MVT" [(ngModel)]="rectif.typMvt" id="TYP_MVT" name="TYP_MVT">
+          <input type="text" nbInput fullWidth placeholder="NUM_REC" [(ngModel)]="rectif.numRec" id="NUM_REC" name="NUM_REC">
+
+          <input type="text" nbInput fullWidth placeholder="CENTRE" [(ngModel)]="rectif.centre" id="CENTRE" name="CENTRE">
+
+          <input type="text" nbInput fullWidth placeholder="DAT_RECLAM" [(ngModel)]="rectif.datReclam" id="DAT_RECLAM" name="DAT_RECLAM">
+          <input type="text" nbInput fullWidth placeholder="RECLAM" [(ngModel)]="rectif.reclam" id="RECLAM" name="RECLAM">
+          <input type="text" nbInput fullWidth placeholder="CLOTURE" [(ngModel)]="rectif.cloture" id="CLOTURE" name="CLOTURE">
+          <input type="text" nbInput fullWidth placeholder="OBS_RECLAM" [(ngModel)]="rectif.obsReclam" id="OBS_RECLAM" name="OBS_RECLAM">
+          <input type="text" nbInput fullWidth placeholder="DAT_REPON" [(ngModel)]="rectif.datRepon" id="DAT_REPON" name="DAT_REPON">  
+          <input type="text" nbInput fullWidth placeholder="DAT_CLOTUR" [(ngModel)]="rectif.datClotur" id="DAT_CLOTUR" name="DAT_CLOTUR">
+        </nb-card-body>
+      </nb-card>
+      <button (click)="makeToast()" class="btn btn-md btn-outline-primary" type="onSubmit">
+        <i class="fa fa-user"></i>Submit</button>  
+    </div>
+  </form>
+</div>
+

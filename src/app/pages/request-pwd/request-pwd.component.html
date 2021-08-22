@@ -1,0 +1,69 @@
+<h1 id="title" class="title">Forgot Password</h1>
+<div *ngIf="isPasswordRequested">
+  <p>Consulter votre addresse mail pour avoir votre mot de passe.<a class="text-link" routerLink="../login">Allez à Log In</a></p>
+</div>
+<div *ngIf="!isPasswordRequested && !isPasswordAsking && isPasswordBlocked3">
+  <p>Pour des raisons de protection des service et de sécurité, vous étes bloqués, vous pouvez réessayer après 10 minutes!<a class="text-link" routerLink="../login">Allez à Log In</a></p>
+</div>
+
+<div *ngIf="!isPasswordRequested && !isPasswordAsking && isPasswordBlocked2">
+  <p>Votre utilisateur est erronée dans le serveur ,veuillez vérifier vos donnée avec notre centre informatique de AREM GROUP ou de créer un autre compte!<a class="text-link" (click)="reffrechMe()">réessayer</a></p>
+</div>
+
+<div *ngIf="!isPasswordRequested && !isPasswordAsking && isPasswordBlocked4">
+  <p>Pour des raisons de protection des service et de sécurité, vous étes bloqués, pour prendre l'authorisation vous pouvez demande au centre informatique de centre AREM GROUP! ExampleMail@gamil.com!<a class="text-link" (click)="reffrechMe()">réessayer</a></p>
+</div>
+<div *ngIf="!isPasswordRequested && !isPasswordAsking && isPasswordBlocked5">
+  <p>E-mail erroné!<a class="text-link" (click)="reffrechMe()">réessayer</a></p>
+</div>
+
+<div *ngIf="isPasswordAsking">
+  <p class="sub-title">Enter your email address and we’ll send a link to reset your password</p>
+
+  <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate aria-labelledby="title">
+
+    <div class="form-control-group">
+      <span class="p-float-label">
+        <input nbInput
+              type="email" 
+              class="form-control"
+              [(ngModel)]="form.email"
+              #email="ngModel"
+              id="input-email"
+              name="email"
+              pattern=".+@.+\..+"
+              autofocus
+              fullWidth
+              fieldSize="large"
+              required
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$"
+              maxlength="50" 
+              minlength="7"
+              [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : 'basic'"
+              pInputText>
+              <div style="font-size: 12px;" [hidden]="email.valid || email.pristine" class="alert alert-danger p-2">
+                <div [hidden]="!email.hasError('minlength')">L'e-mail complet doit contenir de 7 caractères.</div>
+                <div [hidden]="!email.hasError('maxlength')">L'e-mail complet doit contenir à 50 caractères.</div>
+                <div [hidden]="!email.hasError('required')">L'e-mail complet est requis !</div>
+                <div [hidden]="!email.hasError('pattern')">L'e-mail complet doit étre un email.</div>
+              </div>
+        <label class="label" for="input-email">Email address:</label>
+      </span>
+    </div>
+
+    <button nbButton
+            fullWidth
+            [status]="primary"
+            [size]="large"
+            class="appearance-filled full-width size-large status-primary shape-rectangle btn-disabled nb-transition"
+            [disabled]="f.submitted || !f.form.valid"
+            [class.btn-pulse]="submitted">
+      demande mot de passe
+    </button>
+  </form>
+
+  <section class="sign-in-or-up" aria-label="Sign in or sign up">
+    <p><a class="text-link" routerLink="../login">Allez à Log In</a></p>
+    <p><a routerLink="../register" class="text-link">S'inscrire</a></p>
+  </section>
+</div>

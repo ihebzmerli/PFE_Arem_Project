@@ -1,0 +1,227 @@
+<!--table art Liv-->
+
+<nb-card>
+    <nb-card-body>
+          <div>
+            <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des expedition?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../../expide-list']"/>
+            <h4>Details de Expedition</h4>
+            <nb-card-header>
+                  <div><b style="text-decoration: underline overline rgb(15, 38, 104);">Numéro d'Expedition</b> : {{ expide.id }}</div>
+  
+                  <div><b style="text-decoration: underline overline rgb(15, 38, 104);">Date d'Expedition</b> : {{ expide.datExpedition | date: 'MMM d, y, h:mm:ss a'}}</div>
+              </nb-card-header>
+          </div>
+          <p>table des livreur et bon livraison appartient a la Expedition :</p>
+          <p-table #dt1 [value]="LivreurBonlivs" dataKey="id_livreur_expide"
+              [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" styleClass="p-datatable-customers p-datatable-gridlines"
+              [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [globalFilterFields]="['bonLiv.livreur.nom','bonLiv.numBon','bonLiv.totTtc','bonLiv.centre','bonLiv.numCom.numCom','bonLiv.numCom.typCom','bonLiv.numCom.datCom','bonLiv.trans_action']">
+              <ng-template pTemplate="caption">
+                  <div class="p-d-flex">
+                      <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                      <span class="p-input-icon-left p-ml-auto">
+                          <i class="pi pi-search"></i>
+                          <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                      </span>
+                  </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Livreur
+                          <div>
+                            <p-columnFilter type="text" field="bonLiv.livreur.nom" display="menu"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Matricule Vehicule
+                          <div>
+                            <p-columnFilter type="text" field="matricule" display="menu"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Bon Livraison 
+                            <div>
+                              <p-columnFilter type="text" field="bonLiv.numBon" display="menu"></p-columnFilter>
+                            </div>
+                        </div>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Prix Ttc
+                          <div>
+                            <p-columnFilter type="numeric" field="bonLiv.totTtc" display="menu" currency="TND"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th>  
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Centre
+                          <div>
+                            <p-columnFilter type="text" field="bonLiv.centre" display="menu"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th> 
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Command
+                          <div>
+                            <p-columnFilter type="numeric" field="bonLiv.numCom.numCom" display="menu"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            type Command
+                          <div>
+                            <p-columnFilter type="text" field="bonLiv.numCom.typCom" display="menu"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th>  
+                      
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            date Command
+                          <div>
+                            <p-columnFilter type="date" field="bonLiv.numCom.datCom" display="menu"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th> 
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            trans_action
+                          <div>
+                            <p-columnFilter field="bonLiv.trans_action" matchMode="equals" display="menu" class="p-ml-auto">
+                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                  <p-dropdown [ngModel]="value" [options]="statusessTrans_action" (onChange)="filter($event.value)" placeholder="Any">
+                                      <ng-template let-option pTemplate="item">
+                                          <span [class]="option.value">
+                                            <span *ngIf="option.label=='reçu'" class="p-mb-3 p-text-italic" style="color: rgb(120, 13, 134);">le Bon Livraison est reçu</span>
+                                            <span *ngIf="option.label=='envoyer'" class="p-mb-3 p-text-italic" style="color:rgb(6, 105, 122);">le Bon Livraison est envoyer</span>
+                                            <span *ngIf="option.label=='empty'" class="p-mb-3 p-text-italic" style="color: rgb(160, 168, 160);">L'etat de bon livraison n'est pas definie</span>
+                                          </span>
+                                      </ng-template>
+                                  </p-dropdown>
+                              </ng-template>
+                            </p-columnFilter>
+
+                          </div>
+                        </div>
+                      </th> 
+                  </tr>
+              </ng-template>
+  
+  
+              <ng-template pTemplate="body" let-Livreur_Expide>
+                    <tr>
+                      <td>
+                        <img [alt]="Livreur_Expide.bonLiv.livreur.nom" src="assets/images/Livreur/{{Livreur_Expide.bonLiv.livreur.id_livreur}}.png" width="40" style="vertical-align: middle" />
+                        <span class="p-text-bold p-ml-2">
+                          <label (click)="showModalDialog()">{{ Livreur_Expide.bonLiv.livreur.nom }}</label>
+                        </span>
+                      </td>
+                      <td>
+                        <label *ngIf="Livreur_Expide.matricule!=null" (click)="showPositionDialogM_V('right')">{{ Livreur_Expide.matricule }}</label>
+                        <span *ngIf="Livreur_Expide.matricule==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogM_V('right')"><b>Pas mentionné</b></label></p></span>
+                        <p-dialog header="Matricule Vehicule" [(visible)]="displayPositionM_V" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                            [draggable]="false" [resizable]="false">
+                            <p>Bon de Livraison lié à la matricule de livraison</p>
+                                <ng-template pTemplate="footer">
+                                    <p-button icon="pi pi-check" (click)="showPositionDialogM_V=false" label="Annuler" styleClass="p-button-text"></p-button>
+                                </ng-template>
+                        </p-dialog>
+                      </td>
+                      <td>
+                          <label *ngIf="Livreur_Expide.bonLiv!=null" (click)="showPositionDialogBonLivraison('right')">{{ Livreur_Expide.bonLiv.numBon }}</label>
+                          <span *ngIf="Livreur_Expide.bonLiv==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogBonLivraison('right')"><b>Pas mentionné</b></label></p></span>
+                          <p-dialog header="Definition Bon Livraison" [(visible)]="displayPositionBonLivraison" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                              [draggable]="false" [resizable]="false">
+                              <p>Bon de Livraison lié à la expedition</p>
+                                  <ng-template pTemplate="footer">
+                                      <p-button icon="pi pi-check" (click)="displayPositionBonLivraison=false" label="Annuler" styleClass="p-button-text"></p-button>
+                                  </ng-template>
+                          </p-dialog>
+                      </td>
+                      <td>
+                        <label *ngIf="Livreur_Expide.bonLiv.totTtc!=null" (click)="showPositionDialogPrixTtc('right')">{{ Livreur_Expide.bonLiv.totTtc | currency:'TND':'symbol'}}</label>
+                        <span *ngIf="Livreur_Expide.bonLiv.totTtc==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogPrixTtc('right')"><b>Pas mentionné</b></label></p></span>
+                        <p-dialog header="Definition Prix Ttc" [(visible)]="displayPositionPrixTtc" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>Prix Ttc de bon lié à la expedition.</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionPrixTtc=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </td>
+                      <td>
+                        <label *ngIf="Livreur_Expide.bonLiv.centre!=null" (click)="showPositionDialogCentre('bottom')">{{ Livreur_Expide.bonLiv.centre}}</label>
+                        <span *ngIf="Livreur_Expide.bonLiv.centre==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogCentre('bottom')"><b>Pas mentionné</b></label></p></span>
+                        <p-dialog header="Definition Centre" [(visible)]="displayPositionCentre" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>Centre ou l'expedition a été effectué.</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionCentre=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </td>
+                      <td>
+                        <label *ngIf="Livreur_Expide.bonLiv.numCom!=null" (click)="showPositionDialogCommand('bottom')">{{ Livreur_Expide.bonLiv.numCom.numCom }}</label>
+                        <span *ngIf="Livreur_Expide.bonLiv.numCom==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogCommand('bottom')"><b>Pas mentionné</b></label></p></span>
+                        <p-dialog header="Définition Command" [(visible)]="displayPositionCommand" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>Command associer au Bon.</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionCommand=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </td>
+                      <td>
+                        <label *ngIf="Livreur_Expide.bonLiv.numCom!=null" (click)="showPositionDialogTypeCommand('bottom')">{{ Livreur_Expide.bonLiv.numCom.typCom }}</label>
+                        <span *ngIf="Livreur_Expide.bonLiv.numCom==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogTypeCommand('bottom')"><b>Pas mentionné</b></label></p></span>
+                        <p-dialog header="Définition Type Command" [(visible)]="displayPositionTypeCommand" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>le type de Command associer au Bon .</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionTypeCommand=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </td>
+                      <td>
+                        <label *ngIf="Livreur_Expide.bonLiv.numCom!=null" (click)="showPositionDialogDateCommand('left')">{{ Livreur_Expide.bonLiv.numCom.datCom | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                        <span *ngIf="Livreur_Expide.bonLiv.numCom==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogDateCommand('left')"><b>Pas mentionné</b></label></p></span>
+                        <p-dialog header="Définition Date Command" [(visible)]="displayPositionDateCommand" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>date de Command.</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionDateCommand=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </td>
+                      <td>
+                        <label *ngIf="Livreur_Expide.bonLiv.trans_action!=null" (click)="showPositionDialogTrans_action('left')">{{ Livreur_Expide.bonLiv.trans_action }}</label>
+                        <span *ngIf="Livreur_Expide.bonLiv.trans_action==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogTrans_action('left')"><b>Pas mentionné</b></label></p></span>
+                        <p-dialog header="Définition Trans_action" [(visible)]="displayPositionTrans_action" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>trans_action est le type de bon si il est reçu ou envoyer.</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionTrans_action=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </td>
+                    </tr>
+              </ng-template>
+            
+              <ng-template pTemplate="emptymessage">
+                  <tr>
+                      <td colspan="8">Pas de detail d'expedetion trouver.</td>
+                  </tr>
+              </ng-template>
+          </p-table>
+        </nb-card-body>
+  </nb-card>
+  

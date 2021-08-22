@@ -1,0 +1,19 @@
+<div class="row">
+  <form (ngSubmit) = "onSubmit()">
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>Ajouter Bon De Preparation</nb-card-header>
+        <nb-card-body>
+          <label for="ZONE" class="label">zone</label> 
+          <input type="text" nbInput fullWidth placeholder="zone" [(ngModel)]="detprep.zone" id="ZONE" name="ZONE">
+
+          <label for="PREPARA" class="label">prepara</label> 
+          <input type="text" nbInput fullWidth placeholder="PREPARA" [(ngModel)]="detprep.prepara" id="PREPARA" name="PREPARA">
+        </nb-card-body>
+      </nb-card>
+      <button (click)="makeToast()" class="btn btn-md btn-outline-primary" type="onSubmit">
+        <i class="fa fa-user"></i>Submit</button>  
+    </div>
+  </form>
+</div>
+

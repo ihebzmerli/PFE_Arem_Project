@@ -1,0 +1,432 @@
+
+
+<!--table art Liv-->
+
+<nb-card>
+    <nb-card-body>
+        <div>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des affaires ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../../affaire-list']"/>
+          <h4>Achats Associer</h4>
+          <nb-card-header>
+                <div><b style="text-decoration: underline overline rgb(15, 38, 104);">Numéro d'affaire</b> : {{ affaires.numAff }}</div>
+  
+                <div><b style="text-decoration: underline overline rgb(15, 38, 104);">Date d'affaire</b> : {{ affaires.datAff | date: 'MMM d, y H:mm:ss' : '+0000'}}</div>
+            </nb-card-header>
+           
+        </div>
+          <h2>L'Achat d'affaire :</h2>
+          <b *ngIf="affaires.achats==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(121, 126, 121);" ><label> : Aucune Achat n'est associer au affaire!</label></span></b>  
+          <ul *ngIf="affaires.achats!==null">
+            <li>
+              <b class="p-mb-3 p-text-light">Numéro Doc Achat : </b>
+              <label *ngIf="affaires.achats!==null" (click)="showPositionDialogNumDocAchat('right')">{{ affaires.achats.numDocAchat }}</label>
+              <p-dialog header="Définition numDocAchat" [(visible)]="displayPositionNumDocAchat" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>Le champ numéro Document: est le numéro de Achat associer à cette affaire.</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionNumDocAchat=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            
+            <li>
+              <b class="p-mb-3 p-text-light">type Document Achat: </b>   
+              <b *ngIf="affaires.achats==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogTypDoc('right')">Aucune Categorie</label></span></b>
+              <b *ngIf="affaires.achats.typDoc=='BON_LIV' || affaires.achats.typDoc=='bon_liv'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(41, 221, 24);" ><label (click)="showPositionDialogTypDoc('right')">BON LIV</label></span></b>
+              <b *ngIf="affaires.achats.typDoc=='AVOIR_BL' || affaires.achats.typDoc=='avoir_bl'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(177, 236, 15);" ><label (click)="showPositionDialogTypDoc('right')">AVOIR BL</label></span></b>
+              <p-dialog header="Définition typDoc" [(visible)]="displayPositionTypDoc" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>Le champ type Document explique si l'Achat est un:</p>
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <p><b class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(41, 221, 24);" ><label>BON LIV</label></span></b></p>
+                    <p>Affaire à envoyer.</p>
+                  </div>
+                  <div class="col">
+                    <p><b class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(177, 236, 15);" ><label>AVOIR BL</label></span></b></p>
+                    <p>Affaire à avoir.</p>
+                  </div>
+                </div>
+              </div>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionTypDoc=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+
+            <li>
+              <b class="p-mb-3 p-text-light">Date Achat: </b>
+              <label (click)="showPositionDialogDate('right')">{{ affaires.achats.date | date:'short'}}</label>
+              <p-dialog header="Définition Date" [(visible)]="displayPositionDate" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>La date d'Achat de cette Affaire.</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionDate=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+              <b class="p-mb-3 p-text-light">Montant hors T.V.A : </b>
+              <b *ngIf="affaires.achats.montHt==0" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogMontHt('right')">Aucune MontHt</label></span></b>
+              <label (click)="showPositionDialogMontHt('right')">{{ affaires.achats.montHt | currency:'DT ':'symbol'}}</label>
+              <p-dialog header="Définition montHt" [(visible)]="displayPositionMontHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>La valeur hors taxes d'un Article, souvent abrégée HT ou H.T., est le prix de vente sans les taxes obligatoires, dont principalement la taxe sur la valeur ajoutée (T.V.A.).</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionMontHt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+              <b class="p-mb-3 p-text-light">pret : </b>
+              <img *ngIf="affaires.achats.pret=='payer'" src="assets/images/toulsImages/Valider.png" height="50" width="50" (click)="showPositionDialogPret('right')" />
+              <img *ngIf="affaires.achats.pret=='non_payer'" src="assets/images/toulsImages/not Valider.png" height="50" width="50" (click)="showPositionDialogPret('right')" />
+              <p-dialog header="Définition Pret" [(visible)]="displayPositionPret" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>Le champ pret explique si l'Affaire est payé ou non dans l'étape d'Achat.</p>
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <p><img src="assets/images/toulsImages/Valider.png" height="50" width="50" /></p>
+                    <p>Affaire payé dans l'Achat</p>
+                  </div>
+                  <div class="col">
+                    <p><img src="assets/images/toulsImages/not Valider.png" height="50" width="50" /></p>
+                    <p>Affaire pas encore payé dans l'Achat</p>
+                  </div>
+                </div>
+              </div>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionPret=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+              <b class="p-mb-3 p-text-light">validation : </b>
+              <b *ngIf="affaires.achats.validation==''" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogValidation('right')">Aucune Validation</label></span></b>
+              <label *ngIf="affaires.achats.validation=='valider'" (click)="showPositionDialogValidation('right')" style="color: darkgreen;">Achats validée</label>
+              <label *ngIf="affaires.achats.validation=='non_valider'" (click)="showPositionDialogValidation('right')" style="color: darkred;">Achats non validée</label>
+              <p-dialog header="Définition Validation" [(visible)]="displayPositionValidation" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>c'est le signale pour l'etape de préparation.</p>
+              <p>-Si validation est : <b style="color: darkgreen;">Achats validée</b>,Alors le transfert d'argent a été bien effectués on peut passer donc à la phase de Préparation.</p>
+              <p>-Si validation est : <b style="color: darkred;">Achats non validée</b>,Alors le transfert d'argent n'a pas été bien effectués on peut pas passer à la phase de Préparation.</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionValidation=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+
+              <div *ngIf="affaires.achats.user!==null">         
+                <div *ngIf="affaires.achats.user.lastname!==null && affaires.achats.user.firstname!==null">
+                  <b class="p-mb-3 p-text-light">Responsable d'Achats : </b>
+                    <img (click)="showModalDialogUser('right')" src="{{this.utilisateurService.host+'/api/Imgusers/'+affaires.achats.user.id}}" width="50" style="vertical-align: middle" />
+
+                  <p-dialog header="details Responsable" [(visible)]="displayModalUser" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p style="text-align: center"  class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+affaires.achats.user.id}}" style="width:150px;height: 180px;" class="article-image" /></p> 
+                  
+                    <div style="text-align: center" >
+                    <li>                        
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Nom et Prénom Responsable :</b> {{affaires.achats.user.lastname}}&nbsp;{{affaires.achats.user.firstname}}</span>                      
+                    </li> 
+                    <li>
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Email Responsable :</b> {{affaires.achats.user.email}}</span>
+                    </li>
+                    <li>  
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Telephone Responsable :</b> {{affaires.achats.user.telephone}}</span>
+                    </li>
+                    <li>
+                      <b class="p-mb-3 p-text-light">Role : </b>
+                      <b *ngIf="affaires.achats.user.roles[0]==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogUserRole('right')">Aucune Role</label></span></b>
+
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_CLIENT'">Client</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_USER'">Utilisateur</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                      <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="affaires.achats.user.roles!==null && affaires.achats.user.roles[0].name=='ROLE_LIVREUR'">Vendeur</span>
+
+                      <p-dialog header="Définition Role" [(visible)]="displayPositionUserRole" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>CodUser:&nbsp;<b *ngIf="affaires.achats!==null && affaires.achats.user.roles[0].name!=='ROLE_ADMIN'">{{affaires.achats.user.codUser}}</b><b *ngIf="affaires.achats==null">Anucun code User</b><b *ngIf="affaires.achats.user.roles[0].name=='ROLE_ADMIN'">les informations n est pas visible que pour les administrateurs</b>.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionUserRole=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </li>
+                  </div>
+                      <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayModalUser=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </div>
+                <span *ngIf="affaires.achats.user==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>
+              </div> 
+
+            </li>
+          </ul>
+
+          <!--
+          <div>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        codArt
+                      </div>
+                    </th>                  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        marque
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        qutDem
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        desArt
+                      </div>
+                    </th>  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        qutProf
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        prixProf
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        prixAch
+                      </div>
+                    </th>  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        qutConf
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        raison
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        nouvPrix
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        prixMp
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        prixTrsf
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        datTransf
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        stkIni
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        qutTrsf
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        codTrsf
+                      </div>
+                    </th>                      
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <label (click)="showPositionDialogCodArt('right')">{{ affaires.suitaffs.codArt }}</label>
+                    <p-dialog header="Definition CodArt" [(visible)]="displayPositionCodArt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p>CodArt</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionCodArt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogMarque('right')">{{ affaires.suitaffs.marque }}</label>
+                    <p-dialog header="Definition Marque" [(visible)]="displayPositionMarque" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p>.</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionMarque=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogQutDem('bottom')">{{ affaires.suitaffs.qutDem }}</label>
+                    <p-dialog header="Definition QutDem" [(visible)]="displayPositionQutDem" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p>.</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionQutDem=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogDesArt('bottom')">{{ affaires.suitaffs.desArt }}</label>
+                    <p-dialog header="Definition DesArt" [(visible)]="displayPositionDesArt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p>.</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionDesArt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogPrixProf('bottom')">{{ affaires.suitaffs.prixProf }}</label>
+                    <p-dialog header="Définition PrixProf" [(visible)]="displayPositionPrixProf" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p>.</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionPrixProf=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogPrixAch('left')">{{ affaires.suitaffs.prixAch}}</label>
+                    <p-dialog header="Définition PrixAch" [(visible)]="displayPositionPrixAch" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p>.</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionPrixAch=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogQutConf('left')">{{ affaires.suitaffs.qutConf}}</label>
+                    <p-dialog header="Définition QutConf" [(visible)]="displayPositionQutConf" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p>.</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionQutConf=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogRaison('left')" styleClass="p-button-warning">{{ affaires.suitaffs.raison }}</label>
+                    <p-dialog header="Définition Raison" [(visible)]="displayPositionRaison" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p>.</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionRaison=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogNouvPrix('left')">{{ affaires.suitaffs.nouvPrix }}</label>
+                    <p-dialog header="Définition NouvPrix" [(visible)]="displayPositionNouvPrix" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p> .</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionNouvPrix=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogPrixMp('left')">{{ affaires.suitaffs.prixMp }}</label>
+                    <p-dialog header="Définition PrixMp" [(visible)]="displayPositionPrixMp" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p> .</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionPrixMp=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogPrixTrsf('left')">{{ affaires.suitaffs.prixTrsf }}</label>
+                    <p-dialog header="Définition PrixTrsf" [(visible)]="displayPositionPrixTrsf" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p> .</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionPrixTrsf=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogDatTransf('left')">{{ affaires.suitaffs.datTransf }}</label>
+                    <p-dialog header="Définition DatTransf" [(visible)]="displayPositionDatTransf" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p> .</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionDatTransf=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogStkIni('left')">{{ affaires.suitaffs.stkIni }}</label>
+                    <p-dialog header="Définition StkIni" [(visible)]="displayPositionStkIni" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p> .</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionStkIni=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogQutTrsf('left')">{{ affaires.suitaffs.qutTrsf }}</label>
+                    <p-dialog header="Définition QutTrsf" [(visible)]="displayPositionQutTrsf" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p> .</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionQutTrsf=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  <td>
+                    <label (click)="showPositionDialogCodTrsf('left')">{{ affaires.suitaffs.codTrsf }}</label>
+                    <p-dialog header="Définition CodTrsf" [(visible)]="displayPositionCodTrsf" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                    <p> .</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayPositionCodTrsf=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-dialog>
+                  </td>
+                  
+                </tr>
+                </tbody>
+                </table>
+          </div>
+-->
+        </nb-card-body>
+  </nb-card>

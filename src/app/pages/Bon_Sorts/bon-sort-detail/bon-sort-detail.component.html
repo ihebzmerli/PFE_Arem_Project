@@ -1,0 +1,262 @@
+
+
+<!--table art Liv-->
+
+<nb-card>
+  <nb-card-body>
+        <div>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Bon de Sortie?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../../bon-sort-list']"/>
+          <p></p>
+          <h4>Details de Bon Sortie</h4>
+          <nb-card-header>
+                <div><b>Code Bon Sortie : </b>{{ bonsort.numBon }}</div>
+
+                <div><b>Date Bon Sortie : </b>{{ bonsort.datBon | date: 'MMM d, y H:mm:ss' : '+0000'}}</div>
+            </nb-card-header>
+        </div>
+        <p>table  des Articles appartient a la preparation</p>
+        <p-table #dt1 [value]="artsorts" dataKey="id"
+            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['codArt','qutSortie','remise','prixHt','tva','totHt','cumulRet','centre','poitageChariot','chariot_artsort.numChar','chariot_artsort.etat_char']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex">
+                    <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                    <span class="p-input-icon-left p-ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      COD ARTICLE
+                      <div>
+                        <p-columnFilter type="text" field="codArt" display="menu"></p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Qut Sortie 
+                        <div>
+                          <p-columnFilter type="numeric" field="qutSortie" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Remise 
+                        <div>
+                          <p-columnFilter type="numeric" field="remise" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Prix Ht
+                        <div>
+                          <p-columnFilter type="numeric" field="prixHt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Tva
+                        <div>
+                          <p-columnFilter type="numeric" field="tva" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Tot Ht
+                        <div>
+                          <p-columnFilter type="numeric" field="totHt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>  
+                    
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Cumul Ret
+                        <div>
+                          <p-columnFilter type="numeric" field="cumulRet" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Centre
+                        <div>
+                          <p-columnFilter type="text" field="centre" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Chariot Poitage
+                        <div>
+                          <p-columnFilter type="date" field="poitageChariot" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        N~ Chariot
+                        <div>
+                          <p-columnFilter type="numeric" field="chariot_artsort.numChar" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Etat Chariot
+                        <div>
+                          <p-columnFilter type="text" field="chariot_artsort.etat_char" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                </tr>
+            </ng-template>
+
+
+            <ng-template pTemplate="body" let-artsort>
+                  <tr>
+                    <td>
+                      <span *ngIf="artsort.codArt!=null"><label (click)="showModalDialog()">{{ artsort.codArt }}</label></span>
+                      <span *ngIf="artsort.codArt==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showModalDialog()"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p class="p-m-0"><img src="/assets/images/imgArticles/{{artsort.codArt}}/{{artsort.codArt}}.png" [alt]="artsort.codArt" class="article-image" /></p>
+                          <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayModal=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.qutSortie!=null"><label (click)="showPositionDialogQutSortie('right')">{{ artsort.qutSortie }}</label></span>
+                      <span *ngIf="artsort.qutSortie==null || artsort.qutSortie===0"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogQutSortie('right')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Qut Sortie" [(visible)]="displayPositionQutSortie" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                            [draggable]="false" [resizable]="false">
+                            <p>c'est la Quantité sortie dans le bon de sortie</p>
+                                <ng-template pTemplate="footer">
+                                    <p-button icon="pi pi-check" (click)="displayPositionQutSortie=false" label="Annuler" styleClass="p-button-text"></p-button>
+                                </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.remise!=null"><label (click)="showPositionDialogRemise('right')">{{ artsort.remise | currency:'DT ':'symbol'}}</label></span>
+                      <span *ngIf="artsort.remise==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogRemise('right')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Remise" [(visible)]="displayPositionRemise" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>c'est la Remise sur l'article sortie dans le bon de sortie</p>
+                      <p>une remise est la déduction que fait un commerçant sur le prix facturé, en raison, par exemple, de ce que l'acheteur a payé au comptant, en raison encore de qu'il a fait un achat d'une valeur importante, soit encore parce que la marchandise était déclassée.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionRemise=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.prixHt!=null"><label (click)="showPositionDialogPrixHt('right')">{{ artsort.prixHt | currency:'DT ':'symbol'}}</label></span>
+                      <span *ngIf="artsort.prixHt==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogPrixHt('right')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Prix Ht" [(visible)]="displayPositionPrixHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le prix hors taxe (HT) est celui qui est facturé au client sans tenir compte des différentes taxes prélevées par l'État,Le HT se rencontre dans les cas d'auto-liquidation de la TVA ou d'opérations en duty free.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrixHt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.tva!=null"><label (click)="showPositionDialogTva('bottom')">{{ artsort.tva | currency:'DT ':'symbol'}}</label></span>
+                      <span *ngIf="artsort.tva==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogTva('bottom')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Tva" [(visible)]="displayPositionTva" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La TVA est une taxe qui vient s'ajouter au prix de tous les produits qui y sont assujettis, c'est-à-dire la quasi-totalité. ... Il permet ainsi aux entreprises de déduire des sommes à reverser à l'État le montant de la TVA qu'elles ont acquitté sur leurs achats. Au final, seul le consommateur final supporte la TVA.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionTva=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.totHt!=null"><label (click)="showPositionDialogTotHt('left')">{{ artsort.totHt | currency:'DT ':'symbol'}}</label></span>
+                      <span *ngIf="artsort.totHt==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogTotHt('left')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Tot Ht" [(visible)]="displayPositionTotHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>HT signifie Hors Taxe. La mention HT permet d'indiquer qu'un prix ne comprend pas la Taxe sur la Valeur Ajoutée.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionTotHt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.cumulRet!=null"><label (click)="showPositionDialogCumulRet('left')">{{ artsort.cumulRet | currency:'DT ':'symbol'}}</label></span>
+                      <span *ngIf="artsort.cumulRet==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogCumulRet('left')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Cumul Ret" [(visible)]="displayPositionCumulRet" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Produit mis en vente.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionCumulRet=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.centre!=null"><label (click)="showPositionDialogCentre('left')">{{ artsort.centre }}</label></span>
+                      <span *ngIf="artsort.centre==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogCentre('left')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Centre" [(visible)]="displayPositionCentre" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le centre de Sortie de Article .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionCentre=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.poitageChariot!=null"><label (click)="showPositionDialogPoitageChariot('left')">{{ artsort.poitageChariot | date: 'MMM d, y H:mm:ss' : '+0000'}}</label></span>
+                      <span *ngIf="artsort.poitageChariot==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogPoitageChariot('left')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Poitage Chariot" [(visible)]="displayPositionPoitageChariot" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La Date de pointage d'Article aprés la création de son Bon de Sortie .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPoitageChariot=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.chariot!=null"><label (click)="showPositionDialogNumChar('left')">{{ artsort.chariot.numChar }}</label></span>
+                      <span *ngIf="artsort.chariot==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogNumChar('left')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Num Char" [(visible)]="displayPositionNumChar" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La numéro de chariot qui a prix d'Article à sa partie de pointage .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionNumChar=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <span *ngIf="artsort.chariot!=null"><label (click)="showPositionDialogEtatChar('left')" *ngIf="artsort.chariot.etat_char=='en_attente'"  class="p-mb-3 p-text-italic" style="color:rgb(135, 233, 135);">En attente</label>
+                        <label (click)="showPositionDialogEtatChar('left')" *ngIf="artsort.chariot.etat_char=='en_panne'" class="p-mb-3 p-text-italic" style="color:rgb(117, 110, 110);">En panne</label>
+                        <label (click)="showPositionDialogEtatChar('left')" *ngIf="artsort.chariot.etat_char=='occuper'" class="p-mb-3 p-text-italic" style="color: rgb(209, 102, 102);">Occuper</label></span>
+                      <span *ngIf="artsort.chariot==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showPositionDialogEtatChar('left')"><b>Pas mentionné</b></label></p></span>
+                      <p-dialog header="Definition Etat Char" [(visible)]="displayPositionEtatChar" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>L'etat de chariot en ce moment qui a prix d'Article à sa partie de pointage aprés sa creation de Bon sortie .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionEtatChar=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                  </tr>
+            </ng-template>
+          
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7">No bonsorts found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+      </nb-card-body>
+</nb-card>

@@ -1,0 +1,133 @@
+<div class="accordions-container row offset-sm-2 col-sm-9">
+      <form [formGroup]="primeForm" (ngSubmit) = "onSubmit()">
+        <nb-card>
+          <nb-card-header>Ajouter Bon De Prime<p>Date de création:<input type="text" nbInput fullWidth placeholder="DER_MVT" class="form-control" formControlName="derMvt" [ngClass]="{ 'is-invalid': submitted && f.derMvt.errors }" disabled/></p></nb-card-header>
+          <nb-card-body>
+            <div class="accordions-container row offset-sm-2 col-sm-9">
+              
+              <div class="form-row">
+                  <div class="form-group col">
+                    <label for="raison" class="label">Raison</label>
+                    <input type="text" nbInput fullWidth placeholder="Raison" class="form-control" formControlName="raison" [ngClass]="{ 'is-invalid': submitted && f.raison.errors }" />
+                    <div *ngIf="submitted && f.raison.errors" class="invalid-feedback">
+                      <div *ngIf="f.raison.errors.required">Raison est obligatoire.</div>
+                      <div *ngIf="f.raison.errors.minlength">Raison doit étre au moin 5 lettres longue.</div>
+                      <div *ngIf="f.raison.errors.maxlength">Raison ne doit pas dépassé à 30 lettres longue.</div>
+                      <div *ngIf="f.raison.errors.pattern">Raison ne doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>
+                    <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="categorie" class="label">Categorie</label>
+                    <input type="text" nbInput fullWidth placeholder="Categorie" class="form-control" formControlName="categorie" [ngClass]="{ 'is-invalid': submitted && f.categorie.errors }" />
+                    <div *ngIf="submitted && f.categorie.errors" class="invalid-feedback">
+                      <div *ngIf="f.categorie.errors.required">CATEGORIE est obligatoire.</div>
+                      <div *ngIf="f.categorie.errors.maxlength">CATEGORIE ne doit pas dépassé à 4 lettres longue.</div>
+                      <div *ngIf="f.categorie.errors.pattern">CATEGORIE ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="objMin" class="label">ObjMin</label>
+                    <input type="number" step="5" min="0" nbInput fullWidth placeholder="ObjMin" class="form-control" formControlName="objMin" [ngClass]="{ 'is-invalid': submitted && f.objMin.errors }" />
+                    <div *ngIf="submitted && f.objMin.errors" class="invalid-feedback">
+                      <div *ngIf="f.objMin.errors.required">OBJ_MIN est obligatoire.</div> 
+                      <div *ngIf="f.objMin.errors.pattern">OBJ_MIN doit étre un nombre positive.</div>             
+                    </div>
+                  </div>
+                  <div class="form-group col">  
+                    <label for="objMax" class="label">ObjMax</label>
+                    <input type="number" step="5" min="0" nbInput fullWidth placeholder="ObjMax" class="form-control" formControlName="objMax" [ngClass]="{ 'is-invalid': submitted && f.objMax.errors }" />
+                    <div *ngIf="submitted && f.objMax.errors" class="invalid-feedback">
+                      <div *ngIf="f.objMax.errors.required">OBJ_MIN est obligatoire.</div>
+                      <div *ngIf="f.objMax.errors.pattern">OBJ_MIN doit étre un nombre positive.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="ca" class="label">Chiffre Affaire</label>
+                    <input type="number" step="10" min="0" nbInput fullWidth placeholder="ca" class="form-control" formControlName="ca" [ngClass]="{ 'is-invalid': submitted && f.ca.errors }" />
+                    <div *ngIf="submitted && f.ca.errors" class="invalid-feedback">
+                      <div *ngIf="f.ca.errors.required">CA is est obligatoire.</div>
+                      <div *ngIf="f.ca.errors.pattern">CA doit étre un nombre positive.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="caN1" class="label">Chiffre Affaire N1</label>
+                    <input type="number" step="10" min="0" nbInput fullWidth placeholder="CaN1" class="form-control" formControlName="caN1" [ngClass]="{ 'is-invalid': submitted && f.caN1.errors }" />
+                    <div *ngIf="submitted && f.caN1.errors" class="invalid-feedback">
+                      <div *ngIf="f.caN1.errors.required">CA_N1 est obligatoire.</div>
+                      <div *ngIf="f.caN1.errors.pattern">CA_N1 doit étre un nombre positive.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="mort" class="label">Mort</label>
+                    <input type="number" step="5" min="0" nbInput fullWidth placeholder="Mort" class="form-control" formControlName="mort" [ngClass]="{ 'is-invalid': submitted && f.mort.errors }" />
+                    <div *ngIf="submitted && f.mort.errors" class="invalid-feedback">
+                      <div *ngIf="f.mort.errors.required">MORT est obligatoire.</div>
+                      <div *ngIf="f.mort.errors.pattern">MORT doit étre un nombre positive.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="artSpec" class="label">Art Spec</label>
+                    <input type="text" step="10" min="0" nbInput fullWidth placeholder="Art Spec" class="form-control" formControlName="artSpec" [ngClass]="{ 'is-invalid': submitted && f.artSpec.errors }" />
+                    <div *ngIf="submitted && f.artSpec.errors" class="invalid-feedback">
+                      <div *ngIf="f.artSpec.errors.required">ART_SPEC est obligatoire.</div>
+                      <div *ngIf="f.artSpec.errors.pattern">ART_SPEC doit étre un nombre positive.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="prime" class="label">Prime</label>
+                    <input type="number" step="10" min="0" nbInput fullWidth placeholder="Prime" class="form-control" formControlName="prime" [ngClass]="{ 'is-invalid': submitted && f.prime.errors }" />
+                    <div *ngIf="submitted && f.prime.errors" class="invalid-feedback">
+                      <div *ngIf="f.prime.errors.required">PRIME est obligatoire.</div>
+                      <div *ngIf="f.prime.errors.pattern">prime doit étre un nombre positive.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="bloc" class="label">Bloc</label>
+                    <input type="text" nbInput fullWidth placeholder="BLOC" class="form-control" formControlName="bloc" [ngClass]="{ 'is-invalid': submitted && f.bloc.errors }" />
+                    <div *ngIf="submitted && f.bloc.errors" class="invalid-feedback">
+                      <div *ngIf="f.bloc.errors.required">BLOC est obligatoire.</div>
+                      <div *ngIf="f.bloc.errors.maxlength">BLOC ne doit pas dépassé à 1 lettres longue.</div>
+                      <div *ngIf="f.bloc.errors.pattern">ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="nbArt" class="label">nombre Art</label>
+                    <input type="number" nbInput fullWidth placeholder="nombre Art" class="form-control" formControlName="nbArt" [ngClass]="{ 'is-invalid': submitted && f.nbArt.errors }" />
+                    <div *ngIf="submitted && f.nbArt.errors" class="invalid-feedback">
+                      <div *ngIf="f.nbArt.errors.required">NB_ART est obligatoire.</div>
+                      <div *ngIf="f.nbArt.errors.pattern">NB_ART doit étre un nombre positive.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="marge" class="label">Marge</label>
+                    <input type="number" nbInput fullWidth placeholder="Marge" class="form-control" formControlName="marge" [ngClass]="{ 'is-invalid': submitted && f.marge.errors }" />
+                    <div *ngIf="submitted && f.marge.errors" class="invalid-feedback">
+                      <div *ngIf="f.marge.errors.required">MARGE est obligatoire.</div>  
+                      <div *ngIf="f.marge.errors.pattern">NB_ART doit étre un nombre positive.</div>           
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+        <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+          Ajouter Prime</button>
+          <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+          Annuler</button>
+      </form>
+</div>

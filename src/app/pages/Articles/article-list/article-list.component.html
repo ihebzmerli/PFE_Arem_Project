@@ -1,0 +1,1069 @@
+<nb-card>
+  <nb-card-header>
+    Articles Table
+    <button [disabled]="disableMovement" type="button" (click)="togglepreviewTableArticle()" class="btn btn-outline-info">
+      {{previewTableAllArticle? "afficher tableau detailé": "caché tableau detailé"}} Article
+    </button>
+  </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="previewTableAllArticle" class="card">
+        <p-dataView #dv [value]="articles" [paginator]="true" [rows]="9" filterBy="codArt"
+            [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+            <ng-template pTemplate="header">
+                <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                  <div class="row">
+                      <div class="col">
+                        <p-dropdown [options]="sortOptions" name="sortKey" id="sortKey" [(ngModel)]="sortKey" placeholder="Sorte par le prix d'Arem" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                      </div>
+                    
+                      <span class="p-input-icon-left col-6">
+                          <i class="pi pi-search"></i>
+                          <input type="search" pInputText placeholder="Search Code Article" (input)="dv.filter($event.target.value)">
+                      </span>
+                      <div class="col">
+                        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                      </div>
+                  </div>
+                </div>
+            </ng-template>
+            <ng-template let-article pTemplate="listItem">
+                <div class="p-col-12">
+                    <div class="product-list-item">
+                        <img style="width:120px;height: 100px;" src="{{this.articleService.host+'/api/Imgarticles/'+article.codArt}}" [alt]="article.marque.title"/>
+                        <div class="product-list-detail">
+                            <div class="product-name">{{article.marque.title}}:&nbsp;<img style="width:40px;height: 40px;" src="{{this.marqueService.host+'/api/Imgmarques/'+article.marque.id}}" [alt]="article.marque.title"/></div>
+
+
+                            <div class="product-description">{{article.desArt}}</div>
+                            <p-rating name="coef1" id="coef1" [ngModel]="article.coef" [readonly]="true" [cancel]="false" ngDefaultControl></p-rating>
+                            <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{article.prixAch | currency:'TND ':'symbol'}}</span>
+                        </div>
+                        <div class="product-list-action">
+                            <span class="product-price">${{article.prixArem | currency:'TND ':'symbol'}}</span>
+                            <!-- <p-button icon="pi pi-shopping-cart" label="Ajouter a une liste"></p-button> -->
+                            <span>{{article.codArt}}</span>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+         
+            <ng-template let-article pTemplate="gridItem">
+                <div class="p-col-12" style="display: inline-block;">
+                    <div class="product-grid-item card">
+                        <div class="product-grid-item-top">
+                            <div>
+                                <i class="pi pi-tag product-category-icon"></i>
+                                <span class="product-category">{{article.prixAch | currency:'TND ':'symbol'}}</span>
+                            </div>
+                            <span>{{article.codArt}}</span>
+                        </div>
+                        <div class="product-grid-item-content">
+                            <img style="width:270px;height: 150px;" src="{{this.articleService.host+'/api/Imgarticles/'+article.codArt}}" [alt]="article.marque.title"/>
+                            <div class="product-name">{{article.marque.title}}:&nbsp;<img style="width:40px;height: 40px;" src="{{this.marqueService.host+'/api/Imgmarques/'+article.marque.id}}" [alt]="article.marque.title"/></div>
+
+                            
+                            <div class="product-description">{{article.desArt}}</div>
+                            <p-rating name="coef2" id="coef2" [ngModel]="article.coef" [readonly]="true" [cancel]="false" ngDefaultControl></p-rating>
+                        </div>
+                        <div class="product-grid-item-bottom">
+                            <span class="product-price">${{article.prixArem | currency:'TND ':'symbol'}}</span>
+                                <!-- <p-button icon="pi pi-shopping-cart"></p-button> -->
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+          
+        </p-dataView>
+      </div>
+
+
+
+<div *ngIf="!previewTableAllArticle">
+        <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" class="border">
+          <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
+            <i class="fa fa-user"></i>Statistiques</button>
+        </div>
+
+        
+      <div class="container">
+        Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th style="text-align: center">
+              <label class="label">COD_ART</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search CodArt"
+                style="width:150px" [(ngModel)]="searchTermCodArt" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DES_ART</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search DesArt"
+                    style="width:150px" [(ngModel)]="searchTermDesArt" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">REF_ORG</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search RefOrg"
+                style="width:150px" [(ngModel)]="searchTermRefOrg" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">refRem</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search RefOrg"
+                style="width:150px" [(ngModel)]="searchTermRefRem" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">COD_NGP</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search CodNgp"
+                style="width:150px" [(ngModel)]="searchTermCodNgp" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">COD_FRS</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search CodFrs"
+                style="width:150px" [(ngModel)]="searchTermCodFrs" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">MARQUE</label>
+              <div class="form-group">
+                <nb-select style="width:200px" id="listmarquearticle" [(ngModel)]="_searchTermMarque" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonLiv($event)" [ngModelOptions]="{standalone: true}">
+                  <nb-option value="">-Annuler Filter-</nb-option>
+                  <nb-option *ngFor="let itemsMarque of marqueAllList" [value]="itemsMarque.code"><img  (click)="showModalDialogUserTable2()" src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="32" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
+                </nb-select>
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">NUM_CAS</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search NumCas"
+                style="width:150px" [(ngModel)]="searchTermNumCas" />
+              </div>
+            </th>
+            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+              <label class="label">QUT_STK</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search QutStk"
+                style="width:150px" [(ngModel)]="searchTermQutStk" />
+              </div>
+            </th>
+            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+              <label class="label">QUT_STK2</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search QutStk2"
+                style="width:150px" [(ngModel)]="searchTermQutStk2" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">UNIT_VEN</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search UnitVen"
+                style="width:150px" [(ngModel)]="searchTermUnitVen" />
+              </div>
+            </th>
+            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+              <label class="label">STK_GAR</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search StkGar"
+                style="width:150px" [(ngModel)]="searchTermStkGar" />
+              </div>
+            </th>
+            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+              <label class="label">STK_INI</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search StkIni"
+                style="width:150px" [(ngModel)]="searchTermStkIni" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">QUT_MAX</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search QutMax"
+                style="width:150px" [(ngModel)]="searchTermQutMax" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">QUT_MIN</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search QutMin"
+                style="width:150px" [(ngModel)]="searchTermQutMin" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">QUT_DEP</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search QutDep"
+                style="width:150px" [(ngModel)]="searchTermQutDep" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">PRIX_MIN</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search PrixMin"
+                style="width:150px" [(ngModel)]="searchTermPrixMin" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">PRIX_DEV</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search PRIX_DEV"
+                style="width:150px" [(ngModel)]="searchTermPrixDev" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">COURS</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search Cours"
+                style="width:150px" [(ngModel)]="searchTermCours" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">COEF</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search Coef"
+                style="width:150px" [(ngModel)]="searchTermCoef" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DER_P_ACH</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search DerPAch"
+                style="width:150px" [(ngModel)]="searchTermDerPAch" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">PRIX_ACH</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixAch"
+                  style="width:150px" [(ngModel)]="searchTermPrixAch" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">PRIX_VEN</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixVen"
+                  style="width:150px" [(ngModel)]="searchTermPrixVen" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">REMISE</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Remise"
+                  style="width:150px" [(ngModel)]="searchTermRemise" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">PRIX_AREM</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixArem"
+                  style="width:150px" [(ngModel)]="searchTermPrixArem" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">TVA</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Tva"
+                  style="width:150px" [(ngModel)]="searchTermTva" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">CUMUL_VEN</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search CumulVen"
+                  style="width:150px" [(ngModel)]="searchTermCumulVen" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">CUMUL_ACH</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search CumulAch"
+                  style="width:150px" [(ngModel)]="searchTermCumulAch" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">DER_ACH</label>
+                <div class="form-group">
+                  <button style="width:150px" (click)="openWindowFormFilterDateDER_ACH()" class="btn btn-md btn-outline-primary">
+                    Recherche date</button>  
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">DER_MVT</label>
+                <div class="form-group">
+                  <button style="width:150px" (click)="openWindowFormFilterDateDER_MVT()" class="btn btn-md btn-outline-primary">
+                    Recherche date</button>  
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">P_VALU</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PValu"
+                  style="width:150px" [(ngModel)]="searchTermPValu" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">UNIT_INV</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search UnitInv"
+                  style="width:150px" [(ngModel)]="searchTermUnitInv" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_V1</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutV1"
+                  style="width:150px" [(ngModel)]="searchTermQutV1" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_V2</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutV2"
+                  style="width:150px" [(ngModel)]="searchTermQutV2" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_V3</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutV3"
+                  style="width:150px" [(ngModel)]="searchTermQutV3" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">VENTE1</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Vente1"
+                  style="width:150px" [(ngModel)]="searchTermVente1" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">VENTE2</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Vente2"
+                  style="width:150px" [(ngModel)]="searchTermVente2" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">VENTE3</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Vente3"
+                  style="width:150px" [(ngModel)]="searchTermVente3" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_A1</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutA1"
+                  style="width:150px" [(ngModel)]="searchTermQutA1" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS1</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois1"
+                  style="width:150px" [(ngModel)]="searchTermMois1" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS2</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois2"
+                  style="width:150px" [(ngModel)]="searchTermMois2" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS3</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois3"
+                  style="width:150px" [(ngModel)]="searchTermMois3" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS4</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois4"
+                  style="width:150px" [(ngModel)]="searchTermMois4" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS5</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois5"
+                  style="width:150px" [(ngModel)]="searchTermMois5" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS6</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois6"
+                  style="width:150px" [(ngModel)]="searchTermMois6" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS7</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois7"
+                  style="width:150px" [(ngModel)]="searchTermMois7" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS8</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois8"
+                  style="width:150px" [(ngModel)]="searchTermMois8" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS9</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois9"
+                  style="width:150px" [(ngModel)]="searchTermMois9" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS10</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois10"
+                  style="width:150px" [(ngModel)]="searchTermMois10" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS11</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois11"
+                  style="width:150px" [(ngModel)]="searchTermMois11" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">MOIS12</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Mois12"
+                  style="width:150px" [(ngModel)]="searchTermMois12" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">CHIF_AFF</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search ChifAff"
+                  style="width:150px" [(ngModel)]="searchTermChifAff" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">TAUX</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Taux"
+                  style="width:150px" [(ngModel)]="searchTermTaux" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">TOT</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Tot"
+                  style="width:150px" [(ngModel)]="searchTermTot" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">CLASSE</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Classe"
+                  style="width:150px" [(ngModel)]="searchTermClasse" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+                <label class="label">ANAL_STK</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search AnalStk"
+                  style="width:150px" [(ngModel)]="searchTermAnalStk" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+                <label class="label">NBJ_STK</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search NbjStk"
+                  style="width:150px" [(ngModel)]="searchTermNbjStk" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">NBJ_COM</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search NbjCom"
+                  style="width:150px" [(ngModel)]="searchTermNbjCom" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+                <label class="label">V_SSTK</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search VSstk"
+                  style="width:150px" [(ngModel)]="searchTermVSstk" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">TYP_ANAL</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search TypAnal"
+                  style="width:150px" [(ngModel)]="searchTermTypAnal" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">FLAG1</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Flag1"
+                  style="width:150px" [(ngModel)]="searchTermFlag1" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">FLAG2</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Flag2"
+                  style="width:150px" [(ngModel)]="searchTermFlag2" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+                <label class="label">COM_STK</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search ComStk"
+                  style="width:150px" [(ngModel)]="searchTermComStk" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">COM_NBJ</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search ComNbj"
+                  style="width:150px" [(ngModel)]="searchTermComNbj" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">CUMUL_DEM</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search CumulDem"
+                  style="width:150px" [(ngModel)]="searchTermCumulDem" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_DOU</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutDou"
+                  style="width:150px" [(ngModel)]="searchTermQutDou" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+                <label class="label">XANAL_STK</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search XanalStk"
+                  style="width:150px" [(ngModel)]="searchTermXanalStk" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">XTYP_ANAL</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search XtypAnal"
+                  style="width:150px" [(ngModel)]="searchTermXtypAnal" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">XV_COM</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search XvCom"
+                  style="width:150px" [(ngModel)]="searchTermXvCom" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_DEM</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutDem"
+                  style="width:150px" [(ngModel)]="searchTermQutDem" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_CONF</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutConf"
+                  style="width:150px" [(ngModel)]="searchTermQutConf" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_PROF</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutProf"
+                  style="width:150px" [(ngModel)]="searchTermQutProf" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">PRIX_PROF</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixProf"
+                  style="width:150px" [(ngModel)]="searchTermPrixProf" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">PRIX_CONF</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixConf"
+                  style="width:150px" [(ngModel)]="searchTermPrixConf" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">QUT_SUP</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutSup"
+                  style="width:150px" [(ngModel)]="searchTermQutSup" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">VEN_PER</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search VenPer"
+                  style="width:150px" [(ngModel)]="searchTermVenPer" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">TARIF_FRS</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search TarifFrs"
+                  style="width:150px" [(ngModel)]="searchTermTarifFrs" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">CONFR</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Confer"
+                  style="width:150px" [(ngModel)]="searchTermConfer" />
+                </div>
+              </th>
+              <th style="text-align: center">
+                <label class="label">PRIX_A_M</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixAM"
+                  style="width:150px" [(ngModel)]="searchTermPrixAM" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">TYPE_V</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search TypeV"
+                  style="width:150px" [(ngModel)]="searchTermTypeV" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">XPRIX_ACH</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search XprixAch"
+                  style="width:150px" [(ngModel)]="searchTermXprixAch" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">T</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search T"
+                  style="width:150px" [(ngModel)]="searchTermT" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">RELIQ</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Reliq"
+                  style="width:150px" [(ngModel)]="searchTermReliq" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">derP_Dev</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search DerP_Dev"
+                  style="width:150px" [(ngModel)]="searchTermDerP_Dev" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">PRIX_EURO</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixEuro"
+                  style="width:150px" [(ngModel)]="searchTermPrixEuro" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">CUMUL_RES</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search CumulRes"
+                  style="width:150px" [(ngModel)]="searchTermCumulRes" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">DAT_RUP</label>
+                <div class="form-group">
+                  <button style="width:150px" (click)="openWindowFormFilterDateDAT_RUP()" class="btn btn-md btn-outline-primary">
+                    Recherche date</button>  
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">DAT_P_ACH</label>
+                <div class="form-group">
+                  <button style="width:150px" (click)="openWindowFormFilterDateDAT_PACH()" class="btn btn-md btn-outline-primary">
+                    Recherche date</button>  
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">COD_BAR</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search CodBar"
+                  style="width:150px" [(ngModel)]="searchTermCodBar" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">CONTROLE</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Controle"
+                  style="width:150px" [(ngModel)]="searchTermControle" />
+                </div>
+              </th>
+              <th  style="text-align: center">
+                <label class="label">MODELE</label>
+                  <p-dropdown [options]="modeleAllList" (onChange)="getArticleOfFromModelAddForBonLiv($event)" [(ngModel)]="selectedModel" optionLabel="title" [filter]="true" filterBy="title" [showClear]="true" placeholder="Select a Modele">
+                    <ng-template pTemplate="selectedItem">
+                        <div class="country-item country-item-value"  *ngIf="selectedModel">
+                            <img src="{{this.marqueService.host+'/api/Imgmarques/'+selectedModel.marque.id}}" width="28"/><sapn>{{selectedModel.title}}</sapn>
+                        </div>
+                    </ng-template>
+                    <ng-template let-model pTemplate="item">
+                        <div class="country-item">
+                            <img src="{{this.marqueService.host+'/api/Imgmarques/'+model.marque.id}}" width="28" /><sapn>{{model.title}}</sapn>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+
+              </th>
+              <th  style="text-align: center"><label class="label">ENERGIE</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Energie"
+                  style="width:150px" [(ngModel)]="searchTermEnergie" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">POIDS</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Poids"
+                  style="width:150px" [(ngModel)]="searchTermPoids" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">VERSIONS</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Versions"
+                  style="width:150px" [(ngModel)]="searchTermVersions" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">OBSERVATIO</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Observatio"
+                  style="width:150px" [(ngModel)]="searchTermObservatio" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">DAT_CREAT</label>
+                <div class="form-group">
+                  <button style="width:150px" (click)="openWindowFormFilterDateDAT_CREAT()" class="btn btn-md btn-outline-primary">
+                    Recherche date</button>  
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">NBJ_RUP</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search NbjRup"
+                  style="width:150px" [(ngModel)]="searchTermNbjRup" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">NBJ_RUP1</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search NbjRup1"
+                  style="width:150px" [(ngModel)]="searchTermNbjRup1" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">SPECIFIC</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Specific"
+                  style="width:150px" [(ngModel)]="searchTermSpecific" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">PRIX_C_EUR</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixCEur"
+                  style="width:150px" [(ngModel)]="searchTermPrixCEur" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">PRIX_INI</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search PrixIni"
+                  style="width:150px" [(ngModel)]="searchTermPrixIni" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">CUMUL_ENT</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search CumulEnt"
+                  style="width:150px" [(ngModel)]="searchTermCumulEnt" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">CUMUL_BS</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search CumulBs"
+                  style="width:150px" [(ngModel)]="searchTermCumulBs" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center"><label class="label">STK_ATRSF</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search StkAtrsf"
+                  style="width:150px" [(ngModel)]="searchTermStkAtrsf" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center"><label class="label">STK_TRSF</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search StkTrsf"
+                  style="width:150px" [(ngModel)]="searchTermStkTrsf" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">CONS_MOY</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search ConsMoy"
+                  style="width:150px" [(ngModel)]="searchTermConsMoy" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">QUT_RAV</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutRav"
+                  style="width:150px" [(ngModel)]="searchTermQutRav" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">QUT_DEP1</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search QutDep1"
+                  style="width:150px" [(ngModel)]="searchTermQutDep1" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">CUMUL_CONF</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search CumulConf"
+                  style="width:150px" [(ngModel)]="searchTermCumulConf" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">POINTAGE</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Pointage"
+                  style="width:150px" [(ngModel)]="searchTermPointage" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">POINTAGE1</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Pointage1"
+                  style="width:150px" [(ngModel)]="searchTermPointage1" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">POINTAGE2</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Pointage2"
+                  style="width:150px" [(ngModel)]="searchTermPointage2" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">TOTAL_POIN</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search TotalPoin"
+                  style="width:150px" [(ngModel)]="searchTermTotalPoin" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">ETAGE2</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Etage2"
+                  style="width:150px" [(ngModel)]="searchTermEtage2" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">FAMILLE</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Famille"
+                  style="width:150px" [(ngModel)]="searchTermFamille" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">S_FAMILLE</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search SFamille"
+                  style="width:150px" [(ngModel)]="searchTermSFamille" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">CENTRE</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Centre"
+                  style="width:150px" [(ngModel)]="searchTermCentre" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center"><label class="label">STK_REEL</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search StkReel"
+                  style="width:150px" [(ngModel)]="searchTermStkReel" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center"><label class="label">STK_RES</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search StkRes"
+                  style="width:150px" [(ngModel)]="searchTermStkRes" />
+                </div>
+              </th>
+              <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center"><label class="label">STK_NP</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search StkNp"
+                  style="width:150px" [(ngModel)]="searchTermStkNp" />
+                </div>
+              </th>
+              <th  style="text-align: center"><label class="label">typev</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search Typev"
+                  style="width:150px" [(ngModel)]="searchTermTypev"/>
+                </div>
+              </th>
+              <th style="text-align: center"><label class="label">image</label>
+              </th>
+            <th  style="text-align: center"><label class="label">Actions</label></th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <!--(notify)="handleResults($event)"-->
+          <tr *ngFor="let article of filteredArticles | filter:searchText">
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.codArt}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.desArt}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.refOrg}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.refRem}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.codNgp}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.codFrs}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.marque.title}}</p></span><img src="{{this.marqueService.host+'/api/Imgmarques/'+article.marque.id}}" width="50" height="50" style="vertical-align: middle"></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.numCas}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutStk}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutStk2}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.unitVen}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.stkGar}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.stkIni}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutMax}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutMin}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutDep}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixMin | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixDev | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.cours}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.coef}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.derPAch}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixAch | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixVen | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.remise | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixArem | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.tva}} <span *ngIf="article.tva!=null || article.tva">%</span></p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.cumulVen}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.cumulAch}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.derAch | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.derMvt | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.pValu}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.unitInv}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutV1}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutV2}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutV3}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.vente1}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.vente2}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.vente3}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutA1}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois1}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois2}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois3}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois4}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois5}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois6}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois7}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois8}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois9}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois10}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois11}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.mois12}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.chifAff}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.taux}} <span *ngIf="article.taux!=null || article.taux">%</span></p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.tot}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.classe}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.analStk}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.nbjStk}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.nbjCom}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.vSstk}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.typAnal}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.flag1}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.flag2}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.comStk}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.comNbj}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.cumulDem}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutDou}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.xanalStk}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.xtypAnal}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.xvCom}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutDem}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutConf}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutProf}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixProf}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixConf}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutSup}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.venPer}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.tarifFrs}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.confr}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.PrixAM}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.typeV}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.xprixAch}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.t}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.reliq}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.derP_Dev}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixEuro | currency:'€ ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.cumulRes}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.datRup | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.datPAch | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.codBar}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.controle}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.model.title}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.energie}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.poids}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.versions}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.observatio}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.datCreat | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.nbjRup}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.nbjRup1}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.specific}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixCEur | currency:'TND ':'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.prixIni | currency:'TND ':'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.cumulEnt}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.cumulBs}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.stkAtrsf}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.stkTrsf}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.consMoy}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutRav}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.qutDep1}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.cumulConf}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.pointage}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.pointage1}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.pointage2}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.totalPoin}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.etage2}}</p></span></td>
+
+
+
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.famille}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.sFamille}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.centre}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.stkReel}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.stkRes}}</p></span></td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>{{article.stkNp}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{article.typeV}}</p></span></td>
+
+            <td style="text-align: center" class="field-multiple-drag"><a><img src="{{this.articleService.host+'/api/Imgarticles/'+article.codArt}}" style="height: 100px;width: fil-content" alt=""></a></td>
+
+
+            <td class="field-multiple-drag">
+              <div class="buttons-row">
+                <button (click)="openWindowSpecialM(article.codArt)" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" outline>
+                  <i class="fa fa-search"></i>Details</button>
+                <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_PREPARATEUR_BR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(article.codArt)" outline>
+                  <i class="fa fa-edit"></i>Modifier</button>
+                <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(article.codArt)" outline>
+                  <i class="fa fa-remove"></i>vider stock</button>
+                  <!--
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenUploadPopap(article.codArt)" outline>
+                  <i class="fa fa-remove"></i>Ajouter Photos</button>
+                  -->
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </nb-card-body>
+  </nb-card>
+
+  

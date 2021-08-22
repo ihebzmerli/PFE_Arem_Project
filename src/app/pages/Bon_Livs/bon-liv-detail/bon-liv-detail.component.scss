@@ -1,0 +1,21 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  .accordion-container:first-child {
+    margin-bottom: nb-theme(card-margin-bottom);
+  }
+  table .btn{
+    margin: 2px;
+  }
+
+  table {
+    table-layout: fixed;
+    width: 200px;
+  }
+  
+  th,
+  td {
+    width: 130px;
+    overflow: hidden;
+  }  
+}

@@ -1,0 +1,549 @@
+
+<nb-card>
+  <nb-card-header>
+    Bon de Sortie table
+
+
+    <nb-card-body>
+      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_RESPONSABLE_POINTAGE')" class="border">
+          <button type="button" (click)="togglepreviewTableBonSort()" class="btn btn-outline-info">
+            {{previewTableAllBonsortExcelPdf? "tableau detailé ": "tableau minimiser "}}
+          </button>
+      </div>
+
+    </nb-card-body>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div *ngIf="!previewTableAllBonsortExcelPdf" class="container">
+      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="text-align: center">
+            <label class="label">NUM_BON_SORT</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search NumBon"
+              style="width:135px" [(ngModel)]="searchTermNumBon" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">DAT_BON</label>
+            <div class="form-group">
+              <button (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                Recherche date</button>  
+            </div>
+            <!--
+            <div class="form-group">
+              <input nbInput style="width:150px" [(ngModel)]="searchTermDatBon" placeholder="Form Picker" [nbDatepicker]="formpicker">
+              <nb-datepicker #formpicker></nb-datepicker>
+              <input nbInput style="width:150px" [(ngModel)]="searchTermDatBon" placeholder="Form Picker" [nbDatepicker]="formpicker">
+              <nb-datepicker #formpicker></nb-datepicker>
+            </div>
+            -->
+          </th>
+          <th style="text-align: center">
+            <label class="label">RAISON</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Raison"
+              style="width:135px" [(ngModel)]="searchTermRaison" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">BRUT_HT</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Brut_Ht"
+              style="width:135px" [(ngModel)]="searchTermBrutHt" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">TAUX_REM</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Taux_Rem"
+              style="width:135px" [(ngModel)]="searchTermTauxRem" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">MONT_REM</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Mont_Rem"
+              style="width:135px" [(ngModel)]="searchTermMontRem" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">NET_HT</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Net_Ht"
+              style="width:135px" [(ngModel)]="searchTermNetHt" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">MONT_TVA</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Mont_Tva"
+              style="width:135px" [(ngModel)]="searchTermMontTva" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">TOT_TTC</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Tot_Ttc"
+              style="width:135px" [(ngModel)]="searchTermTotTtc" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">CENTRE</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Centre"
+              style="width:135px" [(ngModel)]="searchTermCentre" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">OBSERV</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Observ"
+              style="width:135px" [(ngModel)]="searchTermObserv" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">VEHICULE</label>
+            <div class="form-group">
+              <nb-select style="width:170px" id="listitemsVehicules" [(ngModel)]="_searchTermVehicule" fullWidth fieldSize="small" (selectedChange)="getAllListItemsVehicules($event)" [ngModelOptions]="{standalone: true}">
+                <nb-option [value]="">-Annuler Filter-</nb-option>
+                <nb-option *ngFor="let itemsVehicules of Vehiculelists" [value]="itemsVehicules.matricule">
+                  <span>
+                    <img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsVehicules.marque.id}}" width="32" style="vertical-align: middle" />
+                    <span class="p-ml-1"><b>{{itemsVehicules.matricule}}</b></span>
+                  </span>
+                </nb-option>  
+              </nb-select>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">Nom&Prenom respensable Bon</label>
+            <div class="form-group">
+              <nb-select style="width:170px" id="listitemsAgents" [(ngModel)]="_searchTermMarquee" fullWidth fieldSize="small" (selectedChange)="getAllListItemsAgents($event)" [ngModelOptions]="{standalone: true}">
+                <nb-option [value]="">-Annuler Filter-</nb-option>
+                <nb-option *ngFor="let itemsAgents of agents" [value]="itemsAgents.firstname">
+                  <span *ngIf="itemsAgents.firstname!==null || itemsAgents.lastname!==null || itemsAgents.codUser!==null">
+                    <img src="{{this.utilisateurService.host+'/api/Imgusers/'+itemsAgents.id}}" width="32" style="vertical-align: middle" />
+                    <span class="p-ml-1"><b>{{itemsAgents.firstname}}</b>&nbsp;<b>{{itemsAgents.lastname}}</b></span>
+                  </span>
+                </nb-option>  
+              </nb-select>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">Post respensable Bon</label>
+            <div class="form-group">
+              <nb-select style="width:170px" id="listitemsRoles" [(ngModel)]="_searchTermRole" fullWidth fieldSize="small" (selectedChange)="getAllListItemsRoles($event)" [ngModelOptions]="{standalone: true}">
+                <nb-option [value]="">-Annuler Filter-</nb-option>
+                <nb-option *ngFor="let itemsRoles of statusessRole" [value]="itemsRoles.name">
+                  <span *ngIf="itemsRoles.name!==null">
+                    <span *ngIf="itemsRoles.name=='ROLE_ACHETEUR'" class="p-ml-1"><b>Acheteur</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_ADMIN'" class="p-ml-1"><b>Administrateur</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_AGENT_CAB'" class="p-ml-1"><b>Agent code a barre</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_AGENT_SAISIE_REG'" class="p-ml-1"><b>Agent saisir reg</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_CAISSIER'" class="p-ml-1"><b>Caissier</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_CLIENT'" class="p-ml-1"><b>Client</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_DECIDEUR_BP'" class="p-ml-1"><b>Decideur Bon Preparation</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_EMBALLEUR'" class="p-ml-1"><b>Emballeur</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_EXPEDITEUR'" class="p-ml-1"><b>Expediteur</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_PREPARATEUR'" class="p-ml-1"><b>Preparateur</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_PREPARATEUR_BR'" class="p-ml-1"><b>Preparateur BR</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_RESPONSABLE_DISPATCHING_BP'" class="p-ml-1"><b>Responsable dispatching BG</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_RESPONSABLE_POINTAGE'" class="p-ml-1"><b>Responsable pointage</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'" class="p-ml-1"><b>Responsable service fournisseur etranger</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'" class="p-ml-1"><b>Responsable service fournisseur etranger</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_TRANSITAIRE'" class="p-ml-1"><b>Transitaire</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_USER'" class="p-ml-1"><b>Utilisateur</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_VALIDATEUR_DE_CHARIOT'" class="p-ml-1"><b>Validateur de chariot</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_VENDEUR'" class="p-ml-1"><b>Vendeur</b></span>
+                    <span *ngIf="itemsRoles.name=='ROLE_LIVREUR'" class="p-ml-1"><b>Livreur</b></span>
+                  </span>
+                </nb-option>  
+              </nb-select>
+            </div>
+          </th>
+          <th style="text-align: center"><label class="label">Actions</label></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let bonsort of filteredBonSorts | filter:searchText">
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.numBon}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.datBon | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.raison}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.brutHt | currency:'TND ':'symbol'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.tauxRem}}%</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.montRem | currency:'TND ':'symbol'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.netHt | currency:'TND ':'symbol'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.montTva}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.totTtc | currency:'TND ':'symbol'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.centre}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonsort.observ}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag">
+            <ng-container *ngIf="bonsort.vehicule; else newDeb" >
+              <span><p>{{bonsort.vehicule.matricule}}</p></span>
+            </ng-container>
+            <ng-template #newDeb>
+                ...
+            </ng-template>
+          </td>
+
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span>
+
+            <div *ngIf="bonsort.user!==null">
+              <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.getTest+'/Imgusers/'+bonsort.user.id}}" width="32" style="vertical-align: middle" />
+              <span class="image-text"><p>{{bonsort.user.lastname}}&nbsp;{{bonsort.user.firstname}}</p></span>
+
+              <p-dialog header="{{bonsort.user.lastname}} {{bonsort.user.firstname}}" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+bonsort.user.id}}" style="width:250px" class="article-image" /></p>
+                  
+              <div>
+                <li>                        
+                  <span class="image-text"><b class="p-mb-3 p-text-light">Nom et Prénom Responsable :</b> {{bonsort.user.firstname}}&nbsp;{{bonsort.user.lastname}}</span>                      
+                </li> 
+                <li>
+                  <span class="image-text"><b class="p-mb-3 p-text-light">Email Responsable :</b> {{bonsort.user.email}}</span>
+                </li>
+                <li>  
+                  <span class="image-text"><b class="p-mb-3 p-text-light">Telephone Responsable :</b> {{bonsort.user.telephone}}</span>
+                </li>
+                <li>
+                  <b class="p-mb-3 p-text-light">Role : </b>
+                  <b *ngIf="bonsort.user.roles[0].name==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogUserRole('right')">Aucune Role</label></span></b>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_CLIENT'">Client</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_USER'">Utilisateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="bonsort.user.roles!==null && bonsort.user.roles[0].name=='ROLE_LIVREUR'">Livreur</span>
+                </li>
+              </div>
+
+                  <ng-template pTemplate="footer">
+                  <p-button icon="pi pi-check" (click)="displayModalUserTable2=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </div>
+            <span *ngIf="bonsort.user==null" class="p-mb-3 p-text-normal" style="color: rgb(121, 126, 121);" ><label>Aucune!</label></span> 
+          </span>
+          </td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <div style="text-align: center" class="field-multiple-drag">
+              <div *ngIf="bonsort.user!=null">
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_CLIENT'">Client</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_USER'">Utilisateur</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                <span *ngIf="bonsort.user.roles[0].name=='ROLE_LIVREUR'">Livreur</span>
+              </div>
+              <div *ngIf="bonsort.user==null">
+                <span *ngIf="bonsort.user==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>
+              </div>
+            </div>
+          </td>
+<!--          <td class="field-multiple-drag"><span><p>{{bonsort.facture_bonsort}}</p></span></td> -->
+
+          <td class="field-multiple-drag">
+            <div class="buttons-row">
+              <div class="form-groupe">
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['bon-sort-detail',bonsort.numBon]" outline>
+                  <i class="fa fa-search"></i>Details</button>
+                <button (click)="openWindowXbaseXtva(bonsort.numBon)" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [shape]="semi-round" [size]="medium" [status]="primary" class="btn btn-md btn-outline-primary" outline>
+                  XBASE & XTVA</button>
+              </div>
+              <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_RESPONSABLE_POINTAGE')" class="form-groupe">
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(bonsort.numBon)" outline>
+                  <i class="fa fa-edit"></i>Modifier</button>
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(bonsort.numBon)" outline>
+                  <i class="fa fa-remove"></i>Supprimer</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+
+
+
+  <nb-card-body>
+    <div *ngIf="previewTableAllBonsortExcelPdf">
+        <p-table #dt [columns]="cols" [value]="filteredBonSorts" selectionMode="multiple" [(selection)]="selectedBonsorts"
+        dataKey="numBon" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['numBon','datBon','raison','brutHt','tauxRem','montRem','netHt','montTva','totTtc','centre',
+        'observ','vehicule.matricule','user.firstname','user.codUser']">
+          <ng-template pTemplate="caption">
+              <div class="p-d-flex">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <button type="button" pButton pRipple icon="pi pi-file-o" (click)="dt.exportCSV()" class="p-mr-2" pTooltip="CSV" tooltipPosition="bottom" nbPopover="Télécharger toute la table en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                      <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success p-mr-2"  pTooltip="XLS" tooltipPosition="bottom" nbPopover="Télécharger toute la table en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                    <div class="col">
+                      <button type="button" pButton pRipple icon="pi pi-filter" (click)="dt.exportCSV({selectionOnly:true})" class="p-button-secondary p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                      <button type="button" pButton pRipple icon="pi pi-bookmark" (click)="dt.exportExcel({selectionOnly:true})" class="p-button-help p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                            <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                            <span class="p-input-icon-left p-ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                            </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+              <tr>
+                  <th *ngFor="let col of columns">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      <div *ngIf="col.header!=='Actions' && col.header!=='Consultation'">
+                        {{col.header}}
+                      </div>
+                        
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='NUM_BON_SORT'" type="text" field="numBon" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='RAISON'" type="text" field="raison" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='CENTRE'" type="text" field="liv" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='OBSERV'" type="text" field="command" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='VEHICULE'" field="vehicule" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">Choix Vehicule</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="Vehiculelists" placeholder="Any" (onChange)="filter($event.value)" optionLabel="matricule">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                          <img [alt]="option.label" src="{{this.marqueService.host+'/api/Imgmarques/'+option.marque.id}}" width="32" style="vertical-align: middle" />
+                                            <span class="p-ml-1"><b>{{option.matricule}}</b></span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div>
+
+                          <p-columnFilter *ngIf="col.header=='Nom&Prenom respensable Bon'" field="user" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">Choix Agent</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="agents" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
+
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Post respensable Bon'" type="numeric" field="user.codUser" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='DAT_BON'" type="date" field="datBon" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='BRUT_HT'" type="numeric" field="brutHt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='TAUX_REM'" type="numeric" field="tauxRem" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='MONT_REM'" type="numeric" field="montRem" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='NET_HT'" type="numeric" field="netHt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='MONT_TVA'" type="numeric" field="montTva" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='TOT_TTC'" type="numeric" field="totTtc" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div style="text-align: center" *ngIf="col.header=='Actions' || col.header=='Consultation'">
+                          <b>{{col.header}}</b>
+                        </div>
+                    </div>
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns">
+                      <div class="field-multiple-drag" *ngIf="col.field!=='datBon' && col.field!=='user' && col.header!=='Actions' && col.header!=='Consultation'">                       
+                        <div *ngIf="rowData[col.field]==null || rowData[col.field]=='' && rowData[col.field]!==0">
+                          <span class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label> Aucune!</label></span>
+                        </div>
+                        <div *ngIf="rowData[col.field]===0">
+                          <span *ngIf="col.field=='brutHt' || col.field=='montRem' || col.field=='netHt' || col.field=='totTtc'">TND&nbsp;</span><span style="color: rgb(236, 28, 0);">{{rowData[col.field]}}</span>
+                        </div>
+                        <div *ngIf="rowData[col.field]!==0">
+                          <span *ngIf="col.field=='brutHt' || col.field=='montRem' || col.field=='netHt' || col.field=='totTtc'">TND&nbsp;</span>{{rowData[col.field]}}
+                        </div>
+                      </div>
+
+                      <div *ngIf="col.field=='datBon'">
+                        {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : '+0000'}}
+                      </div>
+                      <div style="text-align: center" class="field-multiple-drag" *ngIf="col.field=='user' && col.header=='Nom&Prenom respensable Bon'">
+                        
+                        <div *ngIf="rowData[col.field]!==null">
+                          <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" width="32" style="vertical-align: middle" />
+                          <span class="image-text"><p>{{rowData[col.field].lastname}}&nbsp;{{rowData[col.field].firstname}}</p></span>
+            
+                          <p-dialog header="{{rowData[col.field].lastname}} {{rowData[col.field].firstname}}" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                          [draggable]="false" [resizable]="false">
+                          <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" style="width:150px;height: 180px;" class="article-image" /></p>
+                              
+                          <div>
+                            <li>                        
+                              <span class="image-text"><b class="p-mb-3 p-text-light">Nom et Prénom Responsable :</b> {{rowData[col.field].firstname}}&nbsp;{{rowData[col.field].lastname}}</span>                      
+                            </li> 
+                            <li>
+                              <span class="image-text"><b class="p-mb-3 p-text-light">Email Responsable :</b> {{rowData[col.field].email}}</span>
+                            </li>
+                            <li>  
+                              <span class="image-text"><b class="p-mb-3 p-text-light">Telephone Responsable :</b> {{rowData[col.field].telephone}}</span>
+                            </li>
+                            <li>
+                              <b class="p-mb-3 p-text-light">Role : </b>
+                              <b *ngIf="rowData[col.field].roles[0].name==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogUserRole('right')">Aucune Role</label></span></b>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_CLIENT'">Client</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_USER'">Utilisateur</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                              <span style="color: rgb(114, 212, 16);" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_LIVREUR'">Livreur</span>
+                            </li>
+                          </div>
+
+                              <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayModalUserTable2=false" label="Annuler" styleClass="p-button-text"></p-button>
+                              </ng-template>
+                          </p-dialog>
+                        </div>
+                        <span *ngIf="rowData[col.field]==null" class="p-mb-3 p-text-normal" style="color: rgb(121, 126, 121);" ><label>Aucune!</label></span>                        
+                      </div> 
+                      <div style="text-align: center" class="field-multiple-drag" *ngIf="col.field=='user' && col.header=='Post respensable Bon'">
+                        <div *ngIf="rowData[col.field]!==null">
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_CLIENT'">Client</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_USER'">Utilisateur</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                          <span *ngIf="rowData[col.field].roles[0].name=='ROLE_LIVREUR'">Livreur</span>
+                        </div>
+                        <div *ngIf="rowData[col.field]==null">
+                          <span *ngIf="rowData[col.field]==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>
+                        </div>
+                      </div>
+
+                      <!--button Actions -->  
+                      <div *ngIf="col.header=='Consultation' && col.field=='numBon'">
+                        <button style="border-radius: 0.75rem;" nbButton type="button" [status]="info" size="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['bon-sort-detail',rowData[col.field]]" outline>
+                        <i class="fa fa-search"></i>Details</button>
+                        <button (click)="openWindowXbaseXtva(rowData[col.field])" style="border-radius: 0.75rem;" nbButton type="button" [shape]="semi-round" size="small" [status]="primary" class="btn btn-md btn-outline-primary" outline>
+                        XBASE & XTVA</button>
+                      </div>
+                      <div *ngIf="col.header=='Actions' && col.field=='numBon'">
+                        <button style="border-radius: 0.75rem;" nbButton type="button" [status]="warning" size="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(bonsort.numBon)" outline>
+                          <i class="fa fa-edit"></i>Modifier</button>
+                        <button style="border-radius: 0.75rem;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" size="small" [status]="danger" (click)="OpenDeletePopap(rowData[col.field])" outline>
+                          <i class="fa fa-remove"></i>Supprimer</button>
+                      </div>
+                      <!--end button Actions -->
+                  </td> 
+                  
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="30">Pas de BonSorts trouver.</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </nb-card-body>
+</nb-card>

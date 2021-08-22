@@ -1,0 +1,890 @@
+
+<nb-card>
+  <nb-card-body>
+    <nb-stepper #stepper disableStepNavigation>
+      <nb-step [stepControl]="expideForm1" label="First step">
+          <form (ngSubmit) = "onSubmitExpide1()" #expideForm1="ngForm" class="step-container">
+            <div class="offset-sm-1 col-sm-11">
+              <nb-card>
+                <nb-card-header>
+                  <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des expedition?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../expide-list']"/>
+                  <p></p>
+                  Modifier d'Expédition</nb-card-header>
+                <nb-card-body>
+                    <div class="row">
+                      <div class="col-sm-6"> 
+                        <label for="datExpedition" class="label">Date d'expedition</label>
+                        <input nbInput fullWidth placeholder="DATE_EXPEDITION" [(ngModel)]="expide.datExpedition" id="datExpedition" name="datExpedition" [ngModelOptions]="{standalone: true}" disabled/>
+                      </div>
+                      <div class="col-sm-6"> 
+                      </div>
+                    </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label for="transp" class="label">Transaction</label>
+                      <input type="text" nbInput fullWidth placeholder="TRANSP" [(ngModel)]="expide.transp" id="transp" name="transp" class="form-control" #transp="ngModel" required pattern="^[a-zA-Z0-9 ]+$" minlength="4" maxlength="24" [ngModelOptions]="{standalone: true}" [disabled]="isDisable"/>
+                      <div style="font-size: 12px;" [hidden]="transp.valid || transp.pristine" class="alert alert-danger p-2" *ngIf="!isDisable">
+                        <div [hidden]="!transp.hasError('minlength')">Transp doit contenir au moin 4 carractéres.</div>
+                        <div [hidden]="!transp.hasError('maxlength')">Transp ne doit pas dépasser les 25 carractéres.</div>
+                        <div [hidden]="!transp.hasError('required')">Transp est obligatoir.</div>
+                        <div [hidden]="!transp.hasError('pattern')">Transp ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-6"> 
+                      <label for="matAgent" class="label">Mat agent</label>
+                      <input type="number" nbInput fullWidth placeholder="MAT_AGENT" [(ngModel)]="expide.matAgent" id="matAgent" name="matAgent" class="form-control" #matAgent="ngModel" required pattern="^(0|[1-9][0-9]*)$" min="0" max="9999999" [ngModelOptions]="{standalone: true}" [disabled]="isDisable"/>
+                      <div style="font-size: 12px;" [hidden]="matAgent.valid || matAgent.pristine" class="alert alert-danger p-2" *ngIf="!isDisable">
+                        <div [hidden]="!matAgent.hasError('min')">Mat Agent doit étre positive.</div>
+                        <div [hidden]="!matAgent.hasError('max')">Mat Agent ne doit pas dépasser les limite.</div>
+                        <div [hidden]="!matAgent.hasError('required')">Mat Agent est obligatoir.</div>
+                        <div [hidden]="!matAgent.hasError('pattern')">Mat Agent ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label for="typeDoc" class="label">Type document</label>
+                      <input type="text" nbInput fullWidth placeholder="TYPE_DOC" [(ngModel)]="expide.typeDoc" id="typeDoc" name="typeDoc" class="form-control" #typeDoc="ngModel" required pattern="^[a-zA-Z0-9 ]+$" minlength="2" maxlength="50" [ngModelOptions]="{standalone: true}" [disabled]="isDisable"/>
+                      <div style="font-size: 12px;" [hidden]="typeDoc.valid || typeDoc.pristine" class="alert alert-danger p-2" *ngIf="!isDisable">
+                        <div [hidden]="!typeDoc.hasError('minlength')">Type Doc~ doit avoir au moins 2 carractéres.</div>
+                        <div [hidden]="!typeDoc.hasError('maxlength')">Type Doc~ ne doit pas dépasser les 50 carractéres.</div>
+                        <div [hidden]="!typeDoc.hasError('required')">Type Doc~ est obligatoir.</div>
+                        <div [hidden]="!typeDoc.hasError('pattern')">Type Doc~ ne doit contenir que des lettre et des nombres.</div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="col-sm-6">  
+                      <label for="typExp" class="label">Type d'Expedition</label><p>
+                      <nb-select style="min-width: 100%;" selected="NULL" id="TYP_EXP" [(ngModel)]="expide.typExp" [ngModelOptions]="{standalone: true}" [disabled]="isDisable">
+                        <nb-option value="livraison_voiture">livraison voiture</nb-option>
+                        <nb-option value="sur_comptoir">Sur comptoir</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                </nb-card-body>
+              </nb-card>
+            </div>
+
+            <button nbButton [disabled]="!expide.transp || !expide.matAgent || !expide.typeDoc || !expide.typExp" type="onSubmit" status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" *ngIf="!affectationDisable">Create Expedition</button>
+            <button nbButton nbStepperNext *ngIf="affectationDisable" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger">Affectation</button>
+
+        </form>
+      </nb-step>
+      <nb-step [stepControl]="expideForm2" label="Second step">
+        <form (ngSubmit) = "onSubmitExpide2()" #expideForm2="ngForm" class="step-container">
+          <div class="offset-sm-1 col-sm-11">
+            <nb-card>
+              <nb-card-header>Ajouter les Bon de livraison</nb-card-header>
+              <nb-card-body>
+
+              <!-- liste 1 of the affectation -->
+                <div *ngIf="IFselectedLiv1>=1" class="row">
+                    <div class="full-name-inputs">
+                        Les Livreurs:
+                            <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur1" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis1">
+                                <ng-template pTemplate="selectedItem">
+                                    <div class="country-item country-item-value" *ngIf="selectedLivreur1">
+                                        <div>{{selectedLivreur1.nom}}</div>
+                                    </div>
+                                </ng-template>
+                                <ng-template let-livreur pTemplate="item">
+                                    <div class="country-item">
+                                        <div>{{livreur.nom}}</div>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown> 
+
+                        Vehicule En stock:
+                            <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule1" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis1">
+                                <ng-template pTemplate="selectedItem">
+                                    <div class="country-item country-item-value"  *ngIf="selectedVehicule1">
+                                        <div>{{selectedVehicule1.matricule}}</div>
+                                    </div>
+                                </ng-template>
+                                <ng-template let-vehicule pTemplate="item">
+                                    <div class="country-item">
+                                        <div>{{vehicule.matricule}}</div><span>{{vehicule.observation}}</span>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown> 
+
+                        Bon Livraison:
+                            <div>
+                                <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon11" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis1"></p-multiSelect>
+                        
+                                <button [disabled]="!selectedLivreur1 || !selectedVehicule1 || !selectedBon11 || selectedBon11=='' || dis1" (click)="AddSelectedBon1()" type="button" nbButton size="tiny" status="primary">Valider</button>
+                            </div>
+                    </div>
+                </div>
+
+                <!-- liste 2 of the affectation -->
+
+
+                <div *ngIf="IFselectedLiv1>=2" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur2" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis2">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur2">
+                                  <div>{{selectedLivreur2.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule2" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis2">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule2">
+                                <div>{{selectedVehicule2.matricule}}</div><span>{{selectedVehicule2.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                        </p-dropdown> 
+
+                      Bon Livraison:
+                        <div>
+                            <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon21" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis2"></p-multiSelect>
+                            <button [disabled]="!selectedLivreur2 || !selectedVehicule2 || !selectedBon21 || selectedBon21=='' || dis2" (click)="AddSelectedBon2()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                        </div>
+
+                  </div>
+                </div>
+
+                <!-- liste 3 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=3" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur3" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis3">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur3">
+                                  <div>{{selectedLivreur3.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                        </p-dropdown>  
+
+                        Vehicule En stock:
+                        <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule3" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis3">
+                            <ng-template pTemplate="selectedItem">
+                                <div class="country-item country-item-value"  *ngIf="selectedVehicule3">
+                                    <div>{{selectedVehicule3.matricule}}</div><span>{{selectedVehicule3.observation}}</span>
+                                </div>
+                            </ng-template>
+                            <ng-template let-vehicule pTemplate="item">
+                                <div class="country-item">
+                                    <div>{{vehicule.matricule}}</div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown> 
+
+                        Bon Livraison:
+                        <div>
+                            <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon31" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis3"></p-multiSelect>
+                            <button [disabled]="!selectedLivreur3 || !selectedVehicule3 || !selectedBon31 || selectedBon31=='' || dis3" (click)="AddSelectedBon3()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  
+                        </div>
+                    </div>
+                </div>
+
+                <!-- liste 4 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=4" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur4" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis4">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur4">
+                                  <div>{{selectedLivreur4.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule4" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis4">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule4">
+                                <div>{{selectedVehicule4.matricule}}</div><span>{{selectedVehicule4.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                        Bon Livraison:
+                        <div>
+                            <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon41" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis4"></p-multiSelect>
+
+                            <button [disabled]="!selectedLivreur4 || !selectedVehicule4 || !selectedBon41 || selectedBon41=='' || dis4" (click)="AddSelectedBon4()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- liste 5 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=5" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur5" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis5">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur5">
+                                  <div>{{selectedLivreur5.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule5" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis5">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule5">
+                                <div>{{selectedVehicule5.matricule}}</div><span>{{selectedVehicule5.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                    <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon51" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis6"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur5 || !selectedVehicule5 || !selectedBon51 || selectedBon51=='' || dis5" (click)="AddSelectedBon5()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- liste 6 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=6" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur6" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis6">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur6">
+                                  <div>{{selectedLivreur6.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule6" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis6">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule6">
+                                <div>{{selectedVehicule6.matricule}}</div><span>{{selectedVehicule6.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                    <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon61" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis6"></p-multiSelect>
+                      <button [disabled]="!selectedLivreur6 || !selectedVehicule6 || !selectedBon61 || selectedBon61=='' || dis6" (click)="AddSelectedBon6()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- liste 7 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=7" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur7" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis7">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur7">
+                                  <div>{{selectedLivreur7.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule7" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis7">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule7">
+                                <div>{{selectedVehicule7.matricule}}</div><span>{{selectedVehicule7.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon71" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis7"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur7 || !selectedVehicule7 || !selectedBon71 || selectedBon71=='' || dis7" (click)="AddSelectedBon7()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  
+                    </div>
+                  </div>
+                </div>
+
+                <!-- liste 8 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=8" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur8" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis8">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur8">
+                                  <div>{{selectedLivreur8.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule8" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis8">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule8">
+                                <div>{{selectedVehicule8.matricule}}</div><span>{{selectedVehicule8.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon81" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis8"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur8 || !selectedVehicule8 || !selectedBon81 || selectedBon81=='' || dis8" (click)="AddSelectedBon8()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- liste 9 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=9" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur9" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis9">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur9">
+                                  <div>{{selectedLivreur9.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule9" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis9">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule9">
+                                <div>{{selectedVehicule9.matricule}}</div><span>{{selectedVehicule9.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon91" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}"  [disabled]="dis9"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur9 || !selectedVehicule9 || !selectedBon91 || selectedBon91=='' || dis9" (click)="AddSelectedBon9()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- liste 10 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=10" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur10" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}"  [disabled]="dis10">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur10">
+                                  <div>{{selectedLivreur10.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule10" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis10">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule10">
+                                <div>{{selectedVehicule10.matricule}}</div><span>{{selectedVehicule10.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                    <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon101" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis10"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur10 || !selectedVehicule10 || !selectedBon101 || selectedBon101=='' || dis10" (click)="AddSelectedBon10()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+
+                </div>
+
+                <!-- liste 11 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=11" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur11" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis11">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur11">
+                                  <div>{{selectedLivreur11.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule11" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis11">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule11">
+                                <div>{{selectedVehicule11.matricule}}</div><span>{{selectedVehicule11.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                    <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon111" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis11"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur11 || !selectedVehicule11 || !selectedBon111 || selectedBon111=='' || dis11" (click)="AddSelectedBon11()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+                </div>
+
+                <!-- liste 12 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=12" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur12" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis12">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur12">
+                                  <div>{{selectedLivreur12.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule12" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis12">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule12">
+                                <div>{{selectedVehicule12.matricule}}</div><span>{{selectedVehicule12.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon121" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis12"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur12 || !selectedVehicule12 || !selectedBon121 || selectedBon121=='' || dis12" (click)="AddSelectedBon12()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+                </div>
+
+                <!-- liste 13 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=13" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur13" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis13">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur13">
+                                  <div>{{selectedLivreur13.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule13" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis13">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule13">
+                                <div>{{selectedVehicule13.matricule}}</div><span>{{selectedVehicule13.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon131" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis13"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur13 || !selectedVehicule13 || !selectedBon131 || selectedBon131=='' || dis13" (click)="AddSelectedBon13()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+                </div>
+
+                <!-- liste 14 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=14" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur14" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis14">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur14">
+                                  <div>{{selectedLivreur14.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule14" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis14">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule14">
+                                <div>{{selectedVehicule14.matricule}}</div><span>{{selectedVehicule14.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon141" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis14"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur14 || !selectedVehicule14 || !selectedBon141 || selectedBon141=='' || dis14" (click)="AddSelectedBon14()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+                </div>
+
+                <!-- liste 15 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=15" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur15" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis15">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur15">
+                                  <div>{{selectedLivreur15.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule15" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis15">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule15">
+                                <div>{{selectedVehicule15.matricule}}</div><span>{{selectedVehicule15.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon151" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis15"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur15 || !selectedVehicule15 || !selectedBon151 || selectedBon151=='' || dis15" (click)="AddSelectedBon15()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+                </div>
+
+                <!-- liste 16 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=16" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur16" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis16">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur16">
+                                  <div>{{selectedLivreur16.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule16" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis16">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule16">
+                                <div>{{selectedVehicule16.matricule}}</div><span>{{selectedVehicule16.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon161" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis16"></p-multiSelect>
+                      <button [disabled]="!selectedLivreur16 || !selectedVehicule16 || !selectedBon161 || selectedBon161=='' || dis16" (click)="AddSelectedBon16()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+                </div>
+
+                <!-- liste 17 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=17" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur17" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis17">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur17">
+                                  <div>{{selectedLivreur17.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule17" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis17">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule17">
+                                <div>{{selectedVehicule17.matricule}}</div><span>{{selectedVehicule17.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon171" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis17"></p-multiSelect>
+                     
+                      <button [disabled]="!selectedLivreur17 || !selectedVehicule17 || !selectedBon171 || selectedBon171=='' || dis17" (click)="AddSelectedBon17()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+                </div>
+
+                <!-- liste 18 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=18" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur18" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis18">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur18">
+                                  <div>{{selectedLivreur18.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule18" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis18">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule18">
+                                <div>{{selectedVehicule18.matricule}}</div><span>{{selectedVehicule18.observation}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon181" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis18"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur18 || !selectedVehicule18 || !selectedBon181 || selectedBon181=='' || dis18" (click)="AddSelectedBon18()" type="button" nbButton size="tiny" status="primary" >Valider</button>
+                  </div></div>
+                </div>
+
+                <!-- liste 19 of the affectation -->
+
+                <div *ngIf="IFselectedLiv1>=19" class="row">
+                  <div class="full-name-inputs">
+                        Les Livreurs:
+                        <p-dropdown [options]="LivreurList" [(ngModel)]="selectedLivreur19" optionLabel="nom" [filter]="true" filterBy="nom" [showClear]="true" placeholder="Choisir livreur" [ngModelOptions]="{standalone: true}" [disabled]="dis19">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value" *ngIf="selectedLivreur19">
+                                  <div>{{selectedLivreur19.nom}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-livreur pTemplate="item">
+                              <div class="country-item">
+                                  <div>{{livreur.nom}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>  
+
+                      Vehicule En stock:
+                      <p-dropdown [options]="VehiculeList" [(ngModel)]="selectedVehicule19" optionLabel="matricule" [filter]="true" filterBy="matricule" [showClear]="true" placeholder="Choisir Vehicule" [ngModelOptions]="{standalone: true}" [disabled]="dis19">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value"  *ngIf="selectedVehicule19">
+                                <div>{{selectedVehicule19.matricule}}</div><span>{{selectedVehicule.observation19}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-vehicule pTemplate="item">
+                            <div class="country-item">
+                                <div>{{vehicule.matricule}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown> 
+
+                      Bon Livraison:
+                      <div>
+                      <p-multiSelect [options]="BonLivList" [(ngModel)]="selectedBon191" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}" [disabled]="dis19"></p-multiSelect>
+                      
+                      <button [disabled]="!selectedLivreur19 || !selectedVehicule19 || !selectedBon191 || selectedBon191=='' || dis19" type="button" nbButton size="tiny" status="primary" (click)="AddSelectedBon19()">Valider</button>
+                  </div></div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-lg-1">
+                    <button [disabled]="switchMe" *ngIf="IFselectedLiv1!=19" (click)="AddLivreur()" type="button" nbButton status="primary">+</button>
+                  </div>
+                </div>
+            
+                <button nbButton type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" nbStepperPrevious>prev</button>
+                <button nbButton (click)="gotoListExpide()" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info">Terminer l'expedition</button>
+              
+              
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </form>
+      </nb-step>
+    </nb-stepper>
+  </nb-card-body>
+</nb-card>
+
+
+
+
+
+
+
+
+
+<!--  PROGRESSIVE  bar  -->
+
+          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+          <p class="p-m-0"> 
+            <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+          </p>
+          </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->
+
+

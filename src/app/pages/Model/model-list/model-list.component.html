@@ -1,0 +1,65 @@
+<nb-card>
+  <nb-card-header>
+      <img *ngIf="marque_id" src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des models ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../model-list']"/>
+    <p>
+    </p>
+    Models Table
+    <nb-card-body>
+    </nb-card-body>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="container">
+      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="text-align: center">
+            <label class="label">Code</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Code"
+              style="width:150px" [(ngModel)]="searchTermCode"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Title</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Title"
+              style="width:150px" [(ngModel)]="searchTermTitle"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Marque</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Marque"
+              style="width:150px" [(ngModel)]="searchTermMarque"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Logo</label>
+          </th>
+          <th style="text-align: center"><label class="label">Actions</label></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let model of filteredModels | filter:searchText">
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{model.code}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{model.title}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{model.marque.title}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+model.marque.id}}" style="height: 85px;width: 85px" alt=""></a></td>
+
+          <td class="field-multiple-drag">
+            <div class="buttons-row">
+            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(model.id)" outline>
+              <i class="fa fa-edit"></i>Modifier</button>
+            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(model.id)" outline>
+              <i class="fa fa-remove"></i>Supprimer</button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

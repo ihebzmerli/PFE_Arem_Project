@@ -1,0 +1,108 @@
+
+<nb-card>
+  <nb-card-header>
+    Chariot table
+    <nb-card-body>
+
+        <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" class="btn btn-md btn-outline-primary" (click)="goToCharts()">
+          <i class="fa fa-user"></i>Statistiques</button>
+    </nb-card-body>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="container">
+      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="text-align: center">
+            <label class="label">NUM CHARIOT</label>
+            <div style="width:100px" class="form-group">
+              <input type="text" class="form-control" placeholder="search NumChar"
+              style="width:150px" style="align-items: center;" [(ngModel)]="searchTermNumChar" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">CALL CHARIOT</label>
+            <div class="form-group">
+              <button (click)="openWindowForm()" class="btn btn-md btn-outline-primary">
+                <i class="fa fa-user"></i>Recherche entre date</button>  
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">ETAT CHARIOT</label>
+            <div style="width:130px" class="form-group">
+              <nb-select style="width:130px" id="listEtatCha" fullWidth fieldSize="small" (selectedChange)="getAllListEtatCha($event)">
+                <nb-option value="">-Annuler Filter-</nb-option>
+                <nb-option *ngFor="let itemsEtatCha of statusessEtatCha" [value]="itemsEtatCha.value">
+                  <span *ngIf="itemsEtatCha.label=='occuper'" class="p-mb-3 p-text-italic" style="color: rgb(209, 102, 102);" >Occuper</span>
+                  <span *ngIf="itemsEtatCha.label=='en attente'" class="p-mb-3 p-text-italic" style="color:rgb(135, 233, 135);">En Attente</span>
+                  <span *ngIf="itemsEtatCha.label=='en panne'" style="color:rgb(117, 110, 110);">Hors Service</span></nb-option>
+              </nb-select>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_DECIDEUR_BP' || 'ROLE_VALIDATEUR_DE_CHARIOT' || 'ROLE_PREPARATEUR' || 'ROLE_RESPONSABLE_POINTAGE' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+            <label class="label">Pointage de Chariot</label>
+            <div class="form-group">
+              <nb-select style="width:170px" id="listPointage" fullWidth fieldSize="small" (selectedChange)="getAllListEtatCha($event)">
+                <nb-option value="">-Annuler Filter-</nb-option>
+                <nb-option *ngFor="let itemsPointage of statusessPointage" [value]="itemsPointage.value">                  
+                  <button nbButton *ngIf="itemsPointage.label=='pointer'" type="button" size="small" [status]="success" class="btn btn-md btn-outline-success" hero>
+                     déja pointé
+                  </button>
+                  <button nbButton *ngIf="itemsPointage.label=='non_pointer'" type="button" size="small" [status]="warning" class="btn btn-md btn-outline-warning" hero>
+                    Valider pointage
+                  </button>
+                  <button nbButton *ngIf="itemsPointage.label=='hors_pointer'" type="button" size="small" [status]="danger" class="btn btn-md btn-outline-danger" hero>
+                    mettre en service
+                  </button>
+                </nb-option>
+              </nb-select>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Actions</label>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let chariot of filteredChariots | filter:searchText">
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{chariot.numChar}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="chariot.callChariot;else Dont"><p>{{chariot.callChariot | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td><ng-template #Dont><p style="color: rgb(176, 180, 175);font-size: 13px;">ce chariot n a pas effectué aucune fonctionalité!</p></ng-template>
+          <td style="text-align: center" class="field-multiple-drag">
+            <span *ngIf="chariot.etat_char=='occuper'" class="p-mb-3 p-text-italic" style="color: rgb(209, 102, 102);" >Occuper</span>
+            <span *ngIf="chariot.etat_char=='en_attente'" class="p-mb-3 p-text-italic" style="color:rgb(135, 233, 135);">En Attente</span>
+            <span *ngIf="chariot.etat_char=='en_panne'" class="p-mb-3 p-text-italic" style="color:rgb(117, 110, 110);">Hors Service</span>
+          </td>
+
+
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_VALIDATEUR_DE_CHARIOT' || 'ROLE_PREPARATEUR' || 'ROLE_RESPONSABLE_POINTAGE')" style="text-align: center" class="field-multiple-drag">
+            <span><p>
+                
+              <button nbButton *ngIf="chariot.etat_char=='en_attente'" type="button" [status]="success" class="btn btn-md btn-outline-success" disabled hero>
+                Chariot déja pointé
+              </button>
+              <button nbButton *ngIf="chariot.etat_char=='occuper'" type="button" (click)="OpenValidationPopap(chariot.numChar)" [status]="warning" class="btn btn-md btn-outline-warning" hero>
+                Valider pointage Chariot?
+              </button>
+              <button nbButton *ngIf="chariot.etat_char=='en_panne'" type="button" (click)="OpenMettreEnServicePopap(chariot.numChar)" [status]="danger" class="btn btn-md btn-outline-danger" hero>
+                mettre le chariot en service
+              </button>
+            </p></span>
+          </td>
+          <td class="field-multiple-drag">
+            <div class="buttons-row">
+              <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['chariot-detail',chariot.numChar]" outline>
+              <i class="fa fa-search"></i>Details</button>
+              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(chariot.numChar)" outline>
+              <i class="fa fa-edit"></i>Modifier</button>
+              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(chariot.numChar)" outline>
+              <i class="fa fa-remove"></i>Supprimer</button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

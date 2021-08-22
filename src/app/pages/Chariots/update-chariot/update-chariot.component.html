@@ -1,0 +1,36 @@
+<div class="accordions-container row offset-sm-2 col-sm-9">
+    <form (ngSubmit) = "onSubmitBon()" #chariotForm="ngForm">
+        <nb-card>
+            <nb-card-header>
+                <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Chariot?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../chariot-list']"/>
+                <p></p>
+                Modification de Chariot
+            </nb-card-header>
+              <nb-card-body>  
+                <div class="row">
+                    <div class="col-sm-6"> 
+                        <label for="datchariot" class="label">date Creation chariot</label> <p>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{chariot.datchariot | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+                            
+
+                        <label for="etat_char" class="label">Type Préparation</label>
+                        <nb-select fullWidth selected="0" #etat_char="ngModel" id="etat_char" name="etat_char" required [(ngModel)]="chariot.etat_char" >
+                            <nb-option value="en_attente" style="color: rgb(9, 129, 5);font-size: 10px;">Chariot en attent</nb-option>
+                            <nb-option value="occuper" style="color: rgb(177, 194, 26);font-size: 10px;">Chariot occuper</nb-option>
+                            <nb-option value="en_panne" style="color: darkred;font-size: 10px;">Chariot en panne</nb-option>
+                        </nb-select>
+                        <div style="font-size: 12px;" [hidden]="etat_char.valid || etat_char.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!etat_char.hasError('required')">date chariot est obligatoire.</div>
+                        </div>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+        <div class="col-sm-6">
+            <button [disabled]=!chariotForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+            Modifier le chariot</button>
+            <button nbButton (click)="chariotForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+            Annuler</button> 
+        </div>
+    </form>
+</div>

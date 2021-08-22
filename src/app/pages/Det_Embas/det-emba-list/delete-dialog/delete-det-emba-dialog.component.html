@@ -1,0 +1,9 @@
+<nb-card>
+  <nb-card-body>
+    Etes vous sure de vouloir supprimer ?
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="success" (click)="cancel()">Cancel</button>
+    <button class="cancel" nbButton status="danger" (click)="submitDelete()" [routerLink]="['../../det-emba-list']">Supprimer emmbalage</button>
+  </nb-card-footer>
+</nb-card>

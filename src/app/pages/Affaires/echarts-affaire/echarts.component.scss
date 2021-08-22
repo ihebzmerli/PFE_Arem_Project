@@ -1,0 +1,15 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  ngx-echarts-affaire-pie,
+  ngx-echarts-affaire-bar {
+    display: block;
+    height: nb-theme(card-height-medium);
+    width: 100%;
+  }
+
+  ::ng-deep .echart {
+    height: 100%;
+    width: 100%;
+  }
+}

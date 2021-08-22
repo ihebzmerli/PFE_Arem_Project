@@ -1,0 +1,49 @@
+<div class="accordions-container row offset-sm-1 col-sm-13">
+  <form [formGroup]="detembaForm" (ngSubmit) = "onSubmit()">
+    <nb-card>
+      <nb-card-header>Ajouter Emballage<p class="col-sm-6">Date de création:<input type="text" nbInput fullWidth class="form-control" formControlName="dateEmba" [ngClass]="{ 'is-invalid': submitted && f.dateEmba.errors }" disabled/></p>
+      </nb-card-header>
+        <nb-card-body>          
+          <div class="row">
+              <div class="col-sm-6"> 
+                <label for="num" class="label">Num</label> 
+                <input type="number" nbInput fullWidth placeholder="Numéreau" class="form-control" formControlName="num" [ngClass]="{ 'is-invalid': submitted && f.num.errors }" />
+                <div *ngIf="submitted && f.num.errors" class="invalid-feedback">
+                  <div *ngIf="f.num.errors.required">N~ emballage est obligatoire.</div>
+                  <div *ngIf="f.num.errors.min">N~ emballage est positive.</div>
+                  <div *ngIf="f.num.errors.max">N~ emballage ne dépasse pas le maximum.</div>
+                  <div *ngIf="f.num.errors.pattern">N~ emballage doit étre seulement un nombre.</div>
+                </div>
+              </div>
+              <div class="col-sm-6"> 
+                <label for="qut" class="label">qut</label> 
+                <input type="number" nbInput fullWidth placeholder="Quantité" class="form-control" formControlName="qut" [ngClass]="{ 'is-invalid': submitted && f.qut.errors }" />
+                <div *ngIf="submitted && f.qut.errors" class="invalid-feedback">
+                  <div *ngIf="f.qut.errors.required">qut~ emballage est obligatoire.</div>
+                  <div *ngIf="f.qut.errors.min">qut~ emballage est positive.</div>
+                  <div *ngIf="f.qut.errors.max">qut~ emballage ne dépasse pas le maximum.</div>
+                  <div *ngIf="f.qut.errors.pattern">qut~ emballage doit étre seulement un nombre.</div>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-6"> 
+                <label for="bonprep_detEmbas" class="label">Bon préparation</label>
+                <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small" formControlName="bonprep_detEmbas" [ngClass]="{ 'is-invalid': submitted && f.bonprep_detEmbas.errors }" >
+                  <nb-option value="NULL">-Select</nb-option>
+                  <nb-option *ngFor="let itemsBon of BonPrepList" [value]="itemsBon.numBon"><span>Bon: {{ itemsBon.numBon }}</span></nb-option>
+                </nb-select>
+              </div>
+              <div class="col-sm-6"> 
+
+              </div>
+          </div>
+      </nb-card-body>
+    </nb-card>
+    <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+      Ajouter Emballage</button>
+      <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+      Annuler</button>
+  </form>
+</div>
+

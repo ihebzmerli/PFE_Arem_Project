@@ -1,0 +1,583 @@
+
+
+<!--table art Liv-->
+
+<nb-card>
+  <nb-card-body>
+        <div>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Bon de Sortie?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../../bon-liv-list']"/>
+          <p></p>
+          <h4>Details de Bon Livraison</h4>
+          <nb-card-header>
+                <div><b>Code Bon Livraison : </b>{{ bonliv.numBon }}</div>
+
+                <div><b>Date Bon Livraison : </b>{{ bonliv.datBon | date: 'MMM d, y, h:mm:ss a' :'+0000'}}</div>
+            </nb-card-header>
+        </div>
+        <p>Table  des Articles appartient a la livraison</p>
+<!-- bon livraison recu -->
+        <div *ngIf="bonliv.trans_action=='recu'">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    N~ Command 
+                  </div>
+                </th>                  
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Raison Command
+                    </div>
+                  </th>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Date Command 
+                    </div>
+                  </th>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Type Command
+                    </div>
+                  </th>  
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      fournisseur
+                    </div>
+                  </th> 
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Adresse Fournisseur
+                    </div>
+                  </th>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Telephone fournisseur
+                    </div>
+                  </th>  
+                  
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Fax fournisseur
+                    </div>
+                  </th> 
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      l'emplacement
+                    </div>
+                  </th>                       
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <label (click)="showPositionDialogNumCom('right')">{{ bonliv.numCom.numCom }}</label>
+                  <p-dialog header="Definition Num Com" [(visible)]="displayPositionNumCom" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p>Numéro de command</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionNumCom=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+                <td>
+                  <label (click)="showPositionDialogRaison('right')">{{ bonliv.numCom.raison }}</label>
+                  <p-dialog header="Definition Raison" [(visible)]="displayPositionRaison" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p>.</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionRaison=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+                <td>
+                  <label (click)="showPositionDialogDatCom('bottom')">{{ bonliv.numCom.datCom | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                  <p-dialog header="Definition Dat Com" [(visible)]="displayPositionDatCom" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p>.</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionDatCom=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+                <td>
+                  <label (click)="showPositionDialogTypCom('bottom')">{{ bonliv.numCom.typCom }}</label>
+                  <p-dialog header="Definition Typ Com" [(visible)]="displayPositionTypCom" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p>.</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionTypCom=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+                <td>
+                  <label (click)="showPositionDialogCodFrs('bottom')">{{ bonliv.numCom.fournis.codFrs }}</label>
+                  <p-dialog header="Définition Cod Frs" [(visible)]="displayPositionCodFrs" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p>.</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionCodFrs=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+                <td>
+                  <label (click)="showPositionDialogAdresse('left')">{{ bonliv.numCom.fournis.adresse}}</label>
+                  <p-dialog header="Définition Adresse" [(visible)]="displayPositionAdresse" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p>.</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionAdresse=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+                <td>
+                  <label (click)="showPositionDialogTel('left')">{{ bonliv.numCom.fournis.tel}}</label>
+                  <p-dialog header="Définition Tel" [(visible)]="displayPositionTel" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p>.</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionTel=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+                <td>
+                  <label (click)="showPositionDialogFax('left')" styleClass="p-button-warning">{{ bonliv.numCom.fournis.fax }}</label>
+                  <p-dialog header="Définition Fax" [(visible)]="displayPositionFax" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p>.</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionFax=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+                <td>
+                  <label (click)="showPositionDialogPaye('left')">{{ bonliv.numCom.fournis.paye }}</label>
+                  <p-dialog header="Définition Paye" [(visible)]="displayPositionPaye" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">
+                  <p> .</p>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayPositionPaye=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      </ng-template>
+                  </p-dialog>
+                </td>
+              </tr>
+              </tbody>
+              </table>
+        </div>
+
+
+        <!-- bon livraison envoyer -->
+      <div *ngIf="bonliv.trans_action=='envoyer'">
+        <p-table #dt1 [value]="artlivs" dataKey="id"
+            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['cod_art','qutLiv','remise','prixHt','tva','totHt','marge','typArt','cumulRet','prixAch','remExp','centre']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex">
+                    <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                    <span class="p-input-icon-left p-ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Code Article 
+                      <div>
+                        <p-columnFilter type="text" field="cod_art" display="menu"></p-columnFilter>
+                      </div>
+                    </div>
+                  </th>                  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Quantité Livrai 
+                        <div>
+                          <p-columnFilter type="numeric" field="qutLiv" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Remise 
+                        <div>
+                          <p-columnFilter type="numeric" field="remise" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Prix Ht
+                        <div> 
+                          <p-columnFilter type="numeric" field="prixHt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Tva
+                        <div> 
+                          <p-columnFilter type="numeric" field="tva" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Tot Ht
+                        <div> 
+                          <p-columnFilter type="numeric" field="totHt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Marge
+                        <div> 
+                          <p-columnFilter type="numeric" field="marge" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>  
+                    
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Typ Article
+                        <div> 
+                          <p-columnFilter type="text" field="typArt" display="menu" ></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Cumul Ret
+                        <div> 
+                          <p-columnFilter type="numeric" field="cumulRet" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Prix Ach
+                        <div> 
+                          <p-columnFilter type="numeric" field="prixAch" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Rem Exp
+                        <div>
+                          <p-columnFilter type="numeric" field="remExp" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Centre
+                        <div>
+                          <p-columnFilter type="text" field="centre" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    
+                </tr>
+            </ng-template>
+
+
+            <ng-template pTemplate="body" let-artliv>
+                  <tr>
+                    <td>
+                      <label (click)="showModalDialog(artliv.cod_art)">{{ artliv.cod_art }}<img src="{{this.articleService.host+'/api/Imgarticles/'+artliv.cod_art}}" width="40" style="vertical-align: middle" /></label>
+
+                      <p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <div style="text-align: center" class="field-multiple-drag" *ngIf="displayModal==true">
+                        <li>                
+                          <span class="image-text"><b class="p-mb-3 p-text-light">Marque article :</b> {{artic.marque.title}}&nbsp;&nbsp;<img style="width:40px;height: 40px;" src="{{this.marqueService.host+'/api/Imgmarques/'+artic.marque.id}}" [alt]="artic.marque.title"/></span>                      
+                        </li> 
+                        <li>
+                          <span class="image-text"><b class="p-mb-3 p-text-light">Model article :</b>&nbsp;{{artic.model.title}}</span>
+                        </li>
+                      </div>
+                      <div>
+                        <p style="text-align: center" class="field-multiple-drag"><img src="{{this.articleService.host+'/api/Imgarticles/'+image_id}}" style="width:250px;" /></p>
+                      </div>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayModal=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                  </td>
+                    <td>
+                      <label (click)="showPositionDialogQutLiv('right')">{{ artliv.qutLiv }}</label>
+                      <p-dialog header="Definition Qut Liv" [(visible)]="displayPositionQutLiv" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Quantité c'est la quantité d'Article preparer par L'Agent de Préparation</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionQutLiv=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogRemise('right')">{{ artliv.remise | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Definition Remise" [(visible)]="displayPositionRemise" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>une remise est la déduction que fait un commerçant sur le prix facturé, en raison, par exemple, de ce que l'acheteur a payé au comptant, en raison encore de qu'il a fait un achat d'une valeur importante, soit encore parce que la marchandise était déclassée.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionRemise=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogPrixHt('bottom')">{{ artliv.prixHt | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Definition Prix Ht" [(visible)]="displayPositionPrixHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le prix hors taxe (HT) est celui qui est facturé au client sans tenir compte des différentes taxes prélevées par l'État,Le HT se rencontre dans les cas d'auto-liquidation de la TVA ou d'opérations en duty free.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrixHt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogTva('bottom')">{{ artliv.tva}} %</label>
+                      <p-dialog header="Definition Prix Ht" [(visible)]="displayPositionTva" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La TVA est une taxe qui vient s'ajouter au prix de tous les produits qui y sont assujettis, c'est-à-dire la quasi-totalité. ... Il permet ainsi aux entreprises de déduire des sommes à reverser à l'État le montant de la TVA qu'elles ont acquitté sur leurs achats. Au final, seul le consommateur final supporte la TVA.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionTva=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogTotHt('bottom')">{{ artliv.totHt | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Tot Ht" [(visible)]="displayPositionTotHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>HT signifie Hors Taxe. La mention HT permet d'indiquer qu'un prix ne comprend pas la Taxe sur la Valeur Ajoutée.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionTotHt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogMarge('left')">{{ artliv.marge | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Marge" [(visible)]="displayPositionMarge" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La marge commerciale est la différence entre le prix de vente des marchandises et le coût d'achat de ces marchandises vendues.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionMarge=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      {{ artliv.typArt}}
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogCumulRet('left')">{{ artliv.cumulRet | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Cumul Ret" [(visible)]="displayPositionCumulRet" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Produit mis en vente.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionCumulRet=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogPrixAch('left')" styleClass="p-button-warning">{{ artliv.prixAch | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Prix Ach" [(visible)]="displayPositionPrixAch" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le prix d'achat correspond au prix auquel le fournisseur ou le producteur vend son produit,Sur une facture, cela correspond au prix brut unitaire. Ce prix est exprimé hors taxes. Le coût d'achat correspond au prix d'achat auquel on ajoute les frais d'achat.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrixAch=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      {{ artliv.remExp | currency:'TND ':'symbol'}}
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogCentre('left')">{{ artliv.centre}}</label>
+                      <p-dialog header="Définition Centre" [(visible)]="displayPositionCentre" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le centre de Préparation de Article .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionCentre=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    
+                  </tr>
+            </ng-template>
+          
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="12">No bonlivs found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+      </div>
+      </nb-card-body>
+</nb-card>
+
+<!--table art Term-->
+<div *ngIf="bonliv.trans_action!=='recu'">
+<nb-card>
+<nb-card-body>
+        <h5>Filter Menu</h5>
+        <p>Table  des Terms Articles</p>
+        <p-table #dt1 [value]="artterms" dataKey="numBonFac"
+            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['numBonFac','numBon','date','netHt','tva','totTtc','montTrs']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex">
+                    <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                    <span class="p-input-icon-left p-ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        N~ Term
+                          <div><p-columnFilter type="text" field="numBonFac" display="menu"></p-columnFilter></div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        N~ Doc
+                        <div><p-columnFilter type="numeric" field="numBon" display="menu" ></p-columnFilter></div>
+                      </div>
+                    </th>  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Date
+                        <div><p-columnFilter type="date" field="date" display="menu"></p-columnFilter></div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Net HT
+                        <div><p-columnFilter type="numeric" field="netHt" display="menu" currency="TND"></p-columnFilter></div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Tva
+                        <div><p-columnFilter type="numeric" field="tva" display="menu"></p-columnFilter></div>
+                      </div>
+                    </th>  
+                    
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Tot Ttc
+                        <div><p-columnFilter type="numeric" field="totTtc" display="menu" currency="TND"></p-columnFilter></div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Mont Trs
+                        <div><p-columnFilter type="numeric" field="montTrs" display="menu" currency="TND"></p-columnFilter></div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Doc Facture
+                      </div>
+                    </th>                     
+                </tr>
+            </ng-template>
+
+
+            <ng-template pTemplate="body" let-artterm>
+                  <tr>
+                    <td>
+                      <label (click)="showPositionDialogNumBonFac('left')">{{ artterm.numBonFac }}</label>
+                      <p-dialog header="Définition NumBonFac" [(visible)]="displayPositionNumBonFac" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le Numéreau de Bon Facture de Préparation de Article .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionNumBonFac=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogNumBon('left')">{{ artterm.numBon}}</label>
+                      <p-dialog header="Définition Numéreau de bon de Préparation" [(visible)]="displayPositionNumBon" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le Numéreau de Bon de Preparation de Article .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionNumBon=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogDate('left')">{{ artterm.date | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                      <p-dialog header="Définition Date" [(visible)]="displayPositionDate" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La date de Bon de Preparation de Article .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionDate=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogNetHt('left')">{{ artterm.netHt | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Net Ht" [(visible)]="displayPositionNetHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>C’est la somme des montants hors taxes et des frais divers diminuée de la réduction globale. TOTAL HT = somme des montants HT - réduction globale + frais divers Le total hors taxes correspond à la base d’imposition à la TVA des opérations taxables.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionNetHt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogTva2('left')">{{ artterm.tva }}%</label>
+                      <p-dialog header="Définition Tva" [(visible)]="displayPositionTva2" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La TVA est une taxe qui vient s'ajouter au prix de tous les produits qui y sont assujettis, c'est-à-dire la quasi-totalité. ... Il permet ainsi aux entreprises de déduire des sommes à reverser à l'État le montant de la TVA qu'elles ont acquitté sur leurs achats. Au final, seul le consommateur final supporte la TVA.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionTva2=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogTotTtc('left')">{{ artterm.totTtc | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Tot Ttc" [(visible)]="displayPositionTotTtc" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>(TTC) est utilisée pour désigner un prix sur lequel toutes les taxes dues par le client sont prises en compte. Le prix TTC prend en compte la taxe sur la valeur ajoutée ou TVA. ... Le prix TTC est donc supérieur au prix hors taxe (souvent désigné par l'acronyme HT).</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionTotTtc=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label (click)="showPositionDialogMontTrs('left')">{{ artterm.montTrs | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Mont Trs" [(visible)]="displayPositionMontTrs" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le taux de rendement synthétique (ou TRS) est un indicateur destiné à suivre le taux d'utilisation de machines.Il est défini par la formule :
+          
+                        TRS = Production réelle / production maximum théorique
+                        La définition du TRS est un standard propre à chaque organisation qui le définit. Ainsi, pour une situation donnée, le TRS calculé sera différent selon les organisations qui le calculent.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionMontTrs=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      {{ artterm.facture.numDoc}}
+                    </td>
+                  </tr>
+            </ng-template>
+          
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="9">No Details bonlivs found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+  </nb-card-body>
+  </nb-card>
+</div>

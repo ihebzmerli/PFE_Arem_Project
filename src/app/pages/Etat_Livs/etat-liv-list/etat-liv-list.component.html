@@ -1,0 +1,85 @@
+<nb-card>
+  <nb-card-header>
+    Etat livraison Table
+    <nb-card-body>
+      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_LIVREUR')" class="border">
+        <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
+          <i class="fa fa-user"></i>Statistiques</button>
+      </div>      
+    </nb-card-body>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="container">
+      Recherche Table: <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+
+          <th style="text-align: center">
+            <label class="label">N~ Bon livraison</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search NumBon"
+              style="width:150px" [(ngModel)]="searchTermNumBon"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Date Bon livraison</label>
+          </th>
+
+          <th style="text-align: center">
+            <label class="label">region</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By Region"
+              style="width:150px" [(ngModel)]="searchTermRegion"/>
+            </div>
+          </th>
+          
+          <th style="text-align: center">
+            <label class="label">Etat</label>
+            <div class="form-group">
+              <nb-select style="width:170px" id="listEtat" fullWidth fieldSize="small" (selectedChange)="getAllListEtat($event)">
+                <nb-option value="">-Annuler Filter-</nb-option>
+                <nb-option *ngFor="let itemsEtat of statusessEtat" [value]="itemsEtat.value">
+                  <span *ngIf="itemsEtat.label=='un_problem_a_la_reception'" class="p-mb-3 p-text-italic" style="color:darkred;">Un problem à la livraison</span>
+                  <span *ngIf="itemsEtat.label=='n_est_pas_recu'" class="p-mb-3 p-text-italic" style="color: rgb(221, 235, 23);">Livraison n'est pas reçu</span>
+                  <span *ngIf="itemsEtat.label=='recu_non_verifier'" class="p-mb-3 p-text-italic" style="color:rgb(134, 241, 134);">Livraison recu mais pas verifier</span>
+                  <span *ngIf="itemsEtat.label=='recu_est_verifier'" class="p-mb-3 p-text-italic" style="color:darkgreen;">Livraison recu est verifier</span></nb-option>
+              </nb-select>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">date derniére Etat</label>
+          </th>
+          <th style="text-align: center"><label class="label">Actions</label></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let etatliv of filteredEtatLivs | filter:searchText">
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{etatliv.bonLiv.numBon}}</p></span></td> 
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{etatliv.bonLiv.datBon | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{etatliv.region}}</p></span></td>
+          
+          <td *ngIf="etatliv.confirmation=='un_problem_a_la_reception'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:darkred;">Un problem à la livraison</div></span></td>
+          <td *ngIf="etatliv.confirmation=='n_est_pas_recu'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color: rgb(221, 235, 23);" >Livraison n'est pas reçu</div></span></td>  
+          <td *ngIf="etatliv.confirmation=='recu_non_verifier'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:rgb(134, 241, 134);">Livraison recu mais pas verifier</div></span></td>
+          <td *ngIf="etatliv.confirmation=='recu_est_verifier'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:darkgreen;">Livraison recu est verifier</div></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{etatliv.date | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+
+          <td class="field-multiple-drag">
+            <div class="buttons-row">
+            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_LIVREUR' || 'ROLE_EXPEDITEUR' || 'ROLE_VENDEUR' || 'ROLE_ACHETEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['etat-liv-detail',etatliv.id]" outline>
+              <i class="fa fa-search"></i>Details</button>
+            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_LIVREUR' || 'ROLE_ACHETEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" [routerLink]="['update-etat-liv',etatliv.id]" outline>
+              <i class="fa fa-edit"></i>Modifier</button>
+            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap()" outline>
+              <i class="fa fa-remove"></i>Supprimer</button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

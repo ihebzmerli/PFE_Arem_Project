@@ -1,0 +1,840 @@
+<div class="row">
+    
+    <div class="offset-sm-2 col-sm-9">
+        <nb-card>
+                <nb-card-body>
+            <h4>faire un choix si l article existe deja ou non</h4>
+                            
+            <form [formGroup]="formOption_Existe" (ngSubmit)="submit()">
+                
+                <div class="form-group">
+                    <label for="Option_Existe">l'Option d'Article:</label>
+                    <div>
+                    <input id="Article_Existant" type="radio" [value]="true" name="Option_Existe" formControlName="Option_Existe" >
+                    <label for="Article_Existant">Article Existant</label>
+                </div>
+        
+                <div>
+                    <input id="Article_Non_Existant" type="radio" [value]="false" name="Option_Existe" formControlName="Option_Existe" >
+                    <label for="Article_Non_Existant">Article non Existant</label>
+                </div>
+                    
+                    <div *ngIf="f.Option_Existe.touched && f.Option_Existe.invalid" class="alert alert-danger">
+                        <div *ngIf="f.Option_Existe.errors.required">Option Article is required.</div>
+                    </div>
+                </div>
+            </form>
+
+                <div *ngIf="f.Option_Existe.value == true">
+                  <form (ngSubmit) = "onSubmitArticleExist()" #articleFormExist="ngForm">
+                    <nb-card-header>
+                        <h6>Ajouter Articles</h6>
+                        <div class="col-sm-6">
+                            <label for="derMvt" class="label">date Mouvement</label>
+                            <input type="text" nbInput fullWidth  name="derMvt" [(ngModel)]="article.derMvt" #derMvt="ngModel" [ngModelOptions]="{standalone: true}" disabled/>
+                        </div>
+                    </nb-card-header>
+                    <div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                Les Marques:<nb-select id="marque" name="marque" [(ngModel)]="article.marque" fullWidth fieldSize="small" (selectedChange)="getModeleFromMarque($event)" required #marque="ngModel" [ngModelOptions]="{standalone: true}">
+                                          <nb-option value="0">-Select</nb-option>
+                                          <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
+                                        </nb-select>
+
+                            </div>
+                            <div class="col-sm-4">
+                                Les Modeles:<nb-select id="model" name="model" [(ngModel)]="article.model" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonLiv($event)" required #model="ngModel" [ngModelOptions]="{standalone: true}">
+                                                <nb-option value="0">-Select</nb-option>
+                                                <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
+                                            </nb-select>
+                            </div>
+                            <div class="col-sm-4">
+                                Les Articles:<nb-select [(ngModel)]="article.codArt" fullWidth fieldSize="small" (selectedChange)="getAllStockByArticle($event)" required [ngModelOptions]="{standalone: true}">
+                                        <nb-option value="0">-Select</nb-option>
+                                        <nb-option *ngFor="let itemsArticle of ArticleListWithMarque" [value]="itemsArticle.codArt"><span *ngIf="(itemsArticle.qutStk===0 || itemsArticle.qutStk==null) && (itemsArticle.qutStk2===0 || itemsArticle.qutStk2==null) && (itemsArticle.stkGar===0 || itemsArticle.stkGar==null) && (itemsArticle.stkIni===0 || itemsArticle.stkIni==null) && (itemsArticle.analStk===0 || itemsArticle.analStk==null) && (itemsArticle.nbjStk===0 || itemsArticle.nbjStk==null) && (itemsArticle.vSstk===0 || itemsArticle.vSstk==null) && (itemsArticle.comStk===0 || itemsArticle.comStk==null) && (itemsArticle.xanalStk===0 || itemsArticle.xanalStk==null) && (itemsArticle.stkAtrsf===0 || itemsArticle.stkAtrsf==null) && (itemsArticle.stkTrsf===0 || itemsArticle.stkTrsf==null) && (itemsArticle.stkReel===0 || itemsArticle.stkReel==null) && (itemsArticle.stkRes===0 || itemsArticle.stkRes==null) && (itemsArticle.stkNp===0 || itemsArticle.stkNp==null); else stockExiste" style="color: darkred;">Code Article: {{ itemsArticle.codArt}} </span><ng-template #stockExiste>Code Article: {{ itemsArticle.codArt}} </ng-template></nb-option>
+                                      </nb-select>
+                            </div>
+                        </div>  
+                        <div>
+                          <button type="button" (click)="togglepreviewPhotoArticle()" class="btn btn-outline-primary">
+                            {{previewPhotoArticle? "Hide ": "Show "}} Article
+                          </button>
+                        </div>
+
+                        <div *ngIf="previewPhotoArticle">
+                          <div class="p-grid p-align-center">
+                              <div class="p-col-1">
+                                  <p-button icon="pi pi-refresh" (onClick)="refresh()"></p-button>
+                                  <p-button icon="pi pi-search" (onClick)="togglepreviewPhotoAllArticle()"></p-button>
+                              </div>
+                            </div>
+                            <div *ngIf="!previewPhotoAllArticle">
+                              <div *ngIf="ArticleGeted" class="p-col-10">
+                                  <p-paginator [first]="first" [rows]="1" [totalRecords]="totalRecords2" (onPageChange)="onPageChange($event)"
+                                  [showJumpToPageDropdown]="true" [showPageLinks]="false"></p-paginator>
+                              </div>
+                              <div *ngIf="!ArticleGeted" class="image-gallery">
+                                <h2>mercie de choisir un Article</h2>
+                              </div>
+                              <div *ngIf="ArticleGeted" class="image-gallery">
+                                  <img src="{{this.articleService.host+'/api/Imgarticles/'+ArticleGeted.codArt}}" height="400" width="400"/>
+                              </div>
+                            </div>
+                            
+                            <div *ngIf="previewPhotoAllArticle">
+                              <p-orderList [value]="ArticleList" [listStyle]="{'height':'auto'}" header="List des Articles" filterBy="codArt" filterPlaceholder="Filter by codArt" [dragdrop]="true">
+                                <ng-template let-article pTemplate="item">
+                                    <div class="article-item">
+                                        <div class="image-container">
+                                                <img src="{{this.articleService.host+'/api/Imgarticles/'+article.codArt}}" [alt]="article.codArt" class="article-image" />
+                                        </div>
+                                        <div class="article-list-detail">
+                                            <h5 class="p-mb-2">{{article.codArt}}</h5>
+                                            <h6 class="p-mb-2">marque: ({{article.marque.title}})</h6>
+                                            <i class="pi pi-tag article-category-icon"></i>
+                                            <span class="article-category">{{article.desArt}}</span>
+                                        </div>
+                                        <div class="article-list-action">
+                                            <h6 class="p-mb-2">${{article.prixVen}}</h6>
+                                            <h6 class="p-mb-2">${{article.prixArem}}</h6>
+                                            <!-- <span [class]="'article-badge status-' + article.inventoryStatus.toLowerCase()">{{article.inventoryStatus}}</span> -->
+                                        </div>
+                                    </div>
+                                </ng-template>
+                              </p-orderList>
+                              </div>
+                        </div>   
+
+                        <div class="full-name-inputs">
+                          <div class="col-sm-6">
+                            <label for="stock 1" class="label">Quantité d'Articles de stock 1:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.qutStk===0 || itemsQutStk.qutStk==null || itemsQutStk.qutStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.qutStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsQutStk.qutStk }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock 1" id="qutStk" [(ngModel)]="article.qutStk" class="form-control" min="0" max="StockListWithArticle.qutStk" [ngModelOptions]="{standalone: true}">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="stock 2" class="label">Quantité d'Articles de stock 2:</label><b *ngFor="let itemsQutStk2 of StockListWithArticle"><span *ngIf="itemsQutStk2.qutStk2===0 || itemsQutStk2.qutStk2==null || itemsQutStk2.qutStk2==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk2.qutStk2 > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsQutStk2.qutStk2 }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock 2" class="form-control"  id="qutStk2" [(ngModel)]="article.qutStk2" class="form-control" min="0" max="StockListWithArticle.qutStk2" [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div> 
+
+                        <div class="full-name-inputs">
+                          <div class="col-sm-6">
+                            <label for="stock Gar" class="label">Quantité d'Articles de stock Gar:</label><b *ngFor="let itemsStkGar of StockListWithArticle"><span *ngIf="itemsStkGar.stkGar===0 || itemsStkGar.stkGar==null || itemsStkGar.stkGar==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkGar.stkGar > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkGar.stkGar }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Gar" id="stkGar" [(ngModel)]="article.stkGar" class="form-control" min="0" max="StockListWithArticle.stkGar" [ngModelOptions]="{standalone: true}">
+                          </div>
+
+                          <div class="col-sm-6">
+                            <label for="stock Initial" class="label">Quantité d'Articles de stock Initial:</label><b *ngFor="let itemsStkIni of StockListWithArticle"><span *ngIf="itemsStkIni.stkIni===0 || itemsStkIni.stkIni==null || itemsStkIni.stkIni==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkIni.stkIni > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkIni.stkIni }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Initial" id="stkIni" [(ngModel)]="article.stkIni" class="form-control" min="0" max="StockListWithArticle.stkIni" [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div> 
+                        <div class="full-name-inputs">
+                          <div class="col-sm-6">
+                            <label for="stock Anal" class="label">Quantité d'Articles de stock Anal:</label><b *ngFor="let itemsAnalStk of StockListWithArticle"><span *ngIf="itemsAnalStk.analStk===0 || itemsAnalStk.analStk==null || itemsAnalStk.analStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsAnalStk.analStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsAnalStk.analStk }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Anal" id="analStk" [(ngModel)]="article.analStk" class="form-control"  min="0" max="StockListWithArticle.analStk" [ngModelOptions]="{standalone: true}">
+                          </div>
+
+                          <div class="col-sm-6">
+                            <label for="stock Nbj" class="label">Quantité d'Articles de stock Nbj:</label><b *ngFor="let itemsNbjStk of StockListWithArticle"><span *ngIf="itemsNbjStk.nbjStk===0 || itemsNbjStk.nbjStk==null || itemsNbjStk.nbjStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsNbjStk.nbjStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsNbjStk.nbjStk }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Nbj" id="nbjStk" [(ngModel)]="article.nbjStk" class="form-control" min="0" max="StockListWithArticle.nbjStk" [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>
+                        <div class="full-name-inputs"> 
+                          <div class="col-sm-6">
+                            <label for="stock V_S" class="label">Quantité d'Articles de stock V_S:</label><b *ngFor="let itemsV_SStk of StockListWithArticle" ><span *ngIf="itemsV_SStk.vSstk===0 || itemsV_SStk.vSstk==null || itemsV_SStk.vSstk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsV_SStk.vSstk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsV_SStk.vSstk }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock V_S" id="vSstk" [(ngModel)]="article.vSstk" class="form-control" min="0" max="StockListWithArticle.vSstk" [ngModelOptions]="{standalone: true}">
+                          </div>
+
+                          <div class="col-sm-6">
+                            <label for="stock Com" class="label">Quantité d'Articles de stock Com:</label><b *ngFor="let itemsComStk of StockListWithArticle"><span *ngIf="itemsComStk.comStk===0 || itemsComStk.comStk==null || itemsComStk.comStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsComStk.comStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsComStk.comStk }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Com" id="comStk" [(ngModel)]="article.comStk" class="form-control"  min="0" max="StockListWithArticle.comStk" [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>     
+
+                        <div class="full-name-inputs"> 
+                          <div class="col-sm-6">
+                            <label for="stock Xanal" class="label">Quantité d'Articles de stock Xanal:</label><b *ngFor="let itemsXanalStk of StockListWithArticle"><span *ngIf="itemsXanalStk.xanalStk===0 || itemsXanalStk.xanalStk==null || itemsXanalStk.xanalStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsXanalStk.xanalStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsXanalStk.xanalStk }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Xanal" id="xanalStk" [(ngModel)]="article.xanalStk" class="form-control" min="0" max="StockListWithArticle.xanalStk" [ngModelOptions]="{standalone: true}">
+                          </div>
+
+
+                          <div class="col-sm-6">
+                            <label for="stock Atrsf" class="label">Quantité d'Articles de stock Atrsf:</label><b *ngFor="let itemsStkAtrsf of StockListWithArticle"><span *ngIf="itemsStkAtrsf.stkAtrsf===0 || itemsStkAtrsf.stkAtrsf==null || itemsStkAtrsf.stkAtrsf==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkAtrsf.stkAtrsf > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkAtrsf.stkAtrsf }}</span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Atrsf" id="stkAtrsf" [(ngModel)]="article.stkAtrsf" class="form-control" min="0" max="StockListWithArticle.stkAtrsf" [ngModelOptions]="{standalone: true}">
+                          </div>
+
+                        </div>
+
+                        <div class="full-name-inputs">   
+                          <div class="col-sm-6">
+                            <label for="stock Trsf" class="label">Quantité d'Articles de stock Trsf:</label><b *ngFor="let itemsStkTrsf of StockListWithArticle"><span *ngIf="itemsStkTrsf.stkTrsf===0 || itemsStkTrsf.stkTrsf==null || itemsStkTrsf.stkTrsf==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkTrsf.stkTrsf > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkTrsf.stkTrsf }} </span> </b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Trsf" id="stkTrsf" [(ngModel)]="article.stkTrsf" class="form-control" min="0" max="StockListWithArticle.stkTrsf" [ngModelOptions]="{standalone: true}">
+                          </div>
+
+                          <div class="col-sm-6">
+                            <label for="stock Réel" class="label">Quantité d'Articles de stock Réel:</label><b *ngFor="let itemsStkReel of StockListWithArticle"><span *ngIf="itemsStkReel.stkReel===0 || itemsStkReel.stkReel==null || itemsStkReel.stkReel==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkReel.stkReel > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkReel.stkReel }} </span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Réel" id="stkReel" [(ngModel)]="article.stkReel" class="form-control" min="0" max="StockListWithArticle.stkReel" [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>  
+
+                        <div class="full-name-inputs"> 
+                          <div class="col-sm-6">
+                            <label for="stock Res" class="label">Quantité d'Articles de stock Res:</label><b *ngFor="let itemsStkRes of StockListWithArticle"><span *ngIf="itemsStkRes.stkRes===0 || itemsStkRes.stkRes==null || itemsStkRes.stkRes==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkRes.stkRes > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkRes.stkRes}} </span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Res" id="stkRes" [(ngModel)]="article.stkRes" class="form-control" min="0" max="StockListWithArticle.stkRes" [ngModelOptions]="{standalone: true}">
+                          </div>
+
+
+                          <div class="col-sm-6">
+                            <label for="stock Np" class="label">Quantité d'Articles de stock Np:</label><b *ngFor="let itemsStkNp of StockListWithArticle"><span *ngIf="itemsStkNp.stkNp===0 || itemsStkNp.stkNp==null || itemsStkNp.stkNp==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkNp.stkNp > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkNp.stkNp}} </span></b>
+                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Np" id="stkNp" [(ngModel)]="article.stkNp" class="form-control" min="0" max="StockListWithArticle.stkNp" [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>
+                        
+                        <div class="col-sm-6">
+                          <label for="calculeArticles" class="label">Calcule quantité d'Articles</label>
+                          <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumArticles" name="sumArticles" [(ngModel)]="sum" [ngModelOptions]="{standalone: true}" disabled />
+                        </div>
+
+                      <div class="col-sm-12">
+                        <label for="SumcalculeArticles" class="label">Calcule prix d'Achats des Articles</label>
+                        <input type="text" nbInput fullWidth placeholder="0" id="sumAllArticles" name="sumAllArticles" disabled />
+                      </div>
+                    </div>
+                  
+                    <nb-card>
+                      <nb-card-header><label for="Actions" class="label">Actions</label></nb-card-header>
+                      <nb-card-body>
+                        <div class="full-name-inputs">
+                          <div class="buttons-row">
+                            <button (click)="onResetArticleFormExist(); articleFormExist.reset()" type="button" nbButton status="info" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                            Ajouter d'autre Article</button>
+                            <button [disabled]=!articleFormExist.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                            Ajouter dérniére Article</button>
+                            <button nbButton type="button" (click)="resetMePlz()" status="danger" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                            Annuler</button>
+                          </div>
+                        </div>
+                      </nb-card-body>
+                    </nb-card>
+                  </form>
+                </div>
+                <div *ngIf="f.Option_Existe.value == false">
+        <form [formGroup]="articleFormDont" (ngSubmit) = "onSubmitArticle()">
+            <nb-card-header><h6>Ajouter Articles</h6>
+                <div>
+                    <label for="datCreat" class="label">date Create</label>
+                    <input type="text" nbInput fullWidth class="form-control" formControlName="datCreat" [ngClass]="{ 'is-invalid': submitted && f1.datCreat.errors }" disabled/>
+                  </div>
+            </nb-card-header>
+                    <!--
+                    choix fourniseur ou client livreur
+                    -->  
+                    <div class="row">
+                            <div class="col-sm-4">
+                            <label for="codArt" class="label">Code Article</label> 
+                            <input type="text" nbInput fullWidth placeholder="code Art" class="form-control" formControlName="codArt" [ngClass]="{ 'is-invalid': submitted && f1.codArt.errors }" />
+                                <div *ngIf="submitted && f1.codArt.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.codArt.errors.required">Le code Art est obligatoire.</div>
+                                    <div *ngIf="f1.codArt.errors.minlength">Le code Art doit étre au moin 5 lettres longue.</div>
+                                    <div *ngIf="f1.codArt.errors.maxlength">Le code Art ne doit pas dépassé à 20 lettres longue.</div>
+                                    <div *ngIf="f1.codArt.errors.pattern">Le code Art ne doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="refOrg" class="label">refference Origine</label>
+                                <input type="text" nbInput fullWidth class="form-control" formControlName="refOrg" [ngClass]="{ 'is-invalid': submitted && f1.refOrg.errors }" />
+                                <div *ngIf="submitted && f1.refOrg.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.refOrg.errors.required">Le refference Origine est obligatoire.</div>
+                                    <div *ngIf="f1.refOrg.errors.minlength">Le refference Origine doit étre au moin 5 lettres longue.</div>
+                                    <div *ngIf="f1.refOrg.errors.maxlength">Le refference Origine ne doit pas dépassé à 50 lettres longue.</div>
+                                    <div *ngIf="f1.refOrg.errors.pattern">Le refference Origine ne doit contenir des lettre ou des nombres.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>   
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="refRem" class="label">refference Rem</label>
+                                <input type="text" nbInput fullWidth placeholder="refference Rem" class="form-control" formControlName="refRem" [ngClass]="{ 'is-invalid': submitted && f1.refRem.errors }" />
+                                <div *ngIf="submitted && f1.refRem.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.refRem.errors.required">Le refference Rem est obligatoire.</div>
+                                    <div *ngIf="f1.refRem.errors.minlength">Le refference Rem doit étre au moin 5 lettres longue.</div>
+                                    <div *ngIf="f1.refRem.errors.maxlength">Le refference Rem ne doit pas dépassé à 49 lettres longue.</div>
+                                    <div *ngIf="f1.refRem.errors.pattern">Le refference Rem ne doit contenir des lettre ou des nombres.</div>
+                                    <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>   
+                            </div>
+                    </div>
+                    <nb-card-body>  
+                        <div class="row">
+                            <label for="desArt" class="label">description Article</label>
+                            <textarea rows="5" shape="round" nbInput fullWidth class="form-control" formControlName="desArt" [ngClass]="{ 'is-invalid': submitted && f1.desArt.errors }" ></textarea>
+                            <div *ngIf="submitted && f1.desArt.errors" class="invalid-feedback">
+                                <div *ngIf="f1.desArt.errors.required">Le description Article est obligatoire.</div>
+                                <div *ngIf="f1.desArt.errors.minlength">Le description Article doit étre au moin 8 lettres longue.</div>
+                                <div *ngIf="f1.desArt.errors.maxlength">Le description Article ne doit pas dépassé à 50 lettres longue.</div>
+                                <div *ngIf="f1.desArt.errors.pattern">Le description Article ne doit contenir des lettre ou des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>   
+                        </div> 
+                    </nb-card-body>
+                    <div class="row">
+
+                        <div class="col-sm-4"> 
+                            <label for="codNgp" class="label">code Ngp</label>
+                            <input type="text" nbInput fullWidth placeholder="code Ngp" class="form-control" formControlName="codNgp" [ngClass]="{ 'is-invalid': submitted && f1.codNgp.errors }" />
+                            <div *ngIf="submitted && f1.codNgp.errors" class="invalid-feedback">
+                                <div *ngIf="f1.codNgp.errors.required">Le code Ngp est obligatoire.</div>
+                                <div *ngIf="f1.codNgp.errors.minlength">Le code Ngp doit étre au moin 5 lettres .</div>
+                                <div *ngIf="f1.codNgp.errors.maxlength">Le code Ngp ne doit pas dépassé le 49 lettres.</div>
+                                <div *ngIf="f1.codNgp.errors.pattern">Le code Ngp ne doit contenir que des lettres et des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div> 
+                        <div class="col-sm-4"> 
+                            <label for="marque" class="label">marque</label>
+                            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_PREPARATEUR_BR')" nbButton (click)="OpenUploadMarquePopap()" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline> 
+                                Nouveau Marque</button>
+                            <nb-select fullWidth fieldSize="small" [(selected)]="MarqueSelected" formControlName="marque" (selectedChange)="getModeleFromMarque($event)" placeholder="marque" [ngClass]="{ 'is-invalid': submitted && f1.marque.errors }">
+                                <nb-option value="null">-Select</nb-option>
+                                <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsMarque.title }} </nb-option>
+                              </nb-select>
+
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="modele" class="label">modele</label>
+                            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_PREPARATEUR_BR')" nbButton (click)="OpenUploadModelPopap()" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline> 
+                                Nouveau Model</button>
+                            <nb-select fullWidth fieldSize="small" [(selected)]="ModelSelected" formControlName="model" placeholder="model" [ngClass]="{ 'is-invalid': submitted && f1.model.errors }">
+                                <nb-option value="null">-Select</nb-option>
+                                <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsModel.title }} </nb-option>
+                              </nb-select>
+                        </div>
+                    </div> 
+    
+                    <div class="row">
+                        <div class="col-sm-4"> 
+                            <label for="unitVen" class="label">unitVen</label>
+                            <input type="number" nbInput fullWidth placeholder="unitVen" class="form-control" formControlName="unitVen" [ngClass]="{ 'is-invalid': submitted && f1.unitVen.errors }" min="0" />
+                            <div *ngIf="submitted && f1.unitVen.errors" class="invalid-feedback">
+                                <div *ngIf="f1.unitVen.errors.required">Le unitVen est obligatoire.</div>
+                                <div *ngIf="f1.unitVen.errors.minlength">Le unitVen doit étre positive.</div>
+                                <div *ngIf="f1.unitVen.errors.maxlength">Le unitVen ne doit pas dépassé 20000.</div>
+                                <div *ngIf="f1.unitVen.errors.pattern">Le unitVen ne doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="prixMin" class="label">prixMin</label>&nbsp;en&nbsp;(<b>Dt</b>)
+                            <input type="number" nbInput fullWidth placeholder="prixMin" class="form-control" formControlName="prixMin" [ngClass]="{ 'is-invalid': submitted && f1.prixMin.errors }" min="0"/>
+                            <div *ngIf="submitted && f1.prixMin.errors" class="invalid-feedback">
+                                <div *ngIf="f1.prixMin.errors.required">Le prix Minimal est obligatoire.</div>
+                                <div *ngIf="f1.prixMin.errors.minlength">Le prix Minimal doit étre positive.</div>
+                                <div *ngIf="f1.prixMin.errors.maxlength">Le prix Minimal ne doit pas dépassé 500000000.</div>
+                                <div *ngIf="f1.prixMin.errors.pattern">Le prix Minimal ne doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="prixDev" class="label">prixDev</label>&nbsp;en&nbsp;(<b>Dt</b>)
+                            <input type="number" nbInput fullWidth placeholder="prixDev" class="form-control" formControlName="prixDev" [ngClass]="{ 'is-invalid': submitted && f1.prixDev.errors }" min="0" />
+                            <div *ngIf="submitted && f1.prixDev.errors" class="invalid-feedback">
+                                <div *ngIf="f1.prixDev.errors.required">Le prixDev est obligatoire.</div>
+                                <div *ngIf="f1.prixDev.errors.minlength">Le prixDev doit étre positive .</div>
+                                <div *ngIf="f1.prixDev.errors.maxlength">Le prixDev ne doit pas dépassé 500000000.</div>
+                                <div *ngIf="f1.prixDev.errors.pattern">Le prixDev ne doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div>
+
+    
+                    <div class="row">
+                        <div class="col-sm-4"> 
+                            <label for="codFrs" class="label">Code Fournisseur:</label>
+                            <nb-select fullWidth type="text" formControlName="codFrs" [ngClass]="{ 'is-invalid': submitted && f1.codFrs.errors }">
+                              <nb-option value="0">-Select</nb-option>
+                              <nb-option *ngFor="let items of FournisList" [value]="items.codFrs">{{ items.codFrs }}</nb-option>
+                            </nb-select>
+                            <div *ngIf="submitted && f1.codFrs.errors" class="invalid-feedback">
+                              <div *ngIf="f1.codFrs.errors.required">La codFrs est obligatoire.</div>
+                            </div>
+                        </div> 
+                        <div class="col-sm-4">                 
+                            <label for="derPAch" class="label">derPAch</label>
+                            <input type="number" nbInput fullWidth placeholder="derPAch" class="form-control" formControlName="derPAch" [ngClass]="{ 'is-invalid': submitted && f1.derPAch.errors }" min="0" />
+                            <div *ngIf="submitted && f1.derPAch.errors" class="invalid-feedback">
+                                <div *ngIf="f1.derPAch.errors.required">Le derPAch est obligatoire.</div>
+                                <div *ngIf="f1.derPAch.errors.min">Le derPAch doit étre positive.</div>
+                                <div *ngIf="f1.derPAch.errors.max">Le derPAch ne doit pas dépassé 999999 .</div>
+                                <div *ngIf="f1.derPAch.errors.pattern">Le derPAch ne doit contenir que des nombre.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="remise" class="label">remise</label>&nbsp;en&nbsp;(<b>Dt</b>)
+                            <input type="number" nbInput fullWidth placeholder="remise" class="form-control" formControlName="remise" [ngClass]="{ 'is-invalid': submitted && f1.remise.errors }" min="0" />
+                            <div *ngIf="submitted && f1.remise.errors" class="invalid-feedback">
+                                <div *ngIf="f1.remise.errors.required">Le remise est obligatoire.</div>
+                                <div *ngIf="f1.remise.errors.minlength">Le remise doit étre positive .</div>
+                                <div *ngIf="f1.remise.errors.maxlength">Le remise ne doit pas dépassé 50.</div>
+                                <div *ngIf="f1.remise.errors.pattern">Le remise ne doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                        <label for="prixVen" class="label">prixVen</label>&nbsp;en&nbsp;(<b>Dt</b>)
+                        <input type="number" nbInput fullWidth placeholder="prixVen" class="form-control" formControlName="prixVen" [ngClass]="{ 'is-invalid': submitted && f1.prixVen.errors }" min="0" max="20000" />
+                        <div *ngIf="submitted && f1.prixVen.errors" class="invalid-feedback">
+                            <div *ngIf="f1.prixVen.errors.required">Le prixVen Rem est obligatoire.</div>
+                            <div *ngIf="f1.prixVen.errors.min">Le prixVen Rem doit étre positive.</div>
+                            <div *ngIf="f1.prixVen.errors.max">Le prixVen Rem ne doit pas dépassé 20000 .</div>
+                            <div *ngIf="f1.prixVen.errors.pattern">Le prixVen Rem ne doit contenir que des nombre.</div>
+                        <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                        </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                        <label for="prixArem" class="label">prixArem</label>&nbsp;en&nbsp;(<b>Dt</b>)
+                        <input type="number" nbInput fullWidth placeholder="prixArem" class="form-control" formControlName="prixArem" [ngClass]="{ 'is-invalid': submitted && f1.prixArem.errors }" min="0" max="20000" />
+                        <div *ngIf="submitted && f1.prixArem.errors" class="invalid-feedback">
+                            <div *ngIf="f1.prixArem.errors.required">Le prixArem est obligatoire.</div>
+                            <div *ngIf="f1.prixArem.errors.min">Le prixArem doit étre positive.</div>
+                            <div *ngIf="f1.prixArem.errors.max">Le prixArem ne doit pas dépassé 20000 .</div>
+                            <div *ngIf="f1.prixArem.errors.pattern">Le prixArem ne doit contenir que des nombre.</div>
+                        <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                        </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="tva" class="label">tva</label>
+                            <input type="number" nbInput fullWidth placeholder="tva" class="form-control" formControlName="tva" [ngClass]="{ 'is-invalid': submitted && f1.tva.errors }" min="0" max="50" />
+                            <div *ngIf="submitted && f1.tva.errors" class="invalid-feedback">
+                                <div *ngIf="f1.tva.errors.required">Le tva est obligatoire.</div>
+                                <div *ngIf="f1.tva.errors.min">Le tva doit étre positive.</div>
+                                <div *ngIf="f1.tva.errors.max">Le tva ne doit pas dépassé 50 .</div>
+                                <div *ngIf="f1.tva.errors.pattern">Le tva ne doit contenir que des nombre.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-sm-4">
+                        <label for="cumulVen" class="label">cumulVen</label>
+                        <input type="number" nbInput fullWidth placeholder="cumulVen" class="form-control" formControlName="cumulVen" [ngClass]="{ 'is-invalid': submitted && f1.cumulVen.errors }" min="0" max="50000" />
+                        <div *ngIf="submitted && f1.cumulVen.errors" class="invalid-feedback">
+                            <div *ngIf="f1.cumulVen.errors.required">Le cumulVen Rem est obligatoire.</div>
+                            <div *ngIf="f1.cumulVen.errors.min">Le cumulVen Rem doit étre positive.</div>
+                            <div *ngIf="f1.cumulVen.errors.max">Le cumulVen Rem ne doit pas dépassé 50000 .</div>
+                            <div *ngIf="f1.cumulVen.errors.pattern">Le cumulVen Rem ne doit contenir que des nombre.</div>
+                        <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                        </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="cumulAch" class="label">cumulAch</label>
+                            <input type="number" nbInput fullWidth placeholder="cumulAch" class="form-control" formControlName="cumulAch" [ngClass]="{ 'is-invalid': submitted && f1.cumulAch.errors }" min="0" max="50000" />
+                            <div *ngIf="submitted && f1.cumulAch.errors" class="invalid-feedback">
+                                <div *ngIf="f1.cumulAch.errors.required">Le cumulAch est obligatoire.</div>
+                                <div *ngIf="f1.cumulAch.errors.min">Le cumulAch doit étre positive.</div>
+                                <div *ngIf="f1.cumulAch.errors.max">Le cumulAch ne doit pas dépassé 50000 .</div>
+                                <div *ngIf="f1.cumulAch.errors.pattern">Le cumulAchne doit contenir que des nombre.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-4">   
+                            <label for="unitInv" class="label">unitInv</label>
+                            <input type="number" nbInput fullWidth placeholder="unitInv" class="form-control" formControlName="unitInv" [ngClass]="{ 'is-invalid': submitted && f1.unitInv.errors }" min="0" max="50000" />
+                            <div *ngIf="submitted && f1.unitInv.errors" class="invalid-feedback">
+                                <div *ngIf="f1.unitInv.errors.required">Le unitInv est obligatoire.</div>
+                                <div *ngIf="f1.unitInv.errors.min">Le unitInv doit étre positive.</div>
+                                <div *ngIf="f1.unitInv.errors.max">Le unitInv ne doit pas dépassé à 50000 .</div>
+                                <div *ngIf="f1.unitInv.errors.pattern">Le unitInv ne doit contenir des nombre.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                            </div>
+                    </div> 
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                        <label for="controle" class="label">controle</label>
+                        <input type="text" nbInput fullWidth placeholder="controle" class="form-control" formControlName="controle" [ngClass]="{ 'is-invalid': submitted && f1.controle.errors }" />
+                        <div *ngIf="submitted && f1.controle.errors" class="invalid-feedback">
+                            <div *ngIf="f1.controle.errors.required">Le controle est obligatoire.</div>
+                            <div *ngIf="f1.controle.errors.minlength">Le controle doit avoir au moin 4 lettres.</div>
+                            <div *ngIf="f1.controle.errors.maxlength">Le controle ne doit pas dépassé 49 lettres .</div>
+                            <div *ngIf="f1.controle.errors.pattern">Le controle ne doit contenir que des lettres ou des nombres.</div>
+                        <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                        </div>
+                        </div>
+                        <div class="col-sm-3"> 
+                            <label for="numCas" class="label">numCas</label>
+                            <input type="text" nbInput fullWidth placeholder="numCas" class="form-control" formControlName="numCas" [ngClass]="{ 'is-invalid': submitted && f1.numCas.errors }" />
+                            <div *ngIf="submitted && f1.numCas.errors" class="invalid-feedback">
+                                <div *ngIf="f1.numCas.errors.required">Le numCas est obligatoire.</div>
+                                <div *ngIf="f1.numCas.errors.minlength">Le numCas doit étre au moin 5 lettres .</div>
+                                <div *ngIf="f1.numCas.errors.maxlength">Le numCas ne doit pas dépassé le 49 lettres.</div>
+                                <div *ngIf="f1.numCas.errors.pattern">Le numCas ne doit contenir que des lettres et des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-3">   
+                            <label for="energie" class="label">energie</label>&nbsp;en&nbsp;(<b>W</b>)
+                            <input type="text" nbInput fullWidth placeholder="energie" class="form-control" formControlName="energie" [ngClass]="{ 'is-invalid': submitted && f1.energie.errors }" />
+                            <div *ngIf="submitted && f1.energie.errors" class="invalid-feedback">
+                                <div *ngIf="f1.energie.errors.required">Le energie est obligatoire.</div>
+                                <div *ngIf="f1.energie.errors.minlength">Le energie doit avoir au moin 4 lettres.</div>
+                                <div *ngIf="f1.energie.errors.maxlength">Le energie ne doit pas dépassé 49 lettres.</div>
+                                <div *ngIf="f1.energie.errors.pattern">Le energie doit contenir que des lettres ou des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-3">   
+                            <label for="poids" class="label">poids</label>&nbsp;en&nbsp;(<b>Kg</b>)
+                            <input type="number" nbInput fullWidth placeholder="poids" class="form-control" formControlName="poids" [ngClass]="{ 'is-invalid': submitted && f1.poids.errors }" /> 
+                            <div *ngIf="submitted && f1.poids.errors" class="invalid-feedback">
+                                <div *ngIf="f1.poids.errors.required">Le poids est obligatoire.</div>
+                                <div *ngIf="f1.poids.errors.min">Le poids doit étre positive.</div>
+                                <div *ngIf="f1.poids.errors.max">Le poids ne doit pas dépassé la limite .</div>
+                                <div *ngIf="f1.poids.errors.pattern">Le poids ne doit contenir des nombre.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div> 
+
+                    <nb-card-body>      
+                        <div class="row">
+                            <div class="col-sm-6"> 
+                                <label for="derAch" class="label">Date Ach</label>
+                                <input nbInput fullWidth class="form-control" placeholder="derAch" formControlName="derAch" [nbDatepicker]="pickerderAch" [ngClass]="{ 'is-invalid': submitted && f1.derAch.errors }" />
+                                <nb-datepicker #pickerderAch></nb-datepicker>
+                                <div *ngIf="submitted && f1.derAch.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.derAch.errors.required">Le derAch est obligatoire.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                            <div class="col-sm-6"> 
+                                <label for="derMvt" class="label">Date Mvt</label>
+                                <input nbInput fullWidth class="form-control" placeholder="derMvt" formControlName="derMvt" [nbDatepicker]="pickerderMvt" [ngClass]="{ 'is-invalid': submitted && f1.derMvt.errors }" />
+                                <nb-datepicker #pickerderMvt></nb-datepicker>
+                                <div *ngIf="submitted && f1.derMvt.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.derMvt.errors.required">Le derMvt est obligatoire.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="col-sm-4">                   
+                            <label for="classe" class="label">classe</label>
+                            <input type="text" nbInput fullWidth placeholder="classe" class="form-control" formControlName="classe" [ngClass]="{ 'is-invalid': submitted && f1.classe.errors }" min="0" max="50" />
+                            <div *ngIf="submitted && f1.classe.errors" class="invalid-feedback">
+                                <div *ngIf="f1.classe.errors.required">Le classeest obligatoire.</div>
+                                <div *ngIf="f1.classe.errors.minlength">Le classe doit étre inferieur à 3 lettre</div>
+                                <div *ngIf="f1.classe.errors.maxlength">Le classe ne doit pas dépassé 50 .</div>
+                                <div *ngIf="f1.classe.errors.pattern">Le classe ne doit contenir que des lettres et des nombre.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                            </div>
+                            <div class="col-sm-4">   
+                                <label for="typAnal" class="label">typAnal</label>
+                                <input type="text" nbInput fullWidth placeholder="TAUX_RES" class="form-control" formControlName="typAnal" [ngClass]="{ 'is-invalid': submitted && f1.typAnal.errors }" min="0" max="50"/>  
+                                <div *ngIf="submitted && f1.typAnal.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.typAnal.errors.required">Le typAnal est obligatoire.</div>
+                                    <div *ngIf="f1.typAnal.errors.minlength">Le typAnal doit inferieur à 3 lettre.</div>
+                                    <div *ngIf="f1.typAnal.errors.maxlength">Le typAnal ne doit pas dépassé 50 .</div>
+                                    <div *ngIf="f1.typAnal.errors.pattern">Le typAnal ne doit contenir que des lettres et des nombre.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                            <div class="col-sm-4">   
+                                <label for="codBar" class="label">codBar</label>
+                                <input type="text" nbInput fullWidth placeholder="codBar" class="form-control" formControlName="codBar" [ngClass]="{ 'is-invalid': submitted && f1.codBar.errors }" min="0" max="0"/>  
+                                <div *ngIf="submitted && f1.codBar.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.codBar.errors.required">Le codBar est obligatoire.</div>
+                                    <div *ngIf="f1.codBar.errors.min">Le codBar doit inferieur à 3 lettre.</div>
+                                    <div *ngIf="f1.codBar.errors.max">Le codBar ne doit pas dépassé 50 .</div>
+                                    <div *ngIf="f1.codBar.errors.pattern">Le codBar ne doit contenir que des lettres et des nombre.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </nb-card-body>
+
+                    <nb-card-body>  
+                        <div class="row">
+                            <div class="col-sm-6">               
+                            <label for="prixCEur" class="label">prixCEur</label>&nbsp;en&nbsp;(<b>Dt</b>)
+                            <input type="number" nbInput fullWidth placeholder="prixCEur" class="form-control" formControlName="prixCEur" [ngClass]="{ 'is-invalid': submitted && f1.prixCEur.errors }" min="0" max="999999" />
+                            <div *ngIf="submitted && f1.prixCEur.errors" class="invalid-feedback">
+                                <div *ngIf="f1.prixCEur.errors.required">Le prixCEur est obligatoire.</div>
+                                <div *ngIf="f1.prixCEur.errors.min">Le prixCEur doit étre positive.</div>
+                                <div *ngIf="f1.prixCEur.errors.max">Le prixCEur ne doit pas dépassé à 999999 .</div>
+                                <div *ngIf="f1.prixCEur.errors.pattern">Le prixCEur  ne doit contenir que des nombre.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                            </div>
+                            <div class="col-sm-6"> 
+                                <label for="prixIni" class="label">prixIni</label>&nbsp;en&nbsp;(<b>Dt</b>)
+                                <input type="number" nbInput fullWidth placeholder="prixIni" class="form-control" formControlName="prixIni" [ngClass]="{ 'is-invalid': submitted && f1.prixIni.errors }" min="0" max="999999" />
+                                <div *ngIf="submitted && f1.prixIni.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.prixIni.errors.required">Le prixIni est obligatoire.</div>
+                                    <div *ngIf="f1.prixIni.errors.min">Le prixIni  doit étre positive.</div>
+                                    <div *ngIf="f1.prixIni.errors.max">Le prixIni  ne doit pas dépassé à 999999 .</div>
+                                    <div *ngIf="f1.prixIni.errors.pattern">Le prixIni  ne doit contenir que des nombre.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                        </div>
+        
+                        
+                        <div class="row">
+                            <div class="col-sm-6"> 
+                                <label for="centre" class="label">centre</label>
+                                <input type="text" nbInput fullWidth placeholder="CENTRE" class="form-control" formControlName="centre" [ngClass]="{ 'is-invalid': submitted && f1.centre.errors }" />
+                                <div *ngIf="submitted && f1.centre.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.centre.errors.required">Le Centre est obligatoire.</div>
+                                    <div *ngIf="f1.centre.errors.minlength">Le Centre doit contenir au moin 4 lettres.</div>
+                                    <div *ngIf="f1.centre.errors.maxlength">Le Centre ne doit pas dépassé 49 lettres.</div>
+                                    <div *ngIf="f1.centre.errors.pattern">Le Raison ne doit contenir que des lettres ou des nombres.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>                 
+                            <div class="col-sm-6">   
+                                <label for="derPDev" class="label">derPDev</label>
+                                <input type="number" nbInput fullWidth placeholder="derPDev" class="form-control" formControlName="derPDev" [ngClass]="{ 'is-invalid': submitted && f1.derPDev.errors }"/>  
+                                <div *ngIf="submitted && f1.derPDev.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.derPDev.errors.required">Le derPDev est obligatoire.</div>
+                                    <div *ngIf="f1.derPDev.errors.minlength">Le derPDev doit etre positive.</div>
+                                    <div *ngIf="f1.derPDev.errors.maxlength">Le derPDev ne doit pas dépassé 999999 .</div>
+                                    <div *ngIf="f1.derPDev.errors.pattern">Le derPDev ne doit contenir que des nombres.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-6">
+                                <label for="prixEuro" class="label">prixEuro</label>&nbsp;en&nbsp;(<b>Dt</b>)
+                                <input type="number" nbInput fullWidth placeholder="prixEuro" class="form-control" formControlName="prixEuro" [ngClass]="{ 'is-invalid': submitted && f1.prixEuro.errors }" />
+                                <div *ngIf="submitted && f1.prixEuro.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.prixEuro.errors.required">Le prixEuro est obligatoire.</div>
+                                    <div *ngIf="f1.prixEuro.errors.minlength">Le prixEuro doit étre positive.</div>
+                                    <div *ngIf="f1.prixEuro.errors.maxlength">Le prixEuro ne doit pas dépassé à 999999 .</div>
+                                    <div *ngIf="f1.prixEuro.errors.pattern">Le prixEuro ne doit contenir que des nombres.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </nb-card-body>
+    
+                    <div class="row">
+                        <div class="col-sm-6"> 
+                            <label for="datRup" class="label">datRup</label>
+                            <input nbInput fullWidth class="form-control" placeholder="datRup" formControlName="datRup" [nbDatepicker]="pickerdatRup" [ngClass]="{ 'is-invalid': submitted && f1.datRup.errors }" />
+                            <nb-datepicker #pickerdatRup></nb-datepicker>
+                            <div *ngIf="submitted && f1.datRup.errors" class="invalid-feedback">
+                                <div *ngIf="f1.datRup.errors.required">Le datRup est obligatoire.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-6"> 
+                            <label for="datPAch" class="label">datPAch</label>
+                            <input nbInput fullWidth class="form-control" placeholder="datPAch" formControlName="datPAch" [nbDatepicker]="pickerdatPAch" [ngClass]="{ 'is-invalid': submitted && f1.datPAch.errors }" />
+                            <nb-datepicker #pickerdatPAch></nb-datepicker>
+                            <div *ngIf="submitted && f1.datPAch.errors" class="invalid-feedback">
+                                <div *ngIf="f1.datPAch.errors.required">Le datPAch est obligatoire.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div>
+                        <nb-card-body>    
+                    <div class="row">
+                        <div class="col-sm-4"> 
+                            <label for="qutStk" class="label">qutStk</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="qutStk" [ngClass]="{ 'is-invalid': submitted && f1.qutStk.errors }" />
+                            <div *ngIf="submitted && f1.qutStk.errors" class="invalid-feedback">
+                                <div *ngIf="f1.qutStk.errors.min">Le qutStk doit étre positive.</div>
+                                <div *ngIf="f1.qutStk.errors.max">Le qutStk ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.qutStk.errors.pattern">Le qutStk doit contenir que des nombres.</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="qutStk2" class="label">qutStk2</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="qutStk2" [ngClass]="{ 'is-invalid': submitted && f1.qutStk2.errors }" />
+                            <div *ngIf="submitted && f1.qutStk2.errors" class="invalid-feedback">
+                                <div *ngIf="f1.qutStk2.errors.min">Le qutStk2 doit étre positive.</div>
+                                <div *ngIf="f1.qutStk2.errors.max">Le qutStk2 ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.qutStk2.errors.pattern">Le qutStk2 doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="stkGar" class="label">stkGar</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkGar" [ngClass]="{ 'is-invalid': submitted && f1.stkGar.errors }" />
+                            <div *ngIf="submitted && f1.stkGar.errors" class="invalid-feedback">
+                                <div *ngIf="f1.stkGar.errors.min">Le stkGar doit étre positive.</div>
+                                <div *ngIf="f1.stkGar.errors.max">Le stkGar ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.stkGar.errors.pattern">Le stkGar doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4"> 
+                            <label for="stkIni" class="label">stkIni</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkIni" [ngClass]="{ 'is-invalid': submitted && f1.stkIni.errors }" />
+                            <div *ngIf="submitted && f1.stkIni.errors" class="invalid-feedback">
+                                <div *ngIf="f1.stkIni.errors.min">Le stkIni doit étre positive.</div>
+                                <div *ngIf="f1.stkIni.errors.max">Le stkIni ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.stkIni.errors.pattern">Le stkIni doit contenir que des nombres.</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="analStk" class="label">analStk</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="analStk" [ngClass]="{ 'is-invalid': submitted && f1.analStk.errors }" />
+                            <div *ngIf="submitted && f1.analStk.errors" class="invalid-feedback">
+                                <div *ngIf="f1.analStk.errors.min">Le analStk doit étre positive.</div>
+                                <div *ngIf="f1.analStk.errors.max">Le analStk ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.analStk.errors.pattern">Le analStk doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="nbjStk" class="label">nbjStk</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="nbjStk" [ngClass]="{ 'is-invalid': submitted && f1.nbjStk.errors }" />
+                            <div *ngIf="submitted && f1.nbjStk.errors" class="invalid-feedback">
+                                <div *ngIf="f1.nbjStk.errors.min">Le nbjStk doit étre positive.</div>
+                                <div *ngIf="f1.nbjStk.errors.max">Le nbjStk ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.nbjStk.errors.pattern">Le nbjStk doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div>  
+                    
+                    <div class="row">
+                        <div class="col-sm-4"> 
+                            <label for="vSstk" class="label">vSstk</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="vSstk" [ngClass]="{ 'is-invalid': submitted && f1.vSstk.errors }" />
+                            <div *ngIf="submitted && f1.vSstk.errors" class="invalid-feedback">
+                                <div *ngIf="f1.vSstk.errors.min">Le vSstk doit étre positive.</div>
+                                <div *ngIf="f1.vSstk.errors.max">Le vSstk ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.vSstk.errors.pattern">Le vSstk doit contenir que des nombres.</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="comStk" class="label">comStk</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="comStk" [ngClass]="{ 'is-invalid': submitted && f1.comStk.errors }" />
+                            <div *ngIf="submitted && f1.comStk.errors" class="invalid-feedback">
+                                <div *ngIf="f1.comStk.errors.min">Le comStk doit étre positive.</div>
+                                <div *ngIf="f1.comStk.errors.max">Le comStk ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.comStk.errors.pattern">Le comStk doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="xanalStk" class="label">xanalStk</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="xanalStk" [ngClass]="{ 'is-invalid': submitted && f1.xanalStk.errors }" />
+                            <div *ngIf="submitted && f1.xanalStk.errors" class="invalid-feedback">
+                                <div *ngIf="f1.xanalStk.errors.min">Le xanalStk doit étre positive.</div>
+                                <div *ngIf="f1.xanalStk.errors.max">Le xanalStk ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.xanalStk.errors.pattern">Le xanalStk doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <div class="row">
+                        <div class="col-sm-4"> 
+                            <label for="stkAtrsf" class="label">stkAtrsf</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkAtrsf" [ngClass]="{ 'is-invalid': submitted && f1.stkAtrsf.errors }" />
+                            <div *ngIf="submitted && f1.stkAtrsf.errors" class="invalid-feedback">
+                                <div *ngIf="f1.stkAtrsf.errors.min">Le stkAtrsf doit étre positive.</div>
+                                <div *ngIf="f1.stkAtrsf.errors.max">Le stkAtrsf ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.stkAtrsf.errors.pattern">Le stkAtrsf doit contenir que des nombres.</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="stkTrsf" class="label">stkTrsf</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkTrsf" [ngClass]="{ 'is-invalid': submitted && f1.stkTrsf.errors }" />
+                            <div *ngIf="submitted && f1.stkTrsf.errors" class="invalid-feedback">
+                                <div *ngIf="f1.stkTrsf.errors.min">Le stkTrsf doit étre positive.</div>
+                                <div *ngIf="f1.stkTrsf.errors.max">Le stkTrsf ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.stkTrsf.errors.pattern">Le stkTrsf doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <label for="stkNp" class="label">stkNp</label>
+                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkNp" [ngClass]="{ 'is-invalid': submitted && f1.stkNp.errors }" />
+                            <div *ngIf="submitted && f1.stkNp.errors" class="invalid-feedback">
+                                <div *ngIf="f1.stkNp.errors.min">Le stkNp doit étre positive.</div>
+                                <div *ngIf="f1.stkNp.errors.max">Le stkNp ne doit pas dépasser les limite.</div>
+                                <div *ngIf="f1.stkNp.errors.pattern">Le stkNp doit contenir que des nombres.</div>
+                            <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                            </div>
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-sm-4"> 
+                                <label for="stkRes" class="label">stkRes</label>
+                                <input type="number" nbInput fullWidth class="form-control" formControlName="stkRes" [ngClass]="{ 'is-invalid': submitted && f1.stkRes.errors }" />
+                                <div *ngIf="submitted && f1.stkRes.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.stkRes.errors.min">Le stkRes doit étre positive.</div>
+                                    <div *ngIf="f1.stkRes.errors.max">Le stkRes ne doit pas dépasser les limite.</div>
+                                    <div *ngIf="f1.stkRes.errors.pattern">Le stkRes doit contenir que des nombres.</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4"> 
+                                <label for="stkReel" class="label">stkReel</label>
+                                <input type="number" nbInput fullWidth class="form-control" formControlName="stkReel" [ngClass]="{ 'is-invalid': submitted && f1.stkReel.errors }" />
+                                <div *ngIf="submitted && f1.stkReel.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.stkReel.errors.min">Le stkReel doit étre positive.</div>
+                                    <div *ngIf="f1.stkReel.errors.max">Le stkReel ne doit pas dépasser les limite.</div>
+                                    <div *ngIf="f1.stkReel.errors.pattern">Le stkReel doit contenir que des nombres.</div>
+                                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                                </div>
+                            </div>
+                            <div class="col-sm-4"> 
+                            </div>
+                        </div> 
+                        </nb-card-body>
+                    <div class="row">
+                        <div class="col-sm-6">    
+                            <label for="poste" class="label">Poste</label>
+                            <input type="text" nbInput fullWidth placeholder="Poste" formControlName="poste" [ngClass]="{ 'is-invalid': submitted && f1.poste.errors }" disabled/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="poste" class="label">ajouter Image</label>
+                        <input type="file" accept="image/*" (change)="onSelectFile($event)"/>
+                        <img [src]="imgURL" height="200" *ngIf="imgURL">
+                    </div>
+                    <!--
+                    liste chainé expide livreur
+                    -->
+
+                        <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                        Ajouter Article</button>
+                        <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+                        Annuler</button>
+            
+                    </form>
+                </div>
+
+
+
+                
+<!--  PROGRESSIVE  bar  -->
+
+          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+          <p class="p-m-0"> 
+            <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+          </p>
+          </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

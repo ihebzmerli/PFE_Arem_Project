@@ -1,0 +1,52 @@
+<div class="accordions-container row offset-sm-2 col-sm-9">
+  <form (ngSubmit) = "onSubmitBon()" #etatLivForm="ngForm">
+    <nb-card>
+      <nb-card-header>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des etat de livraison?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../../etat-liv-list']"/>
+        <p></p>
+        <h5>detail pour les livreurs</h5></nb-card-header>
+      <nb-card-body>   
+        <div class="row">
+            <div class="col-sm-6">
+              <label for="Date" class="label">Date de recevoir le Bon par le livreur:</label><p>
+                &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{etatliv.date | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+            </div>
+            <!--<div class="form-group col">-->
+            <div class="col-sm-6">
+              <label for="N~ Bon livraison" class="label">N~ Bon livraison:</label><p>
+                &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{test1}}</b>
+            </div>
+          </div>
+      
+               
+          <div class="row">
+            <div class="col-sm-6">
+              <label for="region" class="label">region</label>
+              <input type="text" nbInput fullWidth fieldSize="small" class="form-control" #region="ngModel" id="region" name="region" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="4" [(ngModel)]="etatliv.region" />
+              <div style="font-size: 12px;" [hidden]="region.valid || region.pristine" class="alert alert-danger p-2">
+                <div [hidden]="!region.hasError('minlength')">region doit au moin 4 carractére.</div>
+                <div [hidden]="!region.hasError('maxlength')">region ne doit pas 50 carractére.</div>
+                <div [hidden]="!region.hasError('pattern')">region ne doit contenir que des lettre et des nombres.</div>
+              </div>
+            </div>
+              <div class="form-group col">
+                <label for="Etat bon livraison" class="label">Etat bon livraison</label>
+                <nb-select  style="width:250px" #confirmation="ngModel" id="confirmation" name="confirmation" required [(ngModel)]="etatliv.confirmation">
+                  <nb-option class="p-mb-3 p-text-italic" style="color:darkgreen;" value="recu_est_verifier">Bon Livraison reçu et verifier</nb-option>
+                  <nb-option class="p-mb-3 p-text-italic" style="color:limegreen;" value="recu_non_verifier">Bon Livraison non verifier</nb-option>
+                  <nb-option class="p-mb-3 p-text-italic" style="color: rgb(221, 235, 23);" value="n_est_pas_recu">Bon Livraison n est pas reçu</nb-option>
+                  <nb-option class="p-mb-3 p-text-italic" style="color:darkred;" value="un_problem_a_la_reception">un problem dans le Bon Livraison</nb-option>
+                </nb-select>
+              </div>
+          </div>
+      </nb-card-body>
+     </nb-card>
+     <div class="col-sm-6">
+      <button [disabled]="etatLivForm.invalid" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+        Modifier l'Etat livraison</button>
+      <button nbButton (click)="etatLivForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+        Annuler</button> 
+    </div>
+  </form>
+</div>
+            

@@ -1,0 +1,63 @@
+
+<form (ngSubmit) = "onSubmitModel()" #modelForm="ngForm">
+  <div class="offset-sm-2 col-sm-9">
+    <nb-card>
+      <nb-card-header>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des models ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../model-list']"/>
+        <p></p>
+        Modifier Model
+          </nb-card-header>
+      <nb-card-body>
+          
+          <div class="form-row">
+              <div class="form-group col">
+                <label for="code" class="label">Code</label>
+                <input type="text" nbInput fullWidth class="form-control" #code="ngModel" id="code" name="code" required pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="3" [(ngModel)]="model.code" />
+                <div style="font-size: 12px;" [hidden]="code.valid || code.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!code.hasError('minlength')">Code doit étre au moin 3 lettres longue.</div>
+                  <div [hidden]="!code.hasError('maxlength')">Code ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!code.hasError('required')">Code est obligatoire.</div>
+                  <div [hidden]="!code.hasError('pattern')">Code ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="title" class="label">Title</label>
+                <input type="text" nbInput fullWidth class="form-control" #title="ngModel" id="title" name="title" required pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="3" [(ngModel)]="model.title" />
+                <div style="font-size: 12px;" [hidden]="title.valid || title.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!title.hasError('minlength')">Titre doit étre au moin 3 lettres longue.</div>
+                  <div [hidden]="!title.hasError('maxlength')">Titre ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!title.hasError('required')">Titre est obligatoire.</div>
+                  <div [hidden]="!title.hasError('pattern')">Titre ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+              <div class="form-row">
+
+                <div class="col-sm-6"> 
+                  <label for="marque" class="label">Marque</label><p>
+
+                  <p-dropdown [style]="{'minWidth':'100%'}" [options]="MarqueList" [(ngModel)]="model.marque" optionLabel="title" [filter]="true" filterBy="title" [showClear]="true" placeholder="Choisir Marque" [ngModelOptions]="{standalone: true}">
+                    <ng-template pTemplate="selectedItem">
+                        <div class="country-item country-item-value"  *ngIf="model.marque">
+                            <div><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+model.marque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{model.marque.title}}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-marque pTemplate="item">
+                        <div class="country-item">
+                            <div><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+marque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{marque.title}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown> 
+                </div>
+              </div>
+      </nb-card-body>
+    </nb-card>
+    <div class="col-sm-6">
+      <button [disabled]="modelForm.invalid" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+        Modifier model</button>
+      <button nbButton (click)="modelForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+        Annuler</button> 
+    </div>
+  </div>
+</form>

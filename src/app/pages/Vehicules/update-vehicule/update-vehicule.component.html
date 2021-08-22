@@ -1,0 +1,184 @@
+<div class="accordions-container row offset-sm-2 col-sm-9">
+    <form (ngSubmit) = "onSubmitVehicule()" #vehiculeForm="ngForm">
+      <nb-card>
+        <nb-card-header>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Vehicules?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../vehicule-list']"/>
+          <p></p>
+          Modification de Vehicule</nb-card-header>
+        <nb-card-body>
+
+                <div class="row">
+                    <div class="col-sm-6"> 
+                    <label for="matricule" class="label">Matricule</label>
+                    <input type="text" nbInput fullWidth placeholder="matricule" [(ngModel)]="vehicule.matricule" class="form-control" #matricule="ngModel" id="matricule" name="matricule" required pattern="^[0-9]{3}[-][a-zA-Z]{5}[-][0-9]{4}$" maxlength="50" minlength="5" />
+                    <div style="font-size: 12px;" [hidden]="matricule.valid || matricule.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!matricule.hasError('minlength')">Matricule doit étre au moin 5 carractére.</div>
+                      <div [hidden]="!matricule.hasError('maxlength')">Matricule ne doit pas dépassé les 30 carractére.</div>
+                      <div [hidden]="!matricule.hasError('required')">Matricule est obligatoire.</div>
+                      <div [hidden]="!matricule.hasError('pattern')">Matricule ne doit contenir la forme nombres-lettres-nombres.</div>
+                    </div>
+                  </div>
+                    <div class="col-sm-6"> 
+                    <label for="matAgent" class="label">MAT AGENT</label>
+                    <input type="text" step="100" nbInput fullWidth placeholder="matAgent" [(ngModel)]="vehicule.matAgent" class="form-control" #matAgent="ngModel" id="matAgent" name="matAgent" required pattern="^(0|[1-9][0-9]*)$" maxlength="30" minlength="5" />
+                    <div style="font-size: 12px;" [hidden]="matAgent.valid || matAgent.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!matAgent.hasError('min')">matAgent doit étre positive.</div>
+                      <div [hidden]="!matAgent.hasError('max')">matAgent ne doit pas dépassé les limite.</div>
+                      <div [hidden]="!matAgent.hasError('required')">matAgent est obligatoire.</div>
+                      <div [hidden]="!matAgent.hasError('pattern')">matAgent ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6"> 
+                    <label for="marque" class="label">marque</label>
+                    <nb-select fullWidth fieldSize="small" [(selected)]="MarqueSelected" [(ngModel)]="vehiculemarque" (selectedChange)="getModeleFromMarque($event)" placeholder="marque">
+                        <nb-option value="null">-Select</nb-option>
+                        <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsMarque.title }} </nb-option>
+                      </nb-select>
+
+                </div>
+                <div class="col-sm-6"> 
+                    <label for="modele" class="label">modele</label>
+                    <nb-select fullWidth fieldSize="small" [(selected)]="ModelSelected" [(ngModel)]="vehiculemodel" placeholder="model">
+                        <nb-option value="null">-Select</nb-option>
+                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsModel.title }} </nb-option>
+                      </nb-select>
+                </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"> 
+                        <label for="couleur" class="label">couleur</label><p></p>
+                        <p-colorPicker [(ngModel)]="vehicule.couleur"></p-colorPicker>{{vehicule.couleur}}
+                      </div>
+                    <div class="col-sm-6"> 
+                    <label for="dt1Mc" class="label">dt1Mc</label>
+                    <input nbInput fullWidth placeholder="dt1Mc" [(ngModel)]="vehicule.dt1Mc" [nbDatepicker]="picker_dt1Mc" #dt1Mc="ngModel" id="dt1Mc" name="dt1Mc" required  />
+                    <nb-datepicker #picker_dt1Mc [min]="min" [max]="max"></nb-datepicker>
+                    <div style="font-size: 12px;" [hidden]="dt1Mc.valid || dt1Mc.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!dt1Mc.hasError('required')">dt1Mc est obligatoire.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"> 
+                    <label for="dtAcq" class="label">dtAcq</label>
+                    <input nbInput fullWidth placeholder="dtAcq" [(ngModel)]="vehicule.dtAcq" [nbDatepicker]="picker_dtAcq" #dtAcq="ngModel" id="dtAcq" name="dtAcq" required />
+                    <nb-datepicker #picker_dtAcq [min]="min" [max]="max"></nb-datepicker>
+                    <div style="font-size: 12px;" [hidden]="dtAcq.valid || dtAcq.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!dtAcq.hasError('required')">dtAcq est obligatoire.</div>
+                    </div>
+                  </div>
+                    <div class="col-sm-6"> 
+                    <label for="pattc" class="label">pattc</label>
+                    <input type="number" step="10" nbInput fullWidth placeholder="pattc" [(ngModel)]="vehicule.pattc" class="form-control" #pattc="ngModel" id="pattc" name="pattc" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" />
+                    <div style="font-size: 12px;" [hidden]="pattc.valid || pattc.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!pattc.hasError('min')">pattc doit étre positive.</div>
+                      <div [hidden]="!pattc.hasError('max')">pattc ne doit pas dépassé les limite.</div>
+                      <div [hidden]="!pattc.hasError('required')">pattc est obligatoire.</div>
+                      <div [hidden]="!pattc.hasError('pattern')">pattc ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"> 
+                    <label for="ess" class="label">ess</label>
+                    <input type="text" nbInput fullWidth placeholder="ess" [(ngModel)]="vehicule.ess" class="form-control" #ess="ngModel" id="ess" name="ess" required pattern="^[a-zA-Z0-9 ]+$" maxlength="5" minlength="1" />
+                    <div style="font-size: 12px;" [hidden]="ess.valid || ess.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!ess.hasError('minlength')">Ess doit étre au moin 5 carractére.</div>
+                      <div [hidden]="!ess.hasError('maxlength')">Ess ne doit pas dépassé les 30 carractére.</div>
+                      <div [hidden]="!ess.hasError('required')">Ess est obligatoire.</div>
+                      <div [hidden]="!ess.hasError('pattern')">Ess ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                    <div class="col-sm-6"> 
+                    <label for="dtFAss" class="label">dtFAss</label>
+                    <input nbInput fullWidth placeholder="dtFAss" [(ngModel)]="vehicule.dtFAss" [nbDatepicker]="picker_dtFAss" #dtFAss="ngModel" id="dtFAss" name="dtFAss" required />
+                    <nb-datepicker #picker_dtFAss [min]="min" [max]="max"></nb-datepicker>
+                    <div style="font-size: 12px;" [hidden]="dtFAss.valid || dtFAss.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!dtFAss.hasError('required')">dtFAss est obligatoire.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"> 
+                    <label for="dtFVisit" class="label">dtFVisit</label>
+                    <input nbInput fullWidth placeholder="dtFVisit" [(ngModel)]="vehicule.dtFVisit" [nbDatepicker]="picker_dtFVisit" #dtFVisit="ngModel" id="dtFVisit" name="dtFVisit" required />
+                    <nb-datepicker #picker_dtFVisit [min]="min" [max]="max"></nb-datepicker>
+                    <div style="font-size: 12px;" [hidden]="dtFVisit.valid || dtFVisit.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!dtFVisit.hasError('required')">dtFVisit est obligatoire.</div>
+                    </div>
+                  </div>
+                    <div class="col-sm-6"> 
+                    <label for="kmCour" class="label">kmCour</label>
+                    <input type="number" step="100" nbInput fullWidth placeholder="kmCour" [(ngModel)]="vehicule.kmCour" class="form-control" #kmCour="ngModel" id="kmCour" name="kmCour" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" />
+                    <div style="font-size: 12px;" [hidden]="kmCour.valid || kmCour.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!kmCour.hasError('min')">Km Cour doit étre positive.</div>
+                      <div [hidden]="!kmCour.hasError('max')">Km Cour ne doit pas dépassé les limite.</div>
+                      <div [hidden]="!kmCour.hasError('required')">Km Cour est obligatoire.</div>
+                      <div [hidden]="!kmCour.hasError('pattern')">Km Cour ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"> 
+                    <label for="drKmVida" class="label">drKmVida</label>
+                    <input type="number" step="100" nbInput fullWidth placeholder="drKmVida" [(ngModel)]="vehicule.drKmVida" class="form-control" #drKmVida="ngModel" id="drKmVida" name="drKmVida" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" />
+                    <div style="font-size: 12px;" [hidden]="drKmVida.valid || drKmVida.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!drKmVida.hasError('min')">Dr~ Km Vida doit étre positive.</div>
+                      <div [hidden]="!drKmVida.hasError('max')">Dr~ Km Vida ne doit pas dépassé les limite.</div>
+                      <div [hidden]="!drKmVida.hasError('required')">Dr~ Km Vida est obligatoire.</div>
+                      <div [hidden]="!drKmVida.hasError('pattern')">Dr~ Km Vida ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                    <div class="col-sm-6"> 
+                    <label for="drKmCh" class="label">drKmCh</label>
+                    <input type="number" step="100" nbInput fullWidth placeholder="drKmCh" [(ngModel)]="vehicule.drKmCh" class="form-control" #drKmCh="ngModel" id="drKmCh" name="drKmCh" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" />
+                    <div style="font-size: 12px;" [hidden]="drKmCh.valid || drKmCh.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!drKmCh.hasError('min')">Dr~ Km Ch doit étre positive.</div>
+                      <div [hidden]="!drKmCh.hasError('max')">Dr~ Km Ch ne doit pas dépassé les limite.</div>
+                      <div [hidden]="!drKmCh.hasError('required')">Dr~ Km Ch est obligatoire.</div>
+                      <div [hidden]="!drKmCh.hasError('pattern')">Dr~ Km Ch ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"> 
+                    <label for="observation" class="label">observation</label>
+                    <nb-select fullWidth [(selected)]="vehicule.observation" placeholder="observation" id="observation" name="observation">
+                      <nb-option value="en_panne">En panne</nb-option>
+                      <nb-option value="au_stock">au stock</nb-option>
+                      <nb-option value="pris_par_livreur">pris par le livreur</nb-option>
+                    </nb-select>
+                  </div>
+                    <div class="col-sm-6"> 
+                    <label for="TONNAGE" class="label">tonnage</label>
+                    <input type="number" step="100" nbInput fullWidth placeholder="TONNAGE" [(ngModel)]="vehicule.tonnage" class="form-control" #tonnage="ngModel" id="tonnage" name="tonnage" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" />
+                    <div style="font-size: 12px;" [hidden]="tonnage.valid || tonnage.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!tonnage.hasError('min')">Tonnage doit étre positive</div>
+                      <div [hidden]="!tonnage.hasError('max')">Tonnage ne doit pas dépassé les limite.</div>
+                      <div [hidden]="!tonnage.hasError('required')">Tonnage est obligatoire.</div>
+                      <div [hidden]="!tonnage.hasError('pattern')">Tonnage ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"> 
+                    <label for="dt1mc2" class="label">dt1Mc2</label>
+                    <input nbInput fullWidth placeholder="dt1mc2" [(ngModel)]="vehicule.dt1Mc2" [nbDatepicker]="picker_dt1Mc2" #dt1Mc2="ngModel" id="dt1Mc2" name="dt1Mc2" required />
+                    <nb-datepicker #picker_dt1Mc2 [min]="min" [max]="max"></nb-datepicker>
+                    <div style="font-size: 12px;" [hidden]="dtFVisit.valid || dtFVisit.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!dtFVisit.hasError('required')">dtFVisit est obligatoire.</div>
+                    </div>
+                  </div>
+                </div>
+        </nb-card-body>
+      </nb-card>
+      <div class="col-sm-6">
+        <button [disabled]=!vehiculeForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+          Modifier la vehicule</button>
+        <button nbButton (click)="vehiculeForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+          Annuler</button> 
+      </div>
+    </form>
+  </div>

@@ -1,0 +1,86 @@
+<nb-card>
+    <nb-card-header>
+      Art Acha Table
+      <nb-card-body>
+        <div class="border">
+          <button class="btn btn-md btn-outline-primary">
+            <i class="fa fa-user"></i>Statistiques</button>
+        </div>
+        <div class="search-hero">
+          <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Start searching for a hero by id or name or country">
+        </div>
+      </nb-card-body>
+    </nb-card-header>
+  
+    <nb-card-body>
+      <div class="container">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th><label class="label">bonise</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search By Bonise"
+                style="width:150px" [(ngModel)]="searchTermBonise" />
+              </div>
+            </th>
+            <th><label class="label">prixAch</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search By PrixAch"
+                style="width:150px" [(ngModel)]="searchTermPrixAch" />
+              </div>
+            </th>
+            <th><label class="label">PrixVen</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search By PrixVen"
+                style="width:150px" [(ngModel)]="searchTermPrixVen" />
+              </div>
+            </th>
+            <th><label class="label">tva</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search By Tva"
+                style="width:150px" [(ngModel)]="searchTermTva" />
+              </div>
+            </th>
+            <th><label class="label">date</label>
+              <div class="form-group">
+                    <button (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                    <i class="fa fa-user"></i>Filter</button>  
+              </div>
+            </th>
+            <th><label class="label">prixAMp</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search By PrixAMp"
+                style="width:150px" [(ngModel)]="searchTermPrixAMp" />
+              </div>
+            </th>
+            <th><label class="label">centre</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search By Centre"
+                style="width:150px" [(ngModel)]="searchTermCentre" />
+              </div>
+            </th>
+            <th><label class="label">Actions</label></th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let artacha of filteredArtAchas | filter:searchText">
+            <td class="field-multiple-drag"><span><p>{{artacha.bonise}}</p></span></td>
+            <td class="field-multiple-drag"><span><p>{{artacha.prixAch}}</p></span></td>
+            <td class="field-multiple-drag"><span><p>{{artacha.prixVen}}</p></span></td>
+            <td class="field-multiple-drag"><span><p>{{artacha.tva}}</p></span></td>
+            <td class="field-multiple-drag"><span><p>{{artacha.date}}</p></span></td>
+            <td class="field-multiple-drag"><span><p>{{artacha.prixAMp}}</p></span></td>
+            <td class="field-multiple-drag"><span><p>{{artacha.centre}}</p></span></td>
+            
+            <td class="field-multiple-drag">
+              <button class="btn btn-sm btn-info">
+                <i class="fa fa-search"></i>Details</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </nb-card-body>
+  </nb-card>
+  

@@ -1,0 +1,46 @@
+<div class="accordions-container row offset-sm-1 col-sm-13">
+  <form [formGroup]="chariotForm" (ngSubmit) = "onSubmit()">
+    <nb-card>
+      <nb-card-header>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Chariot?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../chariot-list']"/>
+        <p></p>
+        Ajouter Chariot<p class="col-sm-6">Date de création:<input type="text" nbInput fullWidth class="form-control" formControlName="datchariot" [ngClass]="{ 'is-invalid': submitted && f.datchariot.errors }" disabled/></p>
+        Le derniére chariot a le numereau: <b >{{lastId}}</b>
+      </nb-card-header>
+        <nb-card-body>          
+          <div class="row">
+              <div class="col-sm-6"> 
+                <label for="numChar" class="label">Num Chariot</label> 
+                <input type="number" nbInput fullWidth placeholder="Num Chariot" class="form-control" formControlName="numChar" [ngClass]="{ 'is-invalid': submitted && f.numChar.errors }" />
+                <div *ngIf="submitted && f.numChar.errors" class="invalid-feedback">
+                  <div *ngIf="f.numChar.errors.required">N~ Char est obligatoire.</div>
+                  <div *ngIf="f.numChar.errors.min">minimum 0 nombre.</div>
+                  <div *ngIf="f.numChar.errors.max">maximum 100 nombre.</div>
+                  <div *ngIf="f.numChar.errors.pattern">N~ chariot doit étre seulement un nombre.</div>
+                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                </div>
+              </div>
+              <div class="col-sm-6"> 
+
+                <label for="etat_char" class="label">L'etat chariot</label> 
+                  <p><input type="text" nbInput fullWidth class="form-control" formControlName="etat_char" [ngClass]="{ 'is-invalid': submitted && f.etat_char.errors }" style="color: rgb(9, 129, 5);font-size: 10px;" disabled/>
+              </div>
+          </div>
+
+<!--  PROGRESSIVE  bar  -->
+
+          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+          <p class="p-m-0"> 
+            <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+          </p>
+          </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->
+      </nb-card-body>
+    </nb-card>
+        <button nbButton status="primary" type="onSubmit" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+          Ajouter Chariot</button>
+  </form>
+</div>
+

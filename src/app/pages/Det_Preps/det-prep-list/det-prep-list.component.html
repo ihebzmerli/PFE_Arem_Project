@@ -1,0 +1,57 @@
+<nb-card>
+  <nb-card-header>
+    det_preparation Table
+    <nb-card-body>
+      <div class="border">
+        <button class="btn btn-md btn-outline-primary">
+          <i class="fa fa-user"></i>Statistiques</button>
+      </div>
+
+    </nb-card-body>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="container">
+      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="text-align: center">
+            <label class="label">ZONE</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By Zone"
+              style="width:150px;text-align: center;" [(ngModel)]="searchTermZone"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">PREPARA</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By Prepara"
+              style="width:150px" [(ngModel)]="searchTermPrepara"/>
+            </div>
+          </th>
+          <th style="text-align: center"><label class="label">Actions</label></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let detprep of filteredDetPreps | filter:searchText">
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{detprep.zone}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{detprep.prepara}}</p></span></td>
+
+          <td style="text-align: center" class="field-multiple-drag">
+            <div class="buttons-row">
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" outline>
+                  <i class="fa fa-search"></i>Details</button>
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" outline>
+                  <i class="fa fa-edit"></i>Edit</button>
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap()" outline>
+                  <i class="fa fa-remove"></i>Delete</button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

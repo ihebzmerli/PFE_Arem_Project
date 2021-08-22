@@ -1,0 +1,135 @@
+<nb-card>
+  <nb-card-header>
+    Prime Table
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="container">
+      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr style="text-align: center">
+          <th><label class="label">Raison</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Raison"
+              style="width:120px" [(ngModel)]="searchTermRaison"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Categorie</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Categorie"
+              style="width:120px" [(ngModel)]="searchTermCategorie"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Obj Min</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search ObjMin_1"
+              style="width:120px" [(ngModel)]="searchTermObjMin_1"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Obj Max</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search ObjMax_1"
+              style="width:120px" [(ngModel)]="searchTermObjMax_1"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">C~A</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Ca_1"
+              style="width:120px" [(ngModel)]="searchTermCa_1"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">C~A N1</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search CaN1_1"
+              style="width:120px" [(ngModel)]="searchTermCaN1_1"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Der Mvt</label>
+            <div class="form-group">
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Mort</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search Mort_1"
+                style="width:120px" [(ngModel)]="searchTermMort_1"/>
+              </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Art Spec</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search ArtSpec"
+              style="width:120px" [(ngModel)]="searchTermArtSpec"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Prime</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Prime_1"
+              style="width:120px" [(ngModel)]="searchTermPrime_1"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Bloc</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Bloc"
+              style="width:120px" [(ngModel)]="searchTermBloc"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Nb Art</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search NbArt_1"
+              style="width:120px;" [(ngModel)]="searchTermNbArt_1"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Marge</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Marge_1"
+              style="width:120px" [(ngModel)]="searchTermMarge_1"/>
+            </div>
+          </th>
+          <th style="text-align: center"><label class="label">Actions</label></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let prime of filteredPrimes | filter:searchText">
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.raison}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.categorie}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.objMin}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.objMax}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.ca}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.caN1}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.derMvt | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.mort}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.artSpec}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.prime | currency:'DT ' : 'symbol'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.bloc}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.nbArt}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{prime.marge}}</p></span></td>
+
+          <td class="field-multiple-drag">
+            <div class="buttons-row">
+              <div class="form-group">
+                <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(prime.id)" outline>
+                  <i class="fa fa-edit"></i>Modifier</button>
+                <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(prime.id)" outline>
+                  <i class="fa fa-remove"></i>Supprimer</button>
+              </div>
+            </div>  
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

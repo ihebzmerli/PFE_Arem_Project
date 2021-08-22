@@ -1,0 +1,54 @@
+
+<form (ngSubmit) = "onSubmitMarque()" #marqueForm="ngForm">
+  <div class="offset-sm-2 col-sm-9">
+    <nb-card>
+      <nb-card-header>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des marques ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../marque-list']"/>
+        <p></p>
+        Modifier Marque
+          </nb-card-header>
+      <nb-card-body>
+          
+          <div class="form-row">
+              <div class="form-group col">
+                <label for="code" class="label">Code</label>
+                <input type="text" nbInput fullWidth class="form-control" #code="ngModel" id="code" name="code" required pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="6" [(ngModel)]="marque.code" />
+                <div style="font-size: 12px;" [hidden]="code.valid || code.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!code.hasError('minlength')">code doit étre au moin 6 lettres longue.</div>
+                  <div [hidden]="!code.hasError('maxlength')">code ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!code.hasError('required')">code est obligatoire.</div>
+                  <div [hidden]="!code.hasError('pattern')">code ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="title" class="label">Title</label>
+                <input type="text" nbInput fullWidth class="form-control" #title="ngModel" id="title" name="title" required pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="5" [(ngModel)]="marque.title" />
+                <div style="font-size: 12px;" [hidden]="title.valid || title.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!title.hasError('minlength')">title doit étre au moin 5 lettres longue.</div>
+                  <div [hidden]="!title.hasError('maxlength')">title ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!title.hasError('required')">title est obligatoire.</div>
+                  <div [hidden]="!title.hasError('pattern')">title ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="poste" class="label">ajouter Image</label><p>
+                  <input type="file" accept="image/*" (change)="onSelectFile($event)"/>
+                  <div class="form-group">
+                    <img [src]="imgURL" height="100" *ngIf="imgURL">
+                  </div>
+              </div>
+            </div>
+
+      </nb-card-body>
+    </nb-card>
+    <div class="col-sm-6">
+      <button [disabled]="marqueForm.invalid" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+        Modifier marque</button>
+      <button nbButton (click)="marqueForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+        Annuler</button> 
+    </div>
+  </div>
+</form>

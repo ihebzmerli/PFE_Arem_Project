@@ -1,0 +1,1899 @@
+<form (ngSubmit) = "onSubmitUtilisateur()" #utilisateurForm="ngForm">
+    <div class="row">
+        <div class="col-lg-6">
+          <nb-card>
+            <nb-card-header>Information primaire</nb-card-header>
+            <nb-card-body>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label class="label">Nom d'utilisateur</label>  
+                  <input type="text" nbInput fullWidth placeholder="username" id="username" name="username" required #username="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="5" [(ngModel)]="utilisateur.username">
+                  <div style="font-size: 12px;" [hidden]="username.valid || username.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!username.hasError('minlength')">username doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!username.hasError('maxlength')">username ne doit pas dépassé les 50 lettres longue.</div>
+                    <div [hidden]="!username.hasError('required')">username est obligatoire.</div>
+                    <div [hidden]="!username.hasError('pattern')">username ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+                  <div class="col-sm-6">
+                  <label class="label">Prenom</label> 
+                  <input type="text" nbInput fullWidth placeholder="firstname" id="firstname" name="firstname" required #firstname="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" [(ngModel)]="utilisateur.firstname">
+                  <div style="font-size: 12px;" [hidden]="firstname.valid || firstname.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!firstname.hasError('minlength')">Prenom doit étre au moin 3 lettres longue.</div>
+                    <div [hidden]="!firstname.hasError('maxlength')">Prenom ne doit pas dépassé les 50 lettres longue.</div>
+                    <div [hidden]="!firstname.hasError('required')">Prenom est obligatoire.</div>
+                    <div [hidden]="!firstname.hasError('pattern')">Prenom ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6"> 
+                  <label class="label">Nom</label>
+                  <input type="text" nbInput fullWidth placeholder="lastname" id="lastname" name="lastname" required #lastname="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" [(ngModel)]="utilisateur.lastname">
+                  <div style="font-size: 12px;" [hidden]="lastname.valid || lastname.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!lastname.hasError('minlength')">Nom doit étre au moin 3 lettres longue.</div>
+                    <div [hidden]="!lastname.hasError('maxlength')">Nom ne doit pas dépassé les 50 lettres longue.</div>
+                    <div [hidden]="!lastname.hasError('required')">Nom est obligatoire.</div>
+                    <div [hidden]="!lastname.hasError('pattern')">Nom ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label class="label">Email</label> 
+                  <input type="text" nbInput fullWidth placeholder="email" id="email" name="email" required #email="ngModel" [(ngModel)]="utilisateur.email" disabled>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6"> 
+                  <label class="label">Date de Naissance</label>              
+                  <input nbInput fullWidth [nbDatepicker]="dateTimePicker1" placeholder="date_de_naissance" id="date_de_naissance" name="date_de_naissance" required #dateDeNaissance="ngModel" [(ngModel)]="utilisateur.dateDeNaissance" >
+                  <nb-datepicker #dateTimePicker1></nb-datepicker>
+                </div>
+                <div class="col-sm-6"> 
+                  <label class="label">Cin</label>
+                  <input type="number" nbInput fullWidth placeholder="cin" id="cin" name="cin" required #cin="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.cin">
+                  <div style="font-size: 12px;" [hidden]="cin.valid || cin.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!cin.hasError('min')">cin doit étre positive.</div>
+                    <div [hidden]="!cin.hasError('max')">cin ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!cin.hasError('required')">cin est obligatoire.</div>
+                    <div [hidden]="!cin.hasError('pattern')">cin ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <label class="label">Address</label>
+                  <textarea rows="5" nbInput fullWidth shape="round" placeholder="address" id="address" name="address" required #address="ngModel" maxlength="250" minlength="10" [(ngModel)]="utilisateur.address"></textarea>
+                  <div style="font-size: 12px;" [hidden]="address.valid || address.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!address.hasError('minlength')">Address doit étre au moin 10 lettres longue.</div>
+                    <div [hidden]="!address.hasError('maxlength')">Address ne doit pas dépassé les 250 lettres longue.</div>
+                    <div [hidden]="!address.hasError('required')">Address est obligatoire.</div>
+                  </div>
+                  
+              <div class="row">
+                <div class="col-sm-6">  
+                  <label class="label">Cps</label>              
+                  <input type="number" nbInput fullWidth placeholder="cps" id="cps" name="cps" required #cps="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.cps">
+                  <div style="font-size: 12px;" [hidden]="cps.valid || cps.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!cps.hasError('min')">cps doit étre positive.</div>
+                    <div [hidden]="!cps.hasError('max')">cps ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!cps.hasError('required')">cps est obligatoire.</div>
+                    <div [hidden]="!cps.hasError('pattern')">cps ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label class="label">Telephone</label> 
+                  <input type="number" nbInput fullWidth placeholder="telephone" id="telephone" name="telephone" required #telephone="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.telephone">
+                  <div style="font-size: 12px;" [hidden]="telephone.valid || telephone.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!telephone.hasError('min')">Telephone doit étre positive.</div>
+                    <div [hidden]="!telephone.hasError('max')">Telephone ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!telephone.hasError('required')">Telephone est obligatoire.</div>
+                    <div [hidden]="!telephone.hasError('pattern')">Telephone ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6" *ngIf="!pass2">                                                                                                     
+                  <label class="label">Password</label>&nbsp;<img src="assets/images/toulsImages/Eye.png" width="20" style="vertical-align: middle" nbPopover="Afficher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+                  <input type="password" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
+                  <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">                <!--at least one uppercase letter, one lowercase letter, one number and one special character:-->
+                    <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
+                    <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
+                    <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
+                    <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6" *ngIf="pass2">
+                  <label class="label">Password</label>&nbsp;<img src="assets/images/toulsImages/noEye.png" width="20" style="vertical-align: middle" nbPopover="Cacher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+                  <input type="text" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
+                  <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">                <!--at least one uppercase letter, one lowercase letter, one number and one special character:  "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$"-->
+                    <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
+                    <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
+                    <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
+                    <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label class="label">Date Rec</label>  
+                  <input nbInput fullWidth [nbDatepicker]="dateTimePicker2" placeholder="dateRec" id="dateRec" name="dateRec" required #dateRec="ngModel" [(ngModel)]="utilisateur.dateRec">
+                  <nb-datepicker #dateTimePicker2></nb-datepicker>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6"> 
+                  <label class="label">Type Contrat</label>
+                  <div>
+                    <nb-select [style]="{'width':'100%'}" placeholder="typeContrat" id="typeContrat" name="typeContrat" required #typeContrat="ngModel" fullWidth fieldSize="small" [(ngModel)]="utilisateur.typeContrat" >
+                      <nb-option value="">-Aucun Contrat-</nb-option>
+                      <nb-option value="CDI" nbPopover="Contrat à Durée Indéterminée" nbPopoverTrigger="hint" nbPopoverPlacement="right"><b>CDI</b></nb-option>
+                      <nb-option value="CDD" nbPopover="Contrat à Durée Déterminée" nbPopoverTrigger="hint" nbPopoverPlacement="right"><b>CDD</b></nb-option>
+                      <nb-option value="CTT" nbPopover="Contrat de travail temporaire composé de : Le contrat de mission et le contrat de mise à disposition" nbPopoverTrigger="hint" nbPopoverPlacement="right"><b>CTT</b></nb-option>
+                      <nb-option value="C_en_Alternance" nbPopover="Contrat entre l'Entreprise,le centre de formation et l'Etudiant" nbPopoverTrigger="hint" nbPopoverPlacement="right"><b>C_en_Alternance</b></nb-option>
+                    </nb-select>
+                    <div style="font-size: 12px;" [hidden]="typeContrat.valid || typeContrat.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!typeContrat.hasError('required')">typeContrat est obligatoire.</div>
+                    </div>
+                  </div>
+                </div>  
+                <div class="col-sm-6"> 
+                  <label class="label">Date Contrat</label> 
+                  <input [nbDatepicker]="dateTimePicker3" nbInput fullWidth placeholder="dateContrat" id="dateContrat" name="dateContrat" required #dateContrat="ngModel" [(ngModel)]="utilisateur.dateContrat">
+                  <nb-datepicker #dateTimePicker3></nb-datepicker>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label class="label">Post V</label> 
+                    <input type="text" nbInput fullWidth placeholder="PostV" id="PostV" name="PostV" #postV="ngModel" required pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="4" [(ngModel)]="utilisateur.postV">
+                    <div style="font-size: 12px;" [hidden]="postV.valid || postV.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!postV.hasError('minlength')">Post V doit étre au moin 4 lettres longue.</div>
+                      <div [hidden]="!postV.hasError('maxlength')">Post V ne doit pas dépassé les 250 lettres longue.</div>
+                      <div [hidden]="!postV.hasError('required')">Post V Contrat est obligatoire.</div>
+                      <div [hidden]="!postV.hasError('pattern')">Post V ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                  <label class="label">Code Utilisateur</label><p-button icon="pi pi-refresh" (onClick)="getRandomNumber()"></p-button> 
+                    <input type="text" nbInput fullWidth placeholder="codUser" id="codUser" name="codUser" #codUser="ngModel" [(ngModel)]="utilisateur.codUser" disabled>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6"> 
+                  <label class="label">Role</label>
+                  <div>
+                    <nb-select style="width:350px" [(ngModel)]="selectedRole" required #role="ngModel" name="listitemsRoles" id="listitemsRoles" fullWidth fieldSize="small">
+                      <nb-option *ngFor="let itemsRoles of statusessRole" [value]="itemsRoles.name">
+                        <span *ngIf="itemsRoles.name!==null">
+                          <span *ngIf="itemsRoles.name=='ROLE_ACHETEUR'" class="p-ml-1"><b>Acheteur</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_ADMIN'" class="p-ml-1"><b>Administrateur</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_AGENT_CAB'" class="p-ml-1"><b>Agent code a barre</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_AGENT_SAISIE_REG'" class="p-ml-1"><b>Agent saisir reg</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_CAISSIER'" class="p-ml-1"><b>Caissier</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_CLIENT'" class="p-ml-1"><b>Client</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_DECIDEUR_BP'" class="p-ml-1"><b>Decideur Bon Preparation</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_EMBALLEUR'" class="p-ml-1"><b>Emballeur</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_EXPEDITEUR'" class="p-ml-1"><b>Expediteur</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_PREPARATEUR'" class="p-ml-1"><b>Preparateur</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_PREPARATEUR_BR'" class="p-ml-1"><b>Preparateur BR</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_RESPONSABLE_DISPATCHING_BP'" class="p-ml-1"><b>Responsable dispatching BG</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_RESPONSABLE_POINTAGE'" class="p-ml-1"><b>Responsable pointage</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'" class="p-ml-1"><b>Responsable service fournisseur etranger</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'" class="p-ml-1"><b>Responsable service fournisseur etranger</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_TRANSITAIRE'" class="p-ml-1"><b>Transitaire</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_USER'" class="p-ml-1"><b>Utilisateur</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_VALIDATEUR_DE_CHARIOT'" class="p-ml-1"><b>Validateur de chariot</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_VENDEUR'" class="p-ml-1"><b>Vendeur</b></span>
+                          <span *ngIf="itemsRoles.name=='ROLE_LIVREUR'" class="p-ml-1"><b>Livreur</b></span>
+                        </span>
+                      </nb-option>  
+                    </nb-select>
+                  </div>
+                  <div style="font-size: 12px;" [hidden]="role.valid || role.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!role.hasError('required')">roles Contrat est obligatoire.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label class="label">Authorisation</label>
+                  <div>
+                    <nb-select style="width:350px" [(ngModel)]="utilisateur.authorisation" required #authorisation="ngModel" name="authorisation" id="authorisation" fullWidth fieldSize="small">
+                      <nb-option value="Allow">Permit</nb-option>
+                      <nb-option value="Block">Interdire</nb-option>
+                    </nb-select>
+                  </div>
+                </div>
+              </div>
+            </nb-card-body>
+            <div class="col-sm-6">
+              <button [disabled]=!utilisateurForm.form.valid type="submit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                Ajouter Utilisateur</button>
+              <button nbButton (click)="utilisateurForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+                Annuler</button> 
+            </div>
+          </nb-card>
+        </div>
+        <div class="col-lg-6">
+            <nb-card>
+              <nb-card-header>Information secondaire</nb-card-header>
+              <nb-card-body>
+                <div class="row">
+                  <div class="col-sm-6"> 
+                    <label class="label">Famille</label>
+                    <input type="text" nbInput fullWidth fieldSize="small" placeholder="Famille" id="Famille" name="Famille" #famille="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="5" [(ngModel)]="utilisateur.famille">
+                    <div style="font-size: 12px;" [hidden]="famille.valid || famille.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!famille.hasError('minlength')">Famille doit étre au moin 5 lettres longue.</div>
+                      <div [hidden]="!famille.hasError('maxlength')">Famille ne doit pas dépassé les 30 lettres longue.</div>
+                      <div [hidden]="!famille.hasError('pattern')">Famille ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div> 
+                    <div class="col-sm-6"> 
+                      <label class="label">Salaire</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="salaire" id="salaire" name="salaire" #salaire="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.salaire">
+                      <div style="font-size: 12px;" [hidden]="salaire.valid || salaire.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!salaire.hasError('pattern')">Salaire ne doit contenir que un nombre avec 3 chiffre aprés la vergule.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                    <label class="label">Prime De Rendement</label>
+                    <input type="number" nbInput fullWidth fieldSize="small" placeholder="PrimeDeRendement" id="PrimeDeRendement" name="PrimeDeRendement" #primeDeRendement="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.primeDeRendement">
+                    <div style="font-size: 12px;" [hidden]="primeDeRendement.valid || primeDeRendement.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!primeDeRendement.hasError('pattern')">Prime De Rendement ne doit contenir que des nombres double.</div>
+                    </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">Heures De Travail</label>
+                      <div>
+                        <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" nbInput fullWidth fieldSize="small" placeholder="HeuresDeTravail" id="HeuresDeTravail" name="HeuresDeTravail" #heuresDeTravail="ngModel" [(ngModel)]="utilisateur.heuresDeTravail" [timeOnly]="true" inputId="timeonly"></p-calendar>
+                      </div>
+                    </div> 
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                    <label class="label">Vente Par Heure</label>
+                    <input type="number" nbInput fullWidth fieldSize="small" placeholder="VenteParHeure" id="VenteParHeure" name="VenteParHeure" #venteParHeure="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.venteParHeure">
+                    <div style="font-size: 12px;" [hidden]="venteParHeure.valid || venteParHeure.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!venteParHeure.hasError('pattern')">Vente Par Heure ne doit contenir que des nombres double.</div>
+                    </div>
+                    </div> 
+                    <div class="col-sm-6">
+                      <label class="label">Objectif Par Jour</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="ObjectifParJour" id="ObjectifParJour" name="ObjectifParJour" #objectifParJour="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.objectifParJour">
+                      <div style="font-size: 12px;" [hidden]="objectifParJour.valid || objectifParJour.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!objectifParJour.hasError('pattern')">objectifParJour ne doit contenir que des nombres double.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Objectif Par Mois</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="ObjectifParMois" id="ObjectifParMois" name="ObjectifParMois" #objectifParMois="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.objectifParMois">
+                      <div style="font-size: 12px;" [hidden]="objectifParMois.valid || objectifParMois.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!objectifParMois.hasError('pattern')">objectifParMois ne doit contenir que des nombres double.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6"> 
+                        <label class="label">Date Debut Conge</label> 
+                        <input [nbDatepicker]="dateTimePicker4" nbInput fullWidth fieldSize="small" placeholder="DateDebutConge" id="DateDebutConge" name="DateDebutConge" #dateDebutConge="ngModel" [(ngModel)]="utilisateur.dateDebutConge">
+                        <nb-datepicker #dateTimePicker4></nb-datepicker>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                    <label class="label">Date Fin Conge</label> 
+                    <input [nbDatepicker]="dateTimePicker5" nbInput fullWidth fieldSize="small" placeholder="DateFinConge" id="DateFinConge" name="DateFinConge" #dateFinConge="ngModel" [(ngModel)]="utilisateur.dateFinConge">
+                    <nb-datepicker #dateTimePicker5></nb-datepicker>
+                    </div> 
+                      <div class="col-sm-6"> 
+                        <label class="label">Type Conge</label>
+                        <div>
+                          <nb-select [style]="{'width':'100%'}" placeholder="TypeConge" id="TypeConge" name="TypeConge" #typeConge="ngModel" fullWidth fieldSize="small" [(ngModel)]="utilisateur.typeConge" >
+                            <nb-option value="">-Aucun Congé-</nb-option>
+                            <nb-option value="maternite">Maternite</nb-option>
+                            <nb-option value="maladie">Maladie</nb-option>
+                            <nb-option value="reduire">Reduire</nb-option>
+                            <nb-option value="sans_solde">Sans Solde</nb-option>
+                            <nb-option value="deces">Deces</nb-option>
+                            <nb-option value="annuel">Annuel</nb-option>
+                          </nb-select>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                    <label class="label">Prime Dev</label> 
+                    <input type="number" nbInput fullWidth fieldSize="small" placeholder="PrimeDev" id="PrimeDev" name="PrimeDev" #primeDev="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.primeDev">
+                    <div style="font-size: 12px;" [hidden]="primeDev.valid || primeDev.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!primeDev.hasError('pattern')">Prime Dev ne doit contenir que des nombres double.</div>
+                    </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">Prime Global</label>  
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="PrimeGlobal" id="PrimeGlobal" name="PrimeGlobal" #primeGlobal="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.primeGlobal">
+                        <div style="font-size: 12px;" [hidden]="primeGlobal.valid || primeGlobal.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!primeGlobal.hasError('pattern')">Prime Global ne doit contenir que des nombres double.</div>
+                        </div>
+                      </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Prime Par Client</label>   
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="PrimeParClient" id="PrimeParClient" name="PrimeParClient" #primeParClient="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.primeParClient">
+                      <div style="font-size: 12px;" [hidden]="primeParClient.valid || primeParClient.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!primeParClient.hasError('pattern')">Prime Par Client ne doit contenir que des nombres double.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">Prime Stock</label>  
+                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="PrimeStock" id="PrimeStock" name="PrimeStock" #primeStock="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.primeStock">
+                        <div style="font-size: 12px;" [hidden]="primeStock.valid || primeStock.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!primeStock.hasError('pattern')">Prime Stock ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+    
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Raison</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="RAISON" id="RAISON" name="RAISON" #raison="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.raison">
+                      <div style="font-size: 12px;" [hidden]="raison.valid || raison.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!raison.hasError('minlength')">Raison doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!raison.hasError('maxlength')">Raison ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!raison.hasError('pattern')">Raison ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">Rc</label>  
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="RC" id="RC" name="RC" #rc="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.rc">
+                        <div style="font-size: 12px;" [hidden]="rc.valid || rc.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!rc.hasError('minlength')">Rc doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!rc.hasError('maxlength')">Rc ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!rc.hasError('pattern')">Rc ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Respon 1</label>  
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="RESPON1" id="RESPON1" name="RESPON1" #respon1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.respon1">
+                      <div style="font-size: 12px;" [hidden]="respon1.valid || respon1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!respon1.hasError('minlength')">Respon 1 doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!respon1.hasError('maxlength')">Respon 1 ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!respon1.hasError('pattern')">Respon 1 ne doit contenir que des lettres et des nombres.</div>
+                      </div> 
+                    </div>
+                        <div class="col-sm-6"> 
+                          <label class="label">Fonction 1</label>  
+                          <input type="text" nbInput fullWidth fieldSize="small" placeholder="FONCTION1" id="FONCTION1" name="FONCTION1" #fonction1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.fonction1">
+                          <div style="font-size: 12px;" [hidden]="fonction1.valid || fonction1.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!fonction1.hasError('minlength')">Fonction 1 doit étre au moin 5 lettres longue.</div>
+                            <div [hidden]="!fonction1.hasError('maxlength')">Fonction 1 ne doit pas dépassé les 250 lettres longue.</div>
+                            <div [hidden]="!fonction1.hasError('pattern')">Fonction 1 ne doit contenir que des lettres et des nombres.</div>
+                          </div>
+                        </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Faxs 1</label>  
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="FAXS" id="FAXS" name="FAXS" #faxs="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.faxs">
+                      <div style="font-size: 12px;" [hidden]="faxs.valid || faxs.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!faxs.hasError('minlength')">Faxs doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!faxs.hasError('maxlength')">Faxs ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!faxs.hasError('pattern')">Faxs ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">Address Siege</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="ADR_SIEGE" id="ADR_SIEGE" name="ADR_SIEGE" #adrSiege="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.adrSiege">
+                        <div style="font-size: 12px;" [hidden]="adrSiege.valid || adrSiege.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!adrSiege.hasError('minlength')">Address Siege doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!adrSiege.hasError('maxlength')">Address Siege ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!adrSiege.hasError('pattern')">Address Siege ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Ruel</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="RUEL" id="RUEL" name="RUEL" #ruel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.ruel">
+                      <div style="font-size: 12px;" [hidden]="ruel.valid || ruel.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ruel.hasError('minlength')">Ruel doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!ruel.hasError('maxlength')">Ruel ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!ruel.hasError('pattern')">Ruel ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">N~ Ruel</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="NUM_RUEL" id="NUM_RUEL" name="NUM_RUEL" #numRuel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.numRuel">
+                        <div style="font-size: 12px;" [hidden]="numRuel.valid || numRuel.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!numRuel.hasError('minlength')">Num Ruel doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!numRuel.hasError('maxlength')">Num Ruel ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!numRuel.hasError('pattern')">Num Ruel ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Cpl</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="CPL" id="CPL" name="CPL" #cpl="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.cpl">
+                      <div style="font-size: 12px;" [hidden]="cpl.valid || cpl.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!cpl.hasError('minlength')">Cpl doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!cpl.hasError('maxlength')">Cpl ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!cpl.hasError('pattern')">Cpl ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">Villel</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="VILLEL" id="VILLEL" name="VILLEL" #villel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.villel">
+                        <div style="font-size: 12px;" [hidden]="villel.valid || villel.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!villel.hasError('minlength')">Villel doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!villel.hasError('maxlength')">Villel ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!villel.hasError('pattern')">Villel ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Regionl</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="REGIONL" id="REGIONL" name="REGIONL" #regionl="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.regionl">
+                      <div style="font-size: 12px;" [hidden]="regionl.valid || regionl.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!regionl.hasError('minlength')">Regionl doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!regionl.hasError('maxlength')">Regionl ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!regionl.hasError('pattern')">Regionl ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                      <div class="col-sm-6">
+                        <label class="label">Tell</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="TELL" id="TELL" name="TELL" #tell="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.tell">
+                        <div style="font-size: 12px;" [hidden]="tell.valid || tell.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!tell.hasError('minlength')">Tell doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!tell.hasError('maxlength')">Tell ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!tell.hasError('pattern')">Tell ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Faxl</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="FAXL" id="FAXL" name="FAXL" #faxl="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.faxl">
+                      <div style="font-size: 12px;" [hidden]="faxl.valid || faxl.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!faxl.hasError('minlength')">faxl doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!faxl.hasError('maxlength')">faxl ne doit pas dépassé les 30 lettres longue.</div>
+                        <div [hidden]="!faxl.hasError('pattern')">faxl ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">address Livraison</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="ADR_LIV" id="ADR_LIV" name="ADR_LIV" #adrLiv="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.adrLiv">
+                        <div style="font-size: 12px;" [hidden]="adrLiv.valid || adrLiv.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!adrLiv.hasError('minlength')">address Liv doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!adrLiv.hasError('maxlength')">address ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!adrLiv.hasError('pattern')">address ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Region</label>  
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="REGION" id="REGION" name="REGION" #region="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.region">
+                      <div style="font-size: 12px;" [hidden]="region.valid || region.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!region.hasError('minlength')">Region doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!region.hasError('maxlength')">Region ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!region.hasError('pattern')">Region ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+    
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Taxe</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="TAXE" id="TAXE" name="TAXE" #taxe="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.taxe">
+                      <div style="font-size: 12px;" [hidden]="taxe.valid || taxe.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!taxe.hasError('minlength')">Taxe doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!taxe.hasError('maxlength')">Taxe ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!taxe.hasError('pattern')">Taxe ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6"> 
+                        <label class="label">Ccb 1</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="CCB1" id="CCB1" name="CCB1" #ccb1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.ccb1">
+                        <div style="font-size: 12px;" [hidden]="ccb1.valid || ccb1.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!ccb1.hasError('minlength')">Ccb1 doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!ccb1.hasError('maxlength')">Ccb1 ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!ccb1.hasError('pattern')">Ccb1 ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Bank 1</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="BANK1" id="BANK1" name="BANK1" #bank1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.bank1">
+                      <div style="font-size: 12px;" [hidden]="bank1.valid || bank1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!bank1.hasError('minlength')">Bank1 doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!bank1.hasError('maxlength')">Bank1 ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!bank1.hasError('pattern')">Bank1 ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6"> 
+                        <label class="label">Agence 1</label>
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="AGENCE1" id="AGENCE1" name="AGENCE1" #agence1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.agence1">
+                        <div style="font-size: 12px;" [hidden]="agence1.valid || agence1.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!agence1.hasError('minlength')">Agence1 doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!agence1.hasError('maxlength')">Agence1 ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!agence1.hasError('pattern')">Agence1 ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Garanties</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="GARANTIES" id="GARANTIES" name="GARANTIES" #garanties="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.garanties">
+                      <div style="font-size: 12px;" [hidden]="garanties.valid || garanties.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!garanties.hasError('minlength')">garanties doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!garanties.hasError('maxlength')">garanties ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!garanties.hasError('pattern')">garanties ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                      <div class="col-sm-6"> 
+                        <label class="label">Cod Grp</label>
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="COD_GRP" id="COD_GRP" name="COD_GRP" #codGrp="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.codGrp">
+                        <div style="font-size: 12px;" [hidden]="codGrp.valid || codGrp.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!codGrp.hasError('minlength')">Cod Grp doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!codGrp.hasError('maxlength')">Cod Grp ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!codGrp.hasError('pattern')">Cod Grp ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Mod reg</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="MOD_REG" id="MOD_REG" name="MOD_REG" #modReg="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.modReg">
+                      <div style="font-size: 12px;" [hidden]="modReg.valid || modReg.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!modReg.hasError('minlength')">Mode Reg doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!modReg.hasError('maxlength')">Mode Reg ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!modReg.hasError('pattern')">Mode Reg ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Dod Ban</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="DOM_BAN" id="DOM_BAN" name="DOM_BAN" #domBan="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.domBan">
+                      <div style="font-size: 12px;" [hidden]="domBan.valid || domBan.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!domBan.hasError('minlength')">Dom Ban doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!domBan.hasError('maxlength')">Dom Ban ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!domBan.hasError('pattern')">Dom Ban ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Echeance</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="ECHEANCE" id="ECHEANCE" name="ECHEANCE" #echeance="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="65000" min="-32000" [(ngModel)]="utilisateur.echeance">
+                      <div style="font-size: 12px;" [hidden]="echeance.valid || echeance.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!echeance.hasError('min')">Echeance doit étre depassé le minimum.</div>
+                        <div [hidden]="!echeance.hasError('max')">Echeance ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!echeance.hasError('pattern')">Echeance ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">Cr Max</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CR_MAX" id="CR_MAX" name="CR_MAX" #crMax="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.crMax">
+                      <div style="font-size: 12px;" [hidden]="crMax.valid || crMax.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!crMax.hasError('min')">Cr Max doit étre depassé le minimum.</div>
+                        <div [hidden]="!crMax.hasError('max')">Cr Max ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!crMax.hasError('pattern')">Cr Max ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Der Mvt</label> 
+                      <input [nbDatepicker]="dateTimePicker6" nbInput fullWidth fieldSize="small" placeholder="DER_MVT" id="DER_MVT" name="DER_MVT" #derMvt="ngModel" [(ngModel)]="utilisateur.derMvt" disabled>
+                      <nb-datepicker #dateTimePicker6></nb-datepicker>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">Credit</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CREDIT" id="CREDIT" name="CREDIT" #credit="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.credit">
+                      <div style="font-size: 12px;" [hidden]="credit.valid || credit.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!credit.hasError('min')">Credit doit étre au moin le minimum.</div>
+                        <div [hidden]="!credit.hasError('max')">Credit ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!credit.hasError('pattern')">Credit ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Pre Ven</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="PRE_VEN" id="PRE_VEN" name="PRE_VEN" #preVen="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.preVen">
+                      <div style="font-size: 12px;" [hidden]="preVen.valid || preVen.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!preVen.hasError('min')">Pre Ven doit étre au moin le minimum.</div>
+                        <div [hidden]="!preVen.hasError('max')">Pre Ven ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!preVen.hasError('pattern')">Pre Ven ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">Cumul Ach</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CUMUL_ACH" id="CUMUL_ACH" name="CUMUL_ACH" #cumulAch="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.cumulAch">
+                      <div style="font-size: 12px;" [hidden]="cumulAch.valid || cumulAch.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!cumulAch.hasError('min')">cumulAch doit étre au moin le minimum.</div>
+                        <div [hidden]="!cumulAch.hasError('max')">cumulAch ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!cumulAch.hasError('pattern')">cumulAch ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Chif Aff 1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CHIF_AFF1" id="CHIF_AFF1" name="CHIF_AFF1" #chifAff1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.chifAff1">
+                      <div style="font-size: 12px;" [hidden]="chifAff1.valid || chifAff1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!chifAff1.hasError('min')">Chiffre d'affaire doit étre au moin le minimum.</div>
+                        <div [hidden]="!chifAff1.hasError('max')">Chiffre d'affaire ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!chifAff1.hasError('pattern')">Chiffre d'affaire ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">Chif Aff 2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CHIF_AFF2" id="CHIF_AFF2" name="CHIF_AFF2" #chifAff2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.chifAff2">
+                      <div style="font-size: 12px;" [hidden]="chifAff2.valid || chifAff2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!chifAff2.hasError('miN')">Chiffre d'affaire 2 doit étre au moin le minimum.</div>
+                        <div [hidden]="!chifAff2.hasError('maX')">Chiffre d'affaire 2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!chifAff2.hasError('pattern')">Chiffre d'affaire 2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Chif Aff 3</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CHIF_AFF3" id="CHIF_AFF3" name="CHIF_AFF3" #chifAff3="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.chifAff3">
+                      <div style="font-size: 12px;" [hidden]="chifAff3.valid || chifAff3.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!chifAff3.hasError('min')">Chiffre d'affaire 3 doit étre au moin le minimum.</div>
+                        <div [hidden]="!chifAff3.hasError('max')">Chiffre d'affaire 3 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!chifAff3.hasError('pattern')">Chiffre d'affaire 3 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">TAUX Rem</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="TAUX_REM" id="TAUX_REM" name="TAUX_REM" #tauxRem="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.tauxRem">
+                      <div style="font-size: 12px;" [hidden]="tauxRem.valid || tauxRem.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!tauxRem.hasError('minlength')">Taux Rem doit étre au moin le minimum.</div>
+                        <div [hidden]="!tauxRem.hasError('maxlength')">Taux Rem ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!tauxRem.hasError('pattern')">Taux Rem ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">TAUX Com</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="TAUX_COM" id="TAUX_COM" name="TAUX_COM" #tauxCom="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.tauxCom">
+                      <div style="font-size: 12px;" [hidden]="tauxCom.valid || tauxCom.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!tauxCom.hasError('min')">Taux Com doit étre au moin le minimum.</div>
+                        <div [hidden]="!tauxCom.hasError('max')">Taux Com ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!tauxCom.hasError('pattern')">Taux Com ne doit contenir que des nombres.</div>
+                      </div>
+                    </div> 
+                    <div class="col-sm-6">
+                      <label class="label">Reste</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="RESTE" id="RESTE" name="RESTE" #reste="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.reste">
+                      <div style="font-size: 12px;" [hidden]="reste.valid || reste.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!reste.hasError('min')">Reste doit étre au moin le minimum.</div>
+                        <div [hidden]="!reste.hasError('max')">Reste ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!reste.hasError('pattern')">Reste ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Taux Res</label>  
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="TAUX_RES" id="TAUX_RES" name="TAUX_RES" #tauxRes="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.tauxRes">
+                      <div style="font-size: 12px;" [hidden]="tauxRes.valid || tauxRes.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!tauxRes.hasError('min')">taux Res doit étre au moin le minimum.</div>
+                        <div [hidden]="!tauxRes.hasError('max')">taux Res ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!tauxRes.hasError('pattern')">taux Res ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Val Res</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="VAL_RES" id="VAL_RES" name="VAL_RES" #valRes="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.valRes">
+                      <div style="font-size: 12px;" [hidden]="valRes.valid || valRes.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!valRes.hasError('min')">valRes doit étre au moin le minimum.</div>
+                        <div [hidden]="!valRes.hasError('max')">valRes ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!valRes.hasError('pattern')">valRes ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Patron</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="PATRON" id="PATRON" name="PATRON" #patron="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.patron">
+                      <div style="font-size: 12px;" [hidden]="patron.valid || patron.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!patron.hasError('minlength')">Patron doit étre au moin le minimum.</div>
+                        <div [hidden]="!patron.hasError('maxlength')">Patron ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!patron.hasError('pattern')">Patron ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Rang</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="RANG" id="RANG" name="RANG" #rang="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="65000" min="-32000" [(ngModel)]="utilisateur.rang">
+                      <div style="font-size: 12px;" [hidden]="rang.valid || rang.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!rang.hasError('min')">Rang doit étre au moin le minimum.</div>
+                        <div [hidden]="!rang.hasError('max')">Rang ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!rang.hasError('pattern')">Rang ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Impaye</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IMPAYE" id="IMPAYE" name="IMPAYE" #impaye="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.impaye">
+                      <div style="font-size: 12px;" [hidden]="impaye.valid || impaye.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!impaye.hasError('min')">Impaye doit étre au moin le minimum.</div>
+                        <div [hidden]="!impaye.hasError('max')">Impaye ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!impaye.hasError('pattern')">Impaye ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Chq Impaye</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CHQ_IMPAYE" id="CHQ_IMPAYE" name="CHQ_IMPAYE" #chqImpaye="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.chqImpaye">
+                      <div style="font-size: 12px;" [hidden]="chqImpaye.valid || chqImpaye.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!chqImpaye.hasError('min')">chq Impaye doit étre au moin le minimum.</div>
+                        <div [hidden]="!chqImpaye.hasError('max')">chq Impaye ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!chqImpaye.hasError('pattern')">chq Impaye ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Ef Port</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="EF_PORT" id="EF_PORT" name="EF_PORT" #efPort="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.efPort">
+                      <div style="font-size: 12px;" [hidden]="efPort.valid || efPort.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!efPort.hasError('min')">Ef Port doit étre au moin le minimum.</div>
+                        <div [hidden]="!efPort.hasError('max')">Ef Port ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!efPort.hasError('pattern')">Ef Port ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Ef Banque</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="EF_BANQUE" id="EF_BANQUE" name="EF_BANQUE" #efBanque="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.efBanque">
+                      <div style="font-size: 12px;" [hidden]="efBanque.valid || efBanque.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!efBanque.hasError('min')">Ef Banque doit étre au moin le minimum.</div>
+                        <div [hidden]="!efBanque.hasError('max')">Ef Banque ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!efBanque.hasError('pattern')">Ef Banque ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Ef Nrecu</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="EF_NRECU" id="EF_NRECU" name="EF_NRECU" #efNrecu="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.efNrecu">
+                      <div style="font-size: 12px;" [hidden]="efNrecu.valid || efNrecu.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!efNrecu.hasError('min')">Ef Nrecu doit étre au moin le minimum.</div>
+                        <div [hidden]="!efNrecu.hasError('max')">Ef Nrecu ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!efNrecu.hasError('pattern')">Ef Nrecu ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">Av Com</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="AV_COM" id="AV_COM" name="AV_COM" #avCom="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.avCom">
+                      <div style="font-size: 12px;" [hidden]="avCom.valid || avCom.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!avCom.hasError('min')">Av Com doit étre au moin le minimum.</div>
+                        <div [hidden]="!avCom.hasError('max')">Av Com ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!avCom.hasError('pattern')">Av Com ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Caution</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="CAUTION" id="CAUTION" name="CAUTION" #caution="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.caution">
+                      <div style="font-size: 12px;" [hidden]="caution.valid || caution.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!caution.hasError('minlength')">Caution doit étre au moin de 5 carractéres.</div>
+                        <div [hidden]="!caution.hasError('maxlength')">Caution ne doit pas dépassé les 250 carractéres.</div>
+                        <div [hidden]="!caution.hasError('pattern')">Caution ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Benefice</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="BENEFICE" id="BENEFICE" name="BENEFICE" #benefice="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.benefice">
+                      <div style="font-size: 12px;" [hidden]="benefice.valid || benefice.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!benefice.hasError('min')">Benefice doit étre au moin le minimum.</div>
+                        <div [hidden]="!benefice.hasError('max')">Benefice ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!benefice.hasError('pattern')">Benefice ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Taux Bene</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="TAUX_BENE" id="TAUX_BENE" name="TAUX_BENE" #tauxBene="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.tauxBene">
+                      <div style="font-size: 12px;" [hidden]="tauxBene.valid || tauxBene.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!tauxBene.hasError('min')">Taux Bene doit étre positive.</div>
+                        <div [hidden]="!tauxBene.hasError('max')">Taux Bene ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!tauxBene.hasError('pattern')">Taux Bene ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Rec Fff</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="REC_FFF" id="REC_FFF" name="REC_FFF" #recFff="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.recFff">
+                      <div style="font-size: 12px;" [hidden]="recFff.valid || recFff.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!recFff.hasError('min')">Rec Fff doit étre positive.</div>
+                        <div [hidden]="!recFff.hasError('max')">Rec Fff ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!recFff.hasError('pattern')">Rec Fff ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Tva</label>  
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="TVA" id="TVA" name="TVA" #tva="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.tva">
+                      <div style="font-size: 12px;" [hidden]="tva.valid || tva.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!tva.hasError('min')">Tva doit étre positive.</div>
+                        <div [hidden]="!tva.hasError('max')">Tva ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!tva.hasError('pattern')">Tva ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Cle</label>  
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CLE" id="CLE" name="CLE" #cle="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="254" min="0" [(ngModel)]="utilisateur.cle">
+                      <div style="font-size: 12px;" [hidden]="cle.valid || cle.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!cle.hasError('min')">Cle doit étre positive.</div>
+                        <div [hidden]="!cle.hasError('max')">Cle ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!cle.hasError('pattern')">Cle ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Sold Dep</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="SOLD_DEP" id="SOLD_DEP" name="SOLD_DEP" #soldDep="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="254" min="0" [(ngModel)]="utilisateur.soldDep">
+                      <div style="font-size: 12px;" [hidden]="soldDep.valid || soldDep.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!soldDep.hasError('min')">sold Dep doit étre positive.</div>
+                        <div [hidden]="!soldDep.hasError('max')">sold Dep ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!soldDep.hasError('pattern')">sold Dep ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Interet</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="INTERET" id="INTERET" name="INTERET" #interet="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.interet">
+                      <div style="font-size: 12px;" [hidden]="interet.valid || interet.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!interet.hasError('min')">Interet doit étre positive.</div>
+                        <div [hidden]="!interet.hasError('max')">Interet ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!interet.hasError('pattern')">Interet ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Reg Chq</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="REG_CHQ" id="REG_CHQ" name="REG_CHQ" #regChq="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.regChq">
+                      <div style="font-size: 12px;" [hidden]="regChq.valid || regChq.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!regChq.hasError('min')">Reg Chq doit étre positive.</div>
+                        <div [hidden]="!regChq.hasError('max')">Reg Chq ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!regChq.hasError('pattern')">Reg Chq ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Reg Eff</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="REG_EFF" id="REG_EFF" name="REG_EFF" #regEff="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.regEff">
+                      <div style="font-size: 12px;" [hidden]="regEff.valid || regEff.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!regEff.hasError('min')">regEff doit étre positive.</div>
+                        <div [hidden]="!regEff.hasError('max')">regEff ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!regEff.hasError('pattern')">regEff ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Reg Esp</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="REG_ESP" id="REG_ESP" name="REG_ESP" #regEsp="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.regEsp">
+                      <div style="font-size: 12px;" [hidden]="regEsp.valid || regEsp.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!regEsp.hasError('min')">Reg Esp doit étre positive.</div>
+                        <div [hidden]="!regEsp.hasError('max')">Reg Esp ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!regEsp.hasError('pattern')">Reg Esp ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Fac Inst</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FAC_INST" id="FAC_INST" name="FAC_INST" #facInst="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.facInst">
+                      <div style="font-size: 12px;" [hidden]="facInst.valid || facInst.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!facInst.hasError('min')">facInst doit étre positive.</div>
+                        <div [hidden]="!facInst.hasError('max')">facInst ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!facInst.hasError('pattern')">facInst ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Avoir</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="AVOIR" id="AVOIR" name="AVOIR" #avoir="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.avoir">
+                      <div style="font-size: 12px;" [hidden]="avoir.valid || avoir.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!avoir.hasError('minlength')">avoir doit étre positive.</div>
+                        <div [hidden]="!avoir.hasError('maxlength')">avoir ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!avoir.hasError('pattern')">avoir ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Eff Inst</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="EFF_INST" id="EFF_INST" name="EFF_INST" #effInst="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.effInst">
+                      <div style="font-size: 12px;" [hidden]="effInst.valid || effInst.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!effInst.hasError('min')">effInst doit étre positive.</div>
+                        <div [hidden]="!effInst.hasError('max')">effInst ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!effInst.hasError('pattern')">effInst ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div> 
+                  <!--  -->           
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">SOLDE BQ</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="SOLDE_BQ" id="SOLDE_BQ" name="SOLDE_BQ" #soldeBq="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.soldeBq">
+                      <div [hidden]="soldeBq.valid || soldeBq.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!soldeBq.hasError('min')">solde Bq doit étre positive.</div>
+                        <div [hidden]="!soldeBq.hasError('max')">solde Bq ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!soldeBq.hasError('pattern')">solde Bq ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CREANCE</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CREANCE" id="CREANCE" name="CREANCE" #creance="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.creance">
+                      <div [hidden]="creance.valid || creance.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!creance.hasError('min')">creance doit étre positive.</div>
+                        <div [hidden]="!creance.hasError('max')">creance ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!creance.hasError('pattern')">creance ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">EFF ENC</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="EFF_ENC" id="EFF_ENC" name="EFF_ENC" #effEnc="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.effEnc">
+                      <div [hidden]="effEnc.valid || effEnc.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!effEnc.hasError('min')">effEnc doit étre positive.</div>
+                        <div [hidden]="!effEnc.hasError('max')">effEnc ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!effEnc.hasError('pattern')">effEnc ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">EFF_ESC</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="EFF_ESC" id="EFF_ESC" name="EFF_ESC" #effEsc="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.effEsc">
+                      <div [hidden]="effEsc.valid || effEsc.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!effEsc.hasError('min')">effEsc doit étre positive.</div>
+                        <div [hidden]="!effEsc.hasError('max')">effEsc ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!effEsc.hasError('pattern')">effEsc ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">COMISSION</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="COMISSION" id="COMISSION" name="COMISSION" #comission="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.comission">
+                      <div [hidden]="comission.valid || comission.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!comission.hasError('min')">comission doit étre positive.</div>
+                        <div [hidden]="!comission.hasError('max')">comission ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!comission.hasError('pattern')">comission ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">BLOC</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="BLOC" id="BLOC" name="BLOC" #bloc="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="12" minlength="1" [(ngModel)]="utilisateur.bloc">
+                      <div [hidden]="bloc.valid || bloc.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!bloc.hasError('minlength')">Bloc doit étre au moin 1 lettres longue.</div>
+                        <div [hidden]="!bloc.hasError('maxlength')">Bloc ne doit pas dépassé les 15 lettres longue.</div>
+                        <div [hidden]="!bloc.hasError('pattern')">Bloc ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">CODE TVA</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="CODE_TVA" id="CODE_TVA" name="CODE_TVA" #codeTva="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="3" [(ngModel)]="utilisateur.codeTva">
+                      <div [hidden]="codeTva.valid || codeTva.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!codeTva.hasError('minlength')">Code Tva doit étre au moin 3 lettres longue.</div>
+                        <div [hidden]="!codeTva.hasError('maxlength')">Code Tva ne doit pas dépassé les 200 lettres longue.</div>
+                        <div [hidden]="!codeTva.hasError('pattern')">Code Tva ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">REM ORG</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="REM_ORG" id="REM_ORG" name="REM_ORG" #remOrg="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.remOrg">
+                      <div [hidden]="remOrg.valid || remOrg.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!remOrg.hasError('min')">Rem Org doit étre positive.</div>
+                        <div [hidden]="!remOrg.hasError('max')">Rem Org ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!remOrg.hasError('pattern')">Rem Org ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">AVANCE</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="AVANCE" id="AVANCE" name="AVANCE" #avance="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.avance">
+                      <div [hidden]="avance.valid || avance.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!avance.hasError('minlength')">Avance doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!avance.hasError('maxlength')">Avance ne doit pas dépassé les 30 lettres longue.</div>
+                        <div [hidden]="!avance.hasError('pattern')">Avance ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CHQ PF</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CHQ_PF" id="CHQ_PF" name="CHQ_PF" #chqPf="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.chqPf">
+                      <div [hidden]="chqPf.valid || chqPf.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!chqPf.hasError('min')">chq Pf doit étre positive.</div>
+                        <div [hidden]="!chqPf.hasError('max')">chq Pf ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!chqPf.hasError('pattern')">chq Pf ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">RETENUE</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="RETENUE" id="RETENUE" name="RETENUE" #retenue="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.retenue">
+                      <div [hidden]="retenue.valid || retenue.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!retenue.hasError('min')">Retenue doit étre positive.</div>
+                        <div [hidden]="!retenue.hasError('max')">Retenue ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!retenue.hasError('pattern')">Retenue ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">REG_VIR</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="REG_VIR" id="REG_VIR" name="REG_VIR" #regVir="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.regVir">
+                      <div [hidden]="regVir.valid || regVir.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!regVir.hasError('min')">Reg Vir doit étre positive.</div>
+                        <div [hidden]="!regVir.hasError('max')">Reg Vir ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!regVir.hasError('pattern')">Reg Vir ne doit contenir que des nombres.</div>
+                      </div>
+                    </div> 
+                  </div>  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">AV N1</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="AV_N1" id="AV_N1" name="AV_N1" #avN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.avN1">
+                      <div [hidden]="avN1.valid || avN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!avN1.hasError('min')">av N1 doit étre positive.</div>
+                        <div [hidden]="!avN1.hasError('max')">av N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!avN1.hasError('pattern')">av N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CLASSE</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="CLASSE" id="CLASSE" name="CLASSE" #classe="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="3" [(ngModel)]="utilisateur.classe">
+                      <div [hidden]="classe.valid || classe.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!classe.hasError('minlength')">centre doit étre au moin 3 lettres longue.</div>
+                        <div [hidden]="!classe.hasError('maxlength')">centre ne doit pas dépassé les 200 lettres longue.</div>
+                        <div [hidden]="!classe.hasError('pattern')">centre ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">RISTOURNE</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="RISTOURNE" id="RISTOURNE" name="RISTOURNE" #ristourne="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.ristourne">
+                      <div [hidden]="ristourne.valid || ristourne.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ristourne.hasError('min')">Ristourne doit étre positive.</div>
+                        <div [hidden]="!ristourne.hasError('max')">Ristourne ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!ristourne.hasError('pattern')">Ristourne ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CA PREV</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CA_PREV" id="CA_PREV" name="CA_PREV" #caPrev="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.caPrev">
+                      <div [hidden]="caPrev.valid || caPrev.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!caPrev.hasError('min')">Ca Prev doit étre positive.</div>
+                        <div [hidden]="!caPrev.hasError('max')">Ca Prev ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!caPrev.hasError('pattern')">Ca Prev ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">SOLDE CPF</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="SOLDE_CPF" id="SOLDE_CPF" name="SOLDE_CPF" #soldeCpf="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.soldeCpf">
+                      <div [hidden]="soldeCpf.valid || soldeCpf.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!soldeCpf.hasError('min')">Solde Cpf doit étre positive.</div>
+                        <div [hidden]="!soldeCpf.hasError('max')">Solde Cpf ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!soldeCpf.hasError('pattern')">Solde Cpf ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">SOLDE IMP</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="SOLDE_IMP" id="SOLDE_IMP" name="SOLDE_IMP" #soldeImp="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.soldeImp">
+                      <div [hidden]="soldeImp.valid || soldeImp.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!soldeImp.hasError('min')">Solde Imp  doit étre positive.</div>
+                        <div [hidden]="!soldeImp.hasError('max')">Solde Imp ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!soldeImp.hasError('pattern')">Solde Imp ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">SOLDE EPF</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="SOLDE_EPF" id="SOLDE_EPF" name="SOLDE_EPF" #soldeEpf="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.soldeEpf">
+                      <div [hidden]="soldeEpf.valid || soldeEpf.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!soldeEpf.hasError('min')">Solde Epf  doit étre positive.</div>
+                        <div [hidden]="!soldeEpf.hasError('max')">Solde Epf ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!soldeEpf.hasError('pattern')">Solde Epf ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">DATE F FAC</label> 
+                      <input [nbDatepicker]="dateTimePicker7" nbInput fullWidth placeholder="DAT_F_FAC" id="DAT_F_FAC" name="DAT_F_FAC" required #datFFac="ngModel" [(ngModel)]="utilisateur.datFFac">
+                      <nb-datepicker #dateTimePicker7></nb-datepicker>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">DATE G FAC</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="DAT_G_FAC" id="DAT_G_FAC" name="DAT_G_FAC" #datGFac="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.datGFac">
+                      <div style="font-size: 12px;" [hidden]="datGFac.valid || datGFac.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!datGFac.hasError('minlength')">Dat G Fac doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!datGFac.hasError('maxlength')">Dat G Fac ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!datGFac.hasError('pattern')">Dat G Fac ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CA MENS</label> 
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CA_MENS" id="CA_MENS" name="CA_MENS" #caMens="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.caMens">
+                      <div [hidden]="caMens.valid || caMens.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!caMens.hasError('min')">caMens  doit étre positive.</div>
+                        <div [hidden]="!caMens.hasError('max')">caMens ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!caMens.hasError('pattern')">caMens ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">CR IMAX</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CR_IMAX" id="CR_IMAX" name="CR_IMAX" #crImax="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.crImax">
+                      <div [hidden]="crImax.valid || crImax.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!crImax.hasError('min')">Cr Imax  doit étre positive.</div>
+                        <div [hidden]="!crImax.hasError('max')">Cr Imax ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!crImax.hasError('pattern')">Cr Imax ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">FCRE N1</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="FCRE_N1" id="FCRE_N1" name="FCRE_N1" #fcreN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fcreN1">
+                      <div [hidden]="fcreN1.valid || fcreN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fcreN1.hasError('min')">fcre N1  doit étre positive.</div>
+                        <div [hidden]="!fcreN1.hasError('max')">fcre N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fcreN1.hasError('pattern')">fcre N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">FCRE N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FCRE_N2" id="FCRE_N2" name="FCRE_N2" #fcreN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fcreN2">
+                      <div [hidden]="fcreN2.valid || fcreN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fcreN2.hasError('min')">fcre N2  doit étre positive.</div>
+                        <div [hidden]="!fcreN2.hasError('max')">fcre N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fcreN2.hasError('pattern')">fcre N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">FREGL N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FREGL_N1" id="FREGL_N1" name="FREGL_N1" #freglN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.freglN1">
+                      <div [hidden]="freglN1.valid || freglN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!freglN1.hasError('min')">fregl N1  doit étre positive.</div>
+                        <div [hidden]="!freglN1.hasError('max')">fregl N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!freglN1.hasError('pattern')">fregl N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">FREGL N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FREGL_N2" id="FREGL_N2" name="FREGL_N2" #freglN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.freglN2">
+                      <div [hidden]="freglN2.valid || freglN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!freglN2.hasError('min')">fregl N2 doit étre positive.</div>
+                        <div [hidden]="!freglN2.hasError('max')">fregl N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!freglN2.hasError('pattern')">fregl N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">FESC N1</label>  
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FESC_N1" id="FESC_N1" name="FESC_N1" #fescN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fescN1">
+                      <div [hidden]="fescN1.valid || fescN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fescN1.hasError('min')">fesc N1 doit étre positive.</div>
+                        <div [hidden]="!fescN1.hasError('max')">fesc N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fescN1.hasError('pattern')">fescN1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">FESC N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FESC_N2" id="FESC_N2" name="FESC_N2" #fescN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fescN2">
+                      <div [hidden]="fescN2.valid || fescN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fescN2.hasError('min')">fesc N2 doit étre positive.</div>
+                        <div [hidden]="!fescN2.hasError('max')">fesc N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fescN2.hasError('pattern')">fesc N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">FBK N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FBK_N1" id="FBK_N1" name="FBK_N1" #fbkN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fbkN1">
+                      <div [hidden]="fbkN1.valid || fbkN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fbkN1.hasError('min')">fbk N1 doit étre positive.</div>
+                        <div [hidden]="!fbkN1.hasError('max')">fbk N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fbkN1.hasError('pattern')">fbk N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">FBK N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FBK_N2" id="FBK_N2" name="FBK_N2" #fbkN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fbkN2">
+                      <div [hidden]="fbkN2.valid || fbkN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fbkN2.hasError('min')">fbk N2 doit étre positive.</div>
+                        <div [hidden]="!fbkN2.hasError('max')">fbk N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fbkN2.hasError('pattern')">fbk N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">FEFP N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FEFP_N1" id="FEFP_N1" name="FEFP_N1" #fefpN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fefpN1">
+                      <div [hidden]="fefpN1.valid || fefpN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fefpN1.hasError('min')">fefp N1 doit étre positive.</div>
+                        <div [hidden]="!fefpN1.hasError('max')">fefp N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fefpN1.hasError('pattern')">fefp N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">FEFP N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FEFP_N2" id="FEFP_N2" name="FEFP_N2" #fefpN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fefpN2">
+                      <div [hidden]="fefpN2.valid || fefpN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fefpN2.hasError('min')">fefp N2 doit étre positive.</div>
+                        <div [hidden]="!fefpN2.hasError('max')">fefp N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fefpN2.hasError('pattern')">fefp N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">FCHP N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FCHP_N1" id="FCHP_N1" name="FCHP_N1" #fchpN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fchpN1">
+                      <div [hidden]="fchpN1.valid || fchpN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fchpN1.hasError('min')">fchp N1 doit étre positive.</div>
+                        <div [hidden]="!fchpN1.hasError('max')">fchp N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fchpN1.hasError('pattern')">fchp N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">FCHP N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FCHP_N2" id="FCHP_N2" name="FCHP_N2" #fchpN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fchpN2">
+                      <div [hidden]="fchpN2.valid || fchpN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fchpN2.hasError('min')">fchp N2 doit étre positive.</div>
+                        <div [hidden]="!fchpN2.hasError('max')">fchp N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fchpN2.hasError('pattern')">fchp N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">FEFNR N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FEFNR_N1" id="FEFNR_N1" name="FEFNR_N1" #fefnrN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fefnrN1">
+                      <div [hidden]="fefnrN1.valid || fefnrN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fefnrN1.hasError('min')">fefnr N1 doit étre positive.</div>
+                        <div [hidden]="!fefnrN1.hasError('max')">fefnr N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fefnrN1.hasError('pattern')">fefnr N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">FEFNR N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="FEFNR_N2" id="FEFNR_N2" name="FEFNR_N2" #fefnrN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.fefnrN2">
+                      <div [hidden]="fefnrN2.valid || fefnrN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!fefnrN2.hasError('min')">fefnr N2 doit étre positive.</div>
+                        <div [hidden]="!fefnrN2.hasError('max')">fefnr N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!fefnrN2.hasError('pattern')">fefnr N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">ICRE N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="ICRE_N1" id="ICRE_N1" name="ICRE_N1" #icreN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.icreN1">
+                      <div [hidden]="icreN1.valid || icreN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!icreN1.hasError('min')">icre N1 doit étre positive.</div>
+                        <div [hidden]="!icreN1.hasError('max')">icre N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!icreN1.hasError('pattern')">icre N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div> 
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">ICRE N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="ICRE_N2" id="ICRE_N2" name="ICRE_N2" #icreN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.icreN2">
+                      <div [hidden]="icreN2.valid || icreN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!icreN2.hasError('min')">icre N2 doit étre positive.</div>
+                        <div [hidden]="!icreN2.hasError('max')">icre N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!icreN2.hasError('pattern')">icre N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">IREGL_N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IREGL_N1" id="IREGL_N1" name="IREGL_N1" #ireglN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.ireglN1">
+                      <div [hidden]="ireglN1.valid || ireglN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ireglN1.hasError('min')">iregl N1 doit étre positive.</div>
+                        <div [hidden]="!ireglN1.hasError('max')">iregl N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!ireglN1.hasError('pattern')">iregl N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">IREGL N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IREGL_N2" id="IREGL_N2" name="IREGL_N2" #ireglN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.ireglN2">
+                      <div [hidden]="ireglN2.valid || ireglN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ireglN2.hasError('min')">iregl N2 doit étre positive.</div>
+                        <div [hidden]="!ireglN2.hasError('max')">iregl N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!ireglN2.hasError('pattern')">iregl N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">IESC N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IESC_N1" id="IESC_N1" name="IESC_N1" #iescN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.iescN1">
+                      <div [hidden]="iescN1.valid || iescN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!iescN1.hasError('min')">iesc N1 doit étre positive.</div>
+                        <div [hidden]="!iescN1.hasError('max')">iesc N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!iescN1.hasError('pattern')">iesc N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">IESC N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IESC_N2" id="IESC_N2" name="IESC_N2" #iescN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.iescN2">
+                      <div [hidden]="iescN2.valid || iescN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!iescN2.hasError('min')">iesc N2 doit étre positive.</div>
+                        <div [hidden]="!iescN2.hasError('max')">iesc N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!iescN2.hasError('pattern')">iesc N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">IBK N1</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="IBK_N1" id="IBK_N1" name="IBK_N1" #ibkN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.ibkN1">
+                      <div [hidden]="ibkN1.valid || ibkN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ibkN1.hasError('min')">ibk N1 doit étre positive.</div>
+                        <div [hidden]="!ibkN1.hasError('max')">ibk N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!ibkN1.hasError('pattern')">ibk N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">IBK N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IBK_N2" id="IBK_N2" name="IBK_N2" #ibkN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.ibkN2">
+                      <div [hidden]="ibkN2.valid || ibkN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ibkN2.hasError('min')">ibk N2 doit étre positive.</div>
+                        <div [hidden]="!ibkN2.hasError('max')">ibk N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!ibkN2.hasError('pattern')">ibk N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">IEFP N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IEFP_N1" id="IEFP_N1" name="IEFP_N1" #iefpN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.iefpN1">
+                      <div [hidden]="iefpN1.valid || iefpN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!iefpN1.hasError('min')">iefp N1 doit étre positive.</div>
+                        <div [hidden]="!iefpN1.hasError('max')">iefp N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!iefpN1.hasError('pattern')">iefp N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">IEFP N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IEFP_N2" id="IEFP_N2" name="IEFP_N2" #iefpN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.iefpN2">
+                      <div [hidden]="iefpN2.valid || iefpN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!iefpN2.hasError('min')">iefp N2 doit étre positive.</div>
+                        <div [hidden]="!iefpN2.hasError('max')">iefp N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!iefpN2.hasError('pattern')">iefp N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">ICHP N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="ICHP_N1" id="ICHP_N1" name="ICHP_N1" #ichpN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.ichpN1">
+                      <div [hidden]="ichpN1.valid || ichpN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ichpN1.hasError('min')">ichp N1 doit étre positive.</div>
+                        <div [hidden]="!ichpN1.hasError('max')">ichp N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!ichpN1.hasError('pattern')">ichp N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">ICHP N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="ICHP_N2" id="ICHP_N2" name="ICHP_N2" #ichpN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.ichpN2">
+                      <div [hidden]="ichpN2.valid || ichpN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ichpN2.hasError('min')">ichp N2 doit étre positive.</div>
+                        <div [hidden]="!ichpN2.hasError('max')">ichp N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!ichpN2.hasError('pattern')">ichp N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">IEFNR N1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IEFNR_N1" id="IEFNR_N1" name="IEFNR_N1" #iefnrN1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.iefnrN1">
+                      <div [hidden]="iefnrN1.valid || iefnrN1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!iefnrN1.hasError('min')">iefnr N1 doit étre positive.</div>
+                        <div [hidden]="!iefnrN1.hasError('max')">iefnr N1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!iefnrN1.hasError('pattern')">iefnr N1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">IEFNR N2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="IEFNR_N2" id="IEFNR_N2" name="IEFNR_N2" #iefnrN2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.iefnrN2">
+                      <div [hidden]="iefnrN2.valid || iefnrN2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!iefnrN2.hasError('min')">iefnr N2 doit étre positive.</div>
+                        <div [hidden]="!iefnrN2.hasError('max')">iefnr N2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!iefnrN2.hasError('pattern')">iefnr N2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">DATE OUVR</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="DAT_OUVR" id="DAT_OUVR" name="DAT_OUVR" #datOuvr="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="5" [(ngModel)]="utilisateur.datOuvr">
+                      <div [hidden]="datOuvr.valid || datOuvr.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!datOuvr.hasError('minlength')">centre doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!datOuvr.hasError('maxlength')">centre ne doit pas dépassé les 200 lettres longue.</div>
+                        <div [hidden]="!datOuvr.hasError('pattern')">centre ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">JOUR VISIT</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="JOUR_VISIT" id="JOUR_VISIT" name="JOUR_VISIT" #jourVisit="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="100" minlength="5" [(ngModel)]="utilisateur.jourVisit">
+                      <div [hidden]="jourVisit.valid || jourVisit.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!jourVisit.hasError('minlength')">Jour Visit doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!jourVisit.hasError('maxlength')">Jour Visit ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!jourVisit.hasError('pattern')">Jour Visit ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">COMMAND</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="COMMAND" id="COMMAND" name="COMMAND" #command="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="5" [(ngModel)]="utilisateur.command">
+                      <div [hidden]="command.valid || command.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!command.hasError('minlength')">Command doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!command.hasError('maxlength')">Command ne doit pas dépassé les 200 lettres longue.</div>
+                        <div [hidden]="!command.hasError('pattern')">Command ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">REM EXP</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="REM_EXP" id="REM_EXP" name="REM_EXP" #remExp="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.remExp">
+                      <div [hidden]="remExp.valid || remExp.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!remExp.hasError('min')">Rem Exp doit étre positive.</div>
+                        <div [hidden]="!remExp.hasError('max')">Rem Exp ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!remExp.hasError('pattern')">Rem Exp ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CHEF MAG</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="CHEF_MAG" id="CHEF_MAG" name="CHEF_MAG" #chefMag="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="5" [(ngModel)]="utilisateur.chefMag">
+                      <div [hidden]="chefMag.valid || chefMag.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!chefMag.hasError('minlength')">Chef Mag doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!chefMag.hasError('maxlength')">Chef Mag ne doit pas dépassé les 200 lettres longue.</div>
+                        <div [hidden]="!chefMag.hasError('pattern')">Chef Mag ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">COMPTANT</label>
+                      <div>
+                        <nb-select [style]="{'width':'100%'}" placeholder="COMPTANT" id="COMPTANT" name="COMPTANT" #comptant="ngModel" fullWidth fieldSize="small" [(ngModel)]="utilisateur.comptant" >
+                          <nb-option value="false">Non validé</nb-option>
+                          <nb-option value="true">Validé</nb-option>
+                        </nb-select>
+                      </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">B~L</label>
+                      <div>
+                        <nb-select [style]="{'width':'100%'}" placeholder="BL" id="BL" name="BL" #bl="ngModel" fullWidth fieldSize="small" [(ngModel)]="utilisateur.bl" >
+                          <nb-option value="false">Non validé</nb-option>
+                          <nb-option value="true">Validé</nb-option>
+                        </nb-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">NATURE LIV</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="NAT_LIV" id="NAT_LIV" name="NAT_LIV" #natLiv="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="100" minlength="5" [(ngModel)]="utilisateur.natLiv">
+                      <div [hidden]="natLiv.valid || natLiv.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!natLiv.hasError('minlength')">Nat Liv doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!natLiv.hasError('maxlength')">Nat Liv ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!natLiv.hasError('pattern')">Nat Liv ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 1</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS1" id="MOIS1" name="MOIS1" #mois1="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois1">
+                      <div [hidden]="mois1.valid || mois1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois1.hasError('min')">Mois 1 doit étre positive.</div>
+                        <div [hidden]="!mois1.hasError('max')">Mois 1 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois1.hasError('pattern')">Mois 1 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 2</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS2" id="MOIS2" name="MOIS2" #mois2="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois2">
+                      <div [hidden]="mois2.valid || mois2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois2.hasError('min')">Mois 2 doit étre positive.</div>
+                        <div [hidden]="!mois2.hasError('max')">Mois 2 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois2.hasError('pattern')">Mois 2 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 3</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS3" id="MOIS3" name="MOIS3" #mois3="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois3">
+                      <div [hidden]="mois3.valid || mois3.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois3.hasError('min')">Mois 3 doit étre positive.</div>
+                        <div [hidden]="!mois3.hasError('max')">Mois 3 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois3.hasError('pattern')">Mois 3 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 4</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS4" id="MOIS4" name="MOIS4" #mois4="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois4">
+                      <div [hidden]="mois4.valid || mois4.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois4.hasError('min')">Mois 4 doit étre positive.</div>
+                        <div [hidden]="!mois4.hasError('max')">Mois 4 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois4.hasError('pattern')">Mois 4 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 5</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS5" id="MOIS5" name="MOIS5" #mois5="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois5">
+                      <div [hidden]="mois5.valid || mois5.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois5.hasError('min')">Mois 5 doit étre positive.</div>
+                        <div [hidden]="!mois5.hasError('max')">Mois 5 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois5.hasError('pattern')">Mois 5 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 6</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS6" id="MOIS6" name="MOIS6" #mois6="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois6">
+                      <div [hidden]="mois6.valid || mois6.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois6.hasError('min')">Mois 6 doit étre positive.</div>
+                        <div [hidden]="!mois6.hasError('max')">Mois 6 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois6.hasError('pattern')">Mois 6 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 7</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS7" id="MOIS7" name="MOIS7" #mois7="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois7">
+                      <div [hidden]="mois7.valid || mois7.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois7.hasError('min')">mois 7 doit étre positive.</div>
+                        <div [hidden]="!mois7.hasError('max')">mois 7 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois7.hasError('pattern')">mois 7 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 8</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS8" id="MOIS8" name="MOIS8" #mois8="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois8">
+                      <div [hidden]="mois8.valid || mois8.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois8.hasError('min')">mois 8 doit étre positive.</div>
+                        <div [hidden]="!mois8.hasError('max')">mois 8 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois8.hasError('pattern')">mois 8 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 9</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS9" id="MOIS9" name="MOIS9" #mois9="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois9">
+                      <div [hidden]="mois9.valid || mois9.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois9.hasError('min')">mois 9 doit étre positive.</div>
+                        <div [hidden]="!mois9.hasError('max')">mois 9 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois9.hasError('pattern')">mois 9 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 10</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS10" id="MOIS10" name="MOIS10" #mois10="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois10">
+                      <div [hidden]="mois10.valid || mois10.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois10.hasError('min')">mois 10 doit étre positive.</div>
+                        <div [hidden]="!mois10.hasError('max')">mois 10 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois10.hasError('pattern')">mois 10 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 11</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS11" id="MOIS11" name="MOIS11" #mois11="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois11">
+                      <div [hidden]="mois11.valid || mois11.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois11.hasError('min')">mois 11 doit étre positive.</div>
+                        <div [hidden]="!mois11.hasError('max')">mois 11 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois11.hasError('pattern')">mois 11 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">MOIS 12</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MOIS12" id="MOIS12" name="MOIS12" #mois12="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.mois12">
+                      <div [hidden]="mois12.valid || mois12.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!mois12.hasError('min')">mois 12 doit étre positive.</div>
+                        <div [hidden]="!mois12.hasError('max')">mois 12 ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!mois12.hasError('pattern')">mois 12 ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">DATE DER LI</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="DAT_DER_LI" id="DAT_DER_LI" name="DAT_DER_LI" #datDerLi="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="100" minlength="5" [(ngModel)]="utilisateur.datDerLi">
+                      <div [hidden]="datDerLi.valid || datDerLi.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!datDerLi.hasError('minlength')">Date DerLi doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!datDerLi.hasError('maxlength')">Date DerLi ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!datDerLi.hasError('pattern')">Date DerLi ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">MARGE POUR</label>
+                      <input type="n" nbInput fullWidth fieldSize="small" placeholder="MARGE_POUR" id="MARGE_POUR" name="MARGE_POUR" #margePour="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.margePour">
+                      <div [hidden]="margePour.valid || margePour.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!margePour.hasError('min')">Marge Pour doit étre positive.</div>
+                        <div [hidden]="!margePour.hasError('max')">Marge Pour ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!margePour.hasError('pattern')">Marge Pour ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">MARGE VAL</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="MARGE_VAL" id="MARGE_VAL" name="MARGE_VAL" #margeVal="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.margeVal">
+                      <div [hidden]="margeVal.valid || margeVal.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!margeVal.hasError('min')">Marge Val doit étre positive.</div>
+                        <div [hidden]="!margeVal.hasError('max')">Marge Val ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!margeVal.hasError('pattern')">Marge Val ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div> 
+                  
+    
+    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">CREDBL_ENC</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CREDBL_ENC" id="CREDBL_ENC" name="CREDBL_ENC" #credblEnc="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.credblEnc">
+                      <div [hidden]="credblEnc.valid || credblEnc.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!credblEnc.hasError('min')">Credbl Enc doit étre positive.</div>
+                        <div [hidden]="!credblEnc.hasError('max')">Credbl Enc ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!credblEnc.hasError('pattern')">Credbl Enc ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CREDINSTEC</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="CREDINSTEC" id="CREDINSTEC" name="CREDINSTEC" #credinstec="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.credinstec">
+                      <div [hidden]="credinstec.valid || credinstec.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!credinstec.hasError('min')">Credin stec doit étre positive.</div>
+                        <div [hidden]="!credinstec.hasError('max')">Credin stec ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!credinstec.hasError('pattern')">Credin stec ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">OBSERVATIO</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="OBSERVATIO" id="OBSERVATIO" name="OBSERVATIO" #observatio="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="100" minlength="5" [(ngModel)]="utilisateur.observatio">
+                      <div [hidden]="observatio.valid || observatio.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!observatio.hasError('minlength')">Observation doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!observatio.hasError('maxlength')">Observation ne doit pas dépassé les 30 lettres longue.</div>
+                        <div [hidden]="!observatio.hasError('pattern')">Observation ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">OBSERV</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="OBSERV" id="OBSERV" name="OBSERV" #observ="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="100" minlength="5" [(ngModel)]="utilisateur.observ">
+                      <div [hidden]="observ.valid || observ.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!observ.hasError('minlength')">Observ doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!observ.hasError('maxlength')">Observ ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!observ.hasError('pattern')">Observ ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">OBSERVATIO</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="GOUV1" id="GOUV1" name="GOUV1" #gouv1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="100" minlength="5" [(ngModel)]="utilisateur.gouv1">
+                      <div [hidden]="gouv1.valid || gouv1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!gouv1.hasError('minlength')">gou v1 doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!gouv1.hasError('maxlength')">gou v1 ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!gouv1.hasError('pattern')">gou v1 ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">OBSERVATIO</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="GOUV2" id="GOUV2" name="GOUV2" #gouv2="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="100" minlength="5" [(ngModel)]="utilisateur.gouv2">
+                      <div [hidden]="gouv2.valid || gouv2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!gouv2.hasError('minlength')">gouv2 doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!gouv2.hasError('maxlength')">gouv2 ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!gouv2.hasError('pattern')">gouv2 ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- -->
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">NATCAUTION</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="NATCAUTION" id="NATCAUTION" name="NATCAUTION" #natcaution="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="4" [(ngModel)]="utilisateur.natcaution">
+                      <div [hidden]="natcaution.valid || natcaution.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!natcaution.hasError('minlength')">Nat~ caution doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!natcaution.hasError('maxlength')">Nat~ caution ne doit pas dépassé les 30 lettres longue.</div>
+                        <div [hidden]="!natcaution.hasError('pattern')">Nat~ caution ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="label">CHEQUE</label>
+                        <div>
+                          <nb-select [style]="{'width':'100%'}" placeholder="CHEQUE" id="CHEQUE" name="CHEQUE" #cheque="ngModel" fullWidth fieldSize="small" [(ngModel)]="utilisateur.cheque" >
+                            <nb-option value="false">Sans Cheque</nb-option>
+                            <nb-option value="true">Avec Cheque</nb-option>
+                          </nb-select>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">ESPECE</label>
+                      <div>
+                        <nb-select [style]="{'width':'100%'}" placeholder="ESPECE" id="ESPECE" name="ESPECE" #espece="ngModel" fullWidth fieldSize="small" [(ngModel)]="utilisateur.espece" >
+                          <nb-option value="false">Sans Espece</nb-option>
+                          <nb-option value="true">Avec Espece</nb-option>
+                        </nb-select>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">TRAITE</label>
+                      <div>
+                        <nb-select [style]="{'width':'100%'}" placeholder="TRAITE" id="TRAITE" name="TRAITE" #traite="ngModel" fullWidth fieldSize="small" [(ngModel)]="utilisateur.traite" >
+                          <nb-option value="false">Sans Traite</nb-option>
+                          <nb-option value="true">Avec Traite</nb-option>
+                        </nb-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">CR REF</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CR_REF" id="CR_REF" name="CR_REF" #crRef="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.crRef">
+                      <div [hidden]="crRef.valid || crRef.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!crRef.hasError('min')">cr Ref doit étre positive.</div>
+                        <div [hidden]="!crRef.hasError('max')">cr Ref ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!crRef.hasError('pattern')">cr Ref ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">SOLD_TERM</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="SOLD_TERM" id="SOLD_TERM" name="SOLD_TERM" #soldTerm="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.soldTerm">
+                      <div [hidden]="soldTerm.valid || soldTerm.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!soldTerm.hasError('min')">Sold Term doit étre positive.</div>
+                        <div [hidden]="!soldTerm.hasError('max')">Sold Term ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!soldTerm.hasError('pattern')">Sold Term ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">CHQ_IMP</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CHQ_IMP" id="CHQ_IMP" name="CHQ_IMP" #chqImp="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.chqImp">
+                      <div [hidden]="chqImp.valid || chqImp.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!chqImp.hasError('min')">Chq Imp doit étre positive.</div>
+                        <div [hidden]="!chqImp.hasError('max')">Chq Imp ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!chqImp.hasError('pattern')">Chq Imp ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CRI_REF</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="CRI_REF" id="CRI_REF" name="CRI_REF" #criRef="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.criRef">
+                      <div [hidden]="criRef.valid || criRef.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!criRef.hasError('min')">Cri Ref doit étre positive.</div>
+                        <div [hidden]="!criRef.hasError('max')">Cri Ref ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!criRef.hasError('pattern')">Cri Ref ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!---->
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">REM FAM</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="REM_FAM" id="REM_FAM" name="REM_FAM" #remFam="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="240" minlength="5" [(ngModel)]="utilisateur.remFam">
+                      <div [hidden]="remFam.valid || remFam.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!remFam.hasError('minlength')">Rem Fam doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!remFam.hasError('maxlength')">Rem Fam ne doit pas dépassé les 240 lettres longue.</div>
+                        <div [hidden]="!remFam.hasError('pattern')">Rem Fam ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">REGLEMENT</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="REGLEMENT" id="REGLEMENT" name="REGLEMENT" #reglement="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.reglement">
+                      <div [hidden]="reglement.valid || reglement.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!reglement.hasError('min')">Reglement doit étre positive.</div>
+                        <div [hidden]="!reglement.hasError('max')">Reglement ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!reglement.hasError('pattern')">Reglement ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">DELAI</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="DELAI" id="DELAI" name="DELAI" #delai="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.delai">
+                      <div [hidden]="delai.valid || delai.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!delai.hasError('min')">Delai doit étre positive.</div>
+                        <div [hidden]="!delai.hasError('max')">Delai ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!delai.hasError('pattern')">Delai ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">NB TRANCHE</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="NB_TRANCHE" id="NB_TRANCHE" name="NB_TRANCHE" #nbTranche="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.nbTranche">
+                      <div [hidden]="nbTranche.valid || nbTranche.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!nbTranche.hasError('min')">Nb Tranche doit étre positive.</div>
+                        <div [hidden]="!nbTranche.hasError('max')">Nb Tranche ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!nbTranche.hasError('pattern')">Nb Tranche ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">DELAI</label>
+                      <input type="number" nbInput fullWidth fieldSize="small" placeholder="COD_STEQ" id="COD_STEQ" name="COD_STEQ" #delai="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.delai">
+                      <div [hidden]="delai.valid || delai.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!delai.hasError('min')">Delai doit étre positive.</div>
+                        <div [hidden]="!delai.hasError('max')">Delai ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!delai.hasError('pattern')">Delai ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">REFERENCE</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="REFERENCE" id="REFERENCE" name="REFERENCE" #reference="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.reference">
+                      <div [hidden]="reference.valid || reference.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!reference.hasError('min')">Reference doit étre positive.</div>
+                        <div [hidden]="!reference.hasError('max')">Reference ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!reference.hasError('pattern')">Reference ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>    
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">SANS RET</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="SANS_RET" id="SANS_RET" name="SANS_RET" #sansRet="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="240" minlength="5" [(ngModel)]="utilisateur.sansRet">
+                      <div [hidden]="sansRet.valid || sansRet.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!sansRet.hasError('minlength')">Sans Ret doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!sansRet.hasError('maxlength')">Sans Ret ne doit pas dépassé les 240 lettres longue.</div>
+                        <div [hidden]="!sansRet.hasError('pattern')">Sans Ret ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">CLI_GROUP</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="CLI_GROUP" id="CLI_GROUP" name="CLI_GROUP" #cliGroup="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="240" minlength="5" [(ngModel)]="utilisateur.cliGroup">
+                      <div [hidden]="cliGroup.valid || cliGroup.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!cliGroup.hasError('minlength')">client Group doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!cliGroup.hasError('maxlength')">client Group ne doit pas dépassé les 240 lettres longue.</div>
+                        <div [hidden]="!cliGroup.hasError('pattern')">client Group ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">SANS RET</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="TAUX_MARGE" id="TAUX_MARGE" name="TAUX_MARGE" #tauxMarge="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.tauxMarge">
+                      <div [hidden]="tauxMarge.valid || tauxMarge.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!tauxMarge.hasError('min')">taux Marge doit étre positive.</div>
+                        <div [hidden]="!tauxMarge.hasError('max')">taux Marge ne doit pas dépassé les limite.</div>
+                        <div [hidden]="!tauxMarge.hasError('pattern')">taux Marge ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+              </nb-card-body>
+            </nb-card>      
+        </div>
+    </div>
+    </form>

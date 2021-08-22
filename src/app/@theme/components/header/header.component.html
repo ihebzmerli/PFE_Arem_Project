@@ -1,0 +1,32 @@
+<div class="header-container">
+  <div class="logo-container">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2-outline"></nb-icon>
+    </a>
+    <a class="logo" href="#" (click)="navigateHome()">ngx-<span>admin</span></a>
+  </div>
+  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
+    <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
+  </nb-select>
+</div>
+
+<div class="header-container">
+  <div *ngIf="info.token; else loggedOut">
+    <nb-actions size="small">
+
+      <nb-action class="control-item">
+        <nb-search type="rotate-layout"></nb-search>
+      </nb-action>
+      <nb-action class="control-item" icon="email-outline"></nb-action>
+      <nb-action class="control-item" icon="bell-outline"></nb-action>
+      <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
+        <img class="rounded-circle" width="46" height="51" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQF2psCzfbB611rnUhxgMi-lc2oB78ykqDGYb4v83xQ1pAbhPiB&usqp=CAU">
+        <nb-select (selectedChange)="changeUserM($event)" status="primary">
+          <nb-option *ngFor="let userM of userMenu" [value]="userM.value"> {{ userM.title }}</nb-option>
+        </nb-select>
+      </nb-action>
+    </nb-actions>
+  </div>
+  <ng-template #loggedOut>
+  </ng-template>
+</div>

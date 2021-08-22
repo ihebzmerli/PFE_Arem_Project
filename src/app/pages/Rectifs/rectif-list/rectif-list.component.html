@@ -1,0 +1,296 @@
+<nb-card>
+  <nb-card-header>
+    Table de rectif
+    <nb-card-body>
+      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR' || 'ROLE_DECIDEUR_BP')" class="border">
+        <button class="btn btn-md btn-outline-primary">
+          <i class="fa fa-user"></i>Statistiques</button>
+
+          <button type="button" (click)="togglepreviewTableRectif()" class="btn btn-outline-info">
+            {{previewTableAllRectifExcelPdf? "tableau detailé ": "tableau minimiser "}}
+          </button>
+      </div>
+    </nb-card-body>
+  </nb-card-header>
+  <nb-card-body>
+      <div class="col-md-6">
+        <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  chercher tout">
+      </div>
+
+
+    <div *ngIf="!previewTableAllRectifExcelPdf" class="container">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="text-align: center">
+            <label class="label">N~ Rectif</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search Id Rectif"
+              style="width:150px" [(ngModel)]="searchTermIdRectif" />
+            </div>
+          </th>
+          
+          <th style="text-align: center"><label class="label">date</label>
+          </th>
+          
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">numDoc</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By NumDoc"
+              style="width:150px" [(ngModel)]="searchTermNumDoc"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">qutArt</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By QutArt"
+              style="width:150px" [(ngModel)]="searchTermQutArt"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">prixAch</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By PrixAch"
+              style="width:150px" [(ngModel)]="searchTermPrixAch"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">observ</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By Observ"
+              style="width:150px" [(ngModel)]="searchTermObserv"/>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">typMvt</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By TypMvt"
+              style="width:150px" [(ngModel)]="searchTermTypMvt"/>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">numRec</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By NumRec"
+              style="width:150px" [(ngModel)]="searchTermNumRec"/>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">centre</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By Centre"
+              style="width:150px" [(ngModel)]="searchTermCentre"/>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">datReclam</label>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">reclam</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By Reclam"
+              style="width:150px" [(ngModel)]="searchTermReclam"/>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">cloture</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By Cloture"
+              style="width:150px" [(ngModel)]="searchTermCloture"/>
+            </div>
+          </th>
+
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">obsReclam</label>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="search By ObsReclam"
+              style="width:150px" [(ngModel)]="searchTermObsReclam"/>
+            </div>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">datRepon</label>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">datClotur</label>
+          </th>
+          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+            <label class="label">Actions</label>
+          </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let rectif of filteredRectifs | filter:searchText">
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.id_rectif}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.date | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.numDoc}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.qutArt}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.prixAch}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.observ}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.typMvt}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.numRec}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.centre}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.datReclam | date:'short'}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.reclam}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.cloture}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.obsReclam}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.datRepon | date:'short'}}</p></span></td>
+          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span><p>{{rectif.datClotur | date:'short'}}</p></span></td>
+
+          <td class="field-multiple-drag">
+            <div class="buttons-row">
+              <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR' || 'ROLE_DECIDEUR_BP' || 'ROLE_ACHETEUR')" class="form-group">
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['rectif-detail',rectif.id_rectif]" outline>
+                  <i class="fa fa-search"></i>Details</button>
+              </div>
+              <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE')" class="form-group">
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(rectif.id_rectif)" outline>
+                  <i class="fa fa-edit"></i>Modifier</button>
+                <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(rectif.id_rectif)" outline>
+                  <i class="fa fa-remove"></i>Supprimer</button>
+              </div>
+            </div>  
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+
+
+
+  <nb-card-body>
+    <div *ngIf="previewTableAllRectifExcelPdf">
+        <p-table #dt [columns]="cols" [value]="filteredRectifs" selectionMode="multiple" [(selection)]="selectedRectifs"
+        dataKey="id_rectif" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['id_rectif','date','numDoc','qutArt','prixAch','observ','typMvt','numRec','centre','datReclam',
+        'reclam','cloture','obsReclam','datRepon','datClotur']">
+          <ng-template pTemplate="caption">
+              <div class="p-d-flex">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <button type="button" pButton pRipple icon="pi pi-file-o" (click)="dt.exportCSV()" class="p-mr-2" pTooltip="CSV" tooltipPosition="bottom" nbPopover="Télécharger toute la table en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                      <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success p-mr-2"  pTooltip="XLS" tooltipPosition="bottom" nbPopover="Télécharger toute la table en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                    <div class="col">
+                      <button type="button" pButton pRipple icon="pi pi-filter" (click)="dt.exportCSV({selectionOnly:true})" class="p-button-secondary p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                      <button type="button" pButton pRipple icon="pi pi-bookmark" (click)="dt.exportExcel({selectionOnly:true})" class="p-button-help p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                            <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                            <span class="p-input-icon-left p-ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                            </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+              <tr>
+                  <th *ngFor="let col of columns">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      <div *ngIf="col.header!=='Actions' && col.header!=='Consultation'">
+                        {{col.header}}
+                      </div>
+                        
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='ID'" type="numeric" field="id_rectif" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='DATE'" type="date" field="date" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Observation'" type="text" field="observ" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Type Mvt'" type="text" field="typMvt" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Numéro Reclamation'" type="numeric" field="numRec" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Centre'" type="text" field="centre" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Reclamation'" type="date" field="datReclam" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Clotur'" type="date" field="datClotur" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Cloture'" type="text" field="cloture" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Observation Reclamation'" type="text" field="obsReclam" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Reponse'" type="date" field="datRepon" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Cloture'" type="date" field="datClotur" display="menu"></p-columnFilter>
+                        </div>
+                        <div style="text-align: center" *ngIf="col.header=='Actions' || col.header=='Consultation'">
+                          <b>{{col.header}}</b>
+                        </div>
+                    </div>
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns">
+                      <div class="field-multiple-drag" *ngIf="col.field!=='datRepon' && col.field!=='datClotur' && col.field!=='datReclam' && col.field!=='date' && col.header!=='Actions' && col.header!=='Consultation'">                       
+                        <div *ngIf="rowData[col.field]==null || rowData[col.field]=='' && rowData[col.field]!==0">
+                          <span class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label> Aucune!</label></span>
+                        </div>
+                        <div *ngIf="rowData[col.field]===0">
+                          <span style="color: rgb(236, 28, 0);">{{rowData[col.field]}}</span>
+                        </div>
+                        <div *ngIf="rowData[col.field]!==0">
+                          {{rowData[col.field]}}
+                        </div>
+                      </div>
+
+                      <div *ngIf="col.field=='datRepon'">
+                        {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : '+0000'}}
+                      </div>
+                      <div *ngIf="col.field=='datClotur'">
+                        {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : '+0000'}}
+                      </div>
+                      <div *ngIf="col.field=='datReclam'">
+                        {{rowData[col.field] | date:'short'}}
+                      </div>
+                      <div *ngIf="col.field=='date'">
+                        {{rowData[col.field] | date:'short'}}
+                      </div>
+
+
+                      <!--button Actions -->  
+                      <div *ngIf="col.header=='Consultation' && col.field=='id_rectif' && authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')">
+                        <button style="border-radius: 0.75rem;" nbButton type="button" [status]="info" size="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['rectif-detail',rowData[col.field]]" outline>
+                        <i class="fa fa-search"></i>Details</button>
+                      </div>
+                      <div *ngIf="col.header=='Actions' && col.field=='id_rectif' && authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_PREPARATEUR_BR')">
+                        <button style="border-radius: 0.75rem;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" size="small" [status]="danger" (click)="OpenDeletePopap(rowData[col.field])" outline>
+                          <i class="fa fa-remove"></i>Supprimer</button>
+                        <button style="border-radius: 0.75rem;" nbButton type="button" [status]="warning" size="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" outline>
+                          <i class="fa fa-edit"></i>Modifier</button>
+                      </div>
+                      <!--end button Actions -->
+                  </td> 
+                  
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">Pas de Rectifs trouver.</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </nb-card-body>
+</nb-card>

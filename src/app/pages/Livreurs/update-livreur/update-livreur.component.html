@@ -1,0 +1,177 @@
+
+<form (ngSubmit) = "onSubmitLivreur()" #livreurForm="ngForm">
+  <div class="offset-sm-2 col-sm-9">
+    <nb-card>
+      <nb-card-header>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des livreurs ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../livreur-list']"/>
+        <p></p>
+        Modifier Livreur<p>Date de modification: <p>
+          &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{livreur.date | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+          </nb-card-header>
+      <nb-card-body>
+          
+          <div class="form-row">
+              <div class="form-group col">
+                <label for="nom" class="label">NOM</label>
+                <input type="text" nbInput fullWidth class="form-control" #nom="ngModel" id="nom" name="nom" required pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" [(ngModel)]="livreur.nom" />
+                <div style="font-size: 12px;" [hidden]="nom.valid || nom.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!nom.hasError('minlength')">Nom doit étre au moin 6 lettres longue.</div>
+                  <div [hidden]="!nom.hasError('maxlength')">Nom ne doit pas dépassé les 50 lettres longue.</div>
+                  <div [hidden]="!nom.hasError('required')">Nom est obligatoire.</div>
+                  <div [hidden]="!nom.hasError('pattern')">Nom ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="numrec" class="label">NUM_REC</label>
+                <input type="number" min="0" nbInput fullWidth class="form-control" #numrec="ngModel" id="numrec" name="numrec" required pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="livreur.numrec" />
+                <div style="font-size: 12px;" [hidden]="numrec.valid || numrec.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!numrec.hasError('min')">N~ Rec doit étre positive.</div>
+                  <div [hidden]="!numrec.hasError('max')">N~ Rec ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!numrec.hasError('required')">N~ Rec est obligatoire.</div>
+                  <div [hidden]="!numrec.hasError('pattern')">N~ Rec ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="centre" class="label">CENTRE</label>
+                <input type="text" nbInput fullWidth class="form-control" #centre="ngModel" id="centre" name="centre" required pattern="^[a-zA-Z0-9 ]+$" maxlength="240" minlength="5" [(ngModel)]="livreur.centre" />
+                <div style="font-size: 12px;" [hidden]="centre.valid || centre.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!centre.hasError('minlength')">Centre doit étre au moin 5 lettres longue.</div>
+                  <div [hidden]="!centre.hasError('maxlength')">Centre ne doit pas dépassé les 240 lettres longue.</div>
+                  <div [hidden]="!centre.hasError('required')">Centre est obligatoire.</div>
+                  <div [hidden]="!centre.hasError('pattern')">Centre ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+                <div class="form-group col">
+                  <label for="nature" class="label">Nature</label>
+                  <nb-select fullWidth selected="nature" #nature="ngModel" id="nature" name="nature" [(ngModel)]="livreur.nature" >
+                    <nb-option value="PAS_PRESENT">Non present</nb-option>
+                    <nb-option value="EN_ATTEND">En attend</nb-option>
+                    <nb-option value="EN_MISSION">En mission</nb-option>
+                  </nb-select>
+                </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="reclam" class="label">RECLAM</label>
+                <input type="number" min="0" nbInput fullWidth class="form-control" #reclam="ngModel" id="reclam" name="reclam" required pattern="^(0|[1-9][0-9]*)$" max="9999999" min="0" [(ngModel)]="livreur.reclam" />
+                <div style="font-size: 12px;" [hidden]="reclam.valid || reclam.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!reclam.hasError('min')">Reclam doit étre positive.</div>
+                  <div [hidden]="!reclam.hasError('max')">Reclam ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!reclam.hasError('required')">Reclam est obligatoire.</div>
+                  <div [hidden]="!reclam.hasError('pattern')">Reclam ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="objectif" class="label">OBJECTIF</label>
+                <input type="number" nbInput fullWidth class="form-control" #objectif="ngModel" id="objectif" name="objectif" required pattern="^(0|[1-9][0-9]*)$" max="999999" min="0" [(ngModel)]="livreur.objectif" />
+                <div style="font-size: 12px;" [hidden]="objectif.valid || objectif.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!objectif.hasError('min')">Objectif doit étre positive.</div>
+                  <div [hidden]="!objectif.hasError('max')">Objectif ne doit pas dépassé les limite.</div>
+                  <div [hidden]="!objectif.hasError('required')">Objectif est obligatoire.</div>
+                  <div [hidden]="!objectif.hasError('pattern')">Objectif ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="datreclam" class="label">DAT_RECLAM</label>
+                <input nbInput fullWidth [nbDatepicker]="dateTimePicker2" class="form-control" #datreclam="ngModel" id="datreclam" name="datreclam" required [(ngModel)]="livreur.datreclam" />
+                <nb-datepicker #dateTimePicker2></nb-datepicker>
+                <div style="font-size: 12px;" [hidden]="datreclam.valid || datreclam.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!datreclam.hasError('required')">Date reclam est obligatoire.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="datrepon" class="label">DAT_REPON</label>
+                <input nbInput fullWidth [nbDatepicker]="dateTimePicker3"class="form-control" #datrepon="ngModel" id="datrepon" name="datrepon" required [(ngModel)]="livreur.datrepon" />
+                <nb-datepicker #dateTimePicker3></nb-datepicker>
+                <div style="font-size: 12px;" [hidden]="datrepon.valid || datrepon.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!datrepon.hasError('required')">Date repon est obligatoire.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="obsreclam" class="label">OBS_RECLAM</label>
+                <input type="text" nbInput fullWidth class="form-control" #obsreclam="ngModel" id="obsreclam" name="obsreclam" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="4" [(ngModel)]="livreur.obsreclam" />
+                <div style="font-size: 12px;" [hidden]="obsreclam.valid || obsreclam.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!obsreclam.hasError('minlength')">Obs reclam doit étre au moin 10 lettres longue.</div>
+                  <div [hidden]="!obsreclam.hasError('maxlength')">Obs reclam ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!obsreclam.hasError('pattern')">Obs reclam ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="observ" class="label">OBSERV</label>
+                <input type="text" nbInput fullWidth class="form-control" #observ="ngModel" id="observ" name="observ" required pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="10" [(ngModel)]="livreur.observ" />
+                <div style="font-size: 12px;" [hidden]="observ.valid || observ.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!observ.hasError('minlength')">observ doit étre au moin 10 lettres longue.</div>
+                  <div [hidden]="!observ.hasError('maxlength')">observ ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!observ.hasError('required')">observ est obligatoire.</div>
+                  <div [hidden]="!observ.hasError('pattern')">observ ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="prixach" class="label">PRIX_ACH</label>
+                <input type="number" step="100" nbInput fullWidth  class="form-control" #prixach="ngModel" id="prixach" name="prixach" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="livreur.prixach"/>
+                <div style="font-size: 12px;" [hidden]="prixach.valid || prixach.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!prixach.hasError('min')">Prix Ach doit étre au moin 10 lettres longue.</div>
+                  <div [hidden]="!prixach.hasError('max')">Prix Ach ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!prixach.hasError('required')">Prix Ach  est obligatoire.</div>
+                  <div [hidden]="!prixach.hasError('pattern')">Prix Ach  ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="qutart" class="label">QUT_ART</label>
+                <input type="number" min="0" nbInput fullWidth class="form-control" #qutart="ngModel" id="qutart" name="qutart" required pattern="^(0|[1-9][0-9]*)$" max="9999999" min="0" [(ngModel)]="livreur.qutart" />
+                <div style="font-size: 12px;" [hidden]="qutart.valid || qutart.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!qutart.hasError('min')">Qut art doit étre au moin 10 lettres longue.</div>
+                  <div [hidden]="!qutart.hasError('max')">Qut art ne doit pas dépassé les 200 lettres longue.</div>
+                  <div [hidden]="!qutart.hasError('required')">Qut art est obligatoire.</div>
+                  <div [hidden]="!qutart.hasError('pattern')">Qut art ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+            </div>
+
+              <div class="form-row">
+
+                <div class="col-sm-6"> 
+                  <label for="typmvt" class="label">TYP_MVT</label>
+                  <input type="text" nbInput fullWidth class="form-control" #typmvt="ngModel" id="typmvt" name="typmvt" [(ngModel)]="livreur.typmvt" disabled/>
+                </div>
+
+                <div class="col-sm-6"> 
+                  <label for="prime" class="label">Prime</label><p>
+
+                  <p-dropdown [style]="{'minWidth':'100%'}" [options]="PrimeList" [(ngModel)]="livreur.prime" optionLabel="raison" [filter]="true" filterBy="raison" [showClear]="true" placeholder="Choisir Prime" [ngModelOptions]="{standalone: true}">
+                    <ng-template pTemplate="selectedItem">
+                        <div class="country-item country-item-value"  *ngIf="livreur.prime">
+                            <div>{{livreur.prime.raison}}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-prime pTemplate="item">
+                        <div class="country-item">
+                            <div>{{prime.raison}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown> 
+                </div>
+              </div>
+      </nb-card-body>
+    </nb-card>
+    <div class="col-sm-6">
+      <button [disabled]="livreurForm.invalid" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+        Modifier livreur</button>
+      <button nbButton (click)="livreurForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+        Annuler</button> 
+    </div>
+  </div>
+</form>

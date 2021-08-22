@@ -1,0 +1,20 @@
+<div class="row">
+  <form (ngSubmit) = "onSubmit()">
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>Ajouter Bon De Etat de livraison</nb-card-header>
+        <nb-card-body>
+          <label for="REGION" class="label">region</label> 
+          <input type="text" nbInput fullWidth placeholder="REGION" [(ngModel)]="etatliv.region" id="REGION" name="REGION">
+          
+          <label for="DATE" class="label">date</label> 
+          <input type="text" nbInput fullWidth placeholder="DATE" [(ngModel)]="etatliv.date" id="DATE" name="DATE">
+          <input type="text" nbInput fullWidth placeholder="CONFIRMATION" [(ngModel)]="etatliv.confirmation" id="CONFIRMATION" name="CONFIRMATION">
+        </nb-card-body>
+      </nb-card>
+      <button (click)="makeToast()" class="btn btn-md btn-outline-primary" type="onSubmit">
+        <i class="fa fa-user"></i>Submit</button>  
+    </div>
+  </form>
+</div>
+

@@ -1,0 +1,434 @@
+<nb-card>
+    <nb-card-header>
+      Affaires Table
+      <nb-card-body>
+        <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" class="border">
+            <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
+            <i class="fa fa-user"></i>Statistiques</button>
+
+            <button type="button" (click)="togglepreviewTableAffaire()" class="btn btn-outline-info">
+              {{previewTableAllAffaireExcelPdf? "tableau detailé ": "tableau minimiser "}}
+            </button>
+        </div>
+      </nb-card-body>
+    </nb-card-header>
+  
+    <nb-card-body>
+      <div *ngIf="!previewTableAllAffaireExcelPdf" class="container">
+        Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th style="text-align: center">
+              <label class="label">NUM_AFF</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search NumAff"
+                style="width:150px" style="align-items: center;" [(ngModel)]="searchTermNumAff" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DAT_AFF</label>
+               <div class="form-group">
+                <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                    <i class="fa fa-user"></i>Filter</button>  
+               </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">COD_FRS</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search CodFrs"
+                style="width:150px" style="align-items: center;" [(ngModel)]="searchTermCodFrs" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">RAISON</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search Raison"
+                style="width:150px" style="align-items: center;" [(ngModel)]="searchTermRaison" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DAT_PROF</label>
+                <div class="form-group">
+                    <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                        <i class="fa fa-user"></i>Filter</button>  
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DAT_CONF</label>
+                <div class="form-group">
+                    <button  style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                        <i class="fa fa-user"></i>Filter</button>  
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DAT_TRANSF</label>
+                <div class="form-group">
+                    <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                        <i class="fa fa-user"></i>Filter</button>  
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">PROVEN</label>
+              <div class="form-group">
+                <input style="align-items: center;" type="text" class="form-control" placeholder="search Proven"
+                style="width:150px" [(ngModel)]="searchTermProven" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">NUM_PROF</label>
+              <div class="form-group">
+                <input style="align-items: center;" type="text" class="form-control" placeholder="search NumProf"
+                style="width:150px" [(ngModel)]="searchTermNumProf" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">TRANSFER</label>
+              <div class="form-group">
+                <input style="align-items: center;" type="text" class="form-control" placeholder="search Transfer"
+                style="width:150px" [(ngModel)]="searchTermTransfer" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">PROFORMA</label>
+              <div class="form-group">
+                <input style="align-items: center;" type="text" class="form-control" placeholder="search Proforma"
+                style="width:150px" [(ngModel)]="searchTermProforma" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">CONFIRMER</label>
+              <div class="form-group">
+                <input style="align-items: center;" type="text" class="form-control" placeholder="search Confirmer"
+                style="width:150px" [(ngModel)]="searchTermConfirmer" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DAT_ANAL</label>
+                <div class="form-group">
+                    <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                        <i class="fa fa-user"></i>Filter</button>  
+                </div>
+            </th>
+
+            <th style="text-align: center">
+              <label class="label">numFac</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search NumFac"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermNumFac" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">datFac</label>
+                <div class="form-group">
+                    <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                        <i class="fa fa-user"></i>Filter</button>  
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">montDev</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search MontDev"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontDev" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">montDt</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search MontDt"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontDt" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">montRev</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search MontRev"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontRev" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">delaiLiv</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search DelaiLiv"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermDelaiLiv" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">MontTrsp</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search MontTrsp"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontTrsp" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">montEmbl</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search MontEmba"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontEmba" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">montAff</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search MontAff"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontAff" />
+                </div>
+            </th>
+           <th style="text-align: center">
+            <label class="label">totalAff</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search TotalAff"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermTotalAff" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">devise</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search Devise"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermDevise" />
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">coef</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="search Coef"
+                    style="width:150px" style="align-items: center;" [(ngModel)]="searchTermCoef" />
+                </div> 
+            </th>
+            <th style="text-align: center"><label class="label">Actions</label></th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let affaire of filteredAffaires | filter:searchText">
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.numAff}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datAff | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.codFrs}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.raison}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datProf | date: 'medium'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datConf | date: 'medium'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datTransf | date: 'shortDate' }}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.proven}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.numProf}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.transfer}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.proforma}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.confirmer}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datAnal | date: 'medium'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.numFac}}</p></span></td>
+
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datFac | date: 'shortDate'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.montDev | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.montDt | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.montRev | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td *ngIf="affaire.delaiLiv==false" style="text-align: center" class="field-multiple-drag"><span><p>Sans livraison</p></span></td>
+            <td *ngIf="affaire.delaiLiv==true" style="text-align: center" class="field-multiple-drag"><span><p>Avec livraison</p></span></td>
+
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.montTrsp | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.montEmbl | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.montAff | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.totalAff | currency:'TND ' : 'symbol'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.devise}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.coef}}</p></span></td>
+            <td class="field-multiple-drag">
+              <div class="buttons-row">
+              <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['affaire-detail',affaire.numAff]" outline>
+                <i class="fa fa-search"></i>Details</button>
+                </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </nb-card-body>
+
+    
+
+
+  <nb-card-body>
+    <div *ngIf="previewTableAllAffaireExcelPdf">
+        <p-table #dt [columns]="cols" [value]="filteredAffaires" selectionMode="multiple" [(selection)]="selectedAffaires"
+        dataKey="numAff" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['numAff','datAff','codFrs','raison','datProf','datConf','datTransf','proven','numProf','transfer',
+        'proforma','confirmer','datAnal','montDev','montDt','montRev','delaiLiv','montTrsp','montEmbl','montAff',
+        'totalAff','devise','coef']">
+          <ng-template pTemplate="caption">
+              <div class="p-d-flex">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <button type="button" pButton pRipple icon="pi pi-file-o" (click)="dt.exportCSV()" class="p-mr-2" pTooltip="CSV" tooltipPosition="bottom" nbPopover="Télécharger toute la table en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                      <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success p-mr-2"  pTooltip="XLS" tooltipPosition="bottom" nbPopover="Télécharger toute la table en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                    <div class="col">
+                      <button type="button" pButton pRipple icon="pi pi-filter" (click)="dt.exportCSV({selectionOnly:true})" class="p-button-secondary p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                      <button type="button" pButton pRipple icon="pi pi-bookmark" (click)="dt.exportExcel({selectionOnly:true})" class="p-button-help p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                            <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                            <span class="p-input-icon-left p-ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                            </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+              <tr>
+                  <th *ngFor="let col of columns">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      <div *ngIf="col.header!=='Actions' && col.header!=='Consultation'">
+                        {{col.header}}
+                      </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Numéro Aff~'" type="numeric" field="numAff" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Aff~'" type="date" field="datAff" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Code Frs~'" type="numeric" field="codFrs" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Raison'" type="text" field="raison" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Prof~'" type="date" field="datProf" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Conf~'" type="date" field="datConf" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Transf~'" type="date" field="datTransf" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Proven'" type="text" field="proven" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Numéro Prof~'" type="text" field="numProf" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Transfer'" type="text" field="transfer" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Proforma'" type="text" field="proforma" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Confirmer'" type="text" field="confirmer" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Date Anal'" type="date" field="datAnal" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Mont Dt'" type="numeric" field="montDt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Mont Rev'" type="numeric" field="montRev" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+
+                          <p-columnFilter *ngIf="col.header=='Delail Liv'" field="delaiLiv" matchMode="equals" display="menu" class="p-ml-auto">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-dropdown [ngModel]="value" [options]="statusessdelaiLiv" (onChange)="filter($event.value)" placeholder="Any">
+                                    <ng-template let-option pTemplate="item">
+
+                                      <span [class]="option.value">
+                                        <button  nbButton *ngIf="option.label=='Avec livraison'" type="button" [status]="success" size="small" class="btn btn-md btn-outline-success" hero>
+                                          Sans livraison
+                                       </button>
+                                       <button nbButton *ngIf="option.label=='Sans livraison'" type="button" [status]="warning" size="small" class="btn btn-md btn-outline-warning" hero>
+                                          Avec livraison
+                                       </button>
+                                      </span>
+
+                                    </ng-template>
+                                </p-dropdown>
+                            </ng-template>
+                          </p-columnFilter>
+                          
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Montant Trsp~'" type="numeric" field="montTrsp" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Montant Embl~'" type="numeric" field="montEmbl" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Montant Aff~'" type="numeric" field="montAff" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Total Aff~'" type="numeric" field="totalAff" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Devise'" type="text" field="devise" display="menu"></p-columnFilter>
+                        </div>
+                        <div>
+                          <p-columnFilter *ngIf="col.header=='Coef'" type="numeric" field="coef" display="menu"></p-columnFilter>
+                        </div>
+                        <div style="text-align: center" *ngIf="col.header=='Actions' || col.header=='Consultation'">
+                          <b>{{col.header}}</b>
+                        </div>
+                    </div>
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns">
+                      <div class="field-multiple-drag" *ngIf="col.field!=='datAff' && col.field!=='datProf' && col.field!=='datConf' && col.field!=='datTransf' && col.field!=='datAnal' && col.field!=='delaiLiv' && col.field!=='id' && col.header!=='Actions' && col.header!=='Consultation'">                       
+                        <div *ngIf="rowData[col.field]==null || rowData[col.field]=='' && rowData[col.field]!==0">
+                          <span class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label> Aucune!</label></span>
+                        </div>
+                        <div *ngIf="rowData[col.field]===0">
+                          <span *ngIf="col.field=='datAnal' || col.field=='montDt' || col.field=='montRev' || col.field=='montTrsp' || col.field=='montEmbl' || col.field=='montAff' || col.field=='totalAff'">TND&nbsp;</span><span style="color: rgb(236, 28, 0);">{{rowData[col.field]}}</span>
+                        </div>
+                        <div *ngIf="rowData[col.field]!==0">
+                          <span *ngIf="col.field=='datAnal' || col.field=='montDt' || col.field=='montRev' || col.field=='montTrsp' || col.field=='montEmbl' || col.field=='montAff' || col.field=='totalAff'">TND&nbsp;</span>{{rowData[col.field]}}
+                        </div>
+                      </div>
+                      <div *ngIf="col.field=='delaiLiv'">
+                        <div *ngIf="rowData[col.field]==false">
+                          Sans livraison
+                        </div>
+                        <div *ngIf="rowData[col.field]==true">
+                          Avec livraison
+                        </div>
+                      </div>
+
+                      <div *ngIf="col.field=='datAff'">
+                        {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : '+0000'}}
+                      </div>
+                      <div *ngIf="col.field=='datProf'">
+                        {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : 'medium'}}
+                      </div>
+                      <div *ngIf="col.field=='datConf'">
+                        {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : 'medium'}}
+                      </div>
+                      <div *ngIf="col.field=='datTransf'">
+                        {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : 'shortDate'}}
+                      </div>
+                      <div *ngIf="col.field=='datAnal'">
+                        {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : 'medium'}}
+                      </div>
+                      <!--button Actions -->  
+                      <div *ngIf="col.header=='Consultation' && col.field=='numAff'">
+                        <button style="border-radius: 0.75rem;" nbButton type="button" [status]="info" size="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['affaire-detail',rowData[col.field]]" outline>
+                        <i class="fa fa-search"></i>Details</button>
+                      </div>
+                      <!--end button Actions -->
+                  </td> 
+                  
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">Pas de Affaire trouver.</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </nb-card-body>
+  </nb-card>
+  

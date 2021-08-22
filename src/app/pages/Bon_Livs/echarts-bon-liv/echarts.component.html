@@ -1,0 +1,45 @@
+
+    <nb-card>
+      <nb-card-header>Graphique circulaire des bons: reçu & envoyer</nb-card-header>
+      <nb-card-body>
+        <ngx-echarts-bon-Liv-pie></ngx-echarts-bon-Liv-pie>
+      </nb-card-body>
+    </nb-card>
+
+  <div class="row">  
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>Diagramme en barres des bons: au cours des jours de la semaine</nb-card-header>
+        <nb-card-body>
+          <ngx-echarts-bon-Liv-bar></ngx-echarts-bon-Liv-bar>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>les temps pour compléter la livraison</nb-card-header>
+        <nb-card-body>
+          <h1><span style="color: rgb(22, 197, 6);text-align: center;">{{chro1}}</span></h1><label for="min" class="label">La plus courte durée pour la livraison.</label>
+            <!--  <span style="color: rgb(28, 102, 19);text-align: center;">N~Bon livraison : {{Bon1}}</span>  -->
+
+              <br>
+              <h1><span style="color: rgb(192, 13, 0);text-align: center;">{{chro}}</span></h1><label for="max" class="label">La plus longue durée pour la livraison.</label>
+            <!--  <span style="color: rgb(110, 6, 6);text-align: center;">N~Bon livraison : {{Bon}}</span>  -->
+
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+  <nb-card>
+    <nb-card-header>Diagramme en barres des bons: suivant les fournisseurs</nb-card-header>
+    <nb-card-body>
+      <ngx-echarts-fournis-bar></ngx-echarts-fournis-bar>
+    </nb-card-body>
+  </nb-card>
+  <nb-card>
+    <nb-card-header>Diagramme en barres des bons: suivant les client</nb-card-header>
+    <nb-card-body>
+      <ngx-echarts-client-bar></ngx-echarts-client-bar>
+    </nb-card-body>
+  </nb-card>

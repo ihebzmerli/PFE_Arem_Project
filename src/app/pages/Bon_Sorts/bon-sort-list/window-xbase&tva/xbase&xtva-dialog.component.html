@@ -1,0 +1,69 @@
+<nb-card>
+  <nb-card-body>
+
+      <div class="container">
+        <div class="row" *ngIf="showDiv" [@listAnimation]>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xbase1==0"><b>XBASE1: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xbase1!==0"><b>XBASE1: </b><b style="color: rgb(26, 167, 26);">{{bonsort.xbase1}}</b></span>
+          </div>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xtva1==0"><b>XTVA1: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xtva1!==0"><b>XTVA1: </b><b style="color: rgb(26, 167, 26);">{{bonsort.xtva1}}</b></span>
+          </div>
+        </div>
+  
+        <img [@visibilityChanged] src="assets/images/toulsImages/blue-line-png-1.png" width="265" height="34"/> 
+
+        <div class="row" *ngIf="showDiv" [@listAnimation]>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xbase2==0"><b>XBASE2: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xbase2!==0"><b>XBASE2: </b><b style="color: rgb(26, 167, 26);">{{bonsort.xbase2}}</b></span>
+          </div>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xtva2==0"><b>XTVA2: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xtva2!==0"><b>XTVA2: </b><b style="color: rgb(26, 167, 26);">{{bonsort.xtva2}}</b></span>
+          </div>
+        </div>
+        
+        <img [@visibilityChanged] src="assets/images/toulsImages/blue-line-png-1.png" width="265" height="34"/> 
+
+        <div class="row" *ngIf="showDiv" [@listAnimation]>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xbase3==0"><b>XBASE3: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xbase3!==0"><b>XBASE3: </b><b style="color: rgb(26, 167, 26);">{{bonsort.xbase3}}</b></span>
+          </div>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xtva3==0"><b>XTVA3: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xtva3!==0"><b>XTVA3: </b><b style="color: rgb(26, 167, 26);">{{bonsort.xtva3}}</b></span>
+          </div>
+        </div>
+  
+        <img [@visibilityChanged] src="assets/images/toulsImages/blue-line-png-1.png" width="265" height="34"/> 
+
+        <div class="row" *ngIf="showDiv" [@listAnimation]>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xbase4==0"><b>XBASE4: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xbase4!==0"><b>XBASE4: </b><b style="color: rgb(26, 167, 26);">{{bonsort.xbase4}}</b></span>
+          </div>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xtva4==0"><b>XTVA4: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xtva4!==0"><b>XTVA4: </b><b style="color: rgb(26, 167, 26);">{{bonsort.xtva4}}</b></span>
+          </div>
+        </div> 
+  
+        <img [@visibilityChanged] src="assets/images/toulsImages/blue-line-png-1.png" width="265" height="34"/> 
+
+        <div class="row" *ngIf="showDiv" [@listAnimation]>
+          <div class="col-sm">
+            <span *ngIf="bonsort.xbase5==0"><b>XBASE5: </b><b style="color: darkred;">n'existe pas</b></span>
+            <span *ngIf="bonsort.xbase5!==0"><b>XBASE5:  </b><b style="color: rgb(26, 167, 26);">{{bonsort.xbase5}}</b></span>
+          </div>
+        </div>
+      </div>  
+
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="primary" shape="semi-round" size="small" (click)="cancel()">Cancel</button>
+  </nb-card-footer>
+</nb-card>

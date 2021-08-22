@@ -1,0 +1,271 @@
+<div class="accordions-container row offset-sm-2 col-sm-9">
+  <form (ngSubmit) = "onSubmitBon()" #bonSortForm="ngForm">
+    <nb-accordion>
+      <nb-accordion-item #item>
+        <nb-accordion-item-header>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Bon de Sortie?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../bon-sort-list']"/>
+          <h6>Update Bon De Sortie</h6>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          <div class="row">
+            <div class="full-name-inputs">
+              <div class="col-sm-6"> 
+                <label for="numBon" class="label">Num Bon</label>
+                <input type="text" nbInput fullWidth class="form-control" #numBon="ngModel" id="numBon" name="numBon" required [(ngModel)]="bonsort.numBon" disabled/>
+              </div>
+              <div class="col-sm-6"> 
+                <label for="datBon" class="label">Date BON</label>                    <p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{bonsort.datBon | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+                  
+                <input type="text" nbInput fullWidth class="form-control" id="datBon" name="datBon" [(ngModel)]="bonsort.datBon" disabled/>
+              </div>
+            </div>
+          </div>
+          <label for="raison" class="label">raison</label> 
+          <textarea rows="5" nbInput fullWidth shape="round" class="form-control" #raison="ngModel" id="raison" name="raison" required pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="10" [(ngModel)]="bonsort.raison"></textarea>
+          <div style="font-size: 12px;" [hidden]="raison.valid || raison.pristine" class="alert alert-danger p-2">
+            <div [hidden]="!raison.hasError('minlength')">Raison doit étre au moin 10 lettres longue.</div>
+            <div [hidden]="!raison.hasError('maxlength')">Raison ne doit pas dépassé les 200 lettres longue.</div>
+            <div [hidden]="!raison.hasError('required')">Raison est obligatoire.</div>
+            <div [hidden]="!raison.hasError('pattern')">Raison ne doit contenir que des lettres et des nombres.</div>
+          </div>
+
+          <div class="row">
+
+            <div class="full-name-inputs">
+              <div class="col-sm-6"> 
+                <label for="brutHt" class="label">Brut Ht</label> 
+                <input type="number" step="100" nbInput fullWidth class="form-control" #brutHt="ngModel" [(ngModel)]="bonsort.brutHt" id="brutHt" name="brutHt" pattern="^(0|[1-9][0-9]*)$" min="0" required/>
+                <div style="font-size: 12px;" [hidden]="brutHt.valid || brutHt.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!brutHt.hasError('min')">brut Ht doit étre positive.</div>
+                  <div [hidden]="!brutHt.hasError('required')">brut Ht est obligatoire.</div>
+                  <div [hidden]="!brutHt.hasError('pattern')">Le brut Ht ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="col-sm-6"> 
+                <label for="tauxRem" class="label">Taux Rem</label> 
+                <input type="number" step="100" nbInput fullWidth class="form-control" #tauxRem="ngModel" [(ngModel)]="bonsort.tauxRem" id="tauxRem" name="tauxRem" pattern="^(0|[1-9][0-9]*)$" min="0" required />
+                <div style="font-size: 12px;" [hidden]="tauxRem.valid || tauxRem.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!tauxRem.hasError('min')">taux Rem doit étre positive.</div>
+                  <div [hidden]="!tauxRem.hasError('required')">taux Rem est obligatoire.</div>
+                  <div [hidden]="!tauxRem.hasError('pattern')">Le taux Rem ne doit contenir que des nombres.</div>
+                </div>
+              </div>  
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="full-name-inputs">
+              <div class="col-sm-6"> 
+                <label for="montRem" class="label">Mont Rem</label> 
+                <input type="number" step="100" nbInput fullWidth class="form-control" #montRem="ngModel" [(ngModel)]="bonsort.montRem" id="montRem" name="montRem" pattern="^(0|[1-9][0-9]*)$" min="0" required />
+                <div style="font-size: 12px;" [hidden]="montRem.valid || montRem.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!montRem.hasError('min')">mont Rem doit étre positive.</div>
+                  <div [hidden]="!montRem.hasError('required')">mont Rem est obligatoire.</div>
+                  <div [hidden]="!montRem.hasError('pattern')">Le mont Rem ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="col-sm-6"> 
+                <label for="netHt" class="label">Net Ht</label> 
+                <input type="number" step="100" nbInput fullWidth class="form-control" #netHt="ngModel" [(ngModel)]="bonsort.netHt" name="netHt" id="netHt" pattern="^(0|[1-9][0-9]*)$" min="0" required />
+                <div style="font-size: 12px;" [hidden]="netHt.valid || netHt.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!netHt.hasError('min')">net Ht doit étre positive.</div>
+                  <div [hidden]="!netHt.hasError('required')">net Ht est obligatoire.</div>
+                  <div [hidden]="!netHt.hasError('pattern')">Le net Ht ne doit contenir que des nombres.</div>
+                </div>
+              </div>  
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="full-name-inputs">
+              <div class="col-sm-6"> 
+                <label for="montTva" class="label">Mont Tva</label> 
+                <input type="number" step="50" nbInput fullWidth class="form-control" #montTva="ngModel" [(ngModel)]="bonsort.montTva" name="montTva" id="montTva" pattern="^(0|[1-9][0-9]*)$" min="0" required/>
+                <div style="font-size: 12px;" [hidden]="montTva.valid || montTva.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!montTva.hasError('min')">mont Tva doit étre positive.</div>
+                  <div [hidden]="!montTva.hasError('required')">mont Tva est obligatoire.</div>
+                  <div [hidden]="!montTva.hasError('pattern')">Le mont Tva ne doit contenir que des nombres.</div>
+                </div>
+              </div>
+              <div class="col-sm-6">   
+                <label for="totTtc" class="label">Tot Ttc</label> 
+                <input type="number" step="100" nbInput fullWidth class="form-control" #totTtc="ngModel" [(ngModel)]="bonsort.totTtc" name="totTtc" id="totTtc" pattern="^(0|[1-9][0-9]*)$" min="0" required />
+                <div style="font-size: 12px;" [hidden]="totTtc.valid || totTtc.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!totTtc.hasError('min')">tot Ttc doit étre positive.</div>
+                  <div [hidden]="!totTtc.hasError('required')">tot Ttc est obligatoire.</div>
+                  <div [hidden]="!totTtc.hasError('pattern')">Le tot Ttc ne doit contenir que des nombres.</div>
+                </div>
+              </div>  
+            </div> 
+          </div> 
+
+          <div class="row">
+            <div class="full-name-inputs">
+              <div class="col-sm-6">        
+                <label for="observ" class="label">Observ</label> 
+                <input type="text" nbInput fullWidth class="form-control" [(ngModel)]="bonsort.observ" #observ="ngModel" name="centre" id="observ" pattern="^[a-zA-Z0-9\s]+$" required minlength="5" maxlength="48" />  
+                <div style="font-size: 12px;" [hidden]="observ.valid || observ.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!observ.hasError('minlength')">observ doit étre au moin 5 lettres longue.</div>
+                  <div [hidden]="!observ.hasError('maxlength')">observ ne doit pas dépassé les 48 lettres longue.</div>
+                  <div [hidden]="!observ.hasError('required')">observ est obligatoire.</div>
+                  <div [hidden]="!observ.hasError('pattern')">Le observ ne doit contenir que des lettres majuscule et des nombres.</div>
+                </div>
+              </div> 
+              <div class="col-sm-6">     
+                <label for="centre" class="label">Centre</label> 
+                <input type="text" nbInput fullWidth class="form-control" #centre="ngModel" [(ngModel)]="bonsort.centre" name="centre" id="centre" pattern="^[a-zA-Z0-9\s]+$" required minlength="5" maxlength="48" />
+                <div style="font-size: 12px;" [hidden]="centre.valid || centre.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!centre.hasError('minlength')">centre doit étre au moin 5 lettres longue.</div>
+                  <div [hidden]="!centre.hasError('maxlength')">centre ne doit pas dépassé les 48 lettres longue.</div>
+                  <div [hidden]="!centre.hasError('required')">centre est obligatoire.</div>
+                  <div [hidden]="!centre.hasError('pattern')">Le centre ne doit contenir que des lettres majuscule et des nombres.</div>
+                </div>
+              </div>  
+            </div>
+          </div>
+          <div class="row">
+            <div class="example-items-rows">
+              <div class="full-name-inputs "> 
+                <div class="col-sm-6">
+                  <label for="vehicule" class="label">Vehicule</label> 
+                  <input type="text" nbInput fullWidth class="form-control" #vehicule="ngModel" [(ngModel)]="bonsort.vehicule" name="vehicule" id="vehicule" pattern="^[a-zA-Z0-9\s]+$" required minlength="5" maxlength="49" />
+                  <div style="font-size: 12px;" [hidden]="vehicule.valid || vehicule.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!vehicule.hasError('minlength')">Vehicule doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!vehicule.hasError('maxlength')">Vehicule ne doit pas dépassé les 49 lettres longue.</div>
+                    <div [hidden]="!vehicule.hasError('required')">Vehicule est obligatoire.</div>
+                    <div [hidden]="!vehicule.hasError('pattern')">Le Vehicule ne doit contenir que des lettres majuscule et des nombres.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+  
+
+      <nb-accordion-item>
+        <nb-accordion-item-header>
+          <h6>XBASES & XTVAS</h6>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+            <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase1" class="label">X Base1</label> 
+                  <input type="number" step="10" nbInput fullWidth fieldSize="small" #xbase1="ngModel" class="form-control" [(ngModel)]="bonsort.xbase1" id="xbase1" name="xbase1" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase1.valid || xbase1.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase1.hasError('min')">X base1 doit étre positive.</div>
+                    <div [hidden]="!xbase1.hasError('required')">X base1 est obligatoire.</div>
+                    <div [hidden]="!xbase1.hasError('pattern')">X base1 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva1" class="command">X Tva1</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva1="ngModel" [(ngModel)]="bonsort.xtva1" id="xtva1" name="xtva1" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xtva1.valid || xtva1.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva1.hasError('min')">X tva1 doit étre positive.</div>
+                    <div [hidden]="!xtva1.hasError('required')">X tva1 est obligatoire.</div>
+                    <div [hidden]="!xtva1.hasError('pattern')">X tva1 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase2" class="command">X Base2</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase2="ngModel" [(ngModel)]="bonsort.xbase2" id="xbase2" name="xbase2" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase2.valid || xbase2.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase2.hasError('min')">X base2 doit étre positive.</div>
+                    <div [hidden]="!xbase2.hasError('required')">X base2 est obligatoire.</div>
+                    <div [hidden]="!xbase2.hasError('pattern')">X base2 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva2" class="command">X Tva2</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva2="ngModel" [(ngModel)]="bonsort.xtva2" id="xtva2" name="xtva2" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xtva2.valid || xtva2.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva2.hasError('min')">X tva2 doit étre positive.</div>
+                    <div [hidden]="!xtva2.hasError('required')">X tva2 est obligatoire.</div>
+                    <div [hidden]="!xtva2.hasError('pattern')">X tva2 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>    
+              <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase3" class="command">X Base3</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase3="ngModel" [(ngModel)]="bonsort.xbase3" id="xbase3" name="xbase3" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase3.valid || xbase3.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase3.hasError('min')">X base3 doit étre positive.</div>
+                    <div [hidden]="!xbase3.hasError('required')">X base3 est obligatoire.</div>
+                    <div [hidden]="!xbase3.hasError('pattern')">X base3 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="xtva3" class="command">X Tva3</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva3="ngModel" [(ngModel)]="bonsort.xtva3" id="xtva3" name="xtva3" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xtva3.valid || xtva3.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva3.hasError('min')">X tva3 doit étre positive.</div>
+                    <div [hidden]="!xtva3.hasError('required')">X tva3 est obligatoire.</div>
+                    <div [hidden]="!xtva3.hasError('pattern')">X tva3 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase4" class="command">X Base4</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase4="ngModel" [(ngModel)]="bonsort.xbase4" id="xbase4" name="xbase4" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase4.valid || xbase4.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase4.hasError('min')">X base4 doit étre positive.</div>
+                    <div [hidden]="!xbase4.hasError('required')">X base4 est obligatoire.</div>
+                    <div [hidden]="!xbase4.hasError('pattern')">X base4 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="xtva4" class="command">X Tva4</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva4="ngModel" [(ngModel)]="bonsort.xtva4" id="xtva4" name="xtva4" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xtva4.valid || xtva4.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva4.hasError('min')">X tva4 doit étre positive.</div>
+                    <div [hidden]="!xtva4.hasError('required')">X tva4 est obligatoire.</div>
+                    <div [hidden]="!xtva4.hasError('pattern')">X tva4 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="full-name-inputs">
+                <div class="col-sm-6">
+                  <label for="xbase5" class="command">X Base5</label> 
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase5="ngModel" [(ngModel)]="bonsort.xbase5" id="xbase5" name="xbase5" pattern="^(0|[1-9][0-9]*)$" required min="0" />
+                  <div style="font-size: 12px;" [hidden]="xbase5.valid || xbase5.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase5.hasError('min')">X base5 doit étre positive.</div>
+                    <div [hidden]="!xbase5.hasError('required')">X base5 est obligatoire.</div>
+                    <div [hidden]="!xbase5.hasError('pattern')">X base5 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>  
+              </div> 
+
+
+<!--  PROGRESSIVE  bar  -->
+
+          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+          <p class="p-m-0"> 
+            <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+          </p>
+          </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+        <div class="col-sm-6">
+          <button [disabled]=!bonSortForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+            Modifier le bon sortie</button>
+          <button nbButton (click)="bonSortForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+            Annuler</button> 
+        </div>
+      </form>
+    </div>

@@ -1,0 +1,650 @@
+<div *ngIf="formEnable; else formDisable">
+  not allow.
+</div>
+
+<ng-template #formDisable>
+  <form (ngSubmit) = "onSubmitUtilisateur()" #utilisateurForm="ngForm">
+    <h2>Profil de l'utilisateur</h2>
+    <div class="container rounded bg-white mt-5 mb-5">
+      <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+              <img class="rounded-circle mt-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQF2psCzfbB611rnUhxgMi-lc2oB78ykqDGYb4v83xQ1pAbhPiB&usqp=CAU">
+              <span class="font-weight-bold">
+                <span *ngIf="utilisateur.firstname!=null || utilisateur.lastname!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.firstname}}&nbsp;{{utilisateur.lastname}} </b></span>  
+                <span *ngIf="utilisateur.firstname==null && utilisateur.lastname==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span> 
+              </span>
+              <span class="text-black-50">                  
+                <span *ngIf="utilisateur.email!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.email}}</b></span>
+                <span *ngIf="utilisateur.email==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span> 
+              </span>
+              <span class="text-black-50">    
+                <label class="label">Type Contrat:&nbsp;</label>
+                <span *ngIf="utilisateur.typeContrat!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.typeContrat}}</b></span>  
+                <span *ngIf="utilisateur.typeContrat==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>                                     
+                &nbsp;/&nbsp;
+                <label class="label">Post V:&nbsp;</label> 
+                <span *ngIf="utilisateur.postV!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.postV}}</b></span>  
+                <span *ngIf="utilisateur.postV==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>                                       
+              </span>
+              <span class="text-black-50"> 
+                <label class="label">Date Contrat:&nbsp;</label>                 
+                <span *ngIf="testConger!=null" class="image-text"><b class="p-mb-3 p-text-light">{{testConger}}</b></span>  
+                <span *ngIf="testConger==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>  
+              </span>
+              <span class="text-black-50">        
+                <label class="label">Role:&nbsp;</label>
+                <span *ngIf="utilisateur.roles==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label>Aucune Role</label></span></span>
+                <div *ngIf="utilisateur.roles!=null">
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_CLIENT'">Client</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_USER'">utilisateurisateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_LIVREUR'">Livreur</span>
+                </div>
+                &nbsp;/&nbsp;
+                
+                <label class="label">Authorisation:&nbsp;</label>
+                  <span *ngIf="utilisateur.authorisation=='Allow'" class="image-text"><b class="p-mb-3 p-text-light" style="color: green;">Accorder</b></span>       
+                  <span *ngIf="utilisateur.authorisation=='Block'" class="image-text"><b class="p-mb-3 p-text-light" style="color: darkred;">Défendu</b></span>                                
+              </span>
+            </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Paramètre de Profil</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                      <label class="label">Prenom</label> 
+                      <input type="text" nbInput fullWidth placeholder="firstname" id="firstname" name="firstname" required #firstname="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" [(ngModel)]="utilisateur.firstname">
+                      <div style="font-size: 12px;" [hidden]="firstname.valid || firstname.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!firstname.hasError('minlength')">Prenom doit étre au moin 3 lettres longue.</div>
+                        <div [hidden]="!firstname.hasError('maxlength')">Prenom ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!firstname.hasError('required')">Prenom est obligatoire.</div>
+                        <div [hidden]="!firstname.hasError('pattern')">Prenom ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="label">Nom</label>
+                      <input type="text" nbInput fullWidth placeholder="lastname" id="lastname" name="lastname" required #lastname="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" [(ngModel)]="utilisateur.lastname">
+                      <div style="font-size: 12px;" [hidden]="lastname.valid || lastname.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!lastname.hasError('minlength')">Prenom doit étre au moin 3 lettres longue.</div>
+                        <div [hidden]="!lastname.hasError('maxlength')">Prenom ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!lastname.hasError('required')">Prenom est obligatoire.</div>
+                        <div [hidden]="!lastname.hasError('pattern')">Prenom ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+                    <label class="label">Nom d'utilisateur</label> 
+                    <input type="text" nbInput fullWidth placeholder="username" id="username" name="username" required #username="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="5" [(ngModel)]="utilisateur.username">
+                    <div style="font-size: 12px;" [hidden]="username.valid || username.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!username.hasError('minlength')">username doit étre au moin 5 lettres longue.</div>
+                      <div [hidden]="!username.hasError('maxlength')">username ne doit pas dépassé les 50 lettres longue.</div>
+                      <div [hidden]="!username.hasError('required')">username est obligatoire.</div>
+                      <div [hidden]="!username.hasError('pattern')">username ne doit contenir que des lettres et des nombres.</div>
+                      <div [hidden]="!username.hasError('userTaken')">username déjà pris.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div *ngIf="!pass2">                                                                                                     
+                      <label class="label">Password</label>&nbsp;<img src="assets/images/toulsImages/Eye.png" width="20" style="vertical-align: middle" nbPopover="Afficher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+                      <input type="password" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
+                      <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">                
+                        <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
+                        <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
+                        <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div *ngIf="pass2">
+                      <label class="label">Password</label>&nbsp;<img src="assets/images/toulsImages/noEye.png" width="20" style="vertical-align: middle" nbPopover="Cacher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+                      <input type="text" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
+                      <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">                
+                        <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
+                        <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
+                        <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <label class="label">Cin</label>
+                  <input type="number" nbInput fullWidth placeholder="cin" id="cin" name="cin" required #cin="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.cin">
+                  <div style="font-size: 12px;" [hidden]="cin.valid || cin.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!cin.hasError('min')">cin doit étre positive.</div>
+                    <div [hidden]="!cin.hasError('max')">cin ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!cin.hasError('required')">cin est obligatoire.</div>
+                    <div [hidden]="!cin.hasError('pattern')">cin ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="label">Cps</label>              
+                  <input type="number" nbInput fullWidth placeholder="cps" id="cps" name="cps" required #cps="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.cps">
+                  <div style="font-size: 12px;" [hidden]="cps.valid || cps.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!cps.hasError('min')">cps doit étre positive.</div>
+                    <div [hidden]="!cps.hasError('max')">cps ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!cps.hasError('required')">cps est obligatoire.</div>
+                    <div [hidden]="!cps.hasError('pattern')">cps ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <label class="label">Telephone</label> 
+                  <input type="number" nbInput fullWidth placeholder="telephone" id="telephone" name="telephone" required #telephone="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.telephone">
+                  <div style="font-size: 12px;" [hidden]="telephone.valid || telephone.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!telephone.hasError('min')">Telephone doit étre positive.</div>
+                    <div [hidden]="!telephone.hasError('max')">Telephone ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!telephone.hasError('required')">Telephone est obligatoire.</div>
+                    <div [hidden]="!telephone.hasError('pattern')">Telephone ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="label">Faxs 1</label>  
+                  <input type="text" nbInput fullWidth fieldSize="small" placeholder="FAXS" id="FAXS" name="FAXS" #faxs="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.faxs">
+                  <div style="font-size: 12px;" [hidden]="faxs.valid || faxs.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!faxs.hasError('minlength')">Faxs doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!faxs.hasError('maxlength')">Faxs ne doit pas dépassé les 250 lettres longue.</div>
+                    <div [hidden]="!faxs.hasError('pattern')">Faxs ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+              </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12"> 
+                      <label class="label">Address</label>                     
+                      <textarea rows="5" nbInput fullWidth shape="round" placeholder="address" id="address" name="address" required #address="ngModel" maxlength="250" minlength="10" [(ngModel)]="utilisateur.address"></textarea>
+                      <div style="font-size: 12px;" [hidden]="address.valid || address.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!address.hasError('minlength')">Address doit étre au moin 10 lettres longue.</div>
+                        <div [hidden]="!address.hasError('maxlength')">Address ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!address.hasError('required')">Address est obligatoire.</div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label class="label">Email</label> 
+                      <input type="text" nbInput fullWidth placeholder="email" id="email" name="email" required #email="ngModel" [(ngModel)]="utilisateur.email" disabled>
+                    </div>
+                    <div class="col-md-12">
+                      <label class="label">Date de Naissance</label>              
+                      <input nbInput fullWidth [nbDatepicker]="dateTimePicker1" placeholder="date_de_naissance" id="date_de_naissance" name="date_de_naissance" required #dateDeNaissance="ngModel" [(ngModel)]="utilisateur.dateDeNaissance" >
+                      <nb-datepicker #dateTimePicker1></nb-datepicker>
+                    </div>
+                </div>
+                <div *ngIf="selectedRole!=('ROLE_USER' && 'ROLE_CLIENT' && 'ROLE_ACHETEUR')" class="row mt-2">
+                  <div class="col-md-6">
+                    <label class="label">Cpl</label> 
+                    <input type="text" nbInput fullWidth fieldSize="small" placeholder="CPL" id="CPL" name="CPL" #cpl="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.cpl">
+                    <div style="font-size: 12px;" [hidden]="cpl.valid || cpl.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!cpl.hasError('minlength')">Cpl doit étre au moin 5 lettres longue.</div>
+                      <div [hidden]="!cpl.hasError('maxlength')">Cpl ne doit pas dépassé les 250 lettres longue.</div>
+                      <div [hidden]="!cpl.hasError('pattern')">Cpl ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="label">Address Siege</label> 
+                    <input type="text" nbInput fullWidth fieldSize="small" placeholder="ADR_SIEGE" id="ADR_SIEGE" name="ADR_SIEGE" #adrSiege="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.adrSiege">
+                    <div style="font-size: 12px;" [hidden]="adrSiege.valid || adrSiege.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!adrSiege.hasError('minlength')">Address Siege doit étre au moin 5 lettres longue.</div>
+                      <div [hidden]="!adrSiege.hasError('maxlength')">Address Siege ne doit pas dépassé les 250 lettres longue.</div>
+                      <div [hidden]="!adrSiege.hasError('pattern')">Address Siege ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+              </div>
+              <div *ngIf="selectedRole!=('ROLE_USER' && 'ROLE_CLIENT' && 'ROLE_ACHETEUR')" class="row mt-2">
+                <div class="col-md-6">
+                  <label class="label">Ruel</label> 
+                  <input type="text" nbInput fullWidth fieldSize="small" placeholder="RUEL" id="RUEL" name="RUEL" #ruel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.ruel">
+                  <div style="font-size: 12px;" [hidden]="ruel.valid || ruel.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!ruel.hasError('minlength')">Ruel doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!ruel.hasError('maxlength')">Ruel ne doit pas dépassé les 250 lettres longue.</div>
+                    <div [hidden]="!ruel.hasError('pattern')">Ruel ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="label">N~ Ruel</label> 
+                  <input type="text" nbInput fullWidth fieldSize="small" placeholder="NUM_RUEL" id="NUM_RUEL" name="NUM_RUEL" #numRuel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.numRuel">
+                  <div style="font-size: 12px;" [hidden]="numRuel.valid || numRuel.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!numRuel.hasError('minlength')">Num Ruel doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!numRuel.hasError('maxlength')">Num Ruel ne doit pas dépassé les 250 lettres longue.</div>
+                    <div [hidden]="!numRuel.hasError('pattern')">Num Ruel ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+            </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                      <label class="label">Regionl</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="REGIONL" id="REGIONL" name="REGIONL" #regionl="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.regionl">
+                      <div style="font-size: 12px;" [hidden]="regionl.valid || regionl.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!regionl.hasError('minlength')">Regionl doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!regionl.hasError('maxlength')">Regionl ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!regionl.hasError('pattern')">Regionl ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="label">Villel</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="VILLEL" id="VILLEL" name="VILLEL" #villel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.villel">
+                      <div style="font-size: 12px;" [hidden]="villel.valid || villel.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!villel.hasError('minlength')">Villel doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!villel.hasError('maxlength')">Villel ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!villel.hasError('pattern')">Villel ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                </div>
+                <div class="mt-5 text-center">
+                  <button [disabled]=!utilisateurForm.form.valid type="submit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                    Ajouter Utilisateur</button>
+                  <button nbButton (click)="utilisateurForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+                    Annuler</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <br>
+                <div class="col-md-12">
+                  <label class="label">address Livraison</label> 
+                  <input type="text" nbInput fullWidth fieldSize="small" placeholder="ADR_LIV" id="ADR_LIV" name="ADR_LIV" #adrLiv="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.adrLiv">
+                  <div style="font-size: 12px;" [hidden]="adrLiv.valid || adrLiv.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!adrLiv.hasError('minlength')">address Liv doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!adrLiv.hasError('maxlength')">address ne doit pas dépassé les 250 lettres longue.</div>
+                    <div [hidden]="!adrLiv.hasError('pattern')">address ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div> <br>
+                <div class="col-md-12">
+                  <label class="label">Bank 1</label> 
+                  <input type="text" nbInput fullWidth fieldSize="small" placeholder="BANK1" id="BANK1" name="BANK1" #bank1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.bank1">
+                  <div style="font-size: 12px;" [hidden]="bank1.valid || bank1.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!bank1.hasError('minlength')">Bank1 doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!bank1.hasError('maxlength')">Bank1 ne doit pas dépassé les 250 lettres longue.</div>
+                    <div [hidden]="!bank1.hasError('pattern')">Bank1 ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div> <br>
+                <div class="col-md-12">
+                  <label class="label">Agence 1</label>
+                  <input type="text" nbInput fullWidth fieldSize="small" placeholder="AGENCE1" id="AGENCE1" name="AGENCE1" #agence1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.agence1">
+                  <div style="font-size: 12px;" [hidden]="agence1.valid || agence1.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!agence1.hasError('minlength')">Agence1 doit étre au moin 5 lettres longue.</div>
+                    <div [hidden]="!agence1.hasError('maxlength')">Agence1 ne doit pas dépassé les 250 lettres longue.</div>
+                    <div [hidden]="!agence1.hasError('pattern')">Agence1 ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!--  PROGRESSIVE  bar  -->
+
+    <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false">
+    <p class="p-m-0"> 
+      <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+    </p>
+    </p-dialog>
+
+    <!--  PROGRESSIVE  bar  -->
+
+
+<!--
+        <div class="col-lg-4">
+          <nb-card>
+            <nb-card-header>Information primaire</nb-card-header>
+            <nb-card-body>
+              <div>
+                <li class="primaire-center">                        
+                  <span *ngIf="utilisateur.firstname!=null || utilisateur.lastname!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.firstname}}&nbsp;{{utilisateur.lastname}} </b></span>  
+                  <span *ngIf="utilisateur.firstname==null && utilisateur.lastname==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>                    
+                </li> 
+                <li class="primaire-center">
+                  <span *ngIf="utilisateur.email!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.email}}</b></span>
+                  <span *ngIf="utilisateur.email==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>                  
+                </li>
+                <li class="primaire-center">  
+                  <span *ngIf="utilisateur.telephone!=null" class="image-text"><b class="p-mb-3 p-text-light">Telephone :</b> {{utilisateur.telephone}}</span>
+                  <span *ngIf="utilisateur.telephone==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>
+                </li>
+                <li class="primaire-center">
+                  <b class="p-mb-3 p-text-light">Role : </b>
+                  <b *ngIf="utilisateur.roles[0].name==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label>Aucune Role</label></span></b>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_CLIENT'">Client</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_USER'">utilisateurisateur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                  <span style="color: rgb(114, 212, 16);" *ngIf="utilisateur.roles!==null && utilisateur.roles[0].name=='ROLE_LIVREUR'">Livreur</span>
+                </li>
+              </div>
+              <div class="row">
+                <div class="col-sm-6"> 
+                  <label class="label">Type Contrat</label>
+                    <li>
+                      <span *ngIf="utilisateur.typeContrat!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.typeContrat}}</b></span>  
+                      <span *ngIf="utilisateur.typeContrat==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>                                     
+                    </li>
+                </div>  
+                <div class="col-sm-6"> 
+                  <label class="label">Date Contrat</label> 
+                  <li>
+                    <span *ngIf="utilisateur.dateContrat!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.dateContrat}}</b></span>  
+                    <span *ngIf="utilisateur.dateContrat==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>                                     
+                  </li>                
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <label class="label">Post V</label> 
+                    <li>
+                      <span *ngIf="utilisateur.postV!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.postV}}</b></span>  
+                      <span *ngIf="utilisateur.postV==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>                                      
+                    </li> 
+                </div>
+                <div class="col-sm-6">
+                  <label class="label">Authorisation</label>
+                  <li>
+                    <span *ngIf="utilisateur.authorisation=='Allow'" class="image-text"><b class="p-mb-3 p-text-light" style="color: green;">Accorder</b></span>       
+                    <span *ngIf="utilisateur.authorisation=='Block'" class="image-text"><b class="p-mb-3 p-text-light" style="color: darkred;">Défendu</b></span>                                
+                  </li>
+                </div>
+              </div>
+            </nb-card-body>
+          </nb-card>
+        </div>
+        <div class="col-lg-8">
+            <nb-card>
+              <nb-card-header>Information secondaire</nb-card-header>
+              <nb-card-body>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Nom d'utilisateur</label>  
+                      <input type="text" nbInput fullWidth placeholder="username" id="username" name="username" required #username="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="5" [(ngModel)]="utilisateur.username">
+                      <div style="font-size: 12px;" [hidden]="username.valid || username.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!username.hasError('minlength')">username doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!username.hasError('maxlength')">username ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!username.hasError('required')">username est obligatoire.</div>
+                        <div [hidden]="!username.hasError('pattern')">username ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                      <div class="col-sm-6">
+                      <label class="label">Prenom</label> 
+                      <input type="text" nbInput fullWidth placeholder="firstname" id="firstname" name="firstname" required #firstname="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" [(ngModel)]="utilisateur.firstname">
+                      <div style="font-size: 12px;" [hidden]="firstname.valid || firstname.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!firstname.hasError('minlength')">Nom doit étre au moin 3 lettres longue.</div>
+                        <div [hidden]="!firstname.hasError('maxlength')">Nom ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!firstname.hasError('required')">Nom est obligatoire.</div>
+                        <div [hidden]="!firstname.hasError('pattern')">Nom ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Nom</label>
+                      <input type="text" nbInput fullWidth placeholder="lastname" id="lastname" name="lastname" required #lastname="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" [(ngModel)]="utilisateur.lastname">
+                      <div style="font-size: 12px;" [hidden]="lastname.valid || lastname.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!lastname.hasError('minlength')">Prenom doit étre au moin 3 lettres longue.</div>
+                        <div [hidden]="!lastname.hasError('maxlength')">Prenom ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!lastname.hasError('required')">Prenom est obligatoire.</div>
+                        <div [hidden]="!lastname.hasError('pattern')">Prenom ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Email</label> 
+                      <input type="text" nbInput fullWidth placeholder="email" id="email" name="email" required #email="ngModel" [(ngModel)]="utilisateur.email" disabled>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Date de Naissance</label>              
+                      <input nbInput fullWidth [nbDatepicker]="dateTimePicker1" placeholder="date_de_naissance" id="date_de_naissance" name="date_de_naissance" required #dateDeNaissance="ngModel" [(ngModel)]="utilisateur.dateDeNaissance" >
+                      <nb-datepicker #dateTimePicker1></nb-datepicker>
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label class="label">Cin</label>
+                      <input type="number" nbInput fullWidth placeholder="cin" id="cin" name="cin" required #cin="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.cin">
+                      <div style="font-size: 12px;" [hidden]="cin.valid || cin.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!cin.hasError('min')">cin doit étre positive.</div>
+                        <div [hidden]="!cin.hasError('max')">cin ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!cin.hasError('required')">cin est obligatoire.</div>
+                        <div [hidden]="!cin.hasError('pattern')">cin ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <label class="label">Address</label>
+                      <textarea rows="5" nbInput fullWidth shape="round" placeholder="address" id="address" name="address" required #address="ngModel" maxlength="250" minlength="10" [(ngModel)]="utilisateur.address"></textarea>
+                      <div style="font-size: 12px;" [hidden]="address.valid || address.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!address.hasError('minlength')">Address doit étre au moin 10 lettres longue.</div>
+                        <div [hidden]="!address.hasError('maxlength')">Address ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!address.hasError('required')">Address est obligatoire.</div>
+                      </div>
+                      
+                  <div class="row">
+                    <div class="col-sm-6">  
+                      <label class="label">Cps</label>              
+                      <input type="number" nbInput fullWidth placeholder="cps" id="cps" name="cps" required #cps="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.cps">
+                      <div style="font-size: 12px;" [hidden]="cps.valid || cps.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!cps.hasError('min')">cps doit étre positive.</div>
+                        <div [hidden]="!cps.hasError('max')">cps ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!cps.hasError('required')">cps est obligatoire.</div>
+                        <div [hidden]="!cps.hasError('pattern')">cps ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Telephone</label> 
+                      <input type="number" nbInput fullWidth placeholder="telephone" id="telephone" name="telephone" required #telephone="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="99999999" min="10000000" [(ngModel)]="utilisateur.telephone">
+                      <div style="font-size: 12px;" [hidden]="telephone.valid || telephone.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!telephone.hasError('min')">Telephone doit étre positive.</div>
+                        <div [hidden]="!telephone.hasError('max')">Telephone ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!telephone.hasError('required')">Telephone est obligatoire.</div>
+                        <div [hidden]="!telephone.hasError('pattern')">Telephone ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6" *ngIf="!pass2">                                                                                                     
+                      <label class="label">Password</label>&nbsp;<img src="assets/images/toulsImages/Eye.png" width="20" style="vertical-align: middle" nbPopover="Afficher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+                      <input type="password" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
+                      <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">                
+                        <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
+                        <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
+                        <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6" *ngIf="pass2">
+                      <label class="label">Password</label>&nbsp;<img src="assets/images/toulsImages/noEye.png" width="20" style="vertical-align: middle" nbPopover="Cacher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+                      <input type="text" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
+                      <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">                
+                        <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
+                        <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
+                        <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
+                        <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="label">Date Rec</label>  
+
+                    </div>
+                  </div>
+                  <div *ngIf="selectedRole!=('ROLE_USER' && 'ROLE_CLIENT' && 'ROLE_ACHETEUR')" class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Cpl</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="CPL" id="CPL" name="CPL" #cpl="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.cpl">
+                      <div style="font-size: 12px;" [hidden]="cpl.valid || cpl.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!cpl.hasError('minlength')">Cpl doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!cpl.hasError('maxlength')">Cpl ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!cpl.hasError('pattern')">Cpl ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">Address Siege</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="ADR_SIEGE" id="ADR_SIEGE" name="ADR_SIEGE" #adrSiege="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.adrSiege">
+                        <div style="font-size: 12px;" [hidden]="adrSiege.valid || adrSiege.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!adrSiege.hasError('minlength')">Address Siege doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!adrSiege.hasError('maxlength')">Address Siege ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!adrSiege.hasError('pattern')">Address Siege ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div *ngIf="selectedRole!=('ROLE_USER' && 'ROLE_CLIENT' && 'ROLE_ACHETEUR')" class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Ruel</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="RUEL" id="RUEL" name="RUEL" #ruel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.ruel">
+                      <div style="font-size: 12px;" [hidden]="ruel.valid || ruel.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!ruel.hasError('minlength')">Ruel doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!ruel.hasError('maxlength')">Ruel ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!ruel.hasError('pattern')">Ruel ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">N~ Ruel</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="NUM_RUEL" id="NUM_RUEL" name="NUM_RUEL" #numRuel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.numRuel">
+                        <div style="font-size: 12px;" [hidden]="numRuel.valid || numRuel.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!numRuel.hasError('minlength')">Num Ruel doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!numRuel.hasError('maxlength')">Num Ruel ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!numRuel.hasError('pattern')">Num Ruel ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Faxs 1</label>  
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="FAXS" id="FAXS" name="FAXS" #faxs="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.faxs">
+                      <div style="font-size: 12px;" [hidden]="faxs.valid || faxs.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!faxs.hasError('minlength')">Faxs doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!faxs.hasError('maxlength')">Faxs ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!faxs.hasError('pattern')">Faxs ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">Villel</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="VILLEL" id="VILLEL" name="VILLEL" #villel="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.villel">
+                        <div style="font-size: 12px;" [hidden]="villel.valid || villel.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!villel.hasError('minlength')">Villel doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!villel.hasError('maxlength')">Villel ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!villel.hasError('pattern')">Villel ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Regionl</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="REGIONL" id="REGIONL" name="REGIONL" #regionl="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.regionl">
+                      <div style="font-size: 12px;" [hidden]="regionl.valid || regionl.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!regionl.hasError('minlength')">Regionl doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!regionl.hasError('maxlength')">Regionl ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!regionl.hasError('pattern')">Regionl ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                      <div class="col-sm-6">
+                        <label class="label">Tell</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="TELL" id="TELL" name="TELL" #tell="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.tell">
+                        <div style="font-size: 12px;" [hidden]="tell.valid || tell.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!tell.hasError('minlength')">Tell doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!tell.hasError('maxlength')">Tell ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!tell.hasError('pattern')">Tell ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                      <label class="label">Faxl</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="FAXL" id="FAXL" name="FAXL" #faxl="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.faxl">
+                      <div style="font-size: 12px;" [hidden]="faxl.valid || faxl.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!faxl.hasError('minlength')">faxl doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!faxl.hasError('maxlength')">faxl ne doit pas dépassé les 30 lettres longue.</div>
+                        <div [hidden]="!faxl.hasError('pattern')">faxl ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+                        <label class="label">address Livraison</label> 
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="ADR_LIV" id="ADR_LIV" name="ADR_LIV" #adrLiv="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.adrLiv">
+                        <div style="font-size: 12px;" [hidden]="adrLiv.valid || adrLiv.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!adrLiv.hasError('minlength')">address Liv doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!adrLiv.hasError('maxlength')">address ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!adrLiv.hasError('pattern')">address ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Region</label>  
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="REGION" id="REGION" name="REGION" #region="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.region">
+                      <div style="font-size: 12px;" [hidden]="region.valid || region.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!region.hasError('minlength')">Region doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!region.hasError('maxlength')">Region ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!region.hasError('pattern')">Region ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6">
+    
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="label">Bank 1</label> 
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="BANK1" id="BANK1" name="BANK1" #bank1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.bank1">
+                      <div style="font-size: 12px;" [hidden]="bank1.valid || bank1.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!bank1.hasError('minlength')">Bank1 doit étre au moin 5 lettres longue.</div>
+                        <div [hidden]="!bank1.hasError('maxlength')">Bank1 ne doit pas dépassé les 250 lettres longue.</div>
+                        <div [hidden]="!bank1.hasError('pattern')">Bank1 ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div> 
+                      <div class="col-sm-6"> 
+                        <label class="label">Agence 1</label>
+                        <input type="text" nbInput fullWidth fieldSize="small" placeholder="AGENCE1" id="AGENCE1" name="AGENCE1" #agence1="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="250" minlength="5" [(ngModel)]="utilisateur.agence1">
+                        <div style="font-size: 12px;" [hidden]="agence1.valid || agence1.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!agence1.hasError('minlength')">Agence1 doit étre au moin 5 lettres longue.</div>
+                          <div [hidden]="!agence1.hasError('maxlength')">Agence1 ne doit pas dépassé les 250 lettres longue.</div>
+                          <div [hidden]="!agence1.hasError('pattern')">Agence1 ne doit contenir que des lettres et des nombres.</div>
+                        </div>
+                      </div>
+                  </div>
+              </nb-card-body>
+            </nb-card>  
+            <div class="col-sm-6">
+              <button [disabled]=!utilisateurForm.form.valid type="submit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                Ajouter Utilisateur</button>
+              <button nbButton (click)="utilisateurForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+                Annuler</button> 
+            </div>    
+        </div>
+        -->
+    </div>
+  </form>
+</ng-template>

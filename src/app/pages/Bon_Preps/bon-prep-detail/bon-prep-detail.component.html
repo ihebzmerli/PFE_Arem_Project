@@ -1,0 +1,564 @@
+
+
+<!--table art Liv-->
+
+<nb-card>
+  <nb-card-body>
+        <div>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Bon de Sortie?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../../bon-prep-list']"/>
+          <h4>Details de Bon Preparation</h4>
+          <nb-card-header>
+                <div><b>Code Bon Preparation : </b>{{ bonprep.numBon }}</div>
+
+                <div><b>Date Bon Preparation : </b>{{ bonprep.datBon | date: 'MMM d, y, h:mm:ss a'}}</div>
+            </nb-card-header>
+        </div>
+        <p>table  des Articles appartient a la preparation</p>
+        <p-table #dt1 [value]="artpreps" dataKey="id"
+            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['codArt','qutLiv','remise','prixHt','tva','totHt','marge','cumulRet','prixAch','qutPrep','nonTrouve','datPrep','remExp','etage2',
+            'chrono','prep','prepara','avPrep','qutPoint','poste','centre','artprep_chariot.numChar','artprep_chariot.callChariot']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex">
+                    <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                    <span class="p-input-icon-left p-ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Article
+                        <div>
+                          <p-columnFilter type="text" field="codArt" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Quantité 
+                          <div>
+                            <p-columnFilter type="numeric" field="qutLiv" display="menu"></p-columnFilter>
+                          </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Remise 
+                        <div>
+                          <p-columnFilter type="numeric" field="remise" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>  
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        PrixHt
+                        <div>
+                          <p-columnFilter type="numeric" field="prixHt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Tva
+                        <div>
+                          <p-columnFilter type="numeric" field="tva" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Tot Ht
+                        <div>
+                          <p-columnFilter type="numeric" field="totHt" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>  
+                    
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Marge
+                        <div>
+                          <p-columnFilter type="numeric" field="marge" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Cumul Ret
+                        <div>
+                          <p-columnFilter type="numeric" field="cumulRet" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Prix Ach
+                        <div>
+                          <p-columnFilter type="numeric" field="prixAch" display="menu" currency="TND"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Quantité Prep
+                        <div>
+                          <p-columnFilter type="numeric" field="qutPrep" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        non Trouvé
+                        <div>
+
+                          <p-columnFilter field="nonTrouve" matchMode="equals" display="menu" class="p-ml-auto">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-dropdown [ngModel]="value" [options]="statusessNonTrouve" (onChange)="filter($event.value)" placeholder="Any">
+                                    <ng-template let-option pTemplate="item">
+                                        <span [class]="option.value">
+                                          <span *ngIf="option.label=='Pas mentionné'" class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);">Pas mentionné</span>
+                                          <span *ngIf="option.label=='nonTrouve'" class="p-mb-3 p-text-italic" style="color: rgb(214, 10, 10);">Article n'est pas trouver</span>
+                                          <span *ngIf="option.label!='nonTrouve' && option.label!='Pas mentionné'" class="p-mb-3 p-text-italic" style="color: rgb(74, 214, 10);">Article est trouver</span>
+                                        </span>
+                                    </ng-template>
+                                </p-dropdown>
+                            </ng-template>
+                          </p-columnFilter>
+
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        date Prep
+                        <div>
+                          <p-columnFilter type="date" field="centre" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Rem Exp
+                        <div>
+                          <p-columnFilter type="numeric" field="remExp" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Etage2
+                        <div>
+                          <p-columnFilter type="text" field="etage2" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Chrono
+                        <div>
+                          <p-columnFilter type="date" field="chrono" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Prep
+                        <div>
+                          
+                          <p-columnFilter field="prep" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">Choix Preparateur</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="agentsPrep" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
+
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Prepara
+                        <div>
+                          <p-columnFilter field="prepara" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">Choix preparateur dispatching BP</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="agentsPrepDispatching" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
+                          
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        AvPrep
+                        <div>
+                          <p-columnFilter type="text" field="avPrep" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Quantité Point
+                        <div>
+                          <p-columnFilter type="numeric" field="qutPoint" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        agent Pointage
+                        <div>
+                          
+                          <p-columnFilter field="poste" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">Choix responsable pointage</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="agentsPointage" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
+                          
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Centre
+                        <div>
+                          <p-columnFilter type="text" field="centre" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        N~chariot
+                        <div>
+
+                          <p-columnFilter field="artprep_chariot" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">Choix de chariot</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="listChariot" placeholder="Any" (onChange)="filter($event.value)" optionLabel="numChar">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                            <span class="p-ml-1"><b>{{option.numChar}}</b>&nbsp;:<b>{{option.etat_char}}</b></span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
+
+                        </div>
+                      </div>
+                    </th> 
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Dérniére pointage Chariot
+                        <div>
+                          <p-columnFilter type="date" field="artprep_chariot.callChariot" display="menu"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th> 
+                </tr>
+            </ng-template>
+
+
+            <ng-template pTemplate="body" let-artprep>
+                  <tr>
+                    <td>
+                      <label (click)="showModalDialog()">{{ artprep.codArt }}</label>:&nbsp;<img src="/assets/images/imgArticles/{{artprep.codArt}}/{{artprep.codArt}}.png" [alt]="artprep.codArt" height="70" width="70"/>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.qutLiv==null || artprep.qutLiv===0" (click)="showPositionDialogQutLiv('right')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                        <label (click)="showPositionDialogQutLiv('right')">{{ artprep.qutLiv }}</label>
+                        <p-dialog header="Definition Qut Liv" [(visible)]="displayPositionQutLiv" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                            [draggable]="false" [resizable]="false">
+                            <p>Quantité c'est la quantité d'Article preparer par L'Agent de Préparation</p>
+                                <ng-template pTemplate="footer">
+                                    <p-button icon="pi pi-check" (click)="displayPositionQutLiv=false" label="Annuler" styleClass="p-button-text"></p-button>
+                                </ng-template>
+                        </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.remise==null" (click)="showPositionDialogRemise('right')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.remise!==null" (click)="showPositionDialogRemise('right')">{{ artprep.remise | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Definition Remise" [(visible)]="displayPositionRemise" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>une remise est la déduction que fait un commerçant sur le prix facturé, en raison, par exemple, de ce que l'acheteur a payé au comptant, en raison encore de qu'il a fait un achat d'une valeur importante, soit encore parce que la marchandise était déclassée.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionRemise=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.prixHt==null" (click)="showPositionDialogPrixHt('bottom')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.prixHt!==null" (click)="showPositionDialogPrixHt('bottom')">{{ artprep.prixHt | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Definition Prix Ht" [(visible)]="displayPositionPrixHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le prix hors taxe (HT) est celui qui est facturé au client sans tenir compte des différentes taxes prélevées par l'État,Le HT se rencontre dans les cas d'auto-liquidation de la TVA ou d'opérations en duty free.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrixHt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.tva==null" (click)="showPositionDialogTva('bottom')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.tva!==null" (click)="showPositionDialogTva('bottom')">{{ artprep.tva }} %</label>
+                      <p-dialog header="Définition Tva" [(visible)]="displayPositionTva" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La TVA est une taxe qui vient s'ajouter au prix de tous les produits qui y sont assujettis, c'est-à-dire la quasi-totalité. ... Il permet ainsi aux entreprises de déduire des sommes à reverser à l'État le montant de la TVA qu'elles ont acquitté sur leurs achats. Au final, seul le consommateur final supporte la TVA.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionTva=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.totHt==null" (click)="showPositionDialogTotHt('bottom')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.totHt!==null" (click)="showPositionDialogTotHt('bottom')">{{ artprep.totHt | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Tot Ht" [(visible)]="displayPositionTotHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>HT signifie Hors Taxe. La mention HT permet d'indiquer qu'un prix ne comprend pas la Taxe sur la Valeur Ajoutée.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionTotHt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.marge==null" (click)="showPositionDialogMarge('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.marge!==null" (click)="showPositionDialogMarge('left')">{{ artprep.marge | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Marge" [(visible)]="displayPositionMarge" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La marge commerciale est la différence entre le prix de vente des marchandises et le coût d'achat de ces marchandises vendues.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionMarge=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.cumulRet==null" (click)="showPositionDialogCumulRet('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.cumulRet!==null" (click)="showPositionDialogCumulRet('left')">{{ artprep.cumulRet | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Cumul Ret" [(visible)]="displayPositionCumulRet" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Produit mis en vente.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionCumulRet=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.prixAch==null" (click)="showPositionDialogPrixAch('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.prixAch!==null" (click)="showPositionDialogPrixAch('left')" styleClass="p-button-warning">{{ artprep.prixAch | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Définition Prix Ach" [(visible)]="displayPositionPrixAch" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le prix d'achat correspond au prix auquel le fournisseur ou le producteur vend son produit,Sur une facture, cela correspond au prix brut unitaire. Ce prix est exprimé hors taxes. Le coût d'achat correspond au prix d'achat auquel on ajoute les frais d'achat.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrixAch=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.prixAch==null" (click)="showPositionDialogQutPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.prixAch!==null" (click)="showPositionDialogQutPrep('left')">{{ artprep.qutPrep }}</label>
+                      <p-dialog header="Définition Qut Prep" [(visible)]="displayPositionQutPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>quatité préparer sans prendre en considération la quantité demander au cas de l'insuffisance.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionQutPrep=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+
+                    </td>
+                    <td>
+                      <label *ngIf="!artprep.nonTrouve" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);">Pas mentionné</b></label>
+                      <label *ngIf="artprep.nonTrouve==true" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(214, 10, 10);" nbPopover="La quantité préparer est inferieur à la marge préparation d'Article" nbPopoverTrigger="hint" nbPopoverPlacement="left">Article n'est pas trouver</b></label>
+                      <label *ngIf="artprep.nonTrouve==false" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(74, 214, 10);" nbPopover="La quantité préparer est superieur à la marge de préparation d'Article" nbPopoverTrigger="hint" nbPopoverPlacement="left">Article est trouver</b></label>
+                      <p-dialog header="Définition Non Trouve" [(visible)]="displayPositionNonTrouve" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>si l'Article non trouver cette valeur va étre positive.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionNonTrouve=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.datPrep==null" (click)="showPositionDialogDatPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.datPrep!==null" (click)="showPositionDialogDatPrep('left')">{{ artprep.datPrep | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                      <p-dialog header="Définition Date Prep" [(visible)]="displayPositionDatPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La date de préparation d'Article par le préparateur a l'heure exacte.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionDatPrep=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.remExp==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.remExp!==null">{{ artprep.remExp }}</label>
+                    </td> 
+                    <td>
+                      <label *ngIf="artprep.etage2==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.etage2!==null">{{ artprep.etage2 }}</label>
+                    </td> 
+                    <td>
+                      <label *ngIf="artprep.chrono==null" (click)="showPositionDialogChrono('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.chrono!==null" (click)="showPositionDialogChrono('left')">{{ artprep.chrono | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                      <p-dialog header="Définition Chrono" [(visible)]="displayPositionChrono" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La temps prix pour préparer l'Article dans le stock de AREM.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionChrono=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>  
+                    <td>
+                      <label *ngIf="artprep.prep==null" (click)="showPositionDialogPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.prep!==null" (click)="showPositionDialogPrep('left')">{{ artprep.prep }}</label>
+                      <p-dialog header="Définition Prep" [(visible)]="displayPositionPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le nom complet de Responsable dispatching bon de préparation.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrep=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.prepara==null" (click)="showPositionDialogPrepara('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.prepara!==null" (click)="showPositionDialogPrepara('left')">{{ artprep.prepara }}</label>
+                      <p-dialog header="Définition Prepara" [(visible)]="displayPositionPrepara" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le nom complet de préparateur de chariot.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPrepara=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.avPrep==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.avPrep!==null">{{ artprep.avPrep }}</label>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.qutPoint==null" (click)="showPositionDialogQutPoint('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.qutPoint > artprep.marge" (click)="showPositionDialogQutPoint('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(61, 238, 16);" >{{ artprep.qutPoint }}</b></label>
+                      <label *ngIf="artprep.qutPoint < artprep.marge" (click)="showPositionDialogQutPoint('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(238, 23, 16);" >{{ artprep.qutPoint }}</b></label>
+                      <p-dialog header="Définition Qut Point" [(visible)]="displayPositionQutPoint" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La quatité pointer chez le responsable de pointage.</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionQutPoint=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.poste==null" (click)="showPositionDialogPoste('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.poste!==null" (click)="showPositionDialogPoste('left')">{{ artprep.poste }}</label>
+                      <p-dialog header="Définition Poste" [(visible)]="displayPositionPoste" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>La Poste de pointage .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionPoste=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.centre==null" (click)="showPositionDialogCentre('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.centre!==null" (click)="showPositionDialogCentre('left')">{{ artprep.centre }}</label>
+                      <p-dialog header="Définition Centre" [(visible)]="displayPositionCentre" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Le centre de Préparation de Article .</p>
+                          <ng-template pTemplate="footer">
+                              <p-button icon="pi pi-check" (click)="displayPositionCentre=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.artprep_chariot==null" (click)="showPositionDialogNumChar('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <span *ngIf="artprep.artprep_chariot!==null">
+                        <label (click)="showPositionDialogNumChar('left')">{{ artprep.artprep_chariot.numChar }}</label>
+                        <p-dialog header="Définition Num Char" [(visible)]="displayPositionNumChar" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>Le numéro de chariot qui a préparer l'Article .</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionNumChar=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </span>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.artprep_chariot==null" (click)="showPositionDialogCallChariot('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <span *ngIf="artprep.artprep_chariot!==null">
+                        <label (click)="showPositionDialogCallChariot('left')">{{ artprep.artprep_chariot.callChariot | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                        <p-dialog header="Définition Appele Chariot" [(visible)]="displayPositionCallChariot" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>La date de derniére appele de chariot .</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionCallChariot=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </span>
+                    </td>
+                    <td>
+                      <label *ngIf="artprep.artprep_chariot==null" (click)="showPositionDialogEtatChar('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <span *ngIf="artprep.artprep_chariot!==null">
+                        <label *ngIf="artprep.artprep_chariot.etat_char=='en_panne'" (click)="showPositionDialogEtatChar('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(248, 9, 9);" >EN PANNE</b></label>
+                        <label *ngIf="artprep.artprep_chariot.etat_char=='occuper'" (click)="showPositionDialogEtatChar('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(245, 165, 16);" >OCCUPER</b></label>
+                        <label *ngIf="artprep.artprep_chariot.etat_char=='en_attente'" (click)="showPositionDialogEtatChar('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(43, 245, 16);" >EN ATTANTE</b></label>
+                        <p-dialog header="Définition Etat Chariot" [(visible)]="displayPositionEtatChar" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>L état de chariot  .</p>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayPositionEtatChar=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </span>
+                    </td>
+                  </tr>
+            </ng-template>
+          
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7">No bonpreps found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+      </nb-card-body>
+</nb-card>

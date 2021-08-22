@@ -1,0 +1,21 @@
+<div class="accordions-container row offset-sm-2 col-sm-9">
+      <nb-card>
+        <nb-card-header>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des etat de livraison?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../../etat-liv-list']"/>
+          <p></p>
+          <h5>chronometre des evennement de l état de livraison</h5></nb-card-header>
+        <nb-card-body>   
+          <div class="row">
+            <div *ngFor="let chronometer of chronometers">
+                Time: <b [chronometer]="chronometer"></b>
+                <ion-button slot="start" (click)="run(chronometer, chronometer.status === 2 ? 1 : 2)">
+                    {{ chronometer.status === 2 ? 'Pause' : 'Start' }}
+                </ion-button>
+                <ion-button slot="end" (click)="run(chronometer, 4)">
+                    Restart
+                </ion-button>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+</div>

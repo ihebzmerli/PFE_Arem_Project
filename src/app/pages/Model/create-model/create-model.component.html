@@ -1,0 +1,62 @@
+<form [formGroup]="modelForm" (ngSubmit) = "onSubmit()">
+  <div class="offset-sm-2 col-sm-9">
+        <nb-card>
+          <nb-card-header>
+            <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des models ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../model-list']"/>
+            <p></p>
+             Ajouter Model
+          </nb-card-header>
+          <nb-card-body>
+              
+              <div class="form-row">
+                  <div class="form-group col">
+                    <label for="code" class="label">Code</label>
+                    <input type="text" nbInput fullWidth placeholder="code" class="form-control" formControlName="code" [ngClass]="{ 'is-invalid': submitted && f.code.errors }" />
+                    <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+                      <div *ngIf="f.code.errors.required">Code est obligatoire.</div>
+                      <div *ngIf="f.code.errors.minlength">Code doit étre au moin 3 lettres longue.</div>
+                      <div *ngIf="f.code.errors.maxlength">Code ne doit pas dépassé à 100 lettres longue.</div>
+                      <div *ngIf="f.code.errors.pattern">Code ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="title" class="label">Title</label>
+                    <input type="text" nbInput fullWidth placeholder="Title" class="form-control" formControlName="title" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                    <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                      <div *ngIf="f.title.errors.required">Title est obligatoire.</div>
+                      <div *ngIf="f.title.errors.minlength">Title doit étre au moin 3 lettres longue.</div>
+                      <div *ngIf="f.title.errors.maxlength">Title ne doit pas dépassé à 100 lettres longue.</div>
+                      <div *ngIf="f.title.errors.pattern">Title ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                </div>
+
+                  <div class="form-row">
+                    <div class="form-group col">
+                      <label for="marque" class="label">marque</label>
+                        <p-dropdown [style]="{'minWidth':'100%'}" [options]="MarqueList" [(ngModel)]="selectedMarque" optionLabel="title" [filter]="true" filterBy="title" [showClear]="true" placeholder="Choisir Marque" [ngModelOptions]="{standalone: true}">
+                          <ng-template pTemplate="selectedItem">
+                              <div class="country-item country-item-value"  *ngIf="selectedMarque">
+                                  <div><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+selectedMarque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{selectedMarque.title}}</div>
+                              </div>
+                          </ng-template>
+                          <ng-template let-marque pTemplate="item">
+                              <div class="country-item">
+                                  <div><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+marque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{marque.title}}</div>
+                              </div>
+                          </ng-template>
+                      </p-dropdown> 
+                    </div>
+                    <div class="form-group col">
+                    </div>
+                  </div>
+          </nb-card-body>
+        </nb-card>
+        <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+          Ajouter model</button>
+          <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+          Annuler</button>
+  </div>
+</form>
+
+

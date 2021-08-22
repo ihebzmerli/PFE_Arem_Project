@@ -1,0 +1,28 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  ngx-echarts-bon-Prep-pie,
+  ngx-echarts-bon-Prep-bar {
+    display: block;
+    height: nb-theme(card-height-medium);
+    width: 100%;
+  }
+
+  ::ng-deep .echart {
+    height: 100%;
+    width: 100%;
+  }
+
+  ngx-chartjs-bon-Prep-bar-horizontal{
+    display: block;
+    height: nb-theme(card-height-medium);
+    width: 100%;
+
+    ::ng-deep chart {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  }
+  
+}

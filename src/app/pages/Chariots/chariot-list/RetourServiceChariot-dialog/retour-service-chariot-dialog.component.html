@@ -1,0 +1,9 @@
+<nb-card>
+  <nb-card-body>
+    Etes vous sure de vouloir confirmer la reparation de chariot est le mettre en service {{title}}?
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="danger" (click)="cancel()">Cancel</button>
+    <button class="cancel" nbButton status="success" (click)="submitToService()" >Valider la reparation de chariot</button>
+  </nb-card-footer>
+</nb-card>

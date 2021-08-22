@@ -1,0 +1,51 @@
+<form [formGroup]="marqueForm" (ngSubmit) = "onSubmit()">
+  <div class="offset-sm-2 col-sm-9">
+        <nb-card>
+          <nb-card-header>
+            <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des marques ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../marque-list']"/>
+            <p></p> Ajouter Marque
+          </nb-card-header>
+          <nb-card-body>
+              
+              <div class="form-row">
+                  <div class="form-group col">
+                    <label for="code" class="label">Code</label>
+                    <input type="text" nbInput fullWidth placeholder="Code" class="form-control" formControlName="code" [ngClass]="{ 'is-invalid': submitted && f.code.errors }" />
+                    <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+                      <div *ngIf="f.code.errors.required">Code est obligatoire.</div>
+                      <div *ngIf="f.code.errors.minlength">Code doit étre au moin 3 lettres longue.</div>
+                      <div *ngIf="f.code.errors.maxlength">Code ne doit pas dépassé à 200 lettres longue.</div>
+                      <div *ngIf="f.code.errors.pattern">Code ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="title" class="label">Title</label>
+                    <input type="text" nbInput fullWidth placeholder="title" class="form-control" formControlName="title" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                    <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                      <div *ngIf="f.title.errors.required">Title est obligatoire.</div>
+                      <div *ngIf="f.title.errors.minlength">Title doit étre au moin 3 lettres longue.</div>
+                      <div *ngIf="f.title.errors.maxlength">Title ne doit pas dépassé à 200 lettres longue.</div>
+                      <div *ngIf="f.title.errors.pattern">Title ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="poste" class="label">ajouter Image</label><p>
+                      <input type="file" accept="image/*" (change)="onSelectFile($event)"/>
+                      <div class="form-group">
+                        <img [src]="imgURL" height="100" *ngIf="imgURL">
+                      </div>
+                  </div>
+                </div>
+                
+          </nb-card-body>
+        </nb-card>
+        <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+          Ajouter marque</button>
+          <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+          Annuler</button>
+  </div>
+</form>
+

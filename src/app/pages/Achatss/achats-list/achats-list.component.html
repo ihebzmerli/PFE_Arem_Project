@@ -1,0 +1,464 @@
+<nb-card>
+    <nb-card-header>
+      Achats Table
+      <nb-card-body>
+        <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" class="border">
+          <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
+            <i class="fa fa-user"></i>Statistiques</button>
+            <button type="button" (click)="togglepreviewTableAchats()" class="btn btn-outline-info">
+              {{previewTableAllAchatsExcelPdf? "tableau detailé ": "tableau minimiser "}}
+            </button>
+        </div>
+      </nb-card-body>
+    </nb-card-header>
+  
+    <nb-card-body>
+      <div *ngIf="!previewTableAllAchatsExcelPdf" class="container">
+        Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th style="text-align: center">
+              <label class="label">NUM_DOC</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search NumDoc"
+                style="width:150px" [(ngModel)]="searchTermNumDoc" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">TYP_DOC</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search TypDoc"
+                style="width:150px" [(ngModel)]="searchTermTypDoc" /> 
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DATE</label>
+                <div class="form-group">
+                    <button (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
+                      <i class="fa fa-user"></i>Filter</button>  
+                </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">COD_FRS</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search CodFrs"
+                style="width:150px" [(ngModel)]="searchTermCodFrs" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">MONTANT</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search Montant"
+                style="width:150px" [(ngModel)]="searchTermMontant" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">MONT_HT</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search MontHt"
+                style="width:150px" [(ngModel)]="searchTermMontHt" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">TVA</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search Tva"
+                style="width:150px" [(ngModel)]="searchTermTva" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">SOLDE</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search Solde"
+                style="width:150px" [(ngModel)]="searchTermSolde" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">NUM_COM</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search NumCom"
+                style="width:150px" [(ngModel)]="searchTermNumCom" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">TYP_REG</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search TypReg"
+                style="width:150px" [(ngModel)]="searchTermTypReg" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">MONT_REG</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search MontReg"
+                style="width:150px" [(ngModel)]="searchTermMontReg" />
+              </div>
+            </th>
+            <th style="text-align: center">
+              <label class="label">DOC_REG</label>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="search DocReg"
+                style="width:150px" [(ngModel)]="searchTermDocReg" />
+              </div>
+            </th>
+            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" style="text-align: center">
+              <label class="label">Payment</label>
+              <div class="form-group">
+                <nb-select style="width:170px" id="listPaymentarticle" fullWidth fieldSize="small" (selectedChange)="getAllListPayment($event)" >
+                  <nb-option value="">-Annuler Filter-</nb-option>
+                  <nb-option *ngFor="let itemsPayment of statusessPayment" [value]="itemsPayment.value">                   
+                    <img *ngIf="itemsPayment.label=='non_payer'" src="assets/images/toulsImages/not Valider.png" height="26" width="26"/><b *ngIf="itemsPayment.label=='non_payer'">Non Payer</b>
+                    <img *ngIf="itemsPayment.label=='payer'" src="assets/images/toulsImages/Valider.png" height="26" width="26"/><b *ngIf="itemsPayment.label=='payer'">Payer</b>
+                  </nb-option>
+                </nb-select>
+              </div>
+            </th>
+            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+              <label class="label">Achat Validation</label>
+              <div class="form-group">
+                <nb-select style="width:170px" id="listValidationarticle" fullWidth fieldSize="small" (selectedChange)="getAllListValidation($event)" >
+                  <nb-option value="">-Annuler Filter-</nb-option>
+                  <nb-option *ngFor="let itemsValidation of statusessValidation" [value]="itemsValidation.value">
+                    <button nbButton *ngIf="itemsValidation.label=='valider'" type="button" [status]="success" class="btn btn-md btn-outline-success" hero>
+                      Valider
+                    </button>
+                    <button nbButton *ngIf="itemsValidation.label=='non_valider'" type="button" [status]="warning" class="btn btn-md btn-outline-warning" hero>
+                       non Valider
+                    </button>
+                  </nb-option>
+                </nb-select>
+              </div>
+            </th>
+            <th style="text-align: center"><label class="label">Actions</label></th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let achat of filteredAchatss | filter:searchText">
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.numDocAchat}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.typDoc}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.date | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.codFrs}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.montant!=0 && achat.montant!=null">{{achat.montant | currency:'TND ' : 'symbol'}}</p><p *ngIf="achat.montant===0" style="color: rgb(236, 28, 0);">0</p><p *ngIf="achat.montant==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.montHt!=0 && achat.montHt!=null">{{achat.montHt | currency:'TND ' : 'symbol'}}</p><p *ngIf="achat.montHt===0" style="color: rgb(236, 28, 0);">0</p><p *ngIf="achat.montHt==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.tva!=0 && achat.tva!=null" >{{achat.tva}}&nbsp;%</p><p *ngIf="achat.tva===0" style="color: rgb(236, 28, 0);">0&nbsp;%</p><p *ngIf="achat.tva==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.solde!=0 && achat.solde!=null">{{achat.solde | currency:'TND ' : 'symbol'}}</p><p *ngIf="achat.solde===0" style="color: rgb(236, 28, 0);">0</p><p *ngIf="achat.solde==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.numCom}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.typReg!=null">{{achat.typReg}}</p></span>
+              <div *ngIf="achat.typReg==null">
+                <span class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label> Aucune!</label></span>
+              </div>
+            </td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.montReg!=0 && achat.montReg!=null">{{achat.montReg | currency:'TND ' : 'symbol'}}</p><p *ngIf="achat.montReg===0" style="color: rgb(236, 28, 0);">0</p><p *ngIf="achat.montReg==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.docReg!=null && achat.docReg!='' && achat.docReg!=0">{{achat.docReg}}</p><p *ngIf="achat.docReg===0 || achat.docReg=='0'" style="color: rgb(236, 28, 0);">0</p></span>
+              <div *ngIf="(achat.docReg==null || achat.docReg=='') && achat.docReg!=0">
+                <span class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label> Aucune!</label></span>
+              </div>
+            </td>
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" style="text-align: center" class="field-multiple-drag">
+              <span>
+                <p>
+                  <img *ngIf="achat.pret=='payer'" src="assets/images/toulsImages/Valider.png" height="50" width="50"/>
+                  <img *ngIf="achat.pret=='non_payer'" src="assets/images/toulsImages/not Valider.png" height="50" width="50"/>
+                </p>
+              </span>
+            </td>
+
+            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>
+              
+                <button [disabled]="authority!==('ROLE_ADMIN' || 'ROLE_CAISSIER')" nbButton *ngIf="achat.validation=='valider'" type="button" (click)="OpenValidationPopap(achat.numDocAchat)" [status]="success" class="btn btn-md btn-outline-success" hero>
+                  Valider
+                </button>
+                <button [disabled]="authority!==('ROLE_ADMIN' || 'ROLE_CAISSIER')" nbButton *ngIf="achat.validation=='non_valider'" type="button" (click)="OpenNotValidationPopap(achat.numDocAchat)" [status]="warning" class="btn btn-md btn-outline-warning" hero>
+                   non Valider
+                </button>
+            </p></span>
+            </td>
+            
+            <td class="field-multiple-drag">
+              <div class="buttons-row">
+              <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['achats-detail',achat.numDocAchat]" outline>
+                <i class="fa fa-search"></i>Details</button>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </nb-card-body>
+
+
+
+
+
+
+    <nb-card-body>
+      <div *ngIf="previewTableAllAchatsExcelPdf">
+          <p-table #dt [columns]="cols" [value]="filteredAchatss" selectionMode="multiple" [(selection)]="selectedAchats"
+          dataKey="numDocAchat" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['numDocAchat','typDoc','date','montant','montHt','tva','solde',
+          'numCom','typReg','montReg','docReg','pret','validation','user.firstname']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col">
+                        <button type="button" pButton pRipple icon="pi pi-file-o" (click)="dt.exportCSV()" class="p-mr-2" pTooltip="CSV" tooltipPosition="bottom" nbPopover="Télécharger toute la table en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                        <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success p-mr-2"  pTooltip="XLS" tooltipPosition="bottom" nbPopover="Télécharger toute la table en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                      </div>
+                      <div class="col-6">
+                      </div>
+                      <div class="col">
+                        <button type="button" pButton pRipple icon="pi pi-filter" (click)="dt.exportCSV({selectionOnly:true})" class="p-button-secondary p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                        <button type="button" pButton pRipple icon="pi pi-bookmark" (click)="dt.exportExcel({selectionOnly:true})" class="p-button-help p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                              <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                              <span class="p-input-icon-left p-ml-auto">
+                                  <i class="pi pi-search"></i>
+                                  <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                              </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        <div *ngIf="col.header!=='Actions' && col.header!=='Consultation'">
+                          {{col.header}}
+                        </div>
+                          
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='NUM_DOC'" type="numeric" field="numDocAchat" display="menu"></p-columnFilter>
+                          </div>
+                          <div>
+
+                            <p-columnFilter *ngIf="col.header=='TYP_DOC'" field="typDoc" matchMode="equals" display="menu" class="p-ml-auto">
+                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                  <p-dropdown [ngModel]="value" [options]="statusessTypDoc" (onChange)="filter($event.value)" placeholder="Any">
+                                      <ng-template let-option pTemplate="item">
+                                          <span [class]="option.value">{{option.label}}</span>
+                                      </ng-template>
+                                  </p-dropdown>
+                              </ng-template>
+                            </p-columnFilter>
+
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='DATE'" type="date" field="date" display="menu"></p-columnFilter>
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='MONTANT'" type="numeric" field="montant" display="menu" currency="TND"></p-columnFilter>
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='montant Hors Tva'" type="numeric" field="montHt" display="menu" currency="TND"></p-columnFilter>
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='T.V.A'" type="numeric" field="tva" display="menu"></p-columnFilter>
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='SOLDE'" type="numeric" field="solde" display="menu"  currency="TND"></p-columnFilter>
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='NUM_COM'" type="numeric" field="numCom" display="menu" ></p-columnFilter>
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='TYP_REG'" type="text" field="typReg" display="menu"></p-columnFilter>
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='MONT_REG'" type="numeric" field="montReg" display="menu" currency="TND"></p-columnFilter>
+                          </div>
+                          <div>
+                            <p-columnFilter *ngIf="col.header=='DOC_REG'" type="text" field="docReg" display="menu"></p-columnFilter>
+                          </div>
+                          <div>
+
+                            <p-columnFilter *ngIf="col.header=='Payment'" field="pret" matchMode="equals" display="menu" class="p-ml-auto">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-dropdown [ngModel]="value" [options]="statusessPayment" (onChange)="filter($event.value)" placeholder="Any">
+                                        <ng-template let-option pTemplate="item">
+                                            <span [class]="option.value"><img *ngIf="option.label=='payer'" src="assets/images/toulsImages/Valider.png" height="40" width="40"/><img *ngIf="option.label=='non_payer'" src="assets/images/toulsImages/not Valider.png" height="40" width="40"/><span *ngIf="option.label=='non_payer'" style="color: red;">Non payer</span><span *ngIf="option.label=='payer'" style="color: rgb(37, 185, 44);">Payer</span></span>
+                                        </ng-template>
+                                    </p-dropdown>
+                                </ng-template>
+                            </p-columnFilter>
+                            
+                          </div>
+                          <div>
+                            
+                            <p-columnFilter *ngIf="col.header=='Validation Achat'" field="validation" matchMode="equals" display="menu" class="p-ml-auto">
+                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                  <p-dropdown [ngModel]="value" [options]="statusessValidation" (onChange)="filter($event.value)" placeholder="Any">
+                                      <ng-template let-option pTemplate="item">
+                                          <span [class]="option.value">
+                                            <button style="border-radius: 0%;" nbButton *ngIf="option.label=='valider'" type="button" [status]="success" size="small" class="btn btn-md btn-outline-success" hero>
+                                              Valider
+                                           </button>
+                                           <button style="border-radius: 0%;" nbButton *ngIf="option.label=='non_valider'" type="button" [status]="warning" size="small" class="btn btn-md btn-outline-warning" hero>
+                                              non Valider
+                                           </button>
+                                          </span>
+                                      </ng-template>
+                                  </p-dropdown>
+                              </ng-template>
+                            </p-columnFilter>
+
+                          </div>
+                          <div>
+
+                            <p-columnFilter *ngIf="col.header=='Nom&Prenom respensable Achats'" field="user" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                              <ng-template pTemplate="header">
+                                  <div class="p-px-3 p-pt-3 p-pb-0">
+                                      <span class="p-text-bold">Choix Agent</span>
+                                  </div>
+                              </ng-template>
+                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                  <p-multiSelect [ngModel]="value" [options]="agents" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
+                                      <ng-template let-option pTemplate="item">
+                                          <div class="p-multiselect-representative-option">
+                                              <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                              <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                                          </div>
+                                      </ng-template>
+                                  </p-multiSelect>
+                              </ng-template>
+                            </p-columnFilter>
+
+                          </div>
+                          <div style="text-align: center" *ngIf="col.header=='Actions' || col.header=='Consultation'">
+                            <b>{{col.header}}</b>
+                          </div>
+                      </div>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                        <div class="field-multiple-drag" *ngIf="col.field!=='typDoc' &&  col.field!=='validation' && col.field!=='pret' && col.field!=='date' && col.field!=='user' && col.header!=='Actions' && col.header!=='Consultation'">                       
+                          <div *ngIf="rowData[col.field]==null || rowData[col.field]=='' && rowData[col.field]!==0">
+                            <span class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label> Aucune!</label></span>
+                          </div>
+                          <div *ngIf="rowData[col.field]===0">
+                            <span *ngIf="col.field=='montant' || col.field=='montHt' || col.field=='solde' || col.field=='montReg'">TND&nbsp;</span><span style="color: rgb(236, 28, 0);">{{rowData[col.field]}}</span>
+                          </div>
+                          <div *ngIf="rowData[col.field]!==0">
+                            <span *ngIf="col.field=='montant' || col.field=='montHt' || col.field=='solde' || col.field=='montReg'">TND&nbsp;</span>{{rowData[col.field]}}
+                          </div>
+                        </div>
+
+                        <div *ngIf="col.field=='typDoc'">
+                          <span *ngIf="rowData[col.field]=='BON_LIV'">Bon Liv</span>
+                          <span *ngIf="rowData[col.field]=='AVOIR_BL'">Avoir BL</span>
+                        </div>
+
+                        <div *ngIf="col.field=='date'">
+                          {{rowData[col.field] | date: 'dd/MM/yyyy' : '+0000'}}
+                        </div>
+
+                        <div style="text-align: center" *ngIf="col.field=='pret'">
+                          <img *ngIf="rowData[col.field]=='payer'" src="assets/images/toulsImages/Valider.png" height="50" width="50"/>
+                          <img *ngIf="rowData[col.field]=='non_payer'" src="assets/images/toulsImages/not Valider.png" height="50" width="50"/>
+                        </div>
+            
+                        <div style="text-align: center" *ngIf="col.field=='validation'">
+                            <button style="border-radius: 0%;" nbButton *ngIf="rowData[col.field]=='valider'" type="button" (click)="OpenValidationPopap1(rowData[col.field.numDocAchat])" [status]="success" size="small" class="btn btn-md btn-outline-success" hero>
+                               Valider
+                            </button>
+                            <button nbButton *ngIf="rowData[col.field]=='non_valider'" type="button" (click)="OpenNotValidationPopap1(rowData[col.field.numDocAchat])" [status]="warning" size="small" class="btn btn-md btn-outline-warning" hero>
+                               non Valider
+                            </button>
+                        </div>
+
+                        <div style="text-align: center" class="field-multiple-drag" *ngIf="col.field=='user' && col.header=='Nom&Prenom respensable Achats'">
+                          
+                          <div *ngIf="rowData[col.field]!==null">
+                            <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" width="50" style="vertical-align: middle" />
+                            <span class="image-text"><p>{{rowData[col.field].firstname}}&nbsp;{{rowData[col.field].lastname}}</p></span>
+              
+                            <p-dialog header="details Responsable" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                            [draggable]="false" [resizable]="false">
+                            <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" style="width:150px;height: 180px;" class="article-image" /></p>
+                              <div>
+                                <li>                        
+                                  <span class="image-text"><b class="p-mb-3 p-text-light">Nom et Prénom Responsable :</b> {{rowData[col.field].firstname}}&nbsp;{{rowData[col.field].lastname}}</span>                      
+                                </li> 
+                                <li>
+                                  <span class="image-text"><b class="p-mb-3 p-text-light">Email Responsable :</b> {{rowData[col.field].email}}</span>
+                                </li>
+                                <li>  
+                                  <span class="image-text"><b class="p-mb-3 p-text-light">Telephone Responsable :</b> {{rowData[col.field].telephone}}</span>
+                                </li>
+                                <li>
+                                  <b class="p-mb-3 p-text-light">Role : </b>
+                                  <b *ngIf="rowData[col.field].roles[0].name==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogUserRole('right')">Aucune Role</label></span></b>
+                                  
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_CLIENT'">Client</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_USER'">Utilisateur</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                                  <span style="color: rgb(114, 212, 16);" (click)="showPositionDialogUserRole('right')" *ngIf="rowData[col.field].roles!==null && rowData[col.field].roles[0].name=='ROLE_LIVREUR'">Vendeur</span>
+                
+                                  <p-dialog header="Définition Role" [(visible)]="displayPositionUserRole" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                                  [draggable]="false" [resizable]="false">
+                                  <p>CodUser:&nbsp;<b *ngIf="rowData[col.field]!==null && rowData[col.field].roles[0].name!=='ROLE_ADMIN'">{{rowData[col.field].codUser}}</b><b *ngIf="rowData[col.field]==null">Anucun code User</b><b *ngIf="rowData[col.field].roles[0].name=='ROLE_ADMIN'">les informations n est pas visible que pour les administrateurs</b>.</p>
+                                      <ng-template pTemplate="footer">
+                                          <p-button icon="pi pi-check" (click)="displayPositionUserRole=false" label="Annuler" styleClass="p-button-text"></p-button>
+                                      </ng-template>
+                                  </p-dialog>
+                                                               
+                                </li>
+                              </div>
+                            
+                                <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayModalUserTable2=false" label="Annuler" styleClass="p-button-text"></p-button>
+                                </ng-template>
+                            </p-dialog>
+                          </div>
+                          <span *ngIf="rowData[col.field]==null" class="p-mb-3 p-text-normal" style="color: rgb(121, 126, 121);" ><label>Aucune!</label></span>                        
+                        </div>
+  
+                        <!--button Actions -->  
+                        <div *ngIf="col.header=='Consultation' && col.field=='numDocAchat'">
+                          <button style="border-radius: 0.75rem;" nbButton type="button" [status]="info" size="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['achats-detail',rowData[col.field]]" outline>
+                          <i class="fa fa-search"></i>Details</button>
+                        </div>
+                        <div *ngIf="col.header=='Actions' && col.field=='numDocAchat'">
+                          <button style="border-radius: 0.75rem;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" size="small" [status]="danger" outline>
+                            <i class="fa fa-remove"></i>Supprimer</button>
+                          <button style="border-radius: 0.75rem;" nbButton type="button" [status]="warning" size="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" outline>
+                            <i class="fa fa-edit"></i>Modifier</button>
+                        </div>
+                        <!--end button Actions -->
+                    </td> 
+                    
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                  <td colspan="16">Pas de Achats trouver.</td>
+              </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </nb-card-body>
+  </nb-card>
+  

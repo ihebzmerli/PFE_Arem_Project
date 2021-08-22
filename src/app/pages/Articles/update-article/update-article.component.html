@@ -1,0 +1,571 @@
+<form (ngSubmit) = "onSubmitArticle()" #articleForm="ngForm">
+    <nb-card-header>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Articles?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../article-list']"/>
+        <h6>Ajouter Articles</h6>
+        <div>
+            <label for="datCreat" class="label">date Create</label>
+            {{article.datCreat | date: 'MMM d, y H:mm:ss' : '+0000'}}
+          </div>
+    </nb-card-header>
+        <nb-card>
+            <nb-card-body>
+
+            <!--
+            choix fourniseur ou client livreur
+            -->  
+            <div class="row">
+                    <div class="col-sm-4">
+                    <label for="codArt" class="label">Code Article</label> 
+                        <input type="text" nbInput fullWidth class="form-control" #codArt="ngModel" id="codArt" name="codArt" [(ngModel)]="article.codArt" disabled/>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="refOrg" class="label">refference Origine</label>
+                        <input type="text" nbInput fullWidth class="form-control" #refOrg="ngModel" id="refOrg" name="refOrg" maxlength="49" minlength="5" required [(ngModel)]="article.refOrg" />
+                        <div style="font-size: 12px;" [hidden]="refOrg.valid || refOrg.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!refOrg.hasError('minlength')">refference Org doit étre au moin 6 lettres longue.</div>
+                            <div [hidden]="!refOrg.hasError('maxlength')">refference Org ne doit pas dépassé les 50 lettres longue.</div>
+                            <div [hidden]="!refOrg.hasError('required')">refference Org est obligatoire.</div>
+                        </div> 
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="refRem" class="label">refference Rem</label>
+                        <input type="text" nbInput fullWidth class="form-control" #refRem="ngModel" id="refRem" name="refRem" pattern="^[a-zA-Z0-9 ]+$" maxlength="49" minlength="5" required [(ngModel)]="article.refRem" />
+                        <div style="font-size: 12px;" [hidden]="refRem.valid || refRem.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!refRem.hasError('minlength')">refRem doit étre au moin 6 lettres longue.</div>
+                            <div [hidden]="!refRem.hasError('maxlength')">refRem ne doit pas dépassé les 50 lettres longue.</div>
+                            <div [hidden]="!refRem.hasError('required')">refRem est obligatoire.</div>
+                            <div [hidden]="!refRem.hasError('pattern')">refRem ne doit contenir que des lettres et des nombres.</div>
+                          </div> 
+                    </div>
+            </div>
+            <nb-card-body>  
+                <div class="row">
+                    <label for="desArt" class="label">description Article</label>
+                    <textarea rows="5" shape="round" nbInput fullWidth class="form-control" #desArt="ngModel" id="desArt" name="desArt" maxlength="49" minlength="8" required [(ngModel)]="article.desArt" ></textarea>
+                    <div style="font-size: 12px;" [hidden]="desArt.valid || desArt.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!desArt.hasError('minlength')">description Art doit étre au moin 6 lettres longue.</div>
+                        <div [hidden]="!desArt.hasError('maxlength')">description Art ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!desArt.hasError('required')">description Art est obligatoire.</div>
+                    </div>  
+                </div> 
+            </nb-card-body>
+            <div class="row">
+
+                <div class="col-sm-4"> 
+                    <label for="codNgp" class="label">code Ngp</label>
+                    <input type="text" nbInput fullWidth class="form-control" #codNgp="ngModel" id="codNgp" name="codNgp" pattern="^[a-zA-Z0-9 ]+$" maxlength="49" minlength="8" required [(ngModel)]="article.codNgp" />
+                    <div style="font-size: 12px;" [hidden]="codNgp.valid || codNgp.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!codNgp.hasError('minlength')">code Ngp doit étre au moin 6 lettres longue.</div>
+                        <div [hidden]="!codNgp.hasError('maxlength')">code Ngp ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!codNgp.hasError('required')">code Ngp est obligatoire.</div>
+                        <div [hidden]="!codNgp.hasError('pattern')">code Ngp ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                </div> 
+                <div class="col-sm-4"> 
+                    <label for="marque" class="label">marque</label>
+                    <nb-select fullWidth fieldSize="small" [(selected)]="MarqueSelected" #marque="ngModel" id="marque" name="marque" required [(ngModel)]="article.marque" (selectedChange)="getModeleFromMarque($event)">
+                        <nb-option value="null">-Select</nb-option>
+                        <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="29" style="vertical-align: middle" />{{ itemsMarque.title }} </nb-option>
+                    </nb-select>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="modele" class="label">modele</label>
+                    <nb-select fullWidth fieldSize="small" [(selected)]="ModelSelected" #model="ngModel" id="model" name="model" required [(ngModel)]="article.model">
+                        <nb-option value="null">-Select</nb-option>
+                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" width="29" style="vertical-align: middle" />{{ itemsModel.title }} </nb-option>
+                    </nb-select>
+                </div>
+            </div> 
+
+            <div class="row">
+                <div class="col-sm-4"> 
+                    <label for="unitVen" class="label">unitVen</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #unitVen="ngModel" id="unitVen" name="unitVen" pattern="^(0|[1-9][0-9]*)$" max="2000000" min="0" required [(ngModel)]="article.unitVen" />
+                    <div style="font-size: 12px;" [hidden]="unitVen.valid || unitVen.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!unitVen.hasError('min')">unitVen doit étre positive.</div>
+                        <div [hidden]="!unitVen.hasError('max')">unitVen ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!unitVen.hasError('required')">unitVen est obligatoire.</div>
+                        <div [hidden]="!unitVen.hasError('pattern')">unitVen ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="prixMin" class="label">prixMin</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #prixMin="ngModel" id="prixMin" name="prixMin" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="2000000" min="0" required [(ngModel)]="article.prixMin"/>
+                    <div style="font-size: 12px;" [hidden]="prixMin.valid || prixMin.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!prixMin.hasError('min')">prixMin doit étre positive.</div>
+                        <div [hidden]="!prixMin.hasError('max')">prixMin ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!prixMin.hasError('required')">prixMin est obligatoire.</div>
+                        <div [hidden]="!prixMin.hasError('pattern')">prixMin ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="prixDev" class="label">prixDev</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #prixDev="ngModel" id="prixDev" name="prixDev" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="2000000" min="0" required [(ngModel)]="article.prixDev" />
+                    <div style="font-size: 12px;" [hidden]="prixDev.valid || prixDev.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!prixDev.hasError('min')">prixDev doit étre positive.</div>
+                        <div [hidden]="!prixDev.hasError('max')">prixDev ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!prixDev.hasError('required')">prixDev est obligatoire.</div>
+                        <div [hidden]="!prixDev.hasError('pattern')">prixDev ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-4"> 
+                    <label for="codFrs" class="label">Code Fournisseur:</label>
+                    <nb-select selected="slectedCodFrs" fullWidth type="text" #codFrs="ngModel" id="codFrs" name="codFrs" [(ngModel)]="article.codFrs">
+                      <nb-option value="0">-Select</nb-option>
+                      <nb-option *ngFor="let items of FournisList" [value]="items.codFrs">{{ items.codFrs }}</nb-option>
+                    </nb-select>
+                    <div style="font-size: 12px;" [hidden]="codFrs.valid || codFrs.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!codFrs.hasError('required')">codFrs est obligatoire.</div>
+                    </div>
+                  </div> 
+                <div class="col-sm-4">                 
+                    <label for="derPAch" class="label">derPAch</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #derPAch="ngModel" id="derPAch" name="derPAch" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="2000000" min="0" required [(ngModel)]="article.derPAch" />
+                    <div style="font-size: 12px;" [hidden]="derPAch.valid || derPAch.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!derPAch.hasError('min')">derPAch doit étre positive.</div>
+                        <div [hidden]="!derPAch.hasError('max')">derPAch ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!derPAch.hasError('required')">derPAch est obligatoire.</div>
+                        <div [hidden]="!derPAch.hasError('pattern')">derPAch ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="remise" class="label">remise</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #remise="ngModel" id="remise" name="remise" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="2000000" min="0" required [(ngModel)]="article.remise" />
+                    <div style="font-size: 12px;" [hidden]="remise.valid || remise.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!remise.hasError('minlength')">remise doit étre positive.</div>
+                        <div [hidden]="!remise.hasError('maxlength')">remise ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!remise.hasError('required')">remise est obligatoire.</div>
+                        <div [hidden]="!remise.hasError('pattern')">remise ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                <label for="prixVen" class="label">prixVen</label>
+                <input type="number" step="50" nbInput fullWidth class="form-control" #prixVen="ngModel" id="prixVen" name="prixVen" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="2000000" min="0" required [(ngModel)]="article.prixVen" />
+                <div style="font-size: 12px;" [hidden]="prixVen.valid || prixVen.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!prixVen.hasError('min')">prixVen doit étre positive.</div>
+                    <div [hidden]="!prixVen.hasError('max')">prixVen ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!prixVen.hasError('required')">prixVen est obligatoire.</div>
+                    <div [hidden]="!prixVen.hasError('pattern')">prixVen ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-4"> 
+                <label for="prixArem" class="label">prixArem</label>
+                <input type="number" step="50" nbInput fullWidth class="form-control" #prixArem="ngModel" id="prixArem" name="prixArem" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="2000000" min="0" required [(ngModel)]="article.prixArem" />
+                <div style="font-size: 12px;" [hidden]="prixArem.valid || prixArem.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!prixArem.hasError('min')">prix Arem doit étre positive.</div>
+                    <div [hidden]="!prixArem.hasError('max')">prix Arem ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!prixArem.hasError('required')">prix Arem est obligatoire.</div>
+                    <div [hidden]="!prixArem.hasError('pattern')">prix Arem ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="tva" class="label">tva</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #tva="ngModel" id="tva" name="tva" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="2000000" min="0" required [(ngModel)]="article.tva" />
+                    <div style="font-size: 12px;" [hidden]="tva.valid || tva.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!tva.hasError('min')">tva doit étre positive.</div>
+                        <div [hidden]="!tva.hasError('max')">tva ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!tva.hasError('required')">tva est obligatoire.</div>
+                        <div [hidden]="!tva.hasError('pattern')">tva ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                <label for="cumulVen" class="label">cumulVen</label>
+                <input type="number" step="50" nbInput fullWidth class="form-control" #cumulVen="ngModel" id="cumulVen" name="cumulVen" pattern="^[0-9]+(\.[0-9]{1,3})?$" maxlength="50000" minlength="0" required [(ngModel)]="article.cumulVen" />
+                <div style="font-size: 12px;" [hidden]="cumulVen.valid || cumulVen.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!cumulVen.hasError('min')">cumulVen doit étre positive.</div>
+                    <div [hidden]="!cumulVen.hasError('max')">cumulVen ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!cumulVen.hasError('required')">cumulVen est obligatoire.</div>
+                    <div [hidden]="!cumulVen.hasError('pattern')">cumulVen ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="cumulAch" class="label">cumulAch</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #cumulAch="ngModel" id="cumulAch" name="cumulAch" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="50000" min="0" required [(ngModel)]="article.cumulAch" />
+                    <div style="font-size: 12px;" [hidden]="cumulAch.valid || cumulAch.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!cumulAch.hasError('min')">cumulAch doit étre positive.</div>
+                        <div [hidden]="!cumulAch.hasError('max')">cumulAch ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!cumulAch.hasError('required')">cumulAch est obligatoire.</div>
+                        <div [hidden]="!cumulAch.hasError('pattern')">cumulAch ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4">   
+                    <label for="unitInv" class="label">unitInv</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #unitInv="ngModel" id="unitInv" name="unitInv" pattern="^[0-9]+(\.[0-9]{1,3})?$" maxlength="50000" minlength="0" required [(ngModel)]="article.unitInv" />
+                    <div style="font-size: 12px;" [hidden]="unitInv.valid || unitInv.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!unitInv.hasError('minlength')">unitInv doit étre au moin 6 lettres longue.</div>
+                        <div [hidden]="!unitInv.hasError('maxlength')">unitInv ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!unitInv.hasError('required')">unitInv est obligatoire.</div>
+                        <div [hidden]="!unitInv.hasError('pattern')">unitInv ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+            </div> 
+
+            <div class="row">
+                <div class="col-sm-3">
+                <label for="controle" class="label">controle</label>
+                <input type="text" nbInput fullWidth class="form-control" #controle="ngModel" id="controle" name="controle" pattern="^[a-zA-Z0-9 ]+$" maxlength="49" minlength="4" required [(ngModel)]="article.controle" />
+                <div style="font-size: 12px;" [hidden]="controle.valid || controle.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!controle.hasError('minlength')">controle doit étre au moin 6 lettres longue.</div>
+                    <div [hidden]="!controle.hasError('maxlength')">controle ne doit pas dépassé les 50 lettres longue.</div>
+                    <div [hidden]="!controle.hasError('required')">controle est obligatoire.</div>
+                    <div [hidden]="!controle.hasError('pattern')">controle ne doit contenir que des lettres et des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-3">  
+                    <label for="numCas" class="label">numCas</label>
+                    <input type="text" nbInput fullWidth class="form-control" #numCas="ngModel" id="numCas" name="numCas" pattern="^[a-zA-Z0-9 ]+$" maxlength="49" minlength="5" required [(ngModel)]="article.numCas" />
+                    <div style="font-size: 12px;" [hidden]="numCas.valid || numCas.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!numCas.hasError('minlength')">numCas doit étre au moin 6 lettres longue.</div>
+                        <div [hidden]="!numCas.hasError('maxlength')">numCas ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!numCas.hasError('required')">numCas est obligatoire.</div>
+                        <div [hidden]="!numCas.hasError('pattern')">numCas ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-3">   
+                    <label for="energie" class="label">energie</label>
+                    <input type="text" nbInput fullWidth class="form-control" #energie="ngModel" id="energie" name="energie" pattern="^[a-zA-Z0-9 ]+$" maxlength="49" minlength="4" required [(ngModel)]="article.energie" />
+                    <div style="font-size: 12px;" [hidden]="energie.valid || energie.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!energie.hasError('minlength')">energie doit étre au moin 6 lettres longue.</div>
+                        <div [hidden]="!energie.hasError('maxlength')">energie ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!energie.hasError('required')">energie est obligatoire.</div>
+                        <div [hidden]="!energie.hasError('pattern')">energie ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-3">   
+                    <label for="poids" class="label">poids</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control" #poids="ngModel" id="poids" name="poids" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="999999" min="0" required [(ngModel)]="article.poids" /> kg
+                    <div style="font-size: 12px;" [hidden]="poids.valid || poids.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!poids.hasError('min')">poids doit étre positive.</div>
+                        <div [hidden]="!poids.hasError('max')">poids ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!poids.hasError('required')">poids est obligatoire.</div>
+                        <div [hidden]="!poids.hasError('pattern')">poids ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+            </div> 
+
+            <nb-card-body>      
+                <div class="row">
+                    <div class="col-sm-6"> 
+                        <label for="derAch" class="label">Date Ach</label>
+                        <input nbInput fullWidth [nbDatepicker]="pickerderAch" class="form-control" #derAch="ngModel" id="derAch" name="derAch" required [(ngModel)]="article.derAch" />
+                        <nb-datepicker #pickerderAch></nb-datepicker>
+                        <div style="font-size: 12px;" [hidden]="derAch.valid || derAch.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!derAch.hasError('required')">derAch est obligatoire.</div>
+                          </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                        <label for="derMvt" class="label">Date Mvt</label>
+                        <p>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{article.derMvt | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">                   
+                    <label for="classe" class="label">classe</label>
+                    <input type="text" nbInput fullWidth class="form-control" #classe="ngModel" id="classe" name="classe" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="1" required [(ngModel)]="article.classe"/>
+                    <div style="font-size: 12px;" [hidden]="classe.valid || classe.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!classe.hasError('minlength')">classe doit étre au moin 1 lettres longue.</div>
+                        <div [hidden]="!classe.hasError('maxlength')">classe ne doit pas dépassé les 50 lettres longue.</div>
+                        <div [hidden]="!classe.hasError('required')">classe est obligatoire.</div>
+                        <div [hidden]="!classe.hasError('pattern')">classe ne doit contenir que des lettres et des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">   
+                        <label for="typAnal" class="label">typAnal</label>
+                        <input type="text" nbInput fullWidth class="form-control" #typAnal="ngModel" id="typAnal" name="typAnal" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" required [(ngModel)]="article.typAnal"/>  
+                        <div style="font-size: 12px;" [hidden]="typAnal.valid || typAnal.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!typAnal.hasError('minlength')">typAnal doit étre au moin 6 lettres longue.</div>
+                            <div [hidden]="!typAnal.hasError('maxlength')">typAnal ne doit pas dépassé les 50 lettres longue.</div>
+                            <div [hidden]="!typAnal.hasError('required')">typAnal est obligatoire.</div>
+                            <div [hidden]="!typAnal.hasError('pattern')">typAnal ne doit contenir que des lettres et des nombres.</div>
+                          </div>
+                    </div>
+                    <div class="col-sm-4">   
+                        <label for="codBar" class="label">codBar</label>
+                        <input type="text" nbInput fullWidth class="form-control" #codBar="ngModel" id="codBar" name="codBar" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="article.codBar"/>  
+                        <div style="font-size: 12px;" [hidden]="codBar.valid || codBar.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!codBar.hasError('minlength')">codBar doit étre au moin 6 lettres longue.</div>
+                            <div [hidden]="!codBar.hasError('maxlength')">codBar ne doit pas dépassé les 50 lettres longue.</div>
+                            <div [hidden]="!codBar.hasError('required')">codBar est obligatoire.</div>
+                            <div [hidden]="!codBar.hasError('pattern')">codBar ne doit contenir que des lettres et des nombres.</div>
+                          </div>
+                    </div>
+                </div>
+            </nb-card-body>
+
+            <nb-card-body>  
+                <div class="row">
+                    <div class="col-sm-4">               
+                    <label for="prixCEur" class="label">prixCEur</label>
+                    <input type="number" step="100" nbInput fullWidth class="form-control" #prixCEur="ngModel" id="prixCEur" name="prixCEur" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="999999" min="0" required [(ngModel)]="article.prixCEur" />
+                    <div style="font-size: 12px;" [hidden]="prixCEur.valid || prixCEur.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!prixCEur.hasError('min')">prixCEur doit étre positive .</div>
+                        <div [hidden]="!prixCEur.hasError('max')">prixCEur ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!prixCEur.hasError('required')">prixCEur est obligatoire.</div>
+                        <div [hidden]="!prixCEur.hasError('pattern')">prixCEur ne doit contenir que des nombres.</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4"> 
+                        <label for="prixIni" class="label">prixIni</label>
+                        <input type="number" step="100" nbInput fullWidth class="form-control" #prixIni="ngModel" id="prixIni" name="prixIni" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="999999" min="0" required [(ngModel)]="article.prixIni" />
+                        <div style="font-size: 12px;" [hidden]="prixIni.valid || prixIni.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!prixIni.hasError('min')">prixIni doit étre positive.</div>
+                            <div [hidden]="!prixIni.hasError('max')">prixIni ne doit pas dépassé la limite.</div>
+                            <div [hidden]="!prixIni.hasError('required')">prixIni est obligatoire.</div>
+                            <div [hidden]="!prixIni.hasError('pattern')">prixIni ne doit contenir que des nombres.</div>
+                          </div>
+                    </div>
+                    <div class="col-sm-4"> 
+                        <label for="prixAch" class="label">prixAch</label>
+                        <input type="number" step="100" nbInput fullWidth class="form-control" #prixAch="ngModel" id="prixAch" name="prixAch" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="999999" min="0" required [(ngModel)]="article.prixAch" />
+                        <div style="font-size: 12px;" [hidden]="prixAch.valid || prixAch.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!prixAch.hasError('min')">prixAch doit étre positive.</div>
+                            <div [hidden]="!prixAch.hasError('max')">prixAch ne doit pas dépassé la limite.</div>
+                            <div [hidden]="!prixAch.hasError('required')">prixAch est obligatoire.</div>
+                            <div [hidden]="!prixAch.hasError('pattern')">prixAch ne doit contenir que des nombres.</div>
+                          </div>
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-sm-6"> 
+                        <label for="centre" class="label">centre</label>
+                        <input type="text" nbInput fullWidth class="form-control" #centre="ngModel" id="centre" name="centre" pattern="^[a-zA-Z0-9 ]+$" maxlength="49" minlength="4" required [(ngModel)]="article.centre" />
+                        <div style="font-size: 12px;" [hidden]="centre.valid || centre.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!centre.hasError('minlength')">centre doit étre au moin 4 lettres longue.</div>
+                            <div [hidden]="!centre.hasError('maxlength')">centre ne doit pas dépassé les 49 lettres longue.</div>
+                            <div [hidden]="!centre.hasError('required')">centre est obligatoire.</div>
+                            <div [hidden]="!centre.hasError('pattern')">centre ne doit contenir que des lettres et des nombres.</div>
+                          </div>
+                    </div>                 
+                    <div class="col-sm-6">   
+                        <label for="derPDev" class="label">derPDev</label>
+                        <input type="number" nbInput fullWidth class="form-control" #derPDev="ngModel" id="derPDev" name="derPDev" pattern="^(0|[1-9][0-9]*)$" max="999999" min="0" required [(ngModel)]="article.derPDev"/>  
+                        <div style="font-size: 12px;" [hidden]="derPDev.valid || derPDev.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!derPDev.hasError('min')">derPDev doit étre positive.</div>
+                            <div [hidden]="!derPDev.hasError('max')">derPDev ne doit pas dépassé la limite.</div>
+                            <div [hidden]="!derPDev.hasError('required')">derPDev est obligatoire.</div>
+                            <div [hidden]="!derPDev.hasError('pattern')">derPDev ne doit contenir que des nombres.</div>
+                          </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <label for="prixEuro" class="label">prixEuro</label>
+                        <input type="number" nbInput fullWidth class="form-control" #prixEuro="ngModel" id="prixEuro" name="prixEuro" pattern="^[0-9]+(\.[0-9]{1,3})?$" max="999999" min="0" required [(ngModel)]="article.prixEuro"/>
+                        <div style="font-size: 12px;" [hidden]="prixEuro.valid || prixEuro.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!prixEuro.hasError('min')">prixEuro doit étre positive.</div>
+                            <div [hidden]="!prixEuro.hasError('max')">prixEuro ne doit pas dépassé la limite.</div>
+                            <div [hidden]="!prixEuro.hasError('required')">prixEuro est obligatoire.</div>
+                            <div [hidden]="!prixEuro.hasError('pattern')">prixEuro ne doit contenir que des nombres.</div>
+                          </div>
+                    </div>
+                </div>
+            </nb-card-body>
+
+            <div class="row">
+                <div class="col-sm-6"> 
+                    <label for="datRup" class="label">datRup</label>
+                    <input nbInput fullWidth [nbDatepicker]="pickerdatRup" class="form-control" #datRup="ngModel" id="datRup" name="datRup" required [(ngModel)]="article.datRup" />
+                    <nb-datepicker #pickerdatRup></nb-datepicker>
+                    <div style="font-size: 12px;" [hidden]="datRup.valid || datRup.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!datRup.hasError('required')">date up est obligatoire.</div>
+                    </div>
+                </div>
+                <div class="col-sm-6"> 
+                    <label for="datPAch" class="label">datPAch</label>
+                    <input nbInput fullWidth [nbDatepicker]="pickerdatPAch" class="form-control" #datPAch="ngModel" id="datPAch" name="datPAch" required [(ngModel)]="article.datPAch" />
+                    <nb-datepicker #pickerdatPAch></nb-datepicker>
+                    <div style="font-size: 12px;" [hidden]="datPAch.valid || datPAch.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!datPAch.hasError('required')">datPAch est obligatoire.</div>
+                      </div>
+                </div>
+            </div>
+                <nb-card-body>    
+            <div class="row">
+                <div class="col-sm-4"> 
+                    <label for="qutStk" class="label">qutStk</label>
+                    <input type="number" nbInput fullWidth class="form-control" #qutStk="ngModel" id="qutStk" name="qutStk" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.qutStk"/>
+                    <div style="font-size: 12px;" [hidden]="qutStk.valid || qutStk.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!qutStk.hasError('min')">qutStk doit étre positive.</div>
+                        <div [hidden]="!qutStk.hasError('max')">qutStk ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!qutStk.hasError('pattern')">qutStk ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="qutStk2" class="label">qutStk2</label>
+                    <input type="number" nbInput fullWidth class="form-control" #qutStk2="ngModel" id="qutStk2" name="qutStk2" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.qutStk2"/>
+                    <div style="font-size: 12px;" [hidden]="qutStk2.valid || qutStk2.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!qutStk2.hasError('min')">qutStk2 doit étre positive.</div>
+                        <div [hidden]="!qutStk2.hasError('max')">qutStk2 ne doit pas dépassé la limite.</div> 
+                        <div [hidden]="!qutStk2.hasError('pattern')">qutStk2 ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="stkGar" class="label">stkGar</label>
+                    <input type="number" nbInput fullWidth class="form-control" #stkGar="ngModel" id="stkGar" name="stkGar" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.stkGar"/>
+                    <div style="font-size: 12px;" [hidden]="stkGar.valid || stkGar.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!stkGar.hasError('min')">stkGar doit étre positive.</div>
+                        <div [hidden]="!stkGar.hasError('max')">stkGar ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!stkGar.hasError('pattern')">stkGar ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4"> 
+                    <label for="stkIni" class="label">stkIni</label>
+                    <input type="number" nbInput fullWidth class="form-control" #stkIni="ngModel" id="stkIni" name="stkIni" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.stkIni"/>
+                    <div style="font-size: 12px;" [hidden]="stkIni.valid || stkIni.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!stkIni.hasError('min')">stkIni doit étre positive.</div>
+                        <div [hidden]="!stkIni.hasError('max')">stkIni ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!stkIni.hasError('pattern')">stkIni ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="analStk" class="label">analStk</label>
+                    <input type="number" nbInput fullWidth class="form-control" #analStk="ngModel" id="analStk" name="analStk" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.analStk"/>
+                    <div style="font-size: 12px;" [hidden]="analStk.valid || analStk.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!analStk.hasError('min')">analStk doit étre positive.</div>
+                        <div [hidden]="!analStk.hasError('max')">analStk ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!analStk.hasError('pattern')">analStk ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="nbjStk" class="label">nbjStk</label>
+                    <input type="number" nbInput fullWidth class="form-control" #nbjStk="ngModel" id="nbjStk" name="nbjStk" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.nbjStk"/>
+                    <div style="font-size: 12px;" [hidden]="nbjStk.valid || nbjStk.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!nbjStk.hasError('min')">nbjStk doit étre positive.</div>
+                        <div [hidden]="!nbjStk.hasError('max')">nbjStk ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!nbjStk.hasError('pattern')">nbjStk ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+            </div>  
+            
+            <div class="row">
+                <div class="col-sm-4"> 
+                    <label for="vSstk" class="label">vSstk</label>
+                    <input type="number" nbInput fullWidth class="form-control" #vSstk="ngModel" id="vSstk" name="vSstk" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.vSstk"/>
+                    <div style="font-size: 12px;" [hidden]="vSstk.valid || vSstk.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!vSstk.hasError('min')">vSstk doit étre positive.</div>
+                        <div [hidden]="!vSstk.hasError('max')">vSstk ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!vSstk.hasError('pattern')">vSstk ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="comStk" class="label">comStk</label>
+                    <input type="number" nbInput fullWidth class="form-control" #comStk="ngModel" id="comStk" name="comStk" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.comStk"/>
+                    <div style="font-size: 12px;" [hidden]="comStk.valid || comStk.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!comStk.hasError('min')">comStk doit étre positive.</div>
+                        <div [hidden]="!comStk.hasError('max')">comStk ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!comStk.hasError('pattern')">comStk ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="xanalStk" class="label">xanalStk</label>
+                    <input type="number" nbInput fullWidth class="form-control" #xanalStk="ngModel" id="xanalStk" name="xanalStk" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.xanalStk"/>
+                    <div style="font-size: 12px;" [hidden]="xanalStk.valid || xanalStk.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!xanalStk.hasError('min')">xanalStk doit étre positive.</div>
+                        <div [hidden]="!xanalStk.hasError('max')">xanalStk ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!xanalStk.hasError('pattern')">xanalStk ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+            </div> 
+            
+            <div class="row">
+                <div class="col-sm-4"> 
+                    <label for="stkAtrsf" class="label">stkAtrsf</label>
+                    <input type="number" nbInput fullWidth class="form-control" #stkAtrsf="ngModel" id="stkAtrsf" name="stkAtrsf" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.stkAtrsf"/>
+                    <div style="font-size: 12px;" [hidden]="stkAtrsf.valid || stkAtrsf.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!stkAtrsf.hasError('min')">stkAtrsf doit étre positive.</div>
+                        <div [hidden]="!stkAtrsf.hasError('max')">stkAtrsf ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!stkAtrsf.hasError('pattern')">stkAtrsf ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="stkTrsf" class="label">stkTrsf</label>
+                    <input type="number" nbInput fullWidth class="form-control" #stkTrsf="ngModel" id="stkTrsf" name="stkTrsf" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.stkTrsf"/>
+                    <div style="font-size: 12px;" [hidden]="stkTrsf.valid || stkTrsf.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!stkTrsf.hasError('min')">stkTrsf doit étre positive.</div>
+                        <div [hidden]="!stkTrsf.hasError('max')">stkTrsf ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!stkTrsf.hasError('pattern')">stkTrsf ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+                <div class="col-sm-4"> 
+                    <label for="stkNp" class="label">stkNp</label>
+                    <input type="number" nbInput fullWidth class="form-control" #stkNp="ngModel" id="stkNp" name="stkNp" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.stkNp"/>
+                    <div style="font-size: 12px;" [hidden]="stkNp.valid || stkNp.pristine" class="alert alert-danger p-2">
+                        <div [hidden]="!stkNp.hasError('min')">stkNp doit étre positive.</div>
+                        <div [hidden]="!stkNp.hasError('max')">stkNp ne doit pas dépassé la limite.</div>
+                        <div [hidden]="!stkNp.hasError('pattern')">stkNp ne doit contenir que des nombres.</div>
+                      </div>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-sm-4"> 
+                        <label for="stkRes" class="label">stkRes</label>
+                        <input type="number" nbInput fullWidth class="form-control" #stkRes="ngModel" id="stkRes" name="stkRes" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.stkRes"/>
+                        <div style="font-size: 12px;" [hidden]="stkRes.valid || stkRes.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!stkRes.hasError('min')">stkRes doit étre positive.</div>
+                            <div [hidden]="!stkRes.hasError('max')">stkRes ne doit pas dépassé la limite.</div>
+                            <div [hidden]="!stkRes.hasError('pattern')">stkRes ne doit contenir que des nombres.</div>
+                          </div>
+                    </div>
+                    <div class="col-sm-4"> 
+                        <label for="stkReel" class="label">stkReel</label>
+                        <input type="number" nbInput fullWidth class="form-control" #stkReel="ngModel" id="stkReel" name="stkReel" pattern="^(0|[1-9][0-9]*)$" max="99999" min="0" [(ngModel)]="article.stkReel"/>
+                        <div style="font-size: 12px;" [hidden]="stkReel.valid || stkReel.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!stkReel.hasError('min')">stkReel doit étre positive.</div>
+                            <div [hidden]="!stkReel.hasError('max')">stkReel ne doit pas dépassé la limite.</div>
+                            <div [hidden]="!stkReel.hasError('pattern')">stkReel ne doit contenir que des nombres.</div>
+                          </div>
+                    </div>
+                    <div class="col-sm-4"> 
+                    </div>
+                </div> 
+                </nb-card-body>
+            <div class="row">
+                <div class="col-sm-6">    
+                <label for="poste" class="label">Poste</label>
+                <input type="text" nbInput fullWidth id="poste" name="poste" [(ngModel)]="poste" disabled/>
+                </div>
+                <div class="col-sm-6"> 
+                </div>
+            </div> 
+
+
+            <!--
+            liste chainé expide livreur
+            -->
+            <div class="col-sm-6">
+                <button [disabled]=!articleForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                  Modifier l'Article</button>
+                <button nbButton (click)="articleForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+                  Annuler</button> 
+            </div>
+
+
+<!--  PROGRESSIVE  bar  -->
+
+          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+          <p class="p-m-0"> 
+            <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+          </p>
+          </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->
+            </nb-card-body>
+        </nb-card>
+    </form>
+            

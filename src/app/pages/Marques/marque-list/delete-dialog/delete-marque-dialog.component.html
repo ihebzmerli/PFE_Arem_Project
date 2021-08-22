@@ -1,0 +1,10 @@
+<nb-card>
+  <nb-card-body>
+    Etes vous sure de vouloir supprimer cette Marque?
+      Cette suppression va enlévé le models associés a cette Marque...
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="success" (click)="cancel()">Cancel</button>
+    <button class="cancel" nbButton status="danger" (click)="submitDelete()">Supprimer Marque</button>
+  </nb-card-footer>
+</nb-card>

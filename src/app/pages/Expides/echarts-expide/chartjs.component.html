@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>Nombre des expiditions par leur Nature actuellement : {{currentDate}}/{{currentMonth}}/{{currentYear}}</nb-card-header>
+        <nb-card-body>
+          <ngx-chartjs-expide-pie></ngx-chartjs-expide-pie>
+        </nb-card-body>
+      </nb-card>
+  </div>
+  <div class="col-lg-6">
+    <nb-card>
+      <nb-card-header>La nature d'Expedition au cours des année : {{currentDate}}/{{currentMonth}}/{{currentYear}}</nb-card-header>
+      <nb-card-body>
+        <ngx-chartjs-expide-bar></ngx-chartjs-expide-bar>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<div class="col-lg-9">
+  <nb-card>
+    <nb-card-header>Nombre des expiditions par leur Nature actuellement : {{currentDate}}/{{currentMonth}}/{{currentYear}}</nb-card-header>
+    <nb-card-body>
+      <ngx-chartjs-expide-bar-horizontal></ngx-chartjs-expide-bar-horizontal>
+    </nb-card-body>
+  </nb-card>
+</div>

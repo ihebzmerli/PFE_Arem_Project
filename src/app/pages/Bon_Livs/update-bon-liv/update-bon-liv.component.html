@@ -1,0 +1,546 @@
+<div class="accordions-container row offset-sm-2 col-sm-9">
+  <form (ngSubmit) = "onSubmitBon()" #bonLivForm="ngForm">
+    <nb-accordion>
+      <nb-accordion-item #item>
+        <nb-accordion-item-header>
+          <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Bon de Livraison?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../bon-liv-list']"/>
+          <h6>Ajouter Bon De livraison</h6>
+        </nb-accordion-item-header>
+          <nb-accordion-item-body>
+
+              <!--
+                choix fourniseur ou client livreur
+              -->
+
+              <div class="row">
+                  <div class="col-sm-6">
+                    <label for="numBon" class="label">Num BON</label>
+                    <input type="text" nbInput fullWidth class="form-control" #numBon="ngModel" id="numBon" name="numBon" required [(ngModel)]="bonliv.numBon" disabled/>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="datBon" class="label">Date BON</label>
+                    <p>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{bonliv.datBon | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+
+                  </div>  
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-6" *ngIf="bonliv.fournis!=null"> 
+                    <label fullWidth for="codFrs" class="label">Code Fournisseur:</label>
+                    <nb-select fullWidth type="text" #codFrs="ngModel" selected="selectedCodFrs" id="codFrs" name="codFrs" pattern="^[a-zA-Z0-9 ]+$" [(ngModel)]="bonliv.fournis">
+                      <nb-option value="NULL">-Select</nb-option>
+                      <nb-option *ngFor="let items of FournisList" [value]="items.codFrs">{{ items.codFrs }}</nb-option>
+                    </nb-select>
+                    <div style="font-size: 12px;" [hidden]="codFrs.valid || codFrs.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!codFrs.hasError('required')">codFrs est obligatoire.</div>
+                    </div>
+                  </div> 
+                  <div class="col-sm-6" *ngIf="bonliv.adresseCli!=null"> 
+                    <label for="adresseCli" class="label">Adresse Client</label>
+                    <input type="text" nbInput fullWidth class="form-control" #adresseCli="ngModel" id="adresseCli" name="adresseCli" maxlength="50" minlength="6" required [(ngModel)]="bonliv.adresseCli" />
+                    <div style="font-size: 12px;" [hidden]="adresseCli.valid || adresseCli.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!adresseCli.hasError('minlength')">adresseCli doit étre au moin 6 lettres longue.</div>
+                      <div [hidden]="!adresseCli.hasError('maxlength')">adresseCli ne doit pas dépassé les 50 lettres longue.</div>
+                      <div [hidden]="!adresseCli.hasError('required')">adresseCli est obligatoire.</div>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-6" *ngIf="bonliv.numBonFrs!=null"> 
+                    <label for="numBonFrs" class="label">num Bon Frs</label>
+                    <input type="text" nbInput fullWidth class="form-control" #numBonFrs="ngModel" id="numBonFrs" name="numBonFrs" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="bonliv.numBonFrs" />
+                    <div style="font-size: 12px;" [hidden]="numBonFrs.valid || numBonFrs.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!numBonFrs.hasError('minlength')">numBonFrs doit étre au moin 6 lettres longue.</div>
+                      <div [hidden]="!numBonFrs.hasError('maxlength')">numBonFrs ne doit pas dépassé les 50 lettres longue.</div>
+                      <div [hidden]="!numBonFrs.hasError('required')">numBonFrs est obligatoire.</div>
+                      <div [hidden]="!numBonFrs.hasError('pattern')">numBonFrs ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6" *ngIf="bonliv.nomprenomCli!=null"> 
+                    <label for="nomprenomCli" class="label">Code Client</label>
+                    <input type="text" nbInput fullWidth class="form-control" #nomprenomCli="ngModel" id="nomprenomCli" name="nomprenomCli" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="bonliv.nomprenomCli" />
+                    <div style="font-size: 12px;" [hidden]="nomprenomCli.valid || nomprenomCli.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!nomprenomCli.hasError('minlength')">nomprenomCli doit étre au moin 6 lettres longue.</div>
+                      <div [hidden]="!nomprenomCli.hasError('maxlength')">nomprenomCli ne doit pas dépassé les 50 lettres longue.</div>
+                      <div [hidden]="!nomprenomCli.hasError('required')">nomprenomCli est obligatoire.</div>
+                      <div [hidden]="!nomprenomCli.hasError('pattern')">nomprenomCli ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div> 
+
+              </div>   
+
+                    <label for="raison" class="label">raison</label>
+                    <textarea rows="5" nbInput fullWidth shape="round" #raison="ngModel" id="raison" name="raison" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="10" required [(ngModel)]="bonliv.raison" ></textarea>
+                    <div style="font-size: 12px;" [hidden]="raison.valid || raison.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!raison.hasError('minlength')">raison doit étre au moin 10 lettres longue.</div>
+                      <div [hidden]="!raison.hasError('maxlength')">raison ne doit pas dépassé les 200 lettres longue.</div>
+                      <div [hidden]="!raison.hasError('required')">raison est obligatoire.</div>
+                      <div [hidden]="!raison.hasError('pattern')">raison ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label for="brutHt" class="label">brutHt</label>
+                        <input type="number" step="100" nbInput fullWidth class="form-control" #brutHt="ngModel" id="brutHt" name="brutHt" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.brutHt" />
+                        <div style="font-size: 12px;" [hidden]="brutHt.valid || brutHt.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!brutHt.hasError('min')">brutHt doit étre positive.</div>
+                          <div [hidden]="!brutHt.hasError('max')">brutHt ne doit pas dépassé la limite.</div>
+                          <div [hidden]="!brutHt.hasError('required')">brutHt est obligatoire.</div>
+                          <div [hidden]="!brutHt.hasError('pattern')">brutHt ne doit contenir que des nombres.</div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <label for="netHt" class="label">netHt</label>
+                        <input type="number" step="100" nbInput fullWidth class="form-control"  #netHt="ngModel" id="netHt" name="netHt" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.netHt" />
+                        <div style="font-size: 12px;" [hidden]="netHt.valid || netHt.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!netHt.hasError('min')">netHt doit étre positive.</div>
+                          <div [hidden]="!netHt.hasError('max')">netHt ne doit pas dépassé la limite.</div>
+                          <div [hidden]="!netHt.hasError('required')">netHt est obligatoire.</div>
+                          <div [hidden]="!netHt.hasError('pattern')">netHt ne doit contenir que des nombres.</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label for="totTtc" class="label">totTtc</label>
+                        <input type="number" step="100" nbInput fullWidth class="form-control"  #totTtc="ngModel" id="totTtc" name="totTtc" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.totTtc" />
+                        <div style="font-size: 12px;" [hidden]="totTtc.valid || totTtc.pristine" class="alert alert-danger p-2">
+                          <div [hidden]="!totTtc.hasError('min')">totTtc doit étre positive.</div>
+                          <div [hidden]="!totTtc.hasError('max')">totTtc ne doit pas dépassé la limite.</div>
+                          <div [hidden]="!totTtc.hasError('required')">totTtc est obligatoire.</div>
+                          <div [hidden]="!totTtc.hasError('pattern')">totTtc ne doit contenir que des nombres.</div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+
+                      </div>
+                    </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label for="montRem" class="label">montRem</label>
+                    <input type="number" step="10" nbInput fullWidth class="form-control"  #montRem="ngModel" id="montRem" name="montRem" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.montRem" />
+                    <div style="font-size: 12px;" [hidden]="montRem.valid || montRem.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!montRem.hasError('min')">montRem doit étre positive.</div>
+                      <div [hidden]="!montRem.hasError('max')">montRem ne doit pas dépassé la limite.</div>
+                      <div [hidden]="!montRem.hasError('required')">montRem est obligatoire.</div>
+                      <div [hidden]="!montRem.hasError('pattern')">montRem ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6"> 
+                    <label for="montTva" class="label">montTva</label>
+                    <input type="number" step="10" nbInput fullWidth class="form-control"  #montTva="ngModel" id="montTva" name="montTva" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.montTva" />
+                    <div style="font-size: 12px;" [hidden]="montTva.valid || montTva.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!montTva.hasError('min')">montTva doit étre positive.</div>
+                      <div [hidden]="!montTva.hasError('max')">montTva ne doit pas dépassé la limite.</div>
+                      <div [hidden]="!montTva.hasError('required')">montTva est obligatoire.</div>
+                      <div [hidden]="!montTva.hasError('pattern')">montTva ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">   
+                    <label for="numFac" class="label">numFac</label>
+                    <input type="number" nbInput fullWidth class="form-control" #numFac="ngModel" id="numFac" name="numFac" required pattern="^(0|[1-9][0-9]*)$" max="999999" min="0" [(ngModel)]="bonliv.numFac" />
+                    <div style="font-size: 12px;" [hidden]="numFac.valid || numFac.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!numFac.hasError('min')">numFac doit étre positive.</div>
+                      <div [hidden]="!numFac.hasError('max')">numFac ne doit pas dépassé la limite.</div>
+                      <div [hidden]="!numFac.hasError('required')">numFac est obligatoire.</div>
+                      <div [hidden]="!numFac.hasError('pattern')">numFac ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">   
+                    <label for="plusV" class="label">plusV</label>
+                    <input type="number" step="100" nbInput fullWidth class="form-control" #plusV="ngModel" id="plusV" name="plusV" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.plusV" />
+                    <div style="font-size: 12px;" [hidden]="plusV.valid || plusV.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!plusV.hasError('min')">plusV doit étre positive.</div>
+                      <div [hidden]="!plusV.hasError('max')">plusV ne doit pas dépassé la limite.</div>
+                      <div [hidden]="!plusV.hasError('required')">plusV est obligatoire.</div>
+                      <div [hidden]="!plusV.hasError('pattern')">plusV ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">                   
+                    <label for="montTrs" class="label">montTrs</label>
+                    <input type="number" step="10" nbInput fullWidth class="form-control" #montTrs="ngModel" id="montTrs" name="montTrs" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.montTrs" />
+                    <div style="font-size: 12px;" [hidden]="montTrs.valid || montTrs.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!montTrs.hasError('min')">montTrs doit étre positive.</div>
+                      <div [hidden]="!montTrs.hasError('max')">montTrs ne doit pas dépassé la limite.</div>
+                      <div [hidden]="!montTrs.hasError('required')">montTrs est obligatoire.</div>
+                      <div [hidden]="!montTrs.hasError('pattern')">montTrs ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">   
+                    <label for="tauxRes" class="label">tauxRes</label>
+                    <input type="number" step="5" nbInput fullWidth class="form-control" #tauxRes="ngModel" id="tauxRes" name="tauxRes" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.tauxRes" />  
+                    <div style="font-size: 12px;" [hidden]="tauxRes.valid || tauxRes.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!tauxRes.hasError('min')">tauxRes doit étre positive.</div>
+                      <div [hidden]="!tauxRes.hasError('max')">tauxRes ne doit pas dépassé la limite.</div>
+                      <div [hidden]="!tauxRes.hasError('required')">tauxRes est obligatoire.</div>
+                      <div [hidden]="!tauxRes.hasError('pattern')">tauxRes ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label for="montIrpp" class="label">montIrpp</label>
+                    <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #montIrpp="ngModel" id="montIrpp" name="montIrpp" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.montIrpp" />
+                    <div style="font-size: 12px;" [hidden]="montIrpp.valid || montIrpp.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!montIrpp.hasError('min')">montIrpp doit étre positive.</div>
+                      <div [hidden]="!montIrpp.hasError('max')">montIrpp ne doit pas dépassé la limite.</div>
+                      <div [hidden]="!montIrpp.hasError('required')">montIrpp est obligatoire.</div>
+                      <div [hidden]="!montIrpp.hasError('pattern')">montIrpp ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6"> 
+                    <label for="tauxRem" class="label">tauxRem</label>
+                    <input type="number" step="50" nbInput fullWidth class="form-control"  #tauxRem="ngModel" id="tauxRem" name="tauxRem" required pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.tauxRem" />
+                    <div style="font-size: 12px;" [hidden]="tauxRem.valid || tauxRem.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!tauxRem.hasError('min')">tauxRem doit étre positive.</div>
+                      <div [hidden]="!tauxRem.hasError('max')">tauxRem ne doit pas dépassé la limite.</div>
+                      <div [hidden]="!tauxRem.hasError('required')">tauxRem est obligatoire.</div>
+                      <div [hidden]="!tauxRem.hasError('pattern')">tauxRem ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+
+                
+                <div class="row">
+                  <div class="col-sm-6">                 
+                    <label for="command" class="label">COMMAND</label>
+                    <input type="text" nbInput fullWidth class="form-control" #command="ngModel" id="command" name="command" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="bonliv.command" />
+                    <div style="font-size: 12px;" [hidden]="command.valid || command.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!command.hasError('minlength')">command doit étre au moin 6 lettres longue.</div>
+                      <div [hidden]="!command.hasError('maxlength')">command ne doit pas dépassé les 50 lettres longue.</div>
+                      <div [hidden]="!command.hasError('required')">command est obligatoire.</div>
+                      <div [hidden]="!command.hasError('pattern')">command ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>                  
+                  <div class="col-sm-6">   
+                    <label for="liv" class="label">liv</label>
+                    <input type="text" nbInput fullWidth class="form-control" #liv="ngModel" id="liv" name="liv" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="bonliv.liv" />
+                    <div style="font-size: 12px;" [hidden]="liv.valid || liv.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!liv.hasError('minlength')">liv doit étre au moin 6 lettres longue.</div>
+                      <div [hidden]="!liv.hasError('maxlength')">liv ne doit pas dépassé les 50 lettres longue.</div>
+                      <div [hidden]="!liv.hasError('required')">liv est obligatoire.</div>
+                      <div [hidden]="!liv.hasError('pattern')">liv ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+                
+
+                <div class="row">
+                  <div class="col-sm-6"> 
+                    <label for="centre" class="label">centre</label>
+                    <input type="text" nbInput fullWidth class="form-control" #centre="ngModel" id="centre" name="centre" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="bonliv.centre" />
+                    <div style="font-size: 12px;" [hidden]="centre.valid || centre.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!centre.hasError('minlength')">centre doit étre au moin 6 lettres longue.</div>
+                      <div [hidden]="!centre.hasError('maxlength')">centre ne doit pas dépassé les 50 lettres longue.</div>
+                      <div [hidden]="!centre.hasError('required')">centre est obligatoire.</div>
+                      <div [hidden]="!centre.hasError('pattern')">centre ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="codeTva" class="label">codeTva</label>
+                    <input type="text" nbInput fullWidth class="form-control" #codeTva="ngModel" id="codeTva" name="codeTva" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="bonliv.codeTva" />
+                    <div style="font-size: 12px;" [hidden]="codeTva.valid || codeTva.pristine" class="alert alert-danger p-2">
+                      <div [hidden]="!codeTva.hasError('minlength')">codeTva doit étre au moin 6 lettres longue.</div>
+                      <div [hidden]="!codeTva.hasError('maxlength')">codeTva ne doit pas dépassé les 50 lettres longue.</div>
+                      <div [hidden]="!codeTva.hasError('required')">codeTva est obligatoire.</div>
+                      <div [hidden]="!codeTva.hasError('pattern')">codeTva ne doit contenir que des lettres et des nombres.</div>
+                    </div>
+                  </div>
+                </div>  
+                <div class="row">
+                  <div class="col-sm-6">   
+                    <label for="trans_action" class="label">Type Bon Liv</label> 
+                    <nb-select fullWidth selected="NULL" #trans_action="ngModel" id="trans_action" name="trans_action" required [(ngModel)]="bonliv.trans_action" >
+                      <nb-option value="0">-Select-</nb-option>
+                      <nb-option value="recu">Reçu</nb-option>
+                      <nb-option value="envoyer">Envoyer</nb-option>
+                      </nb-select>
+                  </div>
+                  <div class="col-sm-6"> 
+                  </div>
+                </div>  
+                <div class="row">
+                  <div class="col-sm-6">    
+                    <label for="poste" class="label">Poste</label>
+                    <input type="text" nbInput fullWidth #poste="ngModel" id="poste" name="poste" required [(ngModel)]="bonliv.poste" disabled/>
+                  </div>
+                  <div class="col-sm-6"> 
+                  </div>
+                </div> 
+              <!--
+                liste chainé expide livreur
+              -->
+          </nb-accordion-item-body>
+        </nb-accordion-item>
+    
+  
+        <nb-accordion-item>
+          <nb-accordion-item-header>
+            <h6>XBASES & XTVAS</h6>
+          </nb-accordion-item-header>
+          <nb-accordion-item-body>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase10" class="label">xbase10</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase10="ngModel" id="xbase10" name="xbase10" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase10" />
+                  <div style="font-size: 12px;" [hidden]="xbase10.valid || xbase10.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase10.hasError('min')">xbase10 doit étre positive.</div>
+                    <div [hidden]="!xbase10.hasError('max')">xbase10 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase10.hasError('pattern')">xbase10 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva10" class="label">xtva10</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva10="ngModel" id="xtva10" name="xtva10" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva10" />
+                  <div style="font-size: 12px;" [hidden]="xtva10.valid || xtva10.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva10.hasError('min')">xtva10 doit étre positive.</div>
+                    <div [hidden]="!xtva10.hasError('max')">xtva10 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva10.hasError('pattern')">xtva10 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase17" class="label">xbase17</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase17="ngModel" id="xbase17" name="xbase17" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase17" />
+                  <div style="font-size: 12px;" [hidden]="xbase17.valid || xbase17.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase17.hasError('min')">xbase17 doit étre positive.</div>
+                    <div [hidden]="!xbase17.hasError('max')">xbase17 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase17.hasError('pattern')">xbase17 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva17" class="label">xtva17</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva17="ngModel" id="xtva17" name="xtva17" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva17" />
+                  <div style="font-size: 12px;" [hidden]="xtva17.valid || xtva17.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva17.hasError('min')">xtva17 doit étre positive.</div>
+                    <div [hidden]="!xtva17.hasError('max')">xtva17 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva17.hasError('pattern')">xtva17 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>   
+              </div>    
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase7" class="label">xbase7</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase7="ngModel" id="xbase7" name="xbase7" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase7" />
+                  <div style="font-size: 12px;" [hidden]="xbase7.valid || xbase7.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase7.hasError('min')">xbase7 doit étre positive.</div>
+                    <div [hidden]="!xbase7.hasError('max')">xbase7 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase7.hasError('pattern')">xbase7 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva7" class="label">xtva7</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva7="ngModel" id="xtva7" name="xtva7" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva7" />
+                  <div style="font-size: 12px;" [hidden]="xtva7.valid || xtva7.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva7.hasError('min')">xtva7 doit étre positive.</div>
+                    <div [hidden]="!xtva7.hasError('max')">xtva7 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva7.hasError('pattern')">xtva7 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase29" class="label">xbase29</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase29="ngModel" id="xbase29" name="xbase29" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase29" />
+                  <div style="font-size: 12px;" [hidden]="xbase29.valid || xbase29.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase29.hasError('min')">xbase29 doit étre positive.</div>
+                    <div [hidden]="!xbase29.hasError('max')">xbase29 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase29.hasError('pattern')">xbase29 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva29" class="label">xtva29</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva29="ngModel" id="xtva29" name="xtva29" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva29" />
+                  <div style="font-size: 12px;" [hidden]="xtva29.valid || xtva29.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva29.hasError('min')">xtva29 doit étre positive.</div>
+                    <div [hidden]="!xtva29.hasError('max')">xtva29 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva29.hasError('pattern')">xtva29 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase36" class="label">xbase36</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase36="ngModel" id="xbase36" name="xbase36" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase36" />
+                  <div style="font-size: 12px;" [hidden]="xbase36.valid || xbase36.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase36.hasError('min')">xbase36 doit étre positive.</div>
+                    <div [hidden]="!xbase36.hasError('max')">xbase36 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase36.hasError('pattern')">xbase36 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva36" class="label">xtva36</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva36="ngModel" id="xtva36" name="xtva36" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva36" />
+                  <div style="font-size: 12px;" [hidden]="xtva36.valid || xtva36.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva36.hasError('min')">xtva36 doit étre positive.</div>
+                    <div [hidden]="!xtva36.hasError('max')">xtva36 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva36.hasError('pattern')">xtva36 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase6" class="label">xbase6</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase6="ngModel" id="xbase6" name="xbase6" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase6" />
+                  <div style="font-size: 12px;" [hidden]="xbase6.valid || xbase6.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase6.hasError('min')">xbase6 doit étre positive.</div>
+                    <div [hidden]="!xbase6.hasError('max')">xbase6 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase6.hasError('pattern')">xbase6 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva6" class="label">xtva6</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva6="ngModel" id="xtva6" name="xtva6" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva6" />
+                  <div style="font-size: 12px;" [hidden]="xtva6.valid || xtva6.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva6.hasError('min')">xtva6 doit étre positive.</div>
+                    <div [hidden]="!xtva6.hasError('max')">xtva6 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva6.hasError('pattern')">xtva6 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>   
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase21" class="label">xbase21</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase21="ngModel" id="xbase21" name="xbase21" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase21" />
+                  <div style="font-size: 12px;" [hidden]="xbase21.valid || xbase21.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase21.hasError('min')">xbase21 doit étre positive.</div>
+                    <div [hidden]="!xbase21.hasError('max')">xbase21 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase21.hasError('pattern')">xbase21 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva21" class="label">xtva21</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva21="ngModel" id="xtva21" name="xtva21" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva21" />
+                  <div style="font-size: 12px;" [hidden]="xtva21.valid || xtva21.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva21.hasError('min')">xtva21 doit étre positive.</div>
+                    <div [hidden]="!xtva21.hasError('max')">xtva21 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva21.hasError('pattern')">xtva21 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase19" class="label">xbase19</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase19="ngModel" id="xbase19" name="xbase19" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase19" />
+                  <div style="font-size: 12px;" [hidden]="xbase19.valid || xbase19.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase19.hasError('min')">xbase19 doit étre positive.</div>
+                    <div [hidden]="!xbase19.hasError('max')">xbase19 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase19.hasError('pattern')">xbase19 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6"> 
+                  <label for="xtva19" class="label">xtva19</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva19="ngModel" id="xtva19" name="xtva19" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva19" />
+                  <div style="font-size: 12px;" [hidden]="xtva19.valid || xtva19.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva19.hasError('min')">xtva19 doit étre positive.</div>
+                    <div [hidden]="!xtva19.hasError('max')">xtva19 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva19.hasError('pattern')">xtva19 ne doit contenir que des nombres.</div>
+                  </div>
+                </div> 
+              </div>
+              <div class="row">
+                <div class="col-sm-6"> 
+                  <label for="xbase12" class="label">xbase12</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase12="ngModel" id="xbase12" name="xbase12" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase12" />
+                  <div style="font-size: 12px;" [hidden]="xbase12.valid || xbase12.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase12.hasError('min')">xbase12 doit étre positive.</div>
+                    <div [hidden]="!xbase12.hasError('max')">xbase12 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase12.hasError('pattern')">xbase12 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6"> 
+                  <label for="xtva12" class="label">xtva12</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva12="ngModel" id="xtva12" name="xtva12" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva12" />
+                  <div style="font-size: 12px;" [hidden]="xtva12.valid || xtva12.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva12.hasError('min')">xtva12 doit étre positive.</div>
+                    <div [hidden]="!xtva12.hasError('max')">xtva12 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva12.hasError('pattern')">xtva12 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase13" class="label">xbase13</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase13="ngModel" id="xbase13" name="xbase13" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase13" />
+                  <div style="font-size: 12px;" [hidden]="xbase13.valid || xbase13.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase13.hasError('min')">xbase13 doit étre positive.</div>
+                    <div [hidden]="!xbase13.hasError('max')">xbase13 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase13.hasError('pattern')">xbase13 ne doit contenir que des nombres.</div>
+                  </div>
+                </div> 
+                <div class="col-sm-6">
+                  <label for="xtva13" class="label">xtva13</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva13="ngModel" id="xtva13" name="xtva13" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva13" />
+                  <div style="font-size: 12px;" [hidden]="xtva13.valid || xtva13.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva13.hasError('min')">xtva13 doit étre positive.</div>
+                    <div [hidden]="!xtva13.hasError('max')">xtva13 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva13.hasError('pattern')">xtva13 ne doit contenir que des nombres.</div>
+                  </div>
+                </div> 
+              </div>    
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase7A" class="label">xbase7A</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase7A="ngModel" id="xbase7A" name="xbase7A" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase7A" />
+                  <div style="font-size: 12px;" [hidden]="xbase7A.valid || xbase7A.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase7A.hasError('min')">xbase7A doit étre positive.</div>
+                    <div [hidden]="!xbase7A.hasError('max')">xbase7A ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase7A.hasError('pattern')">xbase7A ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="xtva7A" class="label">xtva7A</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xtva7A="ngModel" id="xtva7A" name="xtva7A" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xtva7A" />
+                  <div style="font-size: 12px;" [hidden]="xtva7A.valid || xtva7A.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xtva7A.hasError('min')">xtva7A doit étre positive.</div>
+                    <div [hidden]="!xtva7A.hasError('max')">xtva7A ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xtva7A.hasError('pattern')">xtva7A ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="xbase0" class="label">xbase0</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" class="form-control" #xbase0="ngModel" id="xbase0" name="xbase0" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="bonliv.xbase0" />
+                  <div style="font-size: 12px;" [hidden]="xbase0.valid || xbase0.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!xbase0.hasError('min')">xbase0 doit étre positive.</div>
+                    <div [hidden]="!xbase0.hasError('max')">xbase0 ne doit pas dépassé la limite.</div>
+                    <div [hidden]="!xbase0.hasError('pattern')">xbase0 ne doit contenir que des nombres.</div>
+                  </div>
+                </div>
+              </div> 
+
+
+<!--  PROGRESSIVE  bar  -->
+
+          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+            [draggable]="false" [resizable]="false">
+            <p class="p-m-0"> 
+              <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+            </p>
+          </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->
+
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+        <div class="col-sm-6">
+          <button [disabled]=!bonLivForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+            Modifier le bon de livraison</button>
+          <button nbButton (click)="bonLivForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+            Annuler</button> 
+        </div>
+  </form>
+</div>
