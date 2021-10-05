@@ -3,7 +3,7 @@
     <nb-card-header>
       Bon de Preparation table
       <nb-card-body>
-        <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" class="border">
+        <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" class="border">
             <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
             <i class="fa fa-user"></i>Statistiques</button>
 
@@ -24,21 +24,41 @@
             <th style="text-align: center">
               <label class="label">NUM_BON_PREP</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search NumBon"
+                <input type="text" nbInput class="form-control" placeholder="search NumBon"
                 style="width:135px" [(ngModel)]="searchTermNumBon" />
               </div>
             </th>
             <th style="text-align: center">
-              <label class="label">DAT_BON</label>
+              <label class="label">DAT_BON
+                <button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+              </label>
               <div class="form-group">
-                <button (click)="openWindowForm()" class="btn btn-md btn-outline-primary">
-                  Recherche date</button>  
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate"
+                  [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker></nb-datepicker>
+                </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate"
+                  [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest></nb-datepicker>
+                </div> 
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">COD_CLI</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search CodCli"
+                <input type="text" nbInput class="form-control" placeholder="search CodCli"
                 style="width:135px" [(ngModel)]="searchTermCodCli" />
               </div>
             </th>
@@ -63,84 +83,84 @@
             <th style="text-align: center">
               <label class="label">RAISON</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Raison"
+                <input type="text" nbInput class="form-control" placeholder="search Raison"
                 style="width:135px" [(ngModel)]="searchTermRaison" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">BRUT_HT</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Brut_Ht"
+                <input type="text" nbInput class="form-control" placeholder="search Brut_Ht"
                 style="width:135px" [(ngModel)]="searchTermBrutHt" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">TAUX_REM</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Taux_Rem"
+                <input type="text" nbInput class="form-control" placeholder="search Taux_Rem"
                 style="width:135px" [(ngModel)]="searchTermTauxRem" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">MONT_REM</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Mont_Rem"
+                <input type="text" nbInput class="form-control" placeholder="search Mont_Rem"
                 style="width:135px" [(ngModel)]="searchTermMontRem" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">NET_HT</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Net_Ht"
+                <input type="text" nbInput class="form-control" placeholder="search Net_Ht"
                 style="width:135px" [(ngModel)]="searchTermNetHt" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">MONT_TVA</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Mont_Tva"
+                <input type="text" nbInput class="form-control" placeholder="search Mont_Tva"
                 style="width:135px" [(ngModel)]="searchTermMontTva" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">TOT_TTC</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Tot_Ttc"
+                <input type="text" nbInput class="form-control" placeholder="search Tot_Ttc"
                 style="width:135px" [(ngModel)]="searchTermTotTtc" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">PLUS_V</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Plus_V"
+                <input type="text" nbInput class="form-control" placeholder="search Plus_V"
                 style="width:135px" [(ngModel)]="searchTermPlusV" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">TAUX_RES</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Taux_Res"
+                <input type="text" nbInput class="form-control" placeholder="search Taux_Res"
                 style="width:135px" [(ngModel)]="searchTermTauxRes" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">MONT_TRS</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Mont_Trs"
+                <input type="text" nbInput class="form-control" placeholder="search Mont_Trs"
                 style="width:135px" [(ngModel)]="searchTermMontTrs" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">LIV</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Liv"
+                <input type="text" nbInput class="form-control" placeholder="search Liv"
                 style="width:135px" [(ngModel)]="searchTermLiv" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">POINTAGE</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Pointage"
+                <input type="text" nbInput class="form-control" placeholder="search Pointage"
                 style="width:135px" [(ngModel)]="searchTermPointage" />
               </div>
             </th>
@@ -156,56 +176,56 @@
             <th style="text-align: center">
               <label class="label">NAT_DOC</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Nat_Doc"
+                <input type="text" nbInput class="form-control" placeholder="search Nat_Doc"
                 style="width:135px" [(ngModel)]="searchTermNatDoc" />
               </div>
             </th> 
             <th style="text-align: center">
               <label class="label">CODE_TVA</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Code_Tva"
+                <input type="text" nbInput class="form-control" placeholder="search Code_Tva"
                 style="width:135px" [(ngModel)]="searchTermCodeTva" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">ADRESSE</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Adresse"
+                <input type="text" nbInput class="form-control" placeholder="search Adresse"
                 style="width:135px" [(ngModel)]="searchTermAdresse" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">POINT</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Point"
+                <input type="text" nbInput class="form-control" placeholder="search Point"
                 style="width:135px" [(ngModel)]="searchTermPoint" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">AIDE_MAG</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Aide_Mag"
+                <input type="text" nbInput class="form-control" placeholder="search Aide_Mag"
                 style="width:135px" [(ngModel)]="searchTermAideMag" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">EMBAL</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Embal"
+                <input type="text" nbInput class="form-control" placeholder="search Embal"
                 style="width:135px" [(ngModel)]="searchTermEmbal" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">POSTE</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Poste"
+                <input type="text" nbInput class="form-control" placeholder="search Poste"
                 style="width:135px" [(ngModel)]="searchTermPoste" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">CENTRE</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Centre"
+                <input type="text" nbInput class="form-control" placeholder="search Centre"
                 style="width:135px" [(ngModel)]="searchTermCentre" />
               </div>
             </th>
@@ -221,14 +241,14 @@
                 </nb-select>
               </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="text-align: center">
               <label class="label">Nom&Prenom respensable Bon</label>
               <div class="form-group">
               <nb-select style="width:170px" id="listitemsAgents" [(ngModel)]="_searchTermMarquee" fullWidth fieldSize="small" (selectedChange)="getAllListItemsAgents($event)" [ngModelOptions]="{standalone: true}">
                   <nb-option [value]="">-Annuler Filter-</nb-option>
                   <nb-option *ngFor="let itemsAgents of agents" [value]="itemsAgents.firstname">
                     <span *ngIf="itemsAgents.firstname!==null || itemsAgents.lastname!==null || itemsAgents.codUser!==null">
-                      <img src="{{this.utilisateurService.host+'/api/ImgUsers/'+itemsAgents.codUser}}" width="32" style="vertical-align: middle" alt=""/>
+                      <img src="{{this.utilisateurService.host+'/'+itemsAgents.codUser+'/'+itemsAgents.fileName}}" width="32" style="vertical-align: middle" alt=""/>
                       <span class="p-ml-1"><b>{{itemsAgents.firstname}}</b>&nbsp;<b>{{itemsAgents.lastname}}</b></span>
                     </span>
                   </nb-option>  
@@ -236,7 +256,7 @@
 
               </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="text-align: center">
               <label class="label">Post respensable Bon</label>
               <div class="form-group">
                 <nb-select style="width:170px" id="listitemsRoles" [(ngModel)]="_searchTermRole" fullWidth fieldSize="small" (selectedChange)="getAllListItemsRoles($event)" [ngModelOptions]="{standalone: true}">
@@ -320,15 +340,15 @@
             <td *ngIf="bonprep.aven_tage=='sur_un_delay'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:darkgreen;">Preparation prend de temp</div></span></td>
             <td *ngIf="bonprep.aven_tage=='n_existe_pas'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:darkgray;">Preparation n'est pas definie</div></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="text-align: center" class="field-multiple-drag"><span>
               <div *ngIf="bonprep.user!==null">
-              <a><img (click)="showModalDialogUser(bonprep.user.id)" width="40" style="vertical-align: middle" src="{{this.utilisateurService.host+'/api/Imgusers/'+bonprep.user.id}}" [alt]="bonprep.user.codUser"/></a>
+              <a><img (click)="showModalDialogUser(bonprep.user.id)" width="40" style="vertical-align: middle" src="{{this.utilisateurService.host+'/'+bonprep.user.codUser+'/'+bonprep.user.fileName}}" [alt]="bonprep.user.codUser"/></a>
                 <span class="image-text"><p>{{bonprep.user.lastname}}&nbsp;{{bonprep.user.firstname}}</p></span>
                 <div *ngIf="displayModalUser==true">
 
-                  <p-dialog header="{{util.lastname}} {{util.firstname}}" [(visible)]="displayModalUser" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  <p-dialog *ngIf="util" header="{{util.lastname}} {{util.firstname}}" [(visible)]="displayModalUser" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                   [draggable]="false" [resizable]="false">
-                  <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+image_id}}" [alt]="util.codUser" style="width:250px" class="article-image" /></p>
+                  <p class="p-m-0"><img src="{{this.utilisateurService.host+'/'+util.codUser+'/'+util.fileName}}" [alt]="util.codUser" style="width:250px" class="article-image" /></p>
                       
                   <div>
                     <li>                        
@@ -378,7 +398,7 @@
               </div>
             </span>
             </td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="text-align: center">
               <div style="text-align: center" class="field-multiple-drag">
                 <div *ngIf="bonprep.user!=null">
                   <span *ngIf="bonprep.user.roles[0].name=='ROLE_ACHETEUR'"><p>Acheteur</p></span>
@@ -416,7 +436,7 @@
                   <button (click)="openWindowXbaseXtva(bonprep.numBon)" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [shape]="semi-round" [size]="medium" [status]="primary" class="btn btn-md btn-outline-primary" outline>
                     XBASE & XTVA</button>
                 </div>
-                <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_DECIDEUR_BP')" class="form-groupe">
+                <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR' || authority==='ROLE_PREPARATEUR' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_DECIDEUR_BP'" class="form-groupe">
                   <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(bonprep.numBon)" outline>
                     <i class="fa fa-edit"></i>Modifier</button>
                   <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(bonprep.numBon)" outline>
@@ -435,7 +455,7 @@
     <nb-card-body>
       <div *ngIf="previewTableAllBonprepExcelPdf">
           <p-table #dt [columns]="cols" [value]="filteredBonPreps" selectionMode="multiple" [(selection)]="selectedBonpreps"
-          dataKey="numBon" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+          dataKey="numBon" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" class="p-tableCss" styleClass="p-datatable-customers p-datatable-gridlines"
           [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
           [globalFilterFields]="['numBon','codFrs.codFrs','codFrs.raison','datBon','raison','brutHt','tauxRem','montRem','netHt',
           'montTva','tauxRes','totTtc','montTrs','liv','command','pointage','natLiv','natDoc','codeTva','adresse','aideMag',
@@ -548,7 +568,7 @@
                                   <p-multiSelect [ngModel]="value" [options]="agentsPrep" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                       <ng-template let-option pTemplate="item">
                                           <div class="p-multiselect-representative-option">
-                                              <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                              <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                               <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                           </div>
                                       </ng-template>
@@ -591,7 +611,7 @@
                                   <p-multiSelect [ngModel]="value" [options]="agents" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                       <ng-template let-option pTemplate="item">
                                           <div class="p-multiselect-representative-option">
-                                              <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                              <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                               <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                           </div>
                                       </ng-template>
@@ -717,13 +737,13 @@
                       <div style="text-align: center" class="field-multiple-drag" *ngIf="col.field=='user' && col.header=='Nom&Prenom respensable Bon'">
                         
                         <div *ngIf="rowData[col.field]!==null">
-                          <img  (click)="showModalDialogUserTable2(rowData[col.field].id)" src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" width="32" style="vertical-align: middle" />
+                          <img  (click)="showModalDialogUserTable2(rowData[col.field].id)" src="{{this.utilisateurService.host+'/'+rowData[col.field].codUser+'/'+rowData[col.field].fileName}}" width="32" style="vertical-align: middle" />
                           <span class="image-text"><p>{{rowData[col.field].lastname}}&nbsp;{{rowData[col.field].firstname}}</p></span>
 
                           <div *ngIf="displayModalUserTable2==true">
                             <p-dialog header="{{util2.lastname}} {{util2.firstname}}" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                             [draggable]="false" [resizable]="false">
-                            <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+image_id2}}" style="width:150px;height: 180px;" class="article-image" /></p>
+                            <p class="p-m-0"><img src="{{this.utilisateurService.host+'/'+util2.codUser+'/'+util2.fileName}}" style="width:150px;height: 180px;" class="article-image" /></p>
                                 
                             <div>
                               <li>                        
@@ -804,7 +824,7 @@
                         <button (click)="openWindowXbaseXtva(rowData[col.field])" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [shape]="semi-round" size="small" [status]="primary" class="btn btn-md btn-outline-primary" outline>
                           XBASE & XTVA</button>
                       </div>
-                      <div *ngIf="col.header=='Actions' && col.field=='numBon' && authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')">
+                      <div *ngIf="col.header=='Actions' && col.field=='numBon' && (authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR' || authority==='ROLE_PREPARATEUR' || authority==='ROLE_PREPARATEUR_BR' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP')">
                         <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" size="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(rowData[col.field])" outline>
                           <i class="fa fa-edit"></i>Modifier</button>
                         <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" size="small" [status]="danger" (click)="OpenDeletePopap(rowData[col.field])" outline>

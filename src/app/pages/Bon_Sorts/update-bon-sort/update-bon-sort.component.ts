@@ -6,6 +6,10 @@ import { NbComponentStatus, NbGlobalLogicalPosition, NbGlobalPhysicalPosition, N
 import { delay } from 'rxjs/operators';
 import { TokenStorageService } from '../../auth/token-storage.service';
 import { PagesComponent } from '../../pages.component';
+import { Utilisateur } from '../../Utilisateurs/utilisateur';
+import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
+import { Vehicule } from '../../Vehicules/vehicule';
+import { VehiculeService } from '../../Vehicules/vehicule.service';
 import { Bon_sort } from '../bon-sort';
 import { BonSortService } from '../bon-sort.service';
 
@@ -20,8 +24,10 @@ export class UpdateBonSortComponent implements OnInit {
   bonsort: Bon_sort = new Bon_sort();
   bonsortGet: Bon_sort;
   submitted = false;
+  userPost: Utilisateur;
+poste: any;
   constructor(private authService: TokenStorageService,private toastrService: NbToastrService,private formBuilder: FormBuilder,public datepipe: DatePipe,private route: ActivatedRoute,private router: Router,
-    private bonsortService: BonSortService) { }
+    private bonsortService: BonSortService,public vehiculeService:VehiculeService,public utilisateurService:UtilisateurService) { }
 
 
     delay(ms: number) {
@@ -29,24 +35,36 @@ export class UpdateBonSortComponent implements OnInit {
     }
     
   ngOnInit() {
-    
+    this.getVehicules();
     this.bonsort = new Bon_sort();
     this.numBon = this.route.snapshot.params['numBon'];
     
+    this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {
+      this.utilisateurService.getUtilisateur(data1.toString()).subscribe(data => {
+        this.userPost = data;
+        this.poste = this.userPost.firstname+' '+this.userPost.lastname;
+        this.bonsort.user = this.userPost;
+
+
     this.bonsortService.getBon_sort(this.numBon).subscribe(data => {
         console.log(data)
         this.bonsort = data;
-      }, error => console.log(error));      
+        this.bonsort.datBon = new Date(Date().toLocaleString());
+        this.bonsort.datBon.setMinutes(this.bonsort.datBon.getMinutes() + this.bonsort.datBon.getTimezoneOffset() + 120);
+      }, error => console.log(error));   
+    }, error => console.log(error));
+  }, error => console.log(error));   
   }
   
     async onSubmitBon() {
 
       this.updateBon_sort();
-      await this.showModalDialogBarProgression();
       this.makeToast(); 
+      await this.showModalDialogBarProgression();
       this.bon_sort_list();
     } 
     updateBon_sort(){
+      this.bonsort.poste =this.poste;
       console.log(this.bonsort);
       this.bonsortService.updateBon_sort(this.numBon,this.bonsort).subscribe(data => {
         console.log(data);
@@ -146,22 +164,31 @@ displayModalBarProgression: boolean;
   this.progress=0;
   this.displayModalBarProgression = true;
   this.makeToast5();
-  await this.delay(1000);
+  await this.delay(500);
   this.progress=15;
-  await this.delay(1000);
+  await this.delay(500);
   this.progress=37;
-  await this.delay(1000);
+  await this.delay(500);
   this.progress=62;
-  await this.delay(1000);
+  await this.delay(500);
   this.progress=87;
-  await this.delay(1000);
+  await this.delay(500);
   this.progress=99;
   await this.delay(500);
   this.progress=100;
-  this.delay(1500);
   this.displayModalBarProgression=false;
 }
 
 
 /**end progression bar */
+
+VehiculeList: Vehicule[];
+private getVehicules(){
+  this.vehiculeService.getVehiculesList().subscribe(data => {
+    this.VehiculeList = data;
+  });
+}
+
+
+/** end add of a chariot to the bon sortie */
 }

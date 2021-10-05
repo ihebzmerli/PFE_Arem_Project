@@ -1,27 +1,66 @@
-<!--
-<div class="row">
-    <div class="col-lg-6">
-      <nb-card>
-        <nb-card-header>detail De Emmbalage</nb-card-header>
-        <nb-card-body>
-          <div class="full-name-inputs">
-            <input type="text" nbInput fullWidth id="id" name="id" required [(ngModel)]="detemba.id" disabled/>
+<div class="accordions-container row offset-sm-2 col-sm-11">
+  <form (ngSubmit) = "onSubmitDetemba()" #detembaForm="ngForm">
+    <nb-card>
+      <nb-card-header>
+        <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Emballage?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../det-emba-list']"/>
+        <h6>Modifier Emballage</h6>
+      </nb-card-header>
+        <nb-card-body>    
+          <div class="row"> 
+            <p class="col-sm-6">
+              <label for="Date_de_création" class="label">Date de création</label> 
+              <input type="text" nbInput fullWidth class="form-control" #dateEmba="ngModel" id="dateEmba" name="dateEmba" required [(ngModel)]="detemba.dateEmba" disabled/></p> 
+          </div>    
+          <div class="row">
+              <div class="col-sm-6"> 
+                <label for="num" class="label">typ Embalage</label> 
+                <nb-select fullWidth #typEmba="ngModel" id="typEmba" name="typEmba" required [(ngModel)]="detemba.typEmba" >
+                  <nb-option value="NULL">-Select</nb-option>
+                  <nb-option *ngFor="let itemsTypEmba of TypEmbaList" [value]="itemsTypEmba.value"><span>{{ itemsTypEmba.label }}</span></nb-option>
+                </nb-select>
+                <div style="font-size: 12px;" [hidden]="typEmba.valid || typEmba.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!typEmba.hasError('required')">type Emba est obligatoire.</div>
+                </div>
+              </div>
+              <div class="col-sm-6"> 
+                <label for="qut" class="label">qut</label> 
+                <input type="number" nbInput fullWidth placeholder="Quantité" class="form-control" #qut="ngModel" id="qut" name="qut" max="50" min="6" required [(ngModel)]="detemba.qut"  />
+                <div style="font-size: 12px;" [hidden]="qut.valid || qut.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!qut.hasError('minlength')">Qutantité doit étre au moin 6 lettres longue.</div>
+                  <div [hidden]="!qut.hasError('maxlength')">Qutantité ne doit pas dépassé les 50 lettres longue.</div>
+                  <div [hidden]="!qut.hasError('required')">Qutantité est obligatoire.</div>
+                </div>
+              </div>
           </div>
-          <input type="text" nbInput fullWidth id="NUM_BON" name="NUM_BON" required [(ngModel)]="detemba.NUM_BON">
-          <input type="text" nbInput fullWidth id="NUM_COM" name="NUM_COM" required [(ngModel)]="detemba.NUM_COM">
-          <input type="text" nbInput fullWidth id="NUM" name="NUM" required [(ngModel)]="detemba.NUM" disabled/>
-          <input type="text" nbInput fullWidth id="COD_ART" name="COD_ART" required [(ngModel)]="detemba.COD_ART">
-          <textarea rows="5" nbInput fullWidth shape="round" id="DES_ART" name="DES_ART" required [(ngModel)]="detemba.DES_ART"></textarea>
-          <input type="text" nbInput fullWidth id="QUT" name="QUT" required [(ngModel)]="detemba.QUT">
-        </nb-card-body>
-      </nb-card>
-    </div>
-    <div class="col-lg-6">
-        <nb-card>
-          <nb-card-header>state</nb-card-header>
-          <nb-card-body>
-          </nb-card-body>
-        </nb-card>      
-    </div>
+          <div class="row">
+              <div class="col-sm-6"> 
+                <label for="bonprep_detEmbas" class="label">Bon préparation</label>
+                <nb-select fullWidth #bonprep_detEmbas="ngModel" [(selected)]="BonPPSelected" required [(ngModel)]="detemba.bonprep_detEmbas" >
+                  <nb-option value="NULL">-Select</nb-option>
+                  <nb-option *ngFor="let itemsBon of BonPrepList" [value]="itemsBon"><span>Bon: {{ itemsBon.numBon }}</span></nb-option>
+                </nb-select>
+              </div>
+              <div class="col-sm-6">    
+                <label for="poste" class="label">Poste</label>
+                <input type="text" nbInput fullWidth placeholder="Poste" id="poste" name="poste" [(ngModel)]="poste" disabled/>
+              </div>
+          </div>
+      </nb-card-body>
+    </nb-card>
+      <button [disabled]=!detembaForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+        Modifier Emballage</button>
+      <button nbButton (click)="detembaForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+        Annuler</button> 
+  </form>
 </div>
--->
+
+<!--  PROGRESSIVE  bar  -->
+
+  <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+  [draggable]="false" [resizable]="false">
+  <p class="p-m-0"> 
+    <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+  </p>
+  </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->

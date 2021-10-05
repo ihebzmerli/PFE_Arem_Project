@@ -15,10 +15,10 @@
         </div>
         <p>table  des Articles appartient a la preparation</p>
         <p-table #dt1 [value]="artpreps" dataKey="id"
-            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" class="p-tableCss" styleClass="p-datatable-customers p-datatable-gridlines"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [globalFilterFields]="['codArt','qutLiv','remise','prixHt','tva','totHt','marge','cumulRet','prixAch','qutPrep','nonTrouve','datPrep','remExp','etage2',
-            'chrono','prep','prepara','avPrep','qutPoint','poste','centre','artprep_chariot.numChar','artprep_chariot.callChariot']">
+            'chrono','prep','prepara.firstname','avPrep','qutPoint','poste','centre','artprep_chariot.numChar','artprep_chariot.callChariot']">
             <ng-template pTemplate="caption">
                 <div class="p-d-flex">
                     <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
@@ -40,9 +40,10 @@
                     </th>
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
-                        Quantité 
+                        Quantité à livrer
                           <div>
                             <p-columnFilter type="numeric" field="qutLiv" display="menu"></p-columnFilter>
+                            <sup style="color: blueviolet;">(Modifier)</sup>
                           </div>
                       </div>
                     </th>
@@ -51,6 +52,7 @@
                         Remise 
                         <div>
                           <p-columnFilter type="numeric" field="remise" display="menu" currency="TND"></p-columnFilter>
+                          <sup style="color: blueviolet;">(Modifier)</sup>
                         </div>
                       </div>
                     </th>  
@@ -92,6 +94,7 @@
                         Cumul Ret
                         <div>
                           <p-columnFilter type="numeric" field="cumulRet" display="menu" currency="TND"></p-columnFilter>
+                          <sup style="color: blueviolet;">(Modifier)</sup>
                         </div>
                       </div>
                     </th> 
@@ -129,7 +132,7 @@
                                 </p-dropdown>
                             </ng-template>
                           </p-columnFilter>
-
+                          <sup style="color: blueviolet;">(Modifier)</sup>
                         </div>
                       </div>
                     </th> 
@@ -146,6 +149,7 @@
                         Rem Exp
                         <div>
                           <p-columnFilter type="numeric" field="remExp" display="menu"></p-columnFilter>
+                          <sup style="color: blueviolet;">(Modifier)</sup>
                         </div>
                       </div>
                     </th>
@@ -154,6 +158,7 @@
                         Etage2
                         <div>
                           <p-columnFilter type="text" field="etage2" display="menu"></p-columnFilter>
+                          <sup style="color: blueviolet;">(Modifier)</sup>
                         </div>
                       </div>
                     </th> 
@@ -167,10 +172,18 @@
                     </th>
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
-                        Prep
+                        Velidateur chariot
+                        <div>
+                          <p-columnFilter field="prep" type="numeric" display="menu" ></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Prepara
                         <div>
                           
-                          <p-columnFilter field="prep" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                          <p-columnFilter field="prepara" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
                             <ng-template pTemplate="header">
                                 <div class="p-px-3 p-pt-3 p-pb-0">
                                     <span class="p-text-bold">Choix Preparateur</span>
@@ -180,39 +193,14 @@
                                 <p-multiSelect [ngModel]="value" [options]="agentsPrep" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
-                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                             <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                         </div>
                                     </ng-template>
                                 </p-multiSelect>
                             </ng-template>
                           </p-columnFilter>
-
-                        </div>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Prepara
-                        <div>
-                          <p-columnFilter field="prepara" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
-                            <ng-template pTemplate="header">
-                                <div class="p-px-3 p-pt-3 p-pb-0">
-                                    <span class="p-text-bold">Choix preparateur dispatching BP</span>
-                                </div>
-                            </ng-template>
-                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-multiSelect [ngModel]="value" [options]="agentsPrepDispatching" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
-                                    <ng-template let-option pTemplate="item">
-                                        <div class="p-multiselect-representative-option">
-                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
-                                            <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
-                                        </div>
-                                    </ng-template>
-                                </p-multiSelect>
-                            </ng-template>
-                          </p-columnFilter>
-                          
+                          <sup style="color: blueviolet;">(Modifier)</sup>
                         </div>
                       </div>
                     </th> 
@@ -229,12 +217,14 @@
                         Quantité Point
                         <div>
                           <p-columnFilter type="numeric" field="qutPoint" display="menu"></p-columnFilter>
+                          <sup style="color: blueviolet;">(Modifier)</sup>
                         </div>
                       </div>
                     </th> 
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
                         agent Pointage
+                        <!--
                         <div>
                           
                           <p-columnFilter field="poste" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
@@ -247,7 +237,7 @@
                                 <p-multiSelect [ngModel]="value" [options]="agentsPointage" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
-                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                             <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                         </div>
                                     </ng-template>
@@ -256,6 +246,7 @@
                           </p-columnFilter>
                           
                         </div>
+                        -->
                       </div>
                     </th> 
                     <th>
@@ -306,31 +297,71 @@
             <ng-template pTemplate="body" let-artprep>
                   <tr>
                     <td>
-                      <label (click)="showModalDialog()">{{ artprep.codArt }}</label>:&nbsp;<img src="/assets/images/imgArticles/{{artprep.codArt}}/{{artprep.codArt}}.png" [alt]="artprep.codArt" height="70" width="70"/>
-                    </td>
-                    <td>
-                      <label *ngIf="artprep.qutLiv==null || artprep.qutLiv===0" (click)="showPositionDialogQutLiv('right')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                        <label (click)="showPositionDialogQutLiv('right')">{{ artprep.qutLiv }}</label>
-                        <p-dialog header="Definition Qut Liv" [(visible)]="displayPositionQutLiv" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-                            [draggable]="false" [resizable]="false">
-                            <p>Quantité c'est la quantité d'Article preparer par L'Agent de Préparation</p>
-                                <ng-template pTemplate="footer">
-                                    <p-button icon="pi pi-check" (click)="displayPositionQutLiv=false" label="Annuler" styleClass="p-button-text"></p-button>
-                                </ng-template>
-                        </p-dialog>
-                    </td>
-                    <td>
-                      <label *ngIf="artprep.remise==null" (click)="showPositionDialogRemise('right')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label *ngIf="artprep.remise!==null" (click)="showPositionDialogRemise('right')">{{ artprep.remise | currency:'TND ':'symbol'}}</label>
-                      <p-dialog header="Definition Remise" [(visible)]="displayPositionRemise" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      <label *ngIf="artprep.codArt==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.codArt!==null" (click)="showModalDialog(artprep.codArt)">{{ artprep.codArt }}</label>
+
+                      <p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
-                      <p>une remise est la déduction que fait un commerçant sur le prix facturé, en raison, par exemple, de ce que l'acheteur a payé au comptant, en raison encore de qu'il a fait un achat d'une valeur importante, soit encore parce que la marchandise était déclassée.</p>
-                          <ng-template pTemplate="footer">
-                              <p-button icon="pi pi-check" (click)="displayPositionRemise=false" label="Annuler" styleClass="p-button-text"></p-button>
+                      <div style="text-align: center" class="field-multiple-drag" *ngIf="displayModal===true">
+                        <li>                
+                          <span class="image-text"><b class="p-mb-3 p-text-light"><nb-card-body>Marque article :</nb-card-body></b> <nb-card-body>{{artic.marque.title}}</nb-card-body>&nbsp;&nbsp;<img style="width:40px;height: 40px;" src="{{this.marqueService.host+'/'+artic.marque.code+'/'+artic.marque.fileName}}" [alt]="artic.marque.title"/></span>                      
+                        </li> 
+                        <li>
+                          <span class="image-text"><b class="p-mb-3 p-text-light"><nb-card-body>Model article :</nb-card-body></b>&nbsp;<nb-card-body>{{artic.model.title}}</nb-card-body></span>
+                        </li>
+                      </div>
+                      <div>
+                        <p style="text-align: center" class="field-multiple-drag"><img *ngIf="displayModal==true" src="{{this.articleService.host+'/'+artic.codArt+'/'+artic.fileName}}" style="width:250px;" /></p>
+                      </div>
+                      <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayModal=false" label="Annuler" styleClass="p-button-text"></p-button>
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
+                      <label *ngIf="artprep.qutLiv==null" (click)="showPositionDialogQutLiv('right')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                        <label *ngIf="artprep.qutLiv!==null" (click)="showPositionDialogQutLiv('right')">{{ artprep.qutLiv }}</label>
+                        &nbsp;&nbsp;<p-button *ngIf="authority==='ROLE_ADMIN' || 'ROLE_EXPEDITEUR'" icon="pi pi-refresh" nbPopover="Pointer article?" nbPopoverTrigger="hint" nbPopoverPlacement="right" showModalDialogExpidQunatite (onClick)="showModalDialogQutLivraison(artprep.codArt,artprep.qutLiv,artprep.qutPoint,artprep.id)" [disabled]="artprep.qutLiv>=artprep.qutPoint"></p-button>
+                        <p-dialog header="Definition Qut Liv" [(visible)]="displayPositionQutLiv" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                            [draggable]="false" [resizable]="false">
+                            <p>Quantité c'est la quantité d'Article preparer par L'Agent d'Expedition</p>
+                                <ng-template pTemplate="footer">
+                                  <p-button icon="pi pi-check" (click)="displayPositionQutLiv=false" label="Annuler" styleClass="p-button-text"></p-button>
+                                </ng-template>
+                        </p-dialog>
+
+                        <p-dialog header="Definition Qut Liv" [(visible)]="displayExpidQunatite" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <div *ngIf="displayModifierQutExpede">              
+                          <label for="codArtExp" class="label">code Article</label>
+                          <input type="text" nbInput fullWidth id="codArtExp" name="codArtExp" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="codArtExp"/>   
+                        </div>
+                            <ng-template pTemplate="footer">
+                              <p-button *ngIf="!displayModifierQutExpede" icon="pi pi-check" (click)="ModifierQutLiv()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                              <p-button *ngIf="displayModifierQutExpede" icon="pi pi-check" (click)="ModifierQutLivEnter(qutLiv)" type="button" label="Modifier" styleClass="p-button-text"></p-button>
+                              <p-button icon="pi pi-check" (click)="displayExpidQunatite=false" (click)="displayModifierQutExpede=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+
+                    </td>
+                    <td style="text-align: center" class="field-multiple-drag">
+                      <label *ngIf="artprep.remise==null" (click)="showPositionDialogRemise('right',artprep.remise,artprep.id)"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.remise!==null" (click)="showPositionDialogRemise('right',artprep.remise,artprep.id)">{{ artprep.remise | currency:'TND ':'symbol'}}</label>
+                      <p-dialog header="Definition Remise" [(visible)]="displayPositionRemise" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>une remise est la déduction que fait un commerçant sur le prix facturé, en raison, par exemple, de ce que l'acheteur a payé au comptant, en raison encore de qu'il a fait un achat d'une valeur importante, soit encore parce que la marchandise était déclassée.</p>
+                      <div *ngIf="displayModifierRemise">
+                        <label for="Remise" class="label">Remise</label>
+                        <input type="number" nbInput fullWidth id="remise" name="remise" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="remise"/> 
+                      </div>
+                          <ng-template pTemplate="footer">
+                            <p-button *ngIf="!displayModifierRemise" icon="pi pi-check" (click)="ModifierRemise()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                            <p-button *ngIf="displayModifierRemise" icon="pi pi-check" (click)="ModifierRemiseEnter(remise)" type="button" label="Modifier" styleClass="p-button-text"></p-button>
+                              <p-button icon="pi pi-check" (click)="displayPositionRemise=false" (click)="displayModifierRemise=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.prixHt==null" (click)="showPositionDialogPrixHt('bottom')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.prixHt!==null" (click)="showPositionDialogPrixHt('bottom')">{{ artprep.prixHt | currency:'TND ':'symbol'}}</label>
                       <p-dialog header="Definition Prix Ht" [(visible)]="displayPositionPrixHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -341,7 +372,7 @@
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.tva==null" (click)="showPositionDialogTva('bottom')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.tva!==null" (click)="showPositionDialogTva('bottom')">{{ artprep.tva }} %</label>
                       <p-dialog header="Définition Tva" [(visible)]="displayPositionTva" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -352,7 +383,7 @@
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.totHt==null" (click)="showPositionDialogTotHt('bottom')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.totHt!==null" (click)="showPositionDialogTotHt('bottom')">{{ artprep.totHt | currency:'TND ':'symbol'}}</label>
                       <p-dialog header="Définition Tot Ht" [(visible)]="displayPositionTotHt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -363,7 +394,7 @@
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.marge==null" (click)="showPositionDialogMarge('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.marge!==null" (click)="showPositionDialogMarge('left')">{{ artprep.marge | currency:'TND ':'symbol'}}</label>
                       <p-dialog header="Définition Marge" [(visible)]="displayPositionMarge" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -374,18 +405,24 @@
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
-                      <label *ngIf="artprep.cumulRet==null" (click)="showPositionDialogCumulRet('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label *ngIf="artprep.cumulRet!==null" (click)="showPositionDialogCumulRet('left')">{{ artprep.cumulRet | currency:'TND ':'symbol'}}</label>
+                    <td style="text-align: center" class="field-multiple-drag">
+                      <label *ngIf="artprep.cumulRet==null" (click)="showPositionDialogCumulRet('left',artprep.cumulRet,artprep.id)"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.cumulRet!==null" (click)="showPositionDialogCumulRet('left',artprep.cumulRet,artprep.id)">{{ artprep.cumulRet | currency:'TND ':'symbol'}}</label>
                       <p-dialog header="Définition Cumul Ret" [(visible)]="displayPositionCumulRet" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
                       <p>Produit mis en vente.</p>
+                      <div *ngIf="displayModifierCumulRet">
+                        <label for="CumulRet" class="label">Cumul Ret</label>
+                        <input type="number" nbInput fullWidth id="cumulRet" name="cumulRet" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="cumulRet"/> 
+                      </div>
                           <ng-template pTemplate="footer">
-                              <p-button icon="pi pi-check" (click)="displayPositionCumulRet=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            <p-button *ngIf="!displayModifierCumulRet" icon="pi pi-check" (click)="ModifierCumulRet()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                            <p-button *ngIf="displayModifierCumulRet" icon="pi pi-check" (click)="ModifierCumulRetEnter(cumulRet)" type="button" label="Modifier" styleClass="p-button-text"></p-button>
+                            <p-button icon="pi pi-check" (click)="displayPositionCumulRet=false" (click)="displayModifierCumulRet=false" label="Annuler" styleClass="p-button-text"></p-button>
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.prixAch==null" (click)="showPositionDialogPrixAch('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.prixAch!==null" (click)="showPositionDialogPrixAch('left')" styleClass="p-button-warning">{{ artprep.prixAch | currency:'TND ':'symbol'}}</label>
                       <p-dialog header="Définition Prix Ach" [(visible)]="displayPositionPrixAch" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -396,7 +433,7 @@
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.prixAch==null" (click)="showPositionDialogQutPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.prixAch!==null" (click)="showPositionDialogQutPrep('left')">{{ artprep.qutPrep }}</label>
                       <p-dialog header="Définition Qut Prep" [(visible)]="displayPositionQutPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -408,10 +445,10 @@
                       </p-dialog>
 
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="!artprep.nonTrouve" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);">Pas mentionné</b></label>
-                      <label *ngIf="artprep.nonTrouve==true" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(214, 10, 10);" nbPopover="La quantité préparer est inferieur à la marge préparation d'Article" nbPopoverTrigger="hint" nbPopoverPlacement="left">Article n'est pas trouver</b></label>
-                      <label *ngIf="artprep.nonTrouve==false" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(74, 214, 10);" nbPopover="La quantité préparer est superieur à la marge de préparation d'Article" nbPopoverTrigger="hint" nbPopoverPlacement="left">Article est trouver</b></label>
+                      <label *ngIf="artprep.nonTrouve==true" (click)="showPositionDialogNonTrouve('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(214, 10, 10);" nbPopover="La quantité préparer est inferieur à la marge préparation d'Article" nbPopoverTrigger="hint" nbPopoverPlacement="left">Article n'est pas trouver </b></label>
+                      &nbsp;&nbsp;<p-button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_PREPARATEUR'" icon="pi pi-bookmark" nbPopover="Marquer article Non trouver?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (onClick)="showModalDialogArticleNonTrouver(artprep.codArt,artprep.nonTrouve,artprep.qutPrep,artprep.id)" [disabled]="artprep.nonTrouve+artprep.qutValider>=artprep.qutPrep"></p-button>
                       <p-dialog header="Définition Non Trouve" [(visible)]="displayPositionNonTrouve" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
                       <p>si l'Article non trouver cette valeur va étre positive.</p>
@@ -419,8 +456,18 @@
                               <p-button icon="pi pi-check" (click)="displayPositionNonTrouve=false" label="Annuler" styleClass="p-button-text"></p-button>
                           </ng-template>
                       </p-dialog>
+                      
+                      <p-dialog header="Valider vos attention vert ce Article :" [(visible)]="displayModalNonTrouver" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">                  
+                      <p>Est vous sure de vouloir marquer l'Article comme non trouver?</p>
+                      <ng-template pTemplate="footer">
+                        <p-button icon="pi pi-check" (click)="CodeArticleNonTrouver()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                        <p-button icon="pi pi-check" (click)="displayModalNonTrouver=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                      </p-dialog>
+
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.datPrep==null" (click)="showPositionDialogDatPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.datPrep!==null" (click)="showPositionDialogDatPrep('left')">{{ artprep.datPrep | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
                       <p-dialog header="Définition Date Prep" [(visible)]="displayPositionDatPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -431,15 +478,41 @@
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
-                      <label *ngIf="artprep.remExp==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label *ngIf="artprep.remExp!==null">{{ artprep.remExp }}</label>
+                    <td style="text-align: center" class="field-multiple-drag">
+                      <label *ngIf="artprep.remExp==null" (click)="showPositionDialogRemExp('left',artprep.remExp,artprep.id)"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.remExp!==null" (click)="showPositionDialogRemExp('left',artprep.remExp,artprep.id)">{{ artprep.remExp }}</label>
+                      <p-dialog header="Définition Date Prep" [(visible)]="displayPositionRemExp" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Rem Exp est la capacité de expedition.</p>
+                      <div *ngIf="displayModifierRemExp">
+                        <label for="RemExp" class="label">Rem Exp</label>
+                        <input type="number" nbInput fullWidth id="remExp" name="remExp" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="999999" min="0" [(ngModel)]="remExp"/> 
+                      </div>
+                          <ng-template pTemplate="footer">
+                            <p-button *ngIf="!displayModifierRemExp" icon="pi pi-check" (click)="ModifierRemExp()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                            <p-button *ngIf="displayModifierRemExp" icon="pi pi-check" (click)="ModifierRemExpEnter(remExp)" type="button" label="Modifier" styleClass="p-button-text"></p-button>
+                              <p-button icon="pi pi-check" (click)="displayPositionRemExp=false" (click)="displayModifierRemExp=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
                     </td> 
-                    <td>
-                      <label *ngIf="artprep.etage2==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label *ngIf="artprep.etage2!==null">{{ artprep.etage2 }}</label>
+                    <td style="text-align: center" class="field-multiple-drag">
+                      <label *ngIf="artprep.etage2==null" (click)="showPositionDialogEtage2('left',artprep.etage2,artprep.id)"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.etage2!==null" (click)="showPositionDialogEtage2('left',artprep.etage2,artprep.id)">{{ artprep.etage2 }}</label>
+                      <p-dialog header="Définition Date Prep" [(visible)]="displayPositionEtage2" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">
+                      <p>Etage est l'emplacement de l article.</p>
+                      <div *ngIf="displayModifierEtage2">
+                        <label for="Etage2" class="label">Etage</label>
+                        <input type="text" nbInput fullWidth id="etage2" name="etage2" pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="4" [(ngModel)]="etage2"/> 
+                      </div>
+                          <ng-template pTemplate="footer">
+                            <p-button *ngIf="!displayModifierEtage2" icon="pi pi-check" (click)="ModifierEtage2()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                            <p-button *ngIf="displayModifierEtage2" icon="pi pi-check" (click)="ModifierEtage2Enter(etage2)" type="button" label="Modifier" styleClass="p-button-text"></p-button>
+                              <p-button icon="pi pi-check" (click)="displayPositionEtage2=false" (click)="displayModifierEtage2=false" label="Annuler" styleClass="p-button-text"></p-button>
+                          </ng-template>
+                      </p-dialog>
                     </td> 
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.chrono==null" (click)="showPositionDialogChrono('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.chrono!==null" (click)="showPositionDialogChrono('left')">{{ artprep.chrono | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
                       <p-dialog header="Définition Chrono" [(visible)]="displayPositionChrono" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -450,20 +523,27 @@
                           </ng-template>
                       </p-dialog>
                     </td>  
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.prep==null" (click)="showPositionDialogPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label *ngIf="artprep.prep!==null" (click)="showPositionDialogPrep('left')">{{ artprep.prep }}</label>
+                      <label *ngIf="artprep.prep!==null" (click)="showPositionDialogPrep('left')">{{ artprep.prep.firstname }}</label>
+                      
                       <p-dialog header="Définition Prep" [(visible)]="displayPositionPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
-                      <p>Le nom complet de Responsable dispatching bon de préparation.</p>
+                      <p>Le nom complet de Responsable de pointer le chariot qui comporte le bon de préparation.</p>
                           <ng-template pTemplate="footer">
                               <p-button icon="pi pi-check" (click)="displayPositionPrep=false" label="Annuler" styleClass="p-button-text"></p-button>
                           </ng-template>
                       </p-dialog>
+
+
+
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.prepara==null" (click)="showPositionDialogPrepara('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label *ngIf="artprep.prepara!==null" (click)="showPositionDialogPrepara('left')">{{ artprep.prepara }}</label>
+                      <label *ngIf="artprep.prepara!==null" (click)="showPositionDialogPrepara('left')">{{ artprep.prepara.firstname }}</label>
+                      &nbsp; : &nbsp;<label *ngIf="artprep.qutValider!=null" nbPopover="Numbre d'Article préparer?" nbPopoverTrigger="hint" nbPopoverPlacement="right" >{{ artprep.qutValider }}</label>
+                      &nbsp;&nbsp;<p-button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_PREPARATEUR'" icon="pi pi-refresh" nbPopover="Preparer article?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (onClick)="showModalDialogcodArticle(artprep.codArt,artprep.qutValider,artprep.qutPrep,artprep.id)" [disabled]="artprep.qutValider>=artprep.qutPrep"></p-button>
+                      
                       <p-dialog header="Définition Prepara" [(visible)]="displayPositionPrepara" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
                       <p>Le nom complet de préparateur de chariot.</p>
@@ -471,15 +551,27 @@
                               <p-button icon="pi pi-check" (click)="displayPositionPrepara=false" label="Annuler" styleClass="p-button-text"></p-button>
                           </ng-template>
                       </p-dialog>
+
+                      
+                      <p-dialog header="entrer le code d'Article :" [(visible)]="displayModalCodeArticle" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">                  
+                      <label for="codArtPrep" class="label">code Article</label>
+                      <input type="text" nbInput fullWidth id="codArtPrep" name="codArtPrep" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="codArtPrep"/>   
+                      <ng-template pTemplate="footer">
+                        <p-button icon="pi pi-check" (click)="CodeArticleActivation()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                        <p-button icon="pi pi-check" (click)="displayModalCodeArticle=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                      </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.avPrep==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.avPrep!==null">{{ artprep.avPrep }}</label>
                     </td>
-                    <td>
-                      <label *ngIf="artprep.qutPoint==null" (click)="showPositionDialogQutPoint('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                    <td style="text-align: center" class="field-multiple-drag">
+                      <label *ngIf="artprep.qutPoint==null || artprep.qutPoint===0" (click)="showPositionDialogQutPoint('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.qutPoint > artprep.marge" (click)="showPositionDialogQutPoint('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(61, 238, 16);" >{{ artprep.qutPoint }}</b></label>
                       <label *ngIf="artprep.qutPoint < artprep.marge" (click)="showPositionDialogQutPoint('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(238, 23, 16);" >{{ artprep.qutPoint }}</b></label>
+                      &nbsp;&nbsp;<p-button *ngIf="authority==='ROLE_ADMIN' || buttonShowPointage" icon="pi pi-refresh" nbPopover="Pointer article?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (onClick)="showModalDialogCodeABarre(artprep.codArt,artprep.qutPoint,artprep.qutPrep,artprep.id)" [disabled]="artprep.qutPoint>=artprep.qutValider"></p-button>
                       <p-dialog header="Définition Qut Point" [(visible)]="displayPositionQutPoint" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
                       <p>La quatité pointer chez le responsable de pointage.</p>
@@ -487,19 +579,47 @@
                               <p-button icon="pi pi-check" (click)="displayPositionQutPoint=false" label="Annuler" styleClass="p-button-text"></p-button>
                           </ng-template>
                       </p-dialog>
-                    </td>
-                    <td>
-                      <label *ngIf="artprep.poste==null" (click)="showPositionDialogPoste('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label *ngIf="artprep.poste!==null" (click)="showPositionDialogPoste('left')">{{ artprep.poste }}</label>
-                      <p-dialog header="Définition Poste" [(visible)]="displayPositionPoste" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-                      [draggable]="false" [resizable]="false">
-                      <p>La Poste de pointage .</p>
-                          <ng-template pTemplate="footer">
-                              <p-button icon="pi pi-check" (click)="displayPositionPoste=false" label="Annuler" styleClass="p-button-text"></p-button>
-                          </ng-template>
+
+                      <p-dialog header="entrer le code a barre de l'Article :" [(visible)]="displayModalCodeABarre" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">                  
+                        <label for="codBar" class="label">codBar</label>
+                        <input type="text" nbInput fullWidth id="codBar" name="codBar" pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" required [(ngModel)]="codBar"/>   
+                        <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="CodeABarreActivation()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                          <p-button icon="pi pi-check" (click)="displayModalCodeABarre=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
+                      <label *ngIf="artprep.poste==null" (click)="showPositionDialogPoste('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.poste!==null" (click)="showPositionDialogPoste('left')"><button (click)="showModalDialogPointeur2()" type="button" nbButton status="info" size="tiny" shape="round" class="btn btn-md btn-outline-danger" outline> 
+                        Les pointeurs</button></label>
+                      <p-dialog header="Liste des pointeur associé à ce Bon" [(visible)]="displayModalPointeur" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      [draggable]="false" [resizable]="false">                  
+                        <li *ngIf="lat1">                        
+                          <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 1 :&nbsp;</b>{{lat1}}</span>                      
+                        </li> 
+                        <li *ngIf="lat2">                        
+                          <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 2 :&nbsp;</b>{{lat2}}</span>                      
+                        </li> 
+                        <li *ngIf="lat3">                        
+                          <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 3 :&nbsp;</b>{{lat3}}</span>                      
+                        </li> 
+                        <li *ngIf="lat4">                        
+                          <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 4 :&nbsp;</b>{{lat4}}</span>                      
+                        </li> 
+                        <li *ngIf="lat5">                        
+                          <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 5 :&nbsp;</b>{{lat5}}</span>                      
+                        </li> 
+                        <li *ngIf="lat6">                        
+                          <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 6 :&nbsp;</b>{{lat6}}</span>                      
+                        </li> 
+                        <ng-template pTemplate="footer">
+                          <p-button icon="pi pi-check" (click)="displayModalPointeur=false" label="Annuler" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                      </p-dialog>
+                    </td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.centre==null" (click)="showPositionDialogCentre('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.centre!==null" (click)="showPositionDialogCentre('left')">{{ artprep.centre }}</label>
                       <p-dialog header="Définition Centre" [(visible)]="displayPositionCentre" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -510,7 +630,7 @@
                           </ng-template>
                       </p-dialog>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.artprep_chariot==null" (click)="showPositionDialogNumChar('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <span *ngIf="artprep.artprep_chariot!==null">
                         <label (click)="showPositionDialogNumChar('left')">{{ artprep.artprep_chariot.numChar }}</label>
@@ -523,7 +643,7 @@
                         </p-dialog>
                       </span>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.artprep_chariot==null" (click)="showPositionDialogCallChariot('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <span *ngIf="artprep.artprep_chariot!==null">
                         <label (click)="showPositionDialogCallChariot('left')">{{ artprep.artprep_chariot.callChariot | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
@@ -536,7 +656,7 @@
                         </p-dialog>
                       </span>
                     </td>
-                    <td>
+                    <td style="text-align: center" class="field-multiple-drag">
                       <label *ngIf="artprep.artprep_chariot==null" (click)="showPositionDialogEtatChar('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <span *ngIf="artprep.artprep_chariot!==null">
                         <label *ngIf="artprep.artprep_chariot.etat_char=='en_panne'" (click)="showPositionDialogEtatChar('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(248, 9, 9);" >EN PANNE</b></label>
@@ -556,7 +676,7 @@
           
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="7">No bonpreps found.</td>
+                    <td colspan="23">No bonpreps found.</td>
                 </tr>
             </ng-template>
         </p-table>

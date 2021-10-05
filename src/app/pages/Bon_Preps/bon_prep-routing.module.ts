@@ -14,10 +14,11 @@ import { AuthGuardExpediteur } from '../../auth-guardRoles/auth-guardExpediteur'
 import { AllGuard } from '../../auth-guardRoles/auth-guardModules.ts/AllGuard';
 import { AuthGuardPreparateur } from '../../auth-guardRoles/auth-guardPreparateur';
 import { AuthGuardRDispatchingBp } from '../../auth-guardRoles/auth-guardR_Dispatching_Bp';
+import { AuthGuardRPointage } from '../../auth-guardRoles/auth-guardR_Pointage';
 
 const routes: Routes = [{
   path: '',
-  data: {guards: [AuthGuardAdmin , AuthGuardDecideurBp , AuthGuardExpediteur , AuthGuardPreparateur , AuthGuardRDispatchingBp ]}, canActivate: [AllGuard],
+  data: {guards: [AuthGuardAdmin , AuthGuardDecideurBp , AuthGuardExpediteur , AuthGuardPreparateur , AuthGuardRDispatchingBp , AuthGuardRPointage ]}, canActivate: [AllGuard],
   component: Bon_PrepsComponent,
   children: [
     {
@@ -36,7 +37,7 @@ const routes: Routes = [{
     },
     {
       path: 'bon-prep-list/bon-prep-detail/:numBon',
-      data: {guards: [AuthGuardAdmin , AuthGuardDecideurBp , AuthGuardExpediteur , AuthGuardPreparateur , AuthGuardRDispatchingBp ]}, canActivate: [AllGuard],
+      data: {guards: [AuthGuardAdmin , AuthGuardDecideurBp , AuthGuardExpediteur , AuthGuardPreparateur , AuthGuardRDispatchingBp , AuthGuardRPointage]}, canActivate: [AllGuard],
       component: BonPrepDetailComponent,
     },
     {

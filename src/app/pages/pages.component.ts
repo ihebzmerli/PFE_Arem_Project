@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenStorageService } from './auth/token-storage.service';
 
-import { MENU_Acheteur, MENU_Admin, MENU_Agent_CAB, MENU_Client, MENU_Emballeur, MENU_Expediteur, MENU_ITEMS, MENU_Livreur, MENU_Preparateur, MENU_Preparateur_BR, MENU_Responsable_Dispatching_BP, MENU_Responsable_Pointage, MENU_User, MENU_Validateur_De_Chariot } from './pages-menu';
+import { MENU_Acheteur, MENU_Admin, MENU_Agent_CAB, MENU_Caissier, MENU_Client, MENU_Emballeur, MENU_Expediteur, MENU_ITEMS, MENU_Livreur, MENU_Preparateur, MENU_Preparateur_BR, MENU_Responsable_Dispatching_BP, MENU_Responsable_Pointage, MENU_User, MENU_Validateur_De_Chariot } from './pages-menu';
 
 @Component({
   selector: 'ngx-pages',
@@ -102,7 +102,7 @@ export class PagesComponent implements OnInit {
 
         } else if (role === 'ROLE_CAISSIER') {
           this.authority = 'caissier';
-          return this.menu = MENU_User;
+          return this.menu = MENU_Caissier;
 
         } else if (role === 'ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER') {
           this.authority = 'responsable_service_frs_etranger';

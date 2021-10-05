@@ -27,27 +27,18 @@ export class DetEmbaListComponent implements OnInit {
 
   /*****************************Filtrage des donner *****************************/
   filteredDetEmbas: Det_emba[];
-  private _searchTermIdEmba: string;
-  private _searchTermNum: string;
+  private _searchTermtypEmba: string;
   private _searchTermQut: string;
   private _searchTermNumBonPrep: string;
-  private _searchTermIdArtLiv: string;
   /**end searsh string */
 
 
-get searchTermIdEmba(): string {
-  return this._searchTermIdEmba;
+get searchTermtypEmba(): string {
+  return this._searchTermtypEmba;
 }
-set searchTermIdEmba(value: string){
-  this._searchTermIdEmba = value;
-  this.filteredDetEmbas = this.filtereDetEmbasIdEmba(value);
-}
-get searchTermNum(): string {
-  return this._searchTermNum;
-}
-set searchTermNum(value: string){
-  this._searchTermNum = value;
-  this.filteredDetEmbas = this.filtereDetEmbasNum(value);
+set searchTermtypEmba(value: string){
+  this._searchTermtypEmba = value;
+  this.filteredDetEmbas = this.filtereDetEmbasTypEmba(value);
 }
 get searchTermQut(): string {
   return this._searchTermQut;
@@ -63,28 +54,16 @@ set searchTermNumBonPrep(value: string){
   this._searchTermNumBonPrep = value;
   this.filteredDetEmbas = this.filtereDetEmbasNumBonPrep(value);
 }
-get searchTermIdArtLiv(): string {
-  return this._searchTermIdArtLiv;
-}
-set searchTermIdArtLiv(value: string){
-  this._searchTermIdArtLiv = value;
-  this.filteredDetEmbas = this.filtereDetEmbasIdArtLiv(value);
-}
 
-filtereDetEmbasIdEmba(seachBigint: string){
-  return this.detembas.filter(Det_emba => Det_emba.id.toString().toLowerCase().indexOf(seachBigint.toLowerCase()) !== -1);
-}
-filtereDetEmbasNum(seachBigint: string){
-  return this.detembas.filter(Det_emba => Det_emba.num.toString().toLowerCase().indexOf(seachBigint.toLowerCase()) !== -1);
+
+filtereDetEmbasTypEmba(seachBigint: string){
+  return this.detembas.filter(Det_emba => Det_emba.typEmba.toString().toLowerCase().indexOf(seachBigint.toLowerCase()) !== -1);
 }
 filtereDetEmbasQut(seachBigint: string){
   return this.detembas.filter(Det_emba => Det_emba.qut.toString().toLowerCase().indexOf(seachBigint.toLowerCase()) !== -1);
 }
 filtereDetEmbasNumBonPrep(seachString: string){
-  return this.detembas.filter(Det_emba => Det_emba.bonprep_detEmbas.toLowerCase().indexOf(seachString.toLowerCase()) !== -1);
-}
-filtereDetEmbasIdArtLiv(seachBigint: string){
-  return this.detembas.filter(Det_emba => Det_emba.artliv_detEmbas.toString().toLowerCase().indexOf(seachBigint.toLowerCase()) !== -1);
+  return this.detembas.filter(Det_emba => Det_emba.bonprep_detEmbas.numBon.toLowerCase().indexOf(seachString.toLowerCase()) !== -1);
 }
 
 /****************Filtrage des donner ***************/
@@ -100,7 +79,7 @@ filtereDetEmbasIdArtLiv(seachBigint: string){
 authority;
   ngOnInit(){
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
     this.getDetEmbas();
@@ -130,7 +109,9 @@ authority;
 
   source: LocalDataSource = new LocalDataSource();
 
-
+  goToModifier(id: string ){
+    this.router.navigate(['//pages/Det_Embas/update-det-emba',id])
+    }
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Utilisateur } from './utilisateur';
 import { FormGroup } from '@angular/forms';
+import { User } from '../../@core/data/users';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,10 @@ export class UtilisateurService {
   private pmUrl = 'http://localhost:8080/api/test/pm';
   private adminUrl = 'http://localhost:8080/api/test/admin';
   private url= 'http://localhost:8080/api/utilisateurs';
+  private urltest= 'http://localhost:8080/api/utilisateursTest';
   private url2= 'http://localhost:8080/api/auth';
-  public host : string = "http://localhost:8080/api";
+  public host : string = "http://localhost:8080/webapp/imgUsers/Images";
   constructor(private http: HttpClient) { }
-
-  getTest(): Observable<string> {
-    return this.http.get(this.host, { responseType: 'text' });
-  }
   
   getUserBoard(): Observable<string> {
     return this.http.get(this.userUrl, { responseType: 'text' });
@@ -35,6 +33,9 @@ export class UtilisateurService {
     return this.http.get(this.adminUrl, { responseType: 'text' });
   }
 
+  createUtilisateur2(formData: FormData): Observable<Object> {
+    return this.http.post(`${this.urltest}`, formData);
+  }
   
   getUtilisateur(id: string): Observable<any> {
     return this.http.get(`${this.url}/${id}`);
@@ -47,8 +48,14 @@ export class UtilisateurService {
   updateUtilisateur(id: string, value: any): Observable<Object> {
     return this.http.put(`${this.url}/${id}`, value);
   }
-
-  deleteUtilisateur(id: bigint): Observable<any> {
+  updateUtilisateur2(id: string,formData: FormData): Observable<Object> {
+    return this.http.put(`${this.url}/Update/${id}`, formData);
+  }
+  updateUtilisateurConnected(id: string, value: any): Observable<Object> {
+    return this.http.put(`${this.url}/connected/${id}`, value);
+  }
+  
+  deleteUtilisateur(id: string): Observable<any> {
     return this.http.delete(`${this.url}/${id}`, { responseType: 'text' });
   }
 
@@ -72,8 +79,30 @@ export class UtilisateurService {
     return this.http.get(`${this.url}/Preparateurs`);
   }
   */
+/**date filter */
+getAllUserdatffacBydateBetween(startDate: string,endDate: string): Observable<Utilisateur[]> {
+  return this.http.get<Utilisateur[]>(`${this.url}/datffacBetween/${startDate}to${endDate}`);
+}
+getAllUserdate_contratBydateBetween(startDate: string,endDate: string): Observable<Utilisateur[]> {
+  return this.http.get<Utilisateur[]>(`${this.url}/date_contratBetween/${startDate}to${endDate}`);
+}
+getAllUserdate_de_naissanceBydateBetween(startDate: string,endDate: string): Observable<Utilisateur[]> {
+  return this.http.get<Utilisateur[]>(`${this.url}/date_de_naissanceBetween/${startDate}to${endDate}`);
+}
+getAllUserdate_debut_congeBydateBetween(startDate: string,endDate: string): Observable<Utilisateur[]> {
+  return this.http.get<Utilisateur[]>(`${this.url}/date_debut_congeBetween/${startDate}to${endDate}`);
+}
+getAllUserdate_fin_congeBydateBetween(startDate: string,endDate: string): Observable<Utilisateur[]> {
+  return this.http.get<Utilisateur[]>(`${this.url}/date_fin_congeBetween/${startDate}to${endDate}`);
+}
+getAllUserdate_recBydateBetween(startDate: string,endDate: string): Observable<Utilisateur[]> {
+  return this.http.get<Utilisateur[]>(`${this.url}/date_recBetween/${startDate}to${endDate}`);
+}
+getAllUserder_mvtBydateBetween(startDate: string,endDate: string): Observable<Utilisateur[]> {
+  return this.http.get<Utilisateur[]>(`${this.url}/der_mvtBetween/${startDate}to${endDate}`);
+}
 
-
+/**end date filter */
 
   /**utilisateur modification */
   ChangeRoleToUSER(id): Observable<Object> {
@@ -138,7 +167,9 @@ export class UtilisateurService {
   }
   /**modification */
 
-
+  getLastIdUser(): Observable<Object>{
+    return this.http.get(`${this.url}/LastUtilisateur`);
+  }
 
 
 

@@ -38,14 +38,19 @@ export class UpdateMarqueComponent implements OnInit {
       }, error => console.log(error));
   }
 
-  onSubmitMarque() {
+  async onSubmitMarque() {
     this.updateMarque2();
+    await this.showModalDialogBarProgression();
     this.makeToast(); 
-    delay(4000);
     this.marque_list();
   }
 
   updateMarque2(){  
+    this.marqueForm = this.formBuilder.group({
+      code: [this.marque.code],
+      title: [this.marque.title]
+  });
+  console.log(this.marqueForm.value);
     const formData = new FormData();
     const marque = this.marqueForm.value;
     formData.append('marque',JSON.stringify(marque));
@@ -74,10 +79,9 @@ export class UpdateMarqueComponent implements OnInit {
     this.userFile =file;
   
     var mimeType = event.target.files[0].type;
-    if(mimeType.match(/image\/*/) == null){
-      console.log("Only images are supported.");
-      return;
-    }
+    if(mimeType.match(/image\/jpeg/) === null && mimeType.match(/image\/png/) === null){
+      this.makeToast5();
+    }else{
   
     var reader = new FileReader();
     
@@ -86,6 +90,7 @@ export class UpdateMarqueComponent implements OnInit {
     reader.onload = (_event) => {
       this.imgURL = reader.result;
     }
+  }
   }
  }
   
@@ -113,6 +118,15 @@ status3: NbComponentStatus = 'warning';
 
 title3 = 'La modification n est pas faite marque existe déja!';
 content3 = `La modification n'a rien changé!`;
+
+status4: NbComponentStatus = 'info';
+
+title4 = 'L addition est en cours !';
+content4 = `Veuillez attendre le traitement des données!`;
+status5: NbComponentStatus = 'warning';
+
+title5 = 'Image doit etre de type png,jpg,jpeg!';
+content5 = `Fichier de type eronée!`;
 types: NbComponentStatus[] = [
   'primary',
   'success',
@@ -141,6 +155,12 @@ makeToast2() {
 makeToast3() {
   this.showToast(this.status3, this.title3, this.content3);
 }
+makeToast4() {
+  this.showToast(this.status4, this.title4, this.content4);
+}
+makeToast5() {
+  this.showToast(this.status3, this.title3, this.content3);
+}
 private showToast(type: NbComponentStatus, title: string, body: string) {
   const config = {
     status: type,
@@ -159,4 +179,37 @@ private showToast(type: NbComponentStatus, title: string, body: string) {
     config);
 }
 /**toaster show start */ 
+
+
+
+
+/** progression bar */
+delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
+progress=0;
+displayModalBarProgression: boolean;
+  async showModalDialogBarProgression() {
+  this.progress=0;
+  this.displayModalBarProgression = true;
+  this.makeToast4();
+  await this.delay(1000);
+  this.progress=15;
+  await this.delay(1000);
+  this.progress=37;
+  await this.delay(1000);
+  this.progress=62;
+  await this.delay(1000);
+  this.progress=87;
+  await this.delay(1000);
+  this.progress=99;
+  await this.delay(500);
+  this.progress=100;
+  this.delay(1500);
+  this.displayModalBarProgression=false;
+}
+
+
+/**end progression bar */
 }

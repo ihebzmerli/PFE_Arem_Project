@@ -1,4 +1,4 @@
-<div class="accordions-container row offset-sm-2 col-sm-9">
+<div class="accordions-container offset-sm-2 col-sm-8">
   <form (ngSubmit) = "onSubmitBon()" #bonPrepForm="ngForm">
     <nb-accordion>
       <nb-accordion-item #item>
@@ -28,10 +28,22 @@
                   <div [hidden]="!raison.hasError('pattern')">Raison ne doit contenir que des lettres et des nombres.</div>
                 </div>
 
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label for="destina" class="label">Destination:</label>
+                    <nb-select fullWidth [(ngModel)]="Destination" (selectedChange)="onSelectionChanged($event)" [ngModelOptions]="{standalone: true}">
+                      <nb-option value="false">Client</nb-option>
+                      <nb-option value="true">Fournisseur</nb-option>
+                      </nb-select>
+                  </div>
+                  <div class="col-sm-6">
+
+                  </div>
+              </div>
             <div class="row">
                 <div class="col-sm-6"> 
                   <label for="nomprenomCli" class="label">Code Client</label>
-                  <input type="text" nbInput fullWidth class="form-control" #nomprenomCli="ngModel" id="nomprenomCli" name="nomprenomCli" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$" maxlength="200" minlength="10" [(ngModel)]="bonprep.nomprenomCli" />
+                  <input type="text" nbInput fullWidth class="form-control" #nomprenomCli="ngModel" id="nomprenomCli" name="nomprenomCli" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$" maxlength="200" minlength="10" [(ngModel)]="bonprep.nomprenomCli" [disabled]="!disableFrsDropdown"/>
                   <div style="font-size: 12px;" [hidden]="nomprenomCli.valid || nomprenomCli.pristine" class="alert alert-danger p-2">
                     <div [hidden]="!nomprenomCli.hasError('minlength')">nomprenomCli doit étre au moin 10 lettres longue.</div>
                     <div [hidden]="!nomprenomCli.hasError('maxlength')">nomprenomCli ne doit pas dépassé les 200 lettres longue.</div>
@@ -39,16 +51,22 @@
                     <div [hidden]="!nomprenomCli.hasError('pattern')">nomprenomCli ne doit contenir que des lettres et des nombres.</div>
                   </div>
                 </div>  
-                <div class="col-sm-6">
-                  <label for="command" class="label">La Command</label>
-                  <input type="text" nbInput fullWidth class="form-control" #command="ngModel" id="command" name="command" required pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="5" [(ngModel)]="bonprep.command" />
-                  <div style="font-size: 12px;" [hidden]="command.valid || command.pristine" class="alert alert-danger p-2">
-                    <div [hidden]="!command.hasError('minlength')">command doit étre au moin 10 lettres longue.</div>
-                    <div [hidden]="!command.hasError('maxlength')">command ne doit pas dépassé les 200 lettres longue.</div>
-                    <div [hidden]="!command.hasError('required')">command est obligatoire.</div>
-                    <div [hidden]="!command.hasError('pattern')">command ne doit contenir que des lettres et des nombres.</div>
-                  </div>
-                </div>
+                <div class="col-sm-6"> 
+                  <label fullWidth for="codFrs" class="label">Code Fournisseur:</label>
+
+                  <p-dropdown autoWidth="false" [style]="{'width':'100%'}" fullWidth [options]="FournisList" [(ngModel)]="selectedCodFrs" optionLabel="raison" [filter]="true" filterBy="raison" [showClear]="true" placeholder="Choisir Fournisseur" [ngModelOptions]="{standalone: true}" [disabled]="disableFrsDropdown">
+                    <ng-template pTemplate="selectedCodFrs">
+                        <div class="country-item country-item-value"  *ngIf="selectedCodFrs">
+                            <div>{{selectedCodFrs.raison}}</div><span>{{selectedCodFrs.codFrs}}</span>
+                        </div>
+                    </ng-template>
+                    <ng-template let-fournis pTemplate="item">
+                        <div class="country-item">
+                            <div>{{fournis.raison}}</div>
+                        </div>
+                    </ng-template>
+                  </p-dropdown> 
+                </div> 
             </div>
             
             <div class="row">
@@ -152,27 +170,26 @@
                   </div>
                 </div>
                 <div class="col-sm-6"> 
-                  <label for="pointage" class="label">Pointage</label>  
-                  <input type="text" nbInput fullWidth class="form-control" #pointage="ngModel" id="pointage" name="pointage" required pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="6" [(ngModel)]="bonprep.pointage"/>
-                  <div style="font-size: 12px;" [hidden]="pointage.valid || pointage.pristine" class="alert alert-danger p-2">
-                    <div [hidden]="!pointage.hasError('minlength')">pointage doit étre au moin 10 lettres longue.</div>
-                    <div [hidden]="!pointage.hasError('maxlength')">pointage ne doit pas dépassé les 30 lettres longue.</div>
-                    <div [hidden]="!pointage.hasError('required')">pointage est obligatoire.</div>
-                    <div [hidden]="!pointage.hasError('pattern')">pointage ne doit contenir que des lettres et des nombres.</div>
+                  <label for="codeTva" class="label">Code Tva</label> 
+                  <input type="text" nbInput fullWidth class="form-control" #codeTva="ngModel" id="codeTva" name="codeTva" required pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="4" [(ngModel)]="bonprep.codeTva" />
+                  <div style="font-size: 12px;" [hidden]="codeTva.valid || codeTva.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!codeTva.hasError('minlength')">codeTva doit étre au moin 10 lettres longue.</div>
+                    <div [hidden]="!codeTva.hasError('maxlength')">codeTva ne doit pas dépassé les 30 lettres longue.</div>
+                    <div [hidden]="!codeTva.hasError('required')">codeTva est obligatoire.</div>
+                    <div [hidden]="!codeTva.hasError('pattern')">codeTva ne doit contenir que des lettres et des nombres.</div>
                   </div>
                 </div>
-
             </div>
 
             <div class="row">
                 <div class="col-sm-6"> 
                   <label for="natLiv" class="label">Nature Livraison</label> 
-                  <input type="text" nbInput fullWidth class="form-control" #natLiv="ngModel" id="natLiv" name="natLiv" required pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="5" [(ngModel)]="bonprep.natLiv" />
+                  <nb-select fullWidth selected="SelectNatLiv" #natLiv="ngModel" id="natLiv" name="natLiv" [(ngModel)]="bonprep.natLiv" required >
+                    <nb-option value="livraison">Livraison</nb-option>
+                    <nb-option value="sur_comptoir">Sur comptoir</nb-option>
+                  </nb-select>
                   <div style="font-size: 12px;" [hidden]="natLiv.valid || natLiv.pristine" class="alert alert-danger p-2">
-                    <div [hidden]="!natLiv.hasError('minlength')">natLiv doit étre au moin 10 lettres longue.</div>
-                    <div [hidden]="!natLiv.hasError('maxlength')">natLiv ne doit pas dépassé les 30 lettres longue.</div>
                     <div [hidden]="!natLiv.hasError('required')">natLiv est obligatoire.</div>
-                    <div [hidden]="!natLiv.hasError('pattern')">natLiv ne doit contenir que des lettres et des nombres.</div>
                   </div>
                 </div>
                 <div class="col-sm-6">  
@@ -183,29 +200,6 @@
                     <div [hidden]="!natDoc.hasError('maxlength')">natDoc ne doit pas dépassé les 30 lettres longue.</div>
                     <div [hidden]="!natDoc.hasError('required')">natDoc est obligatoire.</div>
                     <div [hidden]="!natDoc.hasError('pattern')">natDoc ne doit contenir que des lettres et des nombres.</div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6">  
-                  <label for="prep" class="label">Prep</label>
-                  <input type="text" nbInput fullWidth class="form-control" #prep="ngModel" id="prep" name="prep" required pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="4" [(ngModel)]="bonprep.prep" />
-                  <div style="font-size: 12px;" [hidden]="prep.valid || prep.pristine" class="alert alert-danger p-2">
-                    <div [hidden]="!prep.hasError('minlength')">prep doit étre au moin 10 lettres longue.</div>
-                    <div [hidden]="!prep.hasError('maxlength')">prep ne doit pas dépassé les 30 lettres longue.</div>
-                    <div [hidden]="!prep.hasError('required')">prep est obligatoire.</div>
-                    <div [hidden]="!prep.hasError('pattern')">prep ne doit contenir que des lettres et des nombres.</div>
-                  </div>
-                </div> 
-                <div class="col-sm-6"> 
-                  <label for="codeTva" class="label">Code Tva</label> 
-                  <input type="text" nbInput fullWidth class="form-control" #codeTva="ngModel" id="codeTva" name="codeTva" required pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="4" [(ngModel)]="bonprep.codeTva" />
-                  <div style="font-size: 12px;" [hidden]="codeTva.valid || codeTva.pristine" class="alert alert-danger p-2">
-                    <div [hidden]="!codeTva.hasError('minlength')">codeTva doit étre au moin 10 lettres longue.</div>
-                    <div [hidden]="!codeTva.hasError('maxlength')">codeTva ne doit pas dépassé les 30 lettres longue.</div>
-                    <div [hidden]="!codeTva.hasError('required')">codeTva est obligatoire.</div>
-                    <div [hidden]="!codeTva.hasError('pattern')">codeTva ne doit contenir que des lettres et des nombres.</div>
                   </div>
                 </div>
             </div>
@@ -223,14 +217,39 @@
                   </div>
                 </div> 
                 <div class="col-sm-6">  
-                  <label for="point" class="label">Pointage</label>
-                  <input type="text" nbInput fullWidth class="form-control" #point="ngModel" id="point" name="point" required pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="4" [(ngModel)]="bonprep.point" />
-                  <div style="font-size: 12px;" [hidden]="point.valid || point.pristine" class="alert alert-danger p-2">
-                    <div [hidden]="!point.hasError('minlength')">point doit étre au moin 10 lettres longue.</div>
-                    <div [hidden]="!point.hasError('maxlength')">point ne doit pas dépassé les 30 lettres longue.</div>
-                    <div [hidden]="!point.hasError('required')">point est obligatoire.</div>
-                    <div [hidden]="!point.hasError('pattern')">point ne doit contenir que des lettres et des nombres.</div>
-                  </div>
+                  <label for="point" class="label">Pointage</label><p-button icon="pi pi-refresh" (onClick)="showModalDialogPointeur()"></p-button> 
+                  <p-multiSelect autoWidth="false" [style]="{'width':'100%'}" [(ngModel)]="_searchTermUser" [options]="agentsPointage" placeholder="Any" optionLabel="firstname" [ngModelOptions]="{standalone: true}">
+                    <ng-template let-option pTemplate="item">
+                        <div class="p-multiselect-representative-option">
+                            <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                        </div>
+                    </ng-template>
+                  </p-multiSelect>
+
+                  <p-dialog header="Liste des pointeur associé à ce Bon" [(visible)]="displayModalPointeur" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false">                  
+                    <li *ngIf="lat1">                        
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 1:</b>{{lat1}}</span>                      
+                    </li> 
+                    <li *ngIf="lat2">                        
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 2:</b>{{lat2}}</span>                      
+                    </li> 
+                    <li *ngIf="lat3">                        
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 3:</b>{{lat3}}</span>                      
+                    </li> 
+                    <li *ngIf="lat4">                        
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 4:</b>{{lat4}}</span>                      
+                    </li> 
+                    <li *ngIf="lat5">                        
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 5:</b>{{lat5}}</span>                      
+                    </li> 
+                    <li *ngIf="lat6">                        
+                      <span class="image-text"><b class="p-mb-3 p-text-light">Nom Pointeur 6:</b>{{lat6}}</span>                      
+                    </li> 
+                    <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayModalPointeur=false" label="Annuler" styleClass="p-button-text"></p-button>
+                    </ng-template>
+                  </p-dialog>
                 </div>
             </div>
 
@@ -536,19 +555,20 @@
             </div> 
           </div>  
 
-<!--  PROGRESSIVE  bar  -->
 
-          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-          [draggable]="false" [resizable]="false">
-          <p class="p-m-0"> 
-            <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
-          </p>
-          </p-dialog>
-
-<!--  PROGRESSIVE  bar  -->
         </nb-accordion-item-body>
       </nb-accordion-item>
     </nb-accordion>
+    <!--  PROGRESSIVE  bar  -->
+
+    <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false">
+    <p class="p-m-0"> 
+      <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+    </p>
+    </p-dialog>
+
+<!--  PROGRESSIVE  bar  -->
     <div class="col-sm-6">
       <button [disabled]=!bonPrepForm.form.valid type="submit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
         Modifier le bon Preparation</button>

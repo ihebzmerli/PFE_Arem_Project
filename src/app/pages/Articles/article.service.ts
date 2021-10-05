@@ -12,7 +12,7 @@ export class ArticleService {
   private url= 'http://localhost:8080/api/articles';
   private urltest= 'http://localhost:8080/api/articlesTest';
   private url2= 'http://localhost:8080/api';
-  host : string = "http://localhost:8080";
+  public host : string = "http://localhost:8080/webapp/imgArticles/Images";
   constructor(private http: HttpClient) { }
 
 
@@ -92,7 +92,9 @@ export class ArticleService {
     return this.http.get<Article[]>(`${this.url}/dateBetweenDAT_PACH/${startDate}to${endDate}`);
   }
 
-
+  getArticlePublicité(): Observable<Article> {
+    return this.http.get<Article>(`${this.url}/ArticlePublicité`);
+  }
 
 
   /**STATISTIQUE Article */

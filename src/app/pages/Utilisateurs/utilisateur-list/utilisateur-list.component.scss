@@ -80,4 +80,25 @@
     border: 1px solid rgb(190, 190, 190);
     padding: 10px;
   }  
+
+  .blink {
+    animation: blinker 1s step-start infinite;
+  }
+  
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+::ng-deep .form {
+  display: flex;
+  flex-direction: column;
+
+  .text-label {
+    margin-top: 1.5rem;
+  }
+}
+.full-name-inputs {
+  width: 50%;
 }

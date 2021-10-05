@@ -16,6 +16,7 @@ import { Model } from '../../Model/model';
 import { MarqueService } from '../../Marques/marque.service';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { Utilisateur } from '../../Utilisateurs/utilisateur';
 
 @Component({
   selector: 'ngx-update-article',
@@ -32,8 +33,8 @@ export class UpdateArticleComponent implements OnInit {
   article: Article = new Article();
   codArt: string;
   nature: any;
+  userPost: Utilisateur;
   poste: any;
-
   constructor(private authService: TokenStorageService,private utilisateurService: UtilisateurService,private marqueService: MarqueService ,private fournisService:FournisService,private articleService: ArticleService ,private toastrService: NbToastrService,private formBuilder: FormBuilder,public datepipe: DatePipe,private route: ActivatedRoute,private router: Router) { }
   myFormattedDate;
   datz;
@@ -48,41 +49,48 @@ export class UpdateArticleComponent implements OnInit {
 
     this.codArt = this.route.snapshot.params['codArt'];
     
-    this.articleService.getArticle(this.codArt)
-      .subscribe(data => {
-        console.log(data)
-        this.article = data;
+    
+    this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {
+      this.utilisateurService.getUtilisateur(data1.toString()).subscribe(data => {
+        this.userPost = data;
+        this.poste = this.userPost.firstname+' '+this.userPost.lastname;
+        this.articleService.getArticle(this.codArt)
+          .subscribe(data => {
+            console.log(data)
+            this.article = data;
 
-        if(this.article.derAch!=null){
-          this.article.derAch=new Date(this.article.derAch.toLocaleString());
-          this.article.derAch.setMinutes( this.article.derAch.getMinutes() + this.article.derAch.getTimezoneOffset());
-          }else{
-            this.article.derAch=null;
-          }
-          if(this.article.derMvt!=null){
-            this.article.derMvt=new Date(this.article.derMvt.toLocaleString());
-            this.article.derMvt.setMinutes( this.article.derMvt.getMinutes() + this.article.derMvt.getTimezoneOffset());
-            }else{
-              this.article.derMvt=null;
-            }
-            if(this.article.datRup!=null){
-              this.article.datRup=new Date(this.article.datRup.toLocaleString());
-              this.article.datRup.setMinutes( this.article.datRup.getMinutes() + this.article.datRup.getTimezoneOffset());
+            if(this.article.derAch!=null){
+              this.article.derAch=new Date(this.article.derAch.toLocaleString());
+              this.article.derAch.setMinutes( this.article.derAch.getMinutes() + this.article.derAch.getTimezoneOffset());
               }else{
-                this.article.datRup=null;
+                this.article.derAch=null;
               }
-              if(this.article.datPAch!=null){
-                this.article.datPAch=new Date(this.article.datPAch.toLocaleString());
-                this.article.datPAch.setMinutes( this.article.datPAch.getMinutes() + this.article.datPAch.getTimezoneOffset());
+              if(this.article.derMvt!=null){
+                this.article.derMvt=new Date(this.article.derMvt.toLocaleString());
+                this.article.derMvt.setMinutes( this.article.derMvt.getMinutes() + this.article.derMvt.getTimezoneOffset());
                 }else{
-                  this.article.datPAch=null;
+                  this.article.derMvt=null;
                 }
-                if(this.article.datCreat!=null){
-                  this.article.datCreat=new Date(this.article.datCreat.toLocaleString());
-                  this.article.datCreat.setMinutes( this.article.datCreat.getMinutes() + this.article.datCreat.getTimezoneOffset());
+                if(this.article.datRup!=null){
+                  this.article.datRup=new Date(this.article.datRup.toLocaleString());
+                  this.article.datRup.setMinutes( this.article.datRup.getMinutes() + this.article.datRup.getTimezoneOffset());
                   }else{
-                    this.article.datCreat=null;
+                    this.article.datRup=null;
                   }
+                  if(this.article.datPAch!=null){
+                    this.article.datPAch=new Date(this.article.datPAch.toLocaleString());
+                    this.article.datPAch.setMinutes( this.article.datPAch.getMinutes() + this.article.datPAch.getTimezoneOffset());
+                    }else{
+                      this.article.datPAch=null;
+                    }
+                    if(this.article.datCreat!=null){
+                      this.article.datCreat=new Date(this.article.datCreat.toLocaleString());
+                      this.article.datCreat.setMinutes( this.article.datCreat.getMinutes() + this.article.datCreat.getTimezoneOffset());
+                      }else{
+                        this.article.datCreat=null;
+                      }
+          }, error => console.log(error));
+        }, error => console.log(error));
       }, error => console.log(error));
   const now = Date.now();
   this.myFormattedDate = this.datepipe.transform(now, 'short');

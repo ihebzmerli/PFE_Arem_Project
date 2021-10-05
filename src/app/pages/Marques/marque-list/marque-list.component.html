@@ -7,21 +7,21 @@
 
   <nb-card-body>
     <div class="container">
-      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      Recherche Table: <input nbInput style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
           <th style="text-align: center">
             <label class="label">Code</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Code"
+              <input type="text" nbInput class="form-control" placeholder="search Code"
               style="width:150px" [(ngModel)]="searchTermCode"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Titre</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search titre"
+              <input type="text" nbInput class="form-control" placeholder="search titre"
               style="width:150px" [(ngModel)]="searchTermTitle"/>
             </div>
           </th>
@@ -36,15 +36,15 @@
         <tr *ngFor="let marque of filteredMarques | filter:searchText">
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{marque.code}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{marque.title}}</p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+marque.id}}" style="height: 85px;width: 85px" alt=""></a></td>
+          <td style="text-align: center" class="field-multiple-drag"><a><img src="{{this.marqueService.host+'/'+marque.code+'/'+marque.fileName}}" style="height: 85px;width: 85px" alt=""></a></td>
 
           <td class="field-multiple-drag">
             <div class="buttons-row">
               <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['Models/../../model-list',marque.id]" outline>
                 <i class="fa fa-search"></i>Details</button>
-              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(marque.id)" outline>
+              <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_TRANSITAIRE'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(marque.id)" outline>
                 <i class="fa fa-edit"></i>Modifier</button>
-              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(marque.id)" outline>
+              <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_TRANSITAIRE'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(marque.id)" outline>
                 <i class="fa fa-remove"></i>Supprimer</button>
             </div>
           </td>

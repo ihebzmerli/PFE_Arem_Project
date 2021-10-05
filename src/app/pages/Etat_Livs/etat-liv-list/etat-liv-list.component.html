@@ -2,7 +2,7 @@
   <nb-card-header>
     Etat livraison Table
     <nb-card-body>
-      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_LIVREUR')" class="border">
+      <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_LIVREUR'" class="border">
         <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
           <i class="fa fa-user"></i>Statistiques</button>
       </div>      
@@ -11,7 +11,7 @@
 
   <nb-card-body>
     <div class="container">
-      Recherche Table: <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      Recherche Table: <input class="form-control" nbInput type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -19,18 +19,22 @@
           <th style="text-align: center">
             <label class="label">N~ Bon livraison</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search NumBon"
+              <input type="text" nbInput class="form-control" placeholder="search NumBon"
               style="width:150px" [(ngModel)]="searchTermNumBon"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">Date Bon livraison</label>
+            <label class="label">Date Bon livraison
+            </label>
+            <div class="form-group">
+              
+            </div>
           </th>
 
           <th style="text-align: center">
             <label class="label">region</label>
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Region"
+            <div class="form-group" >
+              <input type="text" nbInput class="form-control" placeholder="search Region"
               style="width:150px" [(ngModel)]="searchTermRegion"/>
             </div>
           </th>
@@ -49,7 +53,31 @@
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">date derniére Etat</label>
+            <label class="label">date derniére Etat
+              <button (click)="FilterDate1(startDate1,endDate1)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate1"
+                [nbDatepicker]="dateTimePicker1" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker1></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate1"
+                [nbDatepicker]="formpickertest1" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest1></nb-datepicker>
+              </div> 
+            </div>
           </th>
           <th style="text-align: center"><label class="label">Actions</label></th>
 
@@ -69,11 +97,11 @@
 
           <td class="field-multiple-drag">
             <div class="buttons-row">
-            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_LIVREUR' || 'ROLE_EXPEDITEUR' || 'ROLE_VENDEUR' || 'ROLE_ACHETEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['etat-liv-detail',etatliv.id]" outline>
+            <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_LIVREUR' || authority==='ROLE_EXPEDITEUR' || authority==='ROLE_VENDEUR' || authority==='ROLE_ACHETEUR'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['etat-liv-detail',etatliv.id]" outline>
               <i class="fa fa-search"></i>Details</button>
-            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_LIVREUR' || 'ROLE_ACHETEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" [routerLink]="['update-etat-liv',etatliv.id]" outline>
+            <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_LIVREUR' || authority==='ROLE_ACHETEUR'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" [routerLink]="['update-etat-liv',etatliv.id]" outline>
               <i class="fa fa-edit"></i>Modifier</button>
-            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap()" outline>
+            <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap()" outline>
               <i class="fa fa-remove"></i>Supprimer</button>
             </div>
           </td>

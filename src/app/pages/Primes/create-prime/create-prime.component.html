@@ -1,9 +1,17 @@
-<div class="accordions-container row offset-sm-2 col-sm-9">
       <form [formGroup]="primeForm" (ngSubmit) = "onSubmit()">
+        <div class="offset-sm-2 col-sm-9">
         <nb-card>
-          <nb-card-header>Ajouter Bon De Prime<p>Date de création:<input type="text" nbInput fullWidth placeholder="DER_MVT" class="form-control" formControlName="derMvt" [ngClass]="{ 'is-invalid': submitted && f.derMvt.errors }" disabled/></p></nb-card-header>
+          <nb-card-header>
+            <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Prime?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../prime-list']"/>
+              <p>Ajouter Bon De Prime<br> <label for="raison" class="label">Date de création:</label></p>
+          <div class="form-row">
+            <div class="form-group col">
+              <input type="text" nbInput fullWidth placeholder="DER_MVT" class="form-control" formControlName="derMvt" [ngClass]="{ 'is-invalid': submitted && f.derMvt.errors }" disabled/>
+            </div>
+            <div class="form-group col"></div>
+          </div>
+        </nb-card-header>
           <nb-card-body>
-            <div class="accordions-container row offset-sm-2 col-sm-9">
               
               <div class="form-row">
                   <div class="form-group col">
@@ -32,16 +40,16 @@
                     <label for="objMin" class="label">ObjMin</label>
                     <input type="number" step="5" min="0" nbInput fullWidth placeholder="ObjMin" class="form-control" formControlName="objMin" [ngClass]="{ 'is-invalid': submitted && f.objMin.errors }" />
                     <div *ngIf="submitted && f.objMin.errors" class="invalid-feedback">
-                      <div *ngIf="f.objMin.errors.required">OBJ_MIN est obligatoire.</div> 
-                      <div *ngIf="f.objMin.errors.pattern">OBJ_MIN doit étre un nombre positive.</div>             
+                      <div *ngIf="f.objMin.errors.required">Obj_Min est obligatoire.</div> 
+                      <div *ngIf="f.objMin.errors.pattern">Obj_Min doit étre un nombre positive.</div>             
                     </div>
                   </div>
                   <div class="form-group col">  
                     <label for="objMax" class="label">ObjMax</label>
                     <input type="number" step="5" min="0" nbInput fullWidth placeholder="ObjMax" class="form-control" formControlName="objMax" [ngClass]="{ 'is-invalid': submitted && f.objMax.errors }" />
                     <div *ngIf="submitted && f.objMax.errors" class="invalid-feedback">
-                      <div *ngIf="f.objMax.errors.required">OBJ_MIN est obligatoire.</div>
-                      <div *ngIf="f.objMax.errors.pattern">OBJ_MIN doit étre un nombre positive.</div>
+                      <div *ngIf="f.objMax.errors.required">Obj_Max est obligatoire.</div>
+                      <div *ngIf="f.objMax.errors.pattern">Obj_Max doit étre un nombre positive.</div>
                     </div>
                   </div>
                 </div>
@@ -79,7 +87,6 @@
                     <input type="text" step="10" min="0" nbInput fullWidth placeholder="Art Spec" class="form-control" formControlName="artSpec" [ngClass]="{ 'is-invalid': submitted && f.artSpec.errors }" />
                     <div *ngIf="submitted && f.artSpec.errors" class="invalid-feedback">
                       <div *ngIf="f.artSpec.errors.required">ART_SPEC est obligatoire.</div>
-                      <div *ngIf="f.artSpec.errors.pattern">ART_SPEC doit étre un nombre positive.</div>
                     </div>
                   </div>
                 </div>
@@ -122,12 +129,11 @@
                     </div>
                   </div>
                 </div>
-            </div>
           </nb-card-body>
         </nb-card>
         <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
           Ajouter Prime</button>
           <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
           Annuler</button>
+        </div>
       </form>
-</div>

@@ -73,7 +73,7 @@ export class CreateMarqueComponent implements OnInit {
         }
   
         // display form values on success
-        alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.marqueForm.value, null, 4));
+        //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.marqueForm.value, null, 4));
         this.saveMarque();
         this.makeToast(); 
         this.OpenDeletePopap()
@@ -91,6 +91,7 @@ export class CreateMarqueComponent implements OnInit {
   saveMarque(){
     const formData = new FormData();
     const marque = this.marqueForm.value;
+    console.log(this.marqueForm.value);
     formData.append('marque',JSON.stringify(marque));
     formData.append('file',this.userFile);
    this.marqueService.createMarque2(formData).subscribe( data =>{
@@ -109,10 +110,9 @@ onSelectFile(event){
     this.userFile =file;
 
     var mimeType = event.target.files[0].type;
-    if(mimeType.match(/image\/*/) == null){
-      console.log("Only images are supported.");
-      return;
-    }
+    if(mimeType.match(/image\/jpeg/) === null && mimeType.match(/image\/png/) === null){
+      this.makeToast3();
+    }else{
 
     var reader = new FileReader();
     
@@ -122,6 +122,7 @@ onSelectFile(event){
       this.imgURL = reader.result;
     }
   }
+ }
 }
   
   
@@ -146,6 +147,11 @@ onSelectFile(event){
         title2 = 'HI there!';
         content2 = `des probleme de saisi!`;
     
+        status3: NbComponentStatus = 'warning';
+
+        title3 = 'Image doit etre de type png,jpg,jpeg!';
+        content3 = `Fichier de type eronée!`;
+        
         types: NbComponentStatus[] = [
           'primary',
           'success',
@@ -170,6 +176,9 @@ onSelectFile(event){
         }
         makeToast2() {
           this.showToast(this.status2, this.title2, this.content2);
+        }
+        makeToast3() {
+          this.showToast(this.status3, this.title3, this.content3);
         }
         private showToast(type: NbComponentStatus, title: string, body: string) {
           const config = {

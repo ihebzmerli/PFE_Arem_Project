@@ -1,6 +1,5 @@
 import { Component, OnInit , TemplateRef , ViewChild  } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { WindowDateFilterComponent } from './window-date-filter/window-date-filter.component';
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { Vehicule } from '../vehicule';
 import { Observable } from 'rxjs';
@@ -12,6 +11,7 @@ import { ArticleService } from '../../Articles/article.service';
 import { MarqueService } from '../../Marques/marque.service';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'ngx-vehicule-list',
   templateUrl: './vehicule-list.component.html',
@@ -156,7 +156,7 @@ export class VehiculeListComponent implements OnInit {
   
 
   constructor(private authService: TokenStorageService,private windowService: NbWindowService,private marqueService:MarqueService, private articleService: ArticleService, private dialogService: NbDialogService, private vehiculeService: VehiculeService,
-    private router: Router,private service: SmartTableData) {
+    private router: Router,private service: SmartTableData,public datepipe: DatePipe) {
 
     }
 
@@ -165,7 +165,7 @@ export class VehiculeListComponent implements OnInit {
   authority;
   ngOnInit(): void {
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
     this.getAllMarquesList();
@@ -225,11 +225,7 @@ export class VehiculeListComponent implements OnInit {
             },
           );
         }
-      
-        openWindowFormFilterDate() {
-          this.windowService.open(WindowDateFilterComponent, { title: `entrer les deux dates` });
-        }
-      
+
         openWindowFilterDateWithoutBackdrop() {
           this.windowService.open(
             this.disabledEscTemplate,
@@ -309,5 +305,117 @@ getVehiculeCouleur(selectedCouleur: any){
   }else{
     this.getVehicules();
   }
+}
+
+
+
+/***filter date */
+
+
+
+startDate;
+endDate;
+testStatus :number = 1;
+FilterDate(startDate,endDate){
+  console.log(startDate,endDate)
+  if (startDate !=null && endDate!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.vehiculeService.getAllVehiculedt1mcBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredVehicules = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getVehicules();
+  this.testStatus = 1
+}
+}
+
+startDate1;
+endDate1;
+FilterDate1(startDate1,endDate1){
+  console.log(startDate1,endDate1)
+  if (startDate1 !=null && endDate1!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate1, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate1, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.vehiculeService.getAllVehiculeDT_ACQBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredVehicules = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getVehicules();
+  this.testStatus = 1
+}
+}
+
+startDate2;
+endDate2;
+FilterDate2(startDate2,endDate2){
+  console.log(startDate2,endDate2)
+  if (startDate2 !=null && endDate2!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate2, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate2, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.vehiculeService.getAllVehiculedtfassBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredVehicules = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getVehicules();
+  this.testStatus = 1
+}
+}
+
+startDate3;
+endDate3;
+FilterDate3(startDate3,endDate3){
+  console.log(startDate3,endDate3)
+  if (startDate3 !=null && endDate3!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate3, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate3, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.vehiculeService.getAllVehiculedtfvisitBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredVehicules = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getVehicules();
+  this.testStatus = 1
+}
+}
+
+startDate4;
+endDate4;
+FilterDate4(startDate4,endDate4){
+  console.log(startDate4,endDate4)
+  if (startDate4 !=null && endDate4!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate4, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate4, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.vehiculeService.getAllVehiculedt1mc2BydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredVehicules = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getVehicules();
+  this.testStatus = 1
+}
 }
 }

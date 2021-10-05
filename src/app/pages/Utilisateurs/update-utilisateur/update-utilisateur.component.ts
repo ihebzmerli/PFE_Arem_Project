@@ -203,6 +203,143 @@ export class UpdateUtilisateurComponent implements OnInit {
   }
   this.utilisateur.derMvt=new Date();
 
+  if(this.utilisateur.typeConge==''){
+    this.utilisateur.typeConge="indefini";
+  }
+  this.utilisateur.connected=0;
+  console.log(this.utilisateur);
+
+  if(this.userFile!=null || this.userFile){
+  const formData = new FormData();
+  const user = this.utilisateur;
+  formData.append('user',JSON.stringify(user));
+  formData.append('file',this.userFile);
+  this.utilisateurService.updateUtilisateur2(this.utilisateur.id.toString(),formData).subscribe( data =>{
+    if(this.selectedRole=="ROLE_ACHETEUR"){
+
+      this.utilisateurService.ChangeRoleToACHETEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_ADMIN"){
+      
+      this.utilisateurService.ChangeRoleToADMIN(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_AGENT_CAB"){
+      
+      this.utilisateurService.ChangeRoleToAGENT_CAB(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_AGENT_SAISIE_REG"){
+      
+      this.utilisateurService.ChangeRoleToAGENT_SAISIE_REG(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_CAISSIER"){
+      
+      this.utilisateurService.ChangeRoleToCAISSIER(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_CLIENT"){
+      
+      this.utilisateurService.ChangeRoleToCLIENT(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_DECIDEUR_BP"){
+      
+      this.utilisateurService.ChangeRoleToDECIDEUR_BP(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_EMBALLEUR"){
+      
+      this.utilisateurService.ChangeRoleToEMBALLEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_EXPEDITEUR"){
+      
+      this.utilisateurService.ChangeRoleToEXPEDITEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_PREPARATEUR"){
+      
+      this.utilisateurService.ChangeRoleToPREPARATEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_PREPARATEUR_BR"){
+      
+      this.utilisateurService.ChangeRoleToPREPARATEUR_BR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_RESPONSABLE_DISPATCHING_BP"){
+      
+      this.utilisateurService.ChangeRoleToRESPONSABLE_DISPATCHING_BP(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_RESPONSABLE_POINTAGE"){
+      
+      this.utilisateurService.ChangeRoleToRESPONSABLE_POINTAGE(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER"){
+      
+      this.utilisateurService.ChangeRoleToRESPONSABLE_SERVICE_FRS_ETRANGER(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_RESPONSABLE_SERVICE_FRS_LOCAL"){
+     
+      this.utilisateurService.ChangeRoleToRESPONSABLE_SERVICE_FRS_LOCAL(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_TRANSITAIRE"){
+      
+      this.utilisateurService.ChangeRoleToTRANSITAIRE(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_VALIDATEUR_DE_CHARIOT"){
+      
+      this.utilisateurService.ChangeRoleToVALIDATEUR_DE_CHARIOT(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_VENDEUR"){
+      
+      this.utilisateurService.ChangeRoleToVENDEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_LIVREUR"){
+      
+      this.utilisateurService.ChangeRoleToLIVREUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else{
+      
+      this.utilisateurService.ChangeRoleToUSER(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }
+    console.log(data);
+  },
+  error => console.log(error));
+  }else{
     this.utilisateurService.updateUtilisateur(this.id,this.utilisateur).subscribe(data => {
       if(this.selectedRole=="ROLE_ACHETEUR"){
 
@@ -328,6 +465,7 @@ export class UpdateUtilisateurComponent implements OnInit {
       this.utilisateur = new Utilisateur();
       console.log(this.utilisateur);
     }, error => console.log(error));
+  }
 }
   utilisateur_list(){
     this.router.navigate(['//pages/Utilisateurs/utilisateur-list']);
@@ -357,10 +495,11 @@ status2: NbComponentStatus = 'danger';
 title2 = 'La modification n est pas faite avec succée!';
 content2 = `Erreur de modification!`;
 
-status3: NbComponentStatus = 'warning';
+status4: NbComponentStatus = 'warning';
 
-title3 = 'La modification n est pas faite stk est vide!';
-content3 = `La modification n'a rien changé!`;
+title4 = 'Image doit etre de type png,jpg,jpeg!';
+content4 = `Fichier de type eronée!`;
+
 types: NbComponentStatus[] = [
   'primary',
   'success',
@@ -386,8 +525,8 @@ makeToast() {
 makeToast2() {
   this.showToast(this.status2, this.title2, this.content2);
 }
-makeToast3() {
-  this.showToast(this.status3, this.title3, this.content3);
+makeToast4() {
+  this.showToast(this.status4, this.title4, this.content4);
 }
 private showToast(type: NbComponentStatus, title: string, body: string) {
   const config = {
@@ -417,4 +556,38 @@ getRandomNumber() {
 }
 
 /** */
+
+
+
+
+/**upload image user */
+userFile;
+imgURL: any;
+public imagePath;
+onSelectFile(event){
+if(event.target.files.length > 0){
+  const file =event.target.files[0];
+  this.userFile =file;
+
+  var mimeType = event.target.files[0].type;
+  console.log(this.utilisateur.fileName);
+  if(mimeType.match(/image\/jpeg/) === null && mimeType.match(/image\/png/) === null){
+    this.makeToast4();
+  }else{
+
+    var reader = new FileReader();
+    
+    this.imagePath = file;
+    reader.readAsDataURL(file);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
+    }
+  }
+}
+
+
+}
+
+
+/** end upload image user */
 }

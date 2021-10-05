@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NbAccordionModule, NbAlertModule, NbPopoverModule, NbSearchModule } from '@nebular/theme';
 import { NbActionsModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbDialogModule,NbIconModule, NbInputModule, NbRadioModule, NbSelectModule, NbTreeGridModule, NbUserModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -10,7 +10,6 @@ import { FormsRoutingModule } from '../forms/forms-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AffaireListComponent } from './affaire-list/affaire-list.component';
 import { AffairesDetailComponent } from './affaires-detail/affaires-detail.component';
-import { WindowDateFilterComponent } from './affaire-list/window-date-filter/window-date-filter.component';
 // search module
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -35,13 +34,13 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DataViewModule } from 'primeng/dataview';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { AffaireService } from './affaire.service';
 
 @NgModule({
   declarations: [
     ...routedComponents,
     AffaireListComponent,
     AffairesDetailComponent,
-    WindowDateFilterComponent,
     EchartsAffaireBarComponent,
     EchartsAffairePieComponent,
     EchartsAffaireComponent
@@ -89,6 +88,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     DataViewModule,
     SelectButtonModule,  
     NbDialogModule.forChild(),
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class AffaireModule { }

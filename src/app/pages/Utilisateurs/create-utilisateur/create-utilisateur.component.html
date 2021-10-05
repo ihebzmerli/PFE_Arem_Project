@@ -100,13 +100,25 @@
           </div>
           <div class="row">
             <div class="col-sm-6">
-              <label class="label">Password</label>  
-              <input type="password" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
-              <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">
-                <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
-                <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
-                <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
-                <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+              <div *ngIf="!pass2"> 
+                <label class="label">Password</label>&nbsp;<img src="assets/images/toulsImages/Eye.png" width="20" style="vertical-align: middle" nbPopover="Afficher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>  
+                <input type="password" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
+                <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
+                  <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
+                  <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
+                  <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+                </div>
+              </div>
+              <div *ngIf="pass2">
+                <label class="label">Password</label>&nbsp;<img src="assets/images/toulsImages/noEye.png" width="20" style="vertical-align: middle" nbPopover="Cacher le mot de passe?" nbPopoverTrigger="hint" nbPopoverPlacement="right" (click)="getpassword()"/>
+                <input type="text" nbInput fullWidth placeholder="password" id="password" name="password" required #password="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$" maxlength="100" minlength="7" [(ngModel)]="utilisateur.password">
+                <div style="font-size: 12px;" [hidden]="password.valid || password.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!password.hasError('minlength')">Password doit étre au moin 7 lettres longue.</div>
+                  <div [hidden]="!password.hasError('maxlength')">Password ne doit pas dépassé les 100 lettres longue.</div>
+                  <div [hidden]="!password.hasError('required')">Password est obligatoire.</div>
+                  <div [hidden]="!password.hasError('pattern')">Password ne doit contenir que des lettres et des nombres.</div>
+                </div>
               </div>
             </div>
             <div class="col-sm-6">
@@ -187,13 +199,27 @@
             </div>
           </div>
         </nb-card-body>
-        <div class="col-sm-6">
-          <button type="submit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
-            Ajouter Utilisateur</button>
-          <button nbButton (click)="utilisateurForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
-            Annuler</button> 
-        </div>
       </nb-card>
+
+      <nb-card>
+        <nb-card-header>Information optionnel</nb-card-header>
+        <nb-card-body>
+          <div class="col-sm-6"> 
+            <label for="poste" class="label">Ajouter Image</label>
+            <input type="file" accept="image/jpeg || image/png" (change)="onSelectFile($event)"/>
+          </div>      
+          <nb-card-body>       
+            <img [src]="imgURL" height="200" width="200" *ngIf="imgURL">
+          </nb-card-body>
+        </nb-card-body>
+      </nb-card>
+
+      <div class="col-sm-6">
+        <button [disabled]=!utilisateurForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+          Ajouter Utilisateur</button>
+        <button nbButton (click)="utilisateurForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+          Annuler</button> 
+      </div>
     </div>
     <div class="col-lg-6">
         <nb-card>
@@ -218,12 +244,9 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-6"> 
-                <label class="label">Prime De Rendement</label>
-                <input type="number" nbInput fullWidth fieldSize="small" placeholder="PrimeDeRendement" id="PrimeDeRendement" name="PrimeDeRendement" #primeDeRendement="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.primeDeRendement">
-                <div style="font-size: 12px;" [hidden]="primeDeRendement.valid || primeDeRendement.pristine" class="alert alert-danger p-2">
-                  <div [hidden]="!primeDeRendement.hasError('pattern')">Prime De Rendement ne doit contenir que des nombres double.</div>
-                </div>
+                <div class="col-sm-6">
+                  <label class="label">Code Utilisateur</label> 
+                    <input type="text" nbInput fullWidth placeholder="codUser" id="codUser" name="codUser" #codUser="ngModel" [(ngModel)]="utilisateur.codUser" disabled>
                 </div>
                 <div class="col-sm-6"> 
                   <label class="label">Heures De Travail</label>
@@ -231,6 +254,17 @@
                     <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" nbInput fullWidth fieldSize="small" placeholder="HeuresDeTravail" id="HeuresDeTravail" name="HeuresDeTravail" #heuresDeTravail="ngModel" [(ngModel)]="utilisateur.heuresDeTravail" [timeOnly]="true" inputId="timeonly"></p-calendar>
                   </div>
                 </div> 
+              </div>
+              <div class="row">
+                <div class="col-sm-6"> 
+                  <label class="label">Prime De Rendement</label>
+                  <input type="number" nbInput fullWidth fieldSize="small" placeholder="PrimeDeRendement" id="PrimeDeRendement" name="PrimeDeRendement" #primeDeRendement="ngModel" pattern="^[0-9]+(\.[0-9]{1,3})?$" [(ngModel)]="utilisateur.primeDeRendement">
+                  <div style="font-size: 12px;" [hidden]="primeDeRendement.valid || primeDeRendement.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!primeDeRendement.hasError('pattern')">Prime De Rendement ne doit contenir que des nombres double.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6"> 
+                </div>
               </div>
               <div class="row">
                 <div class="col-sm-6"> 
@@ -1045,9 +1079,12 @@
                 <nb-datepicker #dateTimePicker7></nb-datepicker>
               </div>    
               <div class="full-name-inputs">
-
-                <input [nbDatepicker]="dateTimePicker8" nbInput fullWidth fieldSize="small" placeholder="DAT_G_FAC" id="DAT_G_FAC" name="DAT_G_FAC" required #datGFac="ngModel" [(ngModel)]="utilisateur.datGFac">
-                <nb-datepicker #dateTimePicker8></nb-datepicker>
+                <input type="text" nbInput fullWidth fieldSize="small" placeholder="DAT__DES_G_FAC" id="DAT_G_FAC" name="DAT_G_FAC" #datGFac="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="30" minlength="5" [(ngModel)]="utilisateur.datGFac">
+                <div style="font-size: 12px;" [hidden]="datGFac.valid || datGFac.pristine" class="alert alert-danger p-2">
+                  <div [hidden]="!datGFac.hasError('minlength')">Famille doit étre au moin 5 lettres longue.</div>
+                  <div [hidden]="!datGFac.hasError('maxlength')">Famille ne doit pas dépassé les 30 lettres longue.</div>
+                  <div [hidden]="!datGFac.hasError('pattern')">Famille ne doit contenir que des lettres et des nombres.</div>
+                </div>
 
                 <input type="number" nbInput fullWidth fieldSize="small" placeholder="CA_MENS" id="CA_MENS" name="CA_MENS" #caMens="ngModel" pattern="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$" max="9999999" min="0" [(ngModel)]="utilisateur.caMens">
                 <div [hidden]="caMens.valid || caMens.pristine" class="alert alert-danger p-2">
@@ -1298,15 +1335,15 @@
                 <label class="label">COMPTANT</label>
                 <div>
                   <nb-select [style]="{'width':'100%'}" placeholder="COMPTANT" id="COMPTANT" name="COMPTANT" #comptant="ngModel" fullWidth fieldSize="small" [(ngModel)]="utilisateur.comptant" >
-                    <nb-option value=0>Non validé</nb-option>
-                    <nb-option value=1>Validé</nb-option>
+                    <nb-option value="false">Non validé</nb-option>
+                    <nb-option value="true">Validé</nb-option>
                   </nb-select>
                 </div>
                 <label class="label">B~L</label>
                 <div>
                   <nb-select [style]="{'width':'100%'}" placeholder="BL" id="BL" name="BL" #bl="ngModel"fullWidth fieldSize="small" [(ngModel)]="utilisateur.bl" >
-                    <nb-option value=0>Non validé</nb-option>
-                    <nb-option value=1>Validé</nb-option>
+                    <nb-option value="false">Non validé</nb-option>
+                    <nb-option value="true">Validé</nb-option>
                   </nb-select>
                 </div>
               </div>

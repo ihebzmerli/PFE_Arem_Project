@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NbComponentStatus, NbDateService, NbGlobalLogicalPosition, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrConfig, NbToastrService, NbWindowService } from '@nebular/theme';
-import { delay } from 'rxjs/operators';
 import { TokenStorageService } from '../../auth/token-storage.service';
 import { PagesComponent } from '../../pages.component';
 import { Role } from '../Role/role';
 import { Utilisateur } from '../utilisateur';
 import { UtilisateurService } from '../utilisateur.service';
-
+import * as moment from "moment";
+import { Console } from 'console';
 @Component({
   selector: 'ngx-create-utilisateur',
   templateUrl: './create-utilisateur.component.html',
@@ -24,6 +24,7 @@ export class CreateUtilisateurComponent implements OnInit {
   statusessRole:any;
   utilisateurForm: FormGroup;
   selectedRole;
+  
 /** ********************* */
 
 utilisateur: Utilisateur = new Utilisateur();
@@ -32,14 +33,44 @@ constructor(private authService: TokenStorageService,private utilisateurService:
     private router: Router,private formBuilder: FormBuilder,public datepipe: DatePipe,private toastrService: NbToastrService,
     protected dateService: NbDateService<Date>,private windowService: NbWindowService) { }
 ngOnInit() {
+  this.utilisateur.typeConge='';
+  this.utilisateur.typeContrat='';
+  this.utilisateur.comptant=false;
+  this.utilisateur.bl=false;
+  this.getRandomNumber();
+  this.utilisateur.heuresDeTravail= new Date(this.datepipe.transform(this.utilisateur.heuresDeTravail, '08:00'))
+
+
+    this.utilisateur.dateRec= new Date(Date().toLocaleString());
+    this.utilisateur.dateRec.setMinutes( this.utilisateur.dateRec.getMinutes() + this.utilisateur.dateRec.getTimezoneOffset());
+
+    this.utilisateur.dateContrat= new Date(Date().toLocaleString());
+    this.utilisateur.dateContrat.setMinutes( this.utilisateur.dateContrat.getMinutes() + this.utilisateur.dateContrat.getTimezoneOffset());
+
+    this.utilisateur.dateDebutConge= new Date(Date().toLocaleString());
+    this.utilisateur.dateDebutConge.setMinutes( this.utilisateur.dateDebutConge.getMinutes() + this.utilisateur.dateDebutConge.getTimezoneOffset());
+
+    this.utilisateur.dateFinConge= new Date(Date().toLocaleString());
+    this.utilisateur.dateFinConge.setMinutes( this.utilisateur.dateFinConge.getMinutes() + this.utilisateur.dateFinConge.getTimezoneOffset());
+
+    this.utilisateur.derMvt= new Date(Date().toLocaleString());
+    this.utilisateur.derMvt.setMinutes( this.utilisateur.derMvt.getMinutes() + this.utilisateur.derMvt.getTimezoneOffset());
+
+    this.utilisateur.datFFac= new Date(Date().toLocaleString());
+    this.utilisateur.datFFac.setMinutes( this.utilisateur.datFFac.getMinutes() + this.utilisateur.datFFac.getTimezoneOffset());
+
 
   this.utilisateurService.getRoles().subscribe(data => {
     this.statusessRole = data;
     console.log(data);
   });
   }
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
 
-save() {
+  id_modificationRole:number;
+  async save() {
   
   if(this.selectedRole=="ROLE_ACHETEUR"){
     this.utilisateur.role=['acheteur'];
@@ -127,18 +158,167 @@ save() {
     this.utilisateur.datFFac=null;
   }  
 
-    this.utilisateurService.createUtilisateur(this.utilisateur)
-      .subscribe(data =>{ 
-        console.log(data)
-  }, error => console.log(error));
+  if(this.utilisateur.typeConge=='')
+  {
+    this.utilisateur.typeConge="indefini";
+  }
+  this.utilisateur.connected=0;
+  console.log(this.utilisateur);
 
+
+
+
+  if(this.userFile!=null || this.userFile){
+  const formData = new FormData();
+  const user = this.utilisateur;
+  formData.append('user',JSON.stringify(user));
+  formData.append('file',this.userFile);
+  await this.utilisateurService.createUtilisateur2(formData).subscribe( data =>{
+    console.log(data);
+  },error => console.log(error));
+  await this.delay(3000);
+  console.log(this.selectedRole);
+
+  this.utilisateurService.getLastIdUser().subscribe( data =>{
+    this.id_modificationRole=Number(data.toString()).valueOf();
+    console.log(this.id_modificationRole);
+
+
+    if(this.selectedRole=="ROLE_ACHETEUR"){
+
+      this.utilisateurService.ChangeRoleToACHETEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_ADMIN"){
+      
+      this.utilisateurService.ChangeRoleToADMIN(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_AGENT_CAB"){
+      
+      this.utilisateurService.ChangeRoleToAGENT_CAB(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_AGENT_SAISIE_REG"){
+      
+      this.utilisateurService.ChangeRoleToAGENT_SAISIE_REG(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_CAISSIER"){
+      
+      this.utilisateurService.ChangeRoleToCAISSIER(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_CLIENT"){
+      
+      this.utilisateurService.ChangeRoleToCLIENT(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_DECIDEUR_BP"){
+      
+      this.utilisateurService.ChangeRoleToDECIDEUR_BP(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_EMBALLEUR"){
+      
+      this.utilisateurService.ChangeRoleToEMBALLEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_EXPEDITEUR"){
+      
+      this.utilisateurService.ChangeRoleToEXPEDITEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_PREPARATEUR"){
+      
+      this.utilisateurService.ChangeRoleToPREPARATEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_PREPARATEUR_BR"){
+      
+      this.utilisateurService.ChangeRoleToPREPARATEUR_BR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_RESPONSABLE_DISPATCHING_BP"){
+      
+      this.utilisateurService.ChangeRoleToRESPONSABLE_DISPATCHING_BP(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_RESPONSABLE_POINTAGE"){
+      
+      this.utilisateurService.ChangeRoleToRESPONSABLE_POINTAGE(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER"){
+      
+      this.utilisateurService.ChangeRoleToRESPONSABLE_SERVICE_FRS_ETRANGER(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_RESPONSABLE_SERVICE_FRS_LOCAL"){
+     
+      this.utilisateurService.ChangeRoleToRESPONSABLE_SERVICE_FRS_LOCAL(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_TRANSITAIRE"){
+      
+      this.utilisateurService.ChangeRoleToTRANSITAIRE(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_VALIDATEUR_DE_CHARIOT"){
+      
+      this.utilisateurService.ChangeRoleToVALIDATEUR_DE_CHARIOT(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_VENDEUR"){
+      
+      this.utilisateurService.ChangeRoleToVENDEUR(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }else if(this.selectedRole=="ROLE_LIVREUR"){
+
+      this.utilisateurService.ChangeRoleToLIVREUR(this.id_modificationRole).subscribe(
+        data => {
+          console.log(data)
+        },error => console.log('ERROR: ' + error));
+
+    }else{
+      
+      this.utilisateurService.ChangeRoleToUSER(this.id_modificationRole).subscribe(
+        data => {
+        },error => console.log('ERROR: ' + error));
+  
+    }
+  },error => console.log(error));
+  }else{
+        this.utilisateurService.createUtilisateur(this.utilisateur)
+          .subscribe(data =>{ 
+            console.log(data)
+      }, error => console.log(error));
+    }
   }
   onSubmitUtilisateur() {
     this.submitted = true;
     this.save(); 
-
-    delay(2000);
-//    this.gotoListUtilisateur();  
+    this.makeToast();
+    this.gotoListUtilisateur();  
   }
 
   gotoListUtilisateur($myParam: string = ''): void {
@@ -149,7 +329,10 @@ save() {
     this.router.navigate(navigationDetails);
   }
 
-
+  pass2:boolean = false;
+  getpassword(){
+    this.pass2 = !this.pass2;
+}
   /** test verification des input */
 
 onReset() {
@@ -171,12 +354,18 @@ preventDuplicates = false;
 
 status: NbComponentStatus = 'success';
 
-title = 'HI there!';
-content = `Saisir complet!`;
+title = 'L addition faite avec succée!';
+content = `L\'utilisateur est ajouter!`;
+
 status2: NbComponentStatus = 'danger';
 
-title2 = 'HI there!';
+title2 = 'L\'addition n est pas faite avec succée!';
 content2 = `Erreur de saisir!`;
+
+status3: NbComponentStatus = 'warning';
+
+title3 = 'Image doit etre de type png,jpg,jpeg!';
+content3 = `Fichier de type eronée!`;
 
 types: NbComponentStatus[] = [
   'primary',
@@ -200,6 +389,9 @@ positions: string[] = [
 makeToast() {
   this.showToast(this.status, this.title, this.content);
 }
+makeToast3() {
+  this.showToast(this.status3, this.title3, this.content3);
+}
 private showToast(type: NbComponentStatus, title: string, body: string) {
   const config = {
     status: type,
@@ -219,4 +411,49 @@ private showToast(type: NbComponentStatus, title: string, body: string) {
 }
 
 /**toaster show start */
+
+
+
+/**upload image user */
+userFile;
+imgURL: any;
+public imagePath;
+onSelectFile(event){
+if(event.target.files.length > 0){
+  const file =event.target.files[0];
+  this.userFile =file;
+
+  var mimeType = event.target.files[0].type;
+  console.log(mimeType);
+  console.log(mimeType.match(/image\/jpeg/) === null);
+  console.log(mimeType.match(/image\/png/)===null)
+  if(mimeType.match(/image\/jpeg/) === null && mimeType.match(/image\/png/) === null){
+    this.makeToast3();
+  }else{
+
+    var reader = new FileReader();
+    
+    this.imagePath = file;
+    reader.readAsDataURL(file);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
+    }
+  }
+}
+
+
+}
+
+
+/** end upload image user */
+
+
+/**get random value in coduser */
+getRandomNumber() {
+  let random = Math.floor(Math.random() * (9999999 - 1000000)) + 1000000;
+  this.utilisateur.codUser=random;
+}
+
+/** */
+
 }

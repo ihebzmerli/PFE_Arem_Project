@@ -13,7 +13,6 @@
          
       </div>
         <p>table les Articles et bon des Preparations</p>
-
         <p-table #dt1 [value]="artpreps" dataKey="id"
             [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -47,6 +46,11 @@
                     </th>
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
+                        type Article
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
                         Quantité Preparé 
                         <div>
                           <p-columnFilter type="numeric" field="qutPrep" display="menu"></p-columnFilter>
@@ -57,7 +61,7 @@
                       <div class="p-d-flex p-jc-between p-ai-center">
                         Date Preparation
                         <div> 
-                          <p-columnFilter type="date" field="datPrep" display="menu"></p-columnFilter>
+                          <p-columnFilter type="date" field="datPrep" display="menu" dateFormat="MMM d, y H:mm:ss"></p-columnFilter>
                         </div>
                       </div>
                     </th>  
@@ -65,7 +69,22 @@
                       <div class="p-d-flex p-jc-between p-ai-center">
                         non Trouve
                         <div> 
-                          <p-columnFilter type="text" field="nonTrouve" display="menu"></p-columnFilter>
+                          <p-columnFilter field="nonTrouve" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                            <ng-template pTemplate="header">
+                                <div class="p-px-3 p-pt-3 p-pb-0">
+                                    <span class="p-text-bold">type trouver</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [ngModel]="value" [options]="nonTrouverType" placeholder="Any" (onChange)="filter($event.value)">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="p-multiselect-representative-option">
+                                            <span class="p-ml-1">{{option.label}}</span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </ng-template>
+                          </p-columnFilter>
                         </div>  
                       </div>
                     </th> 
@@ -73,7 +92,7 @@
                       <div class="p-d-flex p-jc-between p-ai-center">
                         Chrono
                         <div>
-                          <p-columnFilter type="date" field="chrono" display="menu"></p-columnFilter>
+                          <p-columnFilter type="text" field="chrono" display="menu"></p-columnFilter>
                         </div>
                       </div>
                     </th>  
@@ -92,14 +111,13 @@
                                 <p-multiSelect [ngModel]="value" [options]="agentsPrepara" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
-                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                             <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                         </div>
                                     </ng-template>
                                 </p-multiSelect>
                             </ng-template>
                           </p-columnFilter>
-
                         </div>
                       </div>
                     </th> 
@@ -118,13 +136,14 @@
                                 <p-multiSelect [ngModel]="value" [options]="agentsPrep" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
-                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                             <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                         </div>
                                     </ng-template>
                                 </p-multiSelect>
                             </ng-template>
                           </p-columnFilter>
+                          <sup style="color: blueviolet;">(Modifier)</sup>
                         </div>
                       </div>
                     </th> 
@@ -174,6 +193,9 @@
                       </p-dialog>
                     </td>
                     <td>
+                      <label>{{ artprep.typArt | uppercase}}</label>
+                    </td>
+                    <td>
                       <label *ngIf="!artprep.qutPrep" (click)="showPositionDialogQutPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
                       <label *ngIf="artprep.qutPrep < artprep.marge" (click)="showPositionDialogQutPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(228, 13, 13);" >{{ artprep.qutPrep }}</b></label>
                       <label *ngIf="artprep.qutPrep > artprep.marge" (click)="showPositionDialogQutPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(44, 214, 10);" >{{ artprep.qutPrep }}</b></label>
@@ -210,7 +232,7 @@
                     </td>
                     <td>
                       <label *ngIf="!artprep.chrono" (click)="showPositionDialogChrono('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label (click)="showPositionDialogChrono('left')">{{ artprep.chrono | date: 'MMM d, y H:mm:ss' : '+0000'}}</label>
+                      <label (click)="showPositionDialogChrono('left')">{{ artprep.chrono}}</label>
                       <p-dialog header="Définition Chrono" [(visible)]="displayPositionChrono" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
                       <p>Le Chrono est le temps pris par le chariot d'étre préparer par le préparateur et pointer par le validateur de chariot  .</p>
@@ -220,8 +242,8 @@
                       </p-dialog>
                     </td>  
                     <td>
-                      <label *ngIf="!artprep.prepara" (click)="showPositionDialogPrepara('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label (click)="showPositionDialogPrepara('left')">{{ artprep.prepara }}</label>
+                      <label *ngIf="artprep.prepara===null" (click)="showPositionDialogPrepara('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artprep.prepara!==null" (click)="showPositionDialogPrepara('left')">{{ artprep.prepara.firstname }}</label>
                       <p-dialog header="Définition Prepara" [(visible)]="displayPositionPrepara" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
                       <p>Le Preparateur qui va préparer l Article dans le chariot .</p>
@@ -231,12 +253,20 @@
                       </p-dialog>
                     </td> 
                     <td>
-                      <label *ngIf="!artprep.prep" (click)="showPositionDialogPrep('left')"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
-                      <label (click)="showPositionDialogPrep('left')">{{ artprep.prep }}</label>
-                      <p-dialog header="Définition Validateur Chariot" [(visible)]="displayPositionPrep" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                      <label *ngIf="!artprep.prep" (click)="showPositionDialogPrep('left',artprep.prep,artprep.id)"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label (click)="showPositionDialogPrep('left',artprep.prep,artprep.id)">{{ artprep.prep }}</label>
+                      <p-dialog header="Définition Validateur Chariot" [(visible)]="displayPositionPrep" showEffect="fade" [position]="position" [modal]="true" [style]="{width: '50vw'}" 
                       [draggable]="false" [resizable]="false">
                       <p>Le Validateur de chariot c'est l agent qui va prendre le chariot a partire de la préparation à la fase pointage .</p>
+                      <div *ngIf="displayModifierPointageChariot">
+                        <nb-select style="max-width: 100%;width: 50%;padding: 8px;" size="small" fullWidth fieldSize="small" placeholder="pointeur chariot" [(ngModel)]="PointageChariot" [ngModelOptions]="{standalone: true}">
+                            <nb-option value="NULL">-Select</nb-option>
+                            <nb-option *ngFor="let itemsPrep of agentsPrep" [value]="itemsPrep">{{ itemsPrep.firstname }} {{ itemsPrep.lastname }}</nb-option>
+                        </nb-select>
+                      </div>
                           <ng-template pTemplate="footer">
+                            <p-button *ngIf="!displayModifierPointageChariot" icon="pi pi-check" (click)="ModifierPointageChariot()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                            <p-button *ngIf="displayModifierPointageChariot" icon="pi pi-check" (click)="ModifierPointageChariotEnter(PointageChariot)" type="button" label="Modifier" styleClass="p-button-text"></p-button>
                               <p-button icon="pi pi-check" (click)="displayPositionPrep=false" label="Annuler" styleClass="p-button-text"></p-button>
                           </ng-template>
                       </p-dialog>
@@ -268,7 +298,7 @@
           
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="10">No achat found.</td>
+                    <td colspan="11">No achat found.</td>
                 </tr>
             </ng-template>
         </p-table>

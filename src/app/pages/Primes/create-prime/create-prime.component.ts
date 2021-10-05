@@ -85,9 +85,7 @@ export class CreatePrimeComponent implements OnInit {
             Validators.pattern('^(0|[1-9][0-9]*)$')
           ])],
           artSpec: ['',  Validators.compose([
-            Validators.min(0),
-            Validators.required,
-            Validators.pattern('^(0|[1-9][0-9]*)$')
+            Validators.required
           ])],
           prime: ['', Validators.compose([
             Validators.min(0),
@@ -123,9 +121,6 @@ export class CreatePrimeComponent implements OnInit {
         this.makeToast2();
           return;
       }
-
-      // display form values on success
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.primeForm.value, null, 4));
       this.savePrime();
       this.makeToast(); 
       this.prime_list();
@@ -139,7 +134,7 @@ export class CreatePrimeComponent implements OnInit {
   } 
 
   prime_list(){
-    this.router.navigate(['//pages/Primes/Prime-list']);
+    this.router.navigate(['//pages/Primes/prime-list']);
   }
 
 /**start the add */

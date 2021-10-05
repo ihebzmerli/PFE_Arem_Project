@@ -10,16 +10,18 @@
                   <p></p>
                   liste d'Expédition</nb-card-header>
                 <nb-card-body>
-                  <!--
-                    <div class="row">
-                      <div class="col-sm-8"> 
-                        <label for="datExpedition" class="label">Date d'expedition</label>
-                        <input nbInput fullWidth placeholder="DATE_EXPEDITION" [(ngModel)]="expide.datExpedition" id="datExpedition" name="datExpedition" [ngModelOptions]="{standalone: true}" disabled/>
-                      </div>
-                    </div>
-                  -->
                   <div class="row">
-                    <div class="col-sm-6"> 
+                        <div class="col-sm-4"> 
+                          <label for="poste" class="label">Poste</label> 
+                          <input type="text" nbInput fullWidth placeholder="poste" [(ngModel)]="poste"  name="poste" id="poste" [ngModelOptions]="{standalone: true}" disabled/>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="datExpedition" class="label">Date Expedition</label>                    <p>
+                              &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{expide.datExpedition | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+                              
+                        </div>
+                      
+                    <div class="col-sm-4"> 
                       <label for="transp" class="label">Transaction</label>
                       <input type="text" nbInput fullWidth placeholder="TRANSP" [(ngModel)]="expide.transp" id="transp" name="transp" class="form-control" #transp="ngModel" required pattern="^[a-zA-Z0-9 ]+$" minlength="4" maxlength="24" [ngModelOptions]="{standalone: true}" [disabled]="isDisable"/>
                       <div style="font-size: 12px;" [hidden]="transp.valid || transp.pristine" class="alert alert-danger p-2" *ngIf="!isDisable">
@@ -29,19 +31,8 @@
                         <div [hidden]="!transp.hasError('pattern')">Transp ne doit contenir que des lettres et des nombres.</div>
                       </div>
                     </div>
-                    
-                    <div class="col-sm-6"> 
-                      <label for="matAgent" class="label">Mat agent</label>
-                      <input type="number" nbInput fullWidth placeholder="MAT_AGENT" [(ngModel)]="expide.matAgent" id="matAgent" name="matAgent" class="form-control" #matAgent="ngModel" required pattern="^(0|[1-9][0-9]*)$" min="0" max="9999999" [ngModelOptions]="{standalone: true}" [disabled]="isDisable"/>
-                      <div style="font-size: 12px;" [hidden]="matAgent.valid || matAgent.pristine" class="alert alert-danger p-2" *ngIf="!isDisable">
-                        <div [hidden]="!matAgent.hasError('min')">Mat Agent doit étre positive.</div>
-                        <div [hidden]="!matAgent.hasError('max')">Mat Agent ne doit pas dépasser les limite.</div>
-                        <div [hidden]="!matAgent.hasError('required')">Mat Agent est obligatoir.</div>
-                        <div [hidden]="!matAgent.hasError('pattern')">Mat Agent ne doit contenir que des nombres.</div>
-                      </div>
-                    </div>
+
                   </div>
-        
                   <div class="row">
                     <div class="col-sm-6"> 
                       <label for="typeDoc" class="label">Type document</label>
@@ -58,11 +49,28 @@
                     <div class="col-sm-6">  
                       <label for="typExp" class="label">Type d'Expedition</label><p>
                       <nb-select style="min-width: 100%;" selected="NULL" id="TYP_EXP" [(ngModel)]="expide.typExp" [ngModelOptions]="{standalone: true}" [disabled]="isDisable">
-                        <nb-option value="livraison_voiture">livraison voiture</nb-option>
+                        <nb-option value="livraison_voiture">Livraison voiture</nb-option>
                         <nb-option value="sur_comptoir">Sur comptoir</nb-option>
                       </nb-select>
                     </div>
                   </div>
+                  
+                  <div class="row">
+                    <div class="col-sm-6"> 
+                        <label for="matAgent" class="label">Mat agent</label>
+                        <input type="number" nbInput fullWidth placeholder="MAT_AGENT" [(ngModel)]="expide.matAgent" id="matAgent" name="matAgent" class="form-control" #matAgent="ngModel" required pattern="^(0|[1-9][0-9]*)$" min="0" max="9999999" [ngModelOptions]="{standalone: true}" [disabled]="isDisable"/>
+                        <div style="font-size: 12px;" [hidden]="matAgent.valid || matAgent.pristine" class="alert alert-danger p-2" *ngIf="!isDisable">
+                        <div [hidden]="!matAgent.hasError('min')">Mat Agent doit étre positive.</div>
+                        <div [hidden]="!matAgent.hasError('max')">Mat Agent ne doit pas dépasser les limite.</div>
+                        <div [hidden]="!matAgent.hasError('required')">Mat Agent est obligatoir.</div>
+                        <div [hidden]="!matAgent.hasError('pattern')">Mat Agent ne doit contenir que des nombres.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6"> 
+                    </div>
+                  </div>
+                
+                  
                 </nb-card-body>
               </nb-card>
             </div>
@@ -72,9 +80,9 @@
 
         </form>
       </nb-step>
-      <nb-step [stepControl]="expideForm2" label="Second step">
+      <nb-step [stepControl]="expideForm2" label="Second step" >
         <form (ngSubmit) = "onSubmitExpide2()" #expideForm2="ngForm" class="step-container">
-          <div class="offset-sm-1 col-sm-11">
+          <div class="offset-sm-1 col-sm-11" *ngIf="ComptoirDisable==false">
             <nb-card>
               <nb-card-header>Ajouter les Bon de livraison</nb-card-header>
               <nb-card-body>
@@ -857,6 +865,28 @@
                 <button nbButton type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" nbStepperPrevious>prev</button>
                 <button nbButton (click)="gotoListExpide()" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info">Terminer l'expedition</button>
               
+              
+              </nb-card-body>
+            </nb-card>
+          </div>
+
+          <div class="offset-sm-1 col-sm-11" *ngIf="ComptoirDisable==true">
+            <nb-card>
+              <nb-card-header>Ajouter les Bon de livraison</nb-card-header>
+              <nb-card-body>
+
+                <div class="row">
+                    <div class="full-name-inputs">
+                        Bon Livraison:
+                            <div>
+                                <p-multiSelect [options]="BonLivListComptoir" [(ngModel)]="selectedBonComptoir" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}"></p-multiSelect>
+                        
+                                <button (click)="AddSelectedBonComptoir()" type="button" nbButton size="tiny" status="primary">Valider</button>
+                            </div>
+                    </div>
+                </div>
+                <button nbButton type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" nbStepperPrevious>prev</button>
+                <button nbButton (click)="gotoListExpide()" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info">Terminer l'expedition</button>
               
               </nb-card-body>
             </nb-card>

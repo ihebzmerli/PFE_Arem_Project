@@ -5,7 +5,6 @@ import { Det_EmbasComponent } from './det_emba.component';
 import { DetEmbaListComponent } from './det-emba-list/det-emba-list.component';
 import { CreateDetEmbaComponent } from './create-det-emba/create-det-emba.component';
 import { UpdateDetEmbaComponent } from './update-det-emba/update-det-emba.component';
-import { DetEmbaDetailComponent } from './det-emba-detail/det-emba-detail.component';
 import { AuthGuardAdmin } from '../../auth-guardRoles/auth-guardAdmin';
 import { AuthGuardDecideurBp } from '../../auth-guardRoles/auth-guardDecideur_Bp';
 import { AuthGuardEmballeur } from '../../auth-guardRoles/auth-guardEmballeur';
@@ -32,11 +31,7 @@ const routes: Routes = [{
       path: 'update-det-emba/:id',
       data: {guards: [ AuthGuardAdmin , AuthGuardEmballeur , AuthGuardExpediteur ]}, canActivate: [AllGuard],
       component: UpdateDetEmbaComponent,
-    },
-    {
-      path: 'det-emba-list/det-emba-detail/:id',
-      component: DetEmbaDetailComponent,
-    },
+    }
   ],
 }];
 
@@ -55,5 +50,4 @@ export const routedComponents = [
   DetEmbaListComponent,
   CreateDetEmbaComponent,
   UpdateDetEmbaComponent,
-  DetEmbaDetailComponent,
 ];

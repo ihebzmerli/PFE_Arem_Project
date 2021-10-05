@@ -33,6 +33,10 @@ export class ExpideService {
     return this.http.put(`${this.url}/Livreur_ExpidesById/${id_expide}`, value);
   }
 
+  deleteAllByExpidition(id_expide: string): Observable<Object> {
+    return this.http.get(`${this.url2}/Livreur_Expides/DeleteAllExpideID/${id_expide}`);
+  }
+
   updateExpide(id_expide: string, value: any): Observable<Object> {
     return this.http.put(`${this.url}/${id_expide}`, value);
   }

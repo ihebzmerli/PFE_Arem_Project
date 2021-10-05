@@ -7,6 +7,9 @@ import { Utilisateur } from '../../Utilisateurs/utilisateur';
 import { Table } from 'primeng/table';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { ArticleService } from '../../Articles/article.service';
+import { Article } from '../../Articles/article';
+import { MarqueService } from '../../Marques/marque.service';
 
 @Component({
   selector: 'ngx-bon-sort-detail',
@@ -25,7 +28,7 @@ export class BonSortDetailComponent implements OnInit {
 
   activityValues: number[] = [0, 100];
 
-  constructor(private authService: TokenStorageService,private bonsortService: BonSortService , private router : Router,private _Activatedroute :ActivatedRoute) { }
+  constructor(private authService: TokenStorageService,private bonsortService: BonSortService , private marqueService : MarqueService, private router : Router,private _Activatedroute :ActivatedRoute,private articleService:ArticleService) { }
 
   ngOnInit() {
     
@@ -67,7 +70,17 @@ export class BonSortDetailComponent implements OnInit {
   displayPositionPoitageChariot: boolean;
   displayPositionNumChar: boolean;
   displayPositionEtatChar: boolean;
-  showModalDialog() {
+
+  image_id: number;
+  image_idString:string;
+  artic:Article;
+  showModalDialog(clicked_id) {
+    this.image_id=clicked_id;
+    this.image_idString=this.image_id.toString();
+    this.articleService.getArticle(this.image_idString).subscribe(data => {
+      this.artic = data;
+      console.log(this.artic);
+    });
     this.displayModal = true;
   }
   showPositionDialogQutSortie(position: string) {

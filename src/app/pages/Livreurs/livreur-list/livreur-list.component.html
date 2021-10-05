@@ -2,7 +2,7 @@
   <nb-card-header>
     Livreur Table
     <nb-card-body>
-      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" class="border">
+      <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR'" class="border">
         <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
           <i class="fa fa-user"></i>Statistiques</button>
       </div>
@@ -11,86 +11,155 @@
 
   <nb-card-body>
     <div class="container">
-      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      Recherche Table: <input nbInput style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
           <th style="text-align: center">
             <label class="label">NOM livreur</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Nom"
+              <input type="text" nbInput class="form-control" placeholder="search Nom"
               style="width:150px" [(ngModel)]="searchTermNom"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">NUM_REC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search NumRec"
+              <input type="text" nbInput class="form-control" placeholder="search NumRec"
               style="width:150px" [(ngModel)]="searchTermNumRec"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CENTRE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Centre"
+              <input type="text" nbInput class="form-control" placeholder="search Centre"
               style="width:150px" [(ngModel)]="searchTermCentre"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">dat_reclam</label>
+            <label class="label">dat_reclam<button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate"
+                [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate"
+                [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest></nb-datepicker>
+              </div> 
+            </div>
           </th>
           <th style="text-align: center">
-            <label class="label">dat_repon</label>
+            <label class="label">dat_repon<button (click)="FilterDate1(startDate1,endDate1)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate1"
+                [nbDatepicker]="dateTimePicker1" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker1></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate1"
+                [nbDatepicker]="formpickertest1" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest1></nb-datepicker>
+              </div> 
+            </div>
           </th>
           <th style="text-align: center">
-            <label class="label">date</label>
+            <label class="label">date<button (click)="FilterDate2(startDate2,endDate2)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate2"
+                [nbDatepicker]="dateTimePicker2" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker2></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate2"
+                [nbDatepicker]="formpickertest2" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest2></nb-datepicker>
+              </div> 
+            </div>
           </th>
           <th style="text-align: center">
             <label class="label">num_doc</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search NumDoc"
+              <input type="text" nbInput class="form-control" placeholder="search NumDoc"
               style="width:150px" [(ngModel)]="searchTermNumDoc"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">obs_reclam</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search ObsReclam"
+              <input type="text" nbInput class="form-control" placeholder="search ObsReclam"
               style="width:150px" [(ngModel)]="searchTermObsReclam"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">observ</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Observ"
+              <input type="text" nbInput class="form-control" placeholder="search Observ"
               style="width:150px" [(ngModel)]="searchTermObserv"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">prix_ach</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search PrixAch"
+              <input type="text" nbInput class="form-control" placeholder="search PrixAch"
               style="width:150px" [(ngModel)]="searchTermPrixAch"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">qut_art</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search QutArt"
+              <input type="text" nbInput class="form-control" placeholder="search QutArt"
               style="width:150px" [(ngModel)]="searchTermQutArt"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">reclam</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Reclam"
+              <input type="text" nbInput class="form-control" placeholder="search Reclam"
               style="width:150px" [(ngModel)]="searchTermReclam"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">typ_mvt</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search TypMvt"
+              <input type="text" nbInput class="form-control" placeholder="search TypMvt"
               style="width:150px" [(ngModel)]="searchTermTypMvt"/>
             </div>
           </th>
@@ -103,9 +172,9 @@
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.nom}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.numrec}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.centre}}</p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.datreclam | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.datrepon | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.date | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.datreclam | date: 'MMM d, y '}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.datrepon  | date: 'MMM d, y '}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.date  | date: 'MMM d, y '}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.numdoc}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.obsreclam}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{livreur.observ}}</p></span></td>
@@ -116,11 +185,11 @@
 
           <td class="field-multiple-drag">
             <div class="buttons-row">
-            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['livreur-detail',livreur.id_livreur]" outline>
+            <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['livreur-detail',livreur.id_livreur]" outline>
               <i class="fa fa-search"></i>Details</button>
-            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(livreur.id_livreur)" outline>
+            <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(livreur.id_livreur)" outline>
               <i class="fa fa-edit"></i>Modifier</button>
-            <button  *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(livreur.id_livreur)" outline>
+            <button  *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(livreur.id_livreur)" outline>
               <i class="fa fa-remove"></i>Supprimer</button>
             </div>
           </td>

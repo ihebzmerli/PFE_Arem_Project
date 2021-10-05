@@ -28,7 +28,10 @@ export class BonLivService {
   updateBon_liv(NUM_BON: string, value: any): Observable<Object> {
     return this.http.put(`${this.url}/${NUM_BON}`, value);
   }
-
+  updateBonLivComptoir(NUM_BON: string, value: any): Observable<Object> {
+    return this.http.put(`${this.url}/LivComptoir/${NUM_BON}`, value);
+  }
+  
   deleteBon_liv(NUM_BON: string): Observable<any> {
     return this.http.delete(`${this.url}/${NUM_BON}`, { responseType: 'text' });
   }
@@ -43,6 +46,10 @@ export class BonLivService {
     return this.http.delete(this.url);
   }
 
+
+  updateBonLivResetLivreur(NUM_BON: string, value: any): Observable<Object> {
+    return this.http.put(`${this.url}/ResetLivreur/${NUM_BON}`, value);
+  }
   /** drop list add prep */
   
   getAllStockByArticle(codArt: string): Observable<any> {
@@ -50,9 +57,6 @@ export class BonLivService {
   }
   getArticleOfAdd(): Observable<any> {
     return this.http.get(`${this.url}/AllListArticle`);
-  }
-  getArticleWithMarqueAdd(): Observable<any> {
-    return this.http.get(`${this.url}/AllListMarqueNoDuplication`);
   }
   getArticleOfFromMarqueAddForBonLiv(id_model: String): Observable<any> {
     return this.http.get(`${this.url}/AllListArticleByMarque/${id_model}`);
@@ -63,7 +67,10 @@ export class BonLivService {
   getBLEnvoyer(): Observable<any> {
     return this.http.get(`${this.url}/AllListEvoyer`);
   }
-
+  getBLCompoir(): Observable<any> {
+    return this.http.get(`${this.url}/AllListCompoir`);
+  }
+  
   /** drop list add liv */
 
   getArtLivForBonLiv(numBon: string): Observable<any> {

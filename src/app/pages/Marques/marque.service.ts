@@ -12,7 +12,7 @@ export class MarqueService {
   private url= 'http://localhost:8080/api/marques';
   private urltest= 'http://localhost:8080/api/marquesTest';
   private url2= 'http://localhost:8080/api';
-  public host : string = "http://localhost:8080";
+  public host : string = "http://localhost:8080/webapp/imgMarques/Images";
   constructor(private http: HttpClient) { }
 
 
@@ -34,8 +34,8 @@ export class MarqueService {
   updateMarque2(id: string,formData: FormData): Observable<Object> {
     return this.http.put(`${this.url}/Update/${id}`, formData);
   }
-  deleteMarque(COD_ART: string): Observable<any> {
-    return this.http.delete(`${this.url}/${COD_ART}`, { responseType: 'text' });
+  deleteMarque(id: string): Observable<any> {
+    return this.http.delete(`${this.url}/${id}`, { responseType: 'text' });
   }
 
   getMarquesList(): Observable<Marque[]> {

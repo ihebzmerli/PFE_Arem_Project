@@ -10,6 +10,7 @@ export class Fournis {
     tel: string;
     fax: string;
     paye: string;
+    matFisc:string;
     modReg: string;
     creance: number;
     cumulAch: number;

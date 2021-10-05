@@ -10,11 +10,14 @@ import { BonLivService } from '../../Bon_Livs/bon-liv.service';
 import { Livreur } from '../../Livreurs/livreur';
 import { LivreurService } from '../../Livreurs/livreur.service';
 import { PagesComponent } from '../../pages.component';
+import { Utilisateur } from '../../Utilisateurs/utilisateur';
+import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
 import { Vehicule } from '../../Vehicules/vehicule';
 import { VehiculeService } from '../../Vehicules/vehicule.service';
 import { Expide } from '../expide';
 import { ExpideService } from '../expide.service';
 import { Livreur_Expide } from '../LivreurBonliv/Livreur_Expide';
+
 
 @Component({
   selector: 'ngx-update-expide',
@@ -40,17 +43,20 @@ export class UpdateExpideComponent implements OnInit {
 
   min: Date;
   max: Date;
-
+  userPost: Utilisateur;
+  poste: any;
+  BonLivListComptoir: Bon_liv [];
   affectationDisable : Boolean=false;
   selected = null;
+  latest_date:string;
   /** ********************* */
   livreur_expide: Livreur_Expide = new Livreur_Expide();
-
+  ComptoirDisable:boolean=false;
   statuses: NbComponentStatus[] = ['primary', 'success', 'info', 'warning', 'danger'  ];
   shapes: NbComponentShape[] = [ 'rectangle', 'semi-round', 'round' ];
   sizes: NbComponentSize[] = ['tiny', 'small', 'medium', 'large', 'giant'];
 
-  constructor(private livreurService: LivreurService,private route: ActivatedRoute,private router: Router,private authService: TokenStorageService,public datepipe: DatePipe,public bonlivService: BonLivService, private toastrService: NbToastrService, private expideService: ExpideService, private vehiculeService: VehiculeService,protected dateService: NbDateService<Date>) {
+  constructor(private livreurService: LivreurService,public utilisateurService:UtilisateurService,private route: ActivatedRoute,private router: Router,private authService: TokenStorageService,public datepipe: DatePipe,public bonlivService: BonLivService, private toastrService: NbToastrService, private expideService: ExpideService, private vehiculeService: VehiculeService,protected dateService: NbDateService<Date>) {
         this.min = this.dateService.addDay(this.dateService.today(), -5);
         this.max = this.dateService.addDay(this.dateService.today(), 5);
       }
@@ -76,7 +82,13 @@ export class UpdateExpideComponent implements OnInit {
 
   ngOnInit() {
     
-
+    this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {
+      this.utilisateurService.getUtilisateur(data1.toString()).subscribe(data => {
+        this.userPost = data;
+        this.poste = this.userPost.firstname+' '+this.userPost.lastname;
+        this.expide.user = this.userPost;
+      }, error => console.log(error));
+    }, error => console.log(error));
 
 
     this.getBonLivOfAdd();
@@ -91,276 +103,29 @@ export class UpdateExpideComponent implements OnInit {
       .subscribe(data => {
         console.log(data)
         this.expide = data;
+        this.latest_date =this.datepipe.transform(this.expide.datExpedition, 'yyyy-MM-dd hh:mm:ss');
       }, error => console.log(error));
 
-      this.expideService.getAllLivreursAndBonliv(this.id)
-      .subscribe(data1 => {
-        console.log(data1)
-        this.livreur_expides = data1;
-        
-        if(data1!=null){
-        var livreur_expides = this.livreur_expides.reduce(function (r, a){
-          r[a.id_livreur.toString()] =r[a.id_livreur.toString()] || [];
-          r[a.id_livreur.toString()].push(a);
-          return r;
-        }, Object.create(null));
-
-        console.log(livreur_expides)
-        
-        this.counterTEst = 0;
-        for (let i = 0; i < Object.values(livreur_expides).length; i++) {
-          this.counterTEst++;
-        }
-        
-          console.log(livreur_expides[8]);
-
-        
-
-        if(this.counterTEst>=1){
-          var obj = {};
-          for (var i = 0; i < livreur_expides.length; i++) {
-          this.livreurService.getLivreur(Object.values(livreur_expides).toString())
-          .subscribe(data => {
-            this.selectedLivreur1=data;
-          }, error => console.log(error));
-
-
-          this.vehiculeService.getVehicule(obj[livreur_expides[i]].matricule)
-          .subscribe(data => {
-            this.selectedVehicule1=data;
-          }, error => console.log(error));
-        }
-
-        }
-        if(this.counterTEst>=2){
-          this.livreurService.getLivreur(this.livreur_expides[1].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur2=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[1].matricule)
-          .subscribe(data => {
-            this.selectedVehicule2=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=3){
-          this.livreurService.getLivreur(this.livreur_expides[2].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur3=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[2].matricule)
-          .subscribe(data => {
-            this.selectedVehicule3=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=4){
-          this.livreurService.getLivreur(this.livreur_expides[3].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur4=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[3].matricule)
-          .subscribe(data => {
-            this.selectedVehicule4=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=5){
-          this.livreurService.getLivreur(this.livreur_expides[4].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur5=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[4].matricule)
-          .subscribe(data => {
-            this.selectedVehicule5=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=6){
-          this.livreurService.getLivreur(this.livreur_expides[5].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur6=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[5].matricule)
-          .subscribe(data => {
-            this.selectedVehicule6=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=7){
-          this.livreurService.getLivreur(this.livreur_expides[6].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur7=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[6].matricule)
-          .subscribe(data => {
-            this.selectedVehicule7=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=8){
-          this.livreurService.getLivreur(this.livreur_expides[7].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur8=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[7].matricule)
-          .subscribe(data => {
-            this.selectedVehicule8=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=9){
-          this.livreurService.getLivreur(this.livreur_expides[8].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur9=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[8].matricule)
-          .subscribe(data => {
-            this.selectedVehicule9=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=10){
-          this.livreurService.getLivreur(this.livreur_expides[9].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur10=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[9].matricule)
-          .subscribe(data => {
-            this.selectedVehicule10=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=11){
-          this.livreurService.getLivreur(this.livreur_expides[10].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur11=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[10].matricule)
-          .subscribe(data => {
-            this.selectedVehicule11=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=12){
-          this.livreurService.getLivreur(this.livreur_expides[11].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur12=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[11].matricule)
-          .subscribe(data => {
-            this.selectedVehicule12=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=13){
-          this.livreurService.getLivreur(this.livreur_expides[12].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur13=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[12].matricule)
-          .subscribe(data => {
-            this.selectedVehicule13=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=14){
-          this.livreurService.getLivreur(this.livreur_expides[13].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur14=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[13].matricule)
-          .subscribe(data => {
-            this.selectedVehicule14=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=15){
-          this.livreurService.getLivreur(this.livreur_expides[14].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur15=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[14].matricule)
-          .subscribe(data => {
-            this.selectedVehicule15=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=16){
-          this.livreurService.getLivreur(this.livreur_expides[15].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur16=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[15].matricule)
-          .subscribe(data => {
-            this.selectedVehicule16=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=17){
-          this.livreurService.getLivreur(this.livreur_expides[16].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur17=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[16].matricule)
-          .subscribe(data => {
-            this.selectedVehicule17=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=18){
-          this.livreurService.getLivreur(this.livreur_expides[17].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur18=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[17].matricule)
-          .subscribe(data => {
-            this.selectedVehicule18=data;
-          }, error => console.log(error));
-
-        }
-        if(this.counterTEst>=19){
-          this.livreurService.getLivreur(this.livreur_expides[18].id_livreur.toString())
-          .subscribe(data => {
-            this.selectedLivreur19=data;
-          }, error => console.log(error));
-
-          this.vehiculeService.getVehicule(this.livreur_expides[18].matricule)
-          .subscribe(data => {
-            this.selectedVehicule19=data;
-          }, error => console.log(error));
-
-        }
-
-        this.IFselectedLiv1=this.counterTEst;
-        console.log(this.IFselectedLiv1);
-      }else if(data1==null){
-        alert("azazazazazazazaz");
-      }
-      }, error => console.log(error));
   }
 
     isDisable:boolean=false;
     async onSubmitExpide1() {
+      
+      this.expideService.getAllLivreursAndBonliv(this.id).subscribe(data => {
+        console.log(data);
+        data.forEach(element => {
+          console.log(element)
+          this.bonlivService.updateBonLivResetLivreur(element.bonLiv.numBon,element.bonLiv).subscribe(data => {
+            console.log(data);
+        });
+        });
+      });
+
       this.updateExpide();
+      this.expideService.deleteAllByExpidition(this.id).subscribe(data => {
+      });
       await this.showModalDialogBarProgression();
+      this.getBonLivOfAdd();
       this.makeToast(); 
       this.affectationDisable = !this.affectationDisable;
     }
@@ -370,6 +135,10 @@ export class UpdateExpideComponent implements OnInit {
         console.log(data);
         this.expide = new Expide();
       }, error => console.log(error));
+      if(this.expide.typExp=='sur_comptoir'){
+        this.getBonLivOfComptoir();
+        this.ComptoirDisable=true;
+      }
       this.isDisable=true;
     }
     gotoListExpide() {
@@ -508,7 +277,7 @@ VehiculeList: Vehicule [];
 selectedVehicule: Vehicule [];
 
 public getBonLivOfAdd() {
-  this.expideService.getBonLivOfAdd().subscribe(data => {
+  this.bonlivService.getBLEnvoyer().subscribe(data => {
     this.BonLivList = data;
   });
 }
@@ -525,7 +294,53 @@ public getVehiculeOfAdd() {
   });
 }
 /** */
+/**comptoir list */
+public getBonLivOfComptoir() {
+  this.bonlivService.getBLCompoir().subscribe(data => {
+    this.BonLivListComptoir = data;
+  });
+}
+/**comptoir add */
+/** la livraison sur comptoir va faire l affectation avec le livreur de comptoir de la direction */
+selectedBonComptoir:Bon_liv[];
+public async AddSelectedBonComptoir() {
 
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  this.livreurService.getLivreur("1").subscribe( data =>{
+    this.livreur_expide.id_livreur=data.id_livreur;
+
+  console.log(this.livreur_expide.id_livreur);
+  this.livreur_expide.matricule=null;
+
+    let counter = 0;
+    for (let i = 0; i < this.selectedBonComptoir.length; i++) {
+      counter++;
+    }
+  if(counter<=10 && counter>0){
+    for (let i = 0; i < this.selectedBonComptoir.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBonComptoir[i];
+      console.log(this.livreur_expide);
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+        this.bonliv.cronoTime = new Date();
+        console.log(this.bonliv);
+        this.bonlivService.updateBonLivComptoir(this.selectedBonComptoir[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });
+    }
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  } 
+});
+});
+}
 
 //*** affectation des livreur au B L */
 selectedLivreur1:Livreur;
@@ -612,6 +427,817 @@ IFselectedLiv1:number=1;
 bonliv: Bon_liv = new Bon_liv();
 id_testExp;
 switchMe:boolean=true;
+public async AddSelectedBon1() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur1.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule1.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon11.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon11.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon11[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur1.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur1.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon11[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis1=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon2() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur2.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule2.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon21.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon21.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon21[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur2.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur2.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon21[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis2=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon3() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur3.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule3.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon31.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon31.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon31[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur3.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur3.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon31[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis3=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon4() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur4.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule4.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon41.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon41.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon41[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur4.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur4.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon41[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis4=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon5() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur5.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule5.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon51.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon51.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon51[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur5.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur5.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon51[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis5=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon6() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur6.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule6.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon61.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon61.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon61[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur6.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur6.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon61[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis6=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon7() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur7.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule7.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon71.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon71.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon71[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur7.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur7.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon71[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });
+      }, error => console.log(error));
+    }
+    this.dis7=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon8() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur8.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule8.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon81.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon81.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon81[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur8.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur8.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon81[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis8=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon9() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur9.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule9.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon91.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon91.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon91[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur9.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur9.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon91[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis9=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon10() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur10.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule10.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon101.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon101.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon101[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur10.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur10.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon101[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis10=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon11() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur11.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule11.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon111.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon111.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon111[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur11.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur11.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon111[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis11=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon12() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur12.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule12.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon121.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon121.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon121[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur12.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur12.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon121[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis12=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon13() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur13.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule13.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon131.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon131.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon131[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur13.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur13.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon131[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis13=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon14() {
+ 
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur14.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule14.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon141.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon141.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon141[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur14.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur14.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon141[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis14=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon15() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur15.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule15.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon151.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon151.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon151[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur15.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur15.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon151[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis15=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon16() {
+
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur16.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule16.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon161.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon161.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon161[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur16.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur16.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon161[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis16=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon17() {
+ 
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur17.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule17.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon171.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon171.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon171[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur17.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur17.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon171[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis17=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon18() {
+ 
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur18.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule18.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon181.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon181.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon181[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur18.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur18.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon181[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis18=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddSelectedBon19() {
+ 
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  console.log(this.livreur_expide.id_expide);
+  this.livreur_expide.id_livreur=this.selectedLivreur19.id_livreur;
+  this.livreur_expide.matricule=this.selectedVehicule19.matricule;
+  console.log(this.livreur_expide);
+    let counter = 0;
+    for (let i = 0; i < this.selectedBon191.length; i++) {
+      counter++;
+    }
+  if(counter<=4 && counter>0){
+    for (let i = 0; i < this.selectedBon191.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBon191[i];
+      console.log(this.livreur_expide);
+
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+      console.log(this.selectedLivreur19.id_livreur.toString());
+      this.livreurService.getLivreur(this.selectedLivreur19.id_livreur.toString()).subscribe(data => {
+        this.bonliv.livreur = data;
+        console.log(this.bonliv.livreur);
+        console.log(this.bonliv);
+        this.bonlivService.updateBon_liv(this.selectedBon191[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });;
+      }, error => console.log(error));
+    }
+    this.dis19=true;
+    this.switchMe=!this.switchMe;
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  }  
+});
+}
+public AddLivreur() {
+  if(this.IFselectedLiv1<20){
+    this.getBonLivOfAdd();
+    this.IFselectedLiv1=this.IFselectedLiv1+1;
+    this.switchMe=!this.switchMe;
+  }
+}
+
+
+
+/***this didn t work well so i changed */
+
+/*
 public async AddSelectedBon1() {
   this.expideService.getExpide(this.id)
   .subscribe(data => {
@@ -1309,4 +1935,6 @@ public AddLivreur() {
     this.switchMe=!this.switchMe;
   }
 }
+
+*/
 }

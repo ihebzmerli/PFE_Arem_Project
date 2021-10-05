@@ -11,10 +11,11 @@ import { AllGuard } from '../../auth-guardRoles/auth-guardModules.ts/AllGuard';
 import { AuthGuardPreparateurBr } from '../../auth-guardRoles/auth-guardPreparateur_Br';
 import { AuthGuardRDispatchingBp } from '../../auth-guardRoles/auth-guardR_Dispatching_Bp';
 import { AuthGuardRPointage } from '../../auth-guardRoles/auth-guardR_Pointage';
+import { AuthGuardDecideurBp } from '../../auth-guardRoles/auth-guardDecideur_Bp';
 
 const routes: Routes = [{
   path: '',
-  data: {guards: [ AuthGuardAdmin , AuthGuardPreparateurBr , AuthGuardRDispatchingBp , AuthGuardRPointage ]}, canActivate: [AllGuard],
+  data: {guards: [ AuthGuardAdmin , AuthGuardPreparateurBr , AuthGuardRDispatchingBp , AuthGuardRPointage , AuthGuardDecideurBp ]}, canActivate: [AllGuard],
   component: Bon_SortsComponent,
   children: [
     {
@@ -23,7 +24,7 @@ const routes: Routes = [{
     },
     {
       path: 'create-bon-sort',
-      data: {guards: [ AuthGuardAdmin , AuthGuardRDispatchingBp ]}, canActivate: [AllGuard],
+      data: {guards: [ AuthGuardAdmin , AuthGuardRDispatchingBp, AuthGuardDecideurBp ]}, canActivate: [AllGuard],
       component: CreateBonSortComponent,
     },
     {

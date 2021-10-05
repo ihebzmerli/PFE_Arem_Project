@@ -1,7 +1,7 @@
 <form (ngSubmit) = "onSubmitArticle()" #articleForm="ngForm">
     <nb-card-header>
         <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Articles?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../article-list']"/>
-        <h6>Ajouter Articles</h6>
+        <h6>Modifier Article</h6>
         <div>
             <label for="datCreat" class="label">date Create</label>
             {{article.datCreat | date: 'MMM d, y H:mm:ss' : '+0000'}}
@@ -65,14 +65,14 @@
                     <label for="marque" class="label">marque</label>
                     <nb-select fullWidth fieldSize="small" [(selected)]="MarqueSelected" #marque="ngModel" id="marque" name="marque" required [(ngModel)]="article.marque" (selectedChange)="getModeleFromMarque($event)">
                         <nb-option value="null">-Select</nb-option>
-                        <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="29" style="vertical-align: middle" />{{ itemsMarque.title }} </nb-option>
+                        <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" width="29" style="vertical-align: middle" />{{ itemsMarque.title }} </nb-option>
                     </nb-select>
                 </div>
                 <div class="col-sm-4"> 
                     <label for="modele" class="label">modele</label>
                     <nb-select fullWidth fieldSize="small" [(selected)]="ModelSelected" #model="ngModel" id="model" name="model" required [(ngModel)]="article.model">
                         <nb-option value="null">-Select</nb-option>
-                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" width="29" style="vertical-align: middle" />{{ itemsModel.title }} </nb-option>
+                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/'+itemsModel.marque.code+'/'+itemsModel.marque.fileName}}" width="29" style="vertical-align: middle" />{{ itemsModel.title }} </nb-option>
                     </nb-select>
                 </div>
             </div> 

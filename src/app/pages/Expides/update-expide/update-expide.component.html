@@ -7,18 +7,21 @@
             <div class="offset-sm-1 col-sm-11">
               <nb-card>
                 <nb-card-header>
-                  <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des expedition?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../expide-list']"/>
+                  <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des expedition?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../expide-list']"/>
                   <p></p>
                   Modifier d'Expédition</nb-card-header>
                 <nb-card-body>
-                    <div class="row">
-                      <div class="col-sm-6"> 
-                        <label for="datExpedition" class="label">Date d'expedition</label>
-                        <input nbInput fullWidth placeholder="DATE_EXPEDITION" [(ngModel)]="expide.datExpedition" id="datExpedition" name="datExpedition" [ngModelOptions]="{standalone: true}" disabled/>
+                    <div class="row"> 
+                        <div class="col-sm-6"> 
+                          <label for="poste" class="label">Poste</label> 
+                          <input type="text" nbInput fullWidth placeholder="poste" [(ngModel)]="poste"  name="poste" id="poste" [ngModelOptions]="{standalone: true}" disabled/>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="datExpedition" class="label">Date Expedition</label>                    <p>
+                              &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{latest_date | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+                              
+                          </div>
                       </div>
-                      <div class="col-sm-6"> 
-                      </div>
-                    </div>
                   <div class="row">
                     <div class="col-sm-6"> 
                       <label for="transp" class="label">Transaction</label>
@@ -68,14 +71,14 @@
               </nb-card>
             </div>
 
-            <button nbButton [disabled]="!expide.transp || !expide.matAgent || !expide.typeDoc || !expide.typExp" type="onSubmit" status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" *ngIf="!affectationDisable">Create Expedition</button>
+            <button nbButton [disabled]="!expide.transp || !expide.matAgent || !expide.typeDoc || !expide.typExp" type="onSubmit" status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" *ngIf="!affectationDisable">Modifier Expedition</button>
             <button nbButton nbStepperNext *ngIf="affectationDisable" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger">Affectation</button>
 
         </form>
       </nb-step>
       <nb-step [stepControl]="expideForm2" label="Second step">
         <form (ngSubmit) = "onSubmitExpide2()" #expideForm2="ngForm" class="step-container">
-          <div class="offset-sm-1 col-sm-11">
+          <div class="offset-sm-1 col-sm-11" *ngIf="ComptoirDisable==false">
             <nb-card>
               <nb-card-header>Ajouter les Bon de livraison</nb-card-header>
               <nb-card-body>
@@ -858,6 +861,29 @@
                 <button nbButton type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" nbStepperPrevious>prev</button>
                 <button nbButton (click)="gotoListExpide()" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info">Terminer l'expedition</button>
               
+              
+              </nb-card-body>
+            </nb-card>
+          </div>
+
+
+          <div class="offset-sm-1 col-sm-11" *ngIf="ComptoirDisable==true">
+            <nb-card>
+              <nb-card-header>Ajouter les Bon de livraison</nb-card-header>
+              <nb-card-body>
+
+                <div class="row">
+                    <div class="full-name-inputs">
+                        Bon Livraison:
+                            <div>
+                                <p-multiSelect [options]="BonLivListComptoir" [(ngModel)]="selectedBonComptoir" defaultLabel="Choisir Bon Livraison" optionLabel="numBon" display="chip" [ngModelOptions]="{standalone: true}"></p-multiSelect>
+                        
+                                <button (click)="AddSelectedBonComptoir()" type="button" nbButton size="tiny" status="primary">Valider</button>
+                            </div>
+                    </div>
+                </div>
+                <button nbButton type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" nbStepperPrevious>prev</button>
+                <button nbButton (click)="gotoListExpide()" type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info">Terminer l'expedition</button>
               
               </nb-card-body>
             </nb-card>

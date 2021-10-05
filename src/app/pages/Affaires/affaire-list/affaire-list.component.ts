@@ -9,10 +9,10 @@ import { FormBuilder } from '@angular/forms';
 import { Affaire } from '../affaire';
 import { AffaireService } from '../affaire.service';
 
-import { WindowDateFilterComponent } from './window-date-filter/window-date-filter.component';
 import { Table } from 'primeng/table';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'ngx-affaire-list',
   templateUrl: './affaire-list.component.html',
@@ -23,7 +23,7 @@ export class AffaireListComponent implements OnInit {
   closeResult: string;
   editForm: any;
   searchText;
-  
+  statusessEtat: any[];
   statuses: NbComponentStatus[] = ['info' ];
   shapes: NbComponentShape[] = [ 'rectangle' ];
   sizes: NbComponentSize[] = ['medium'];
@@ -274,7 +274,7 @@ goToPage(pageName:string):void{
 }
 
   constructor(private authService: TokenStorageService,private affaireService: AffaireService,private dialogService: NbDialogService,private http: HttpClient,private router: Router,
-    private service: SmartTableData,private windowService: NbWindowService, private fb: FormBuilder) { }
+    private service: SmartTableData,private windowService: NbWindowService, private fb: FormBuilder,public datepipe: DatePipe) { }
 
   /* afficher all achats**/
   statusessdelaiLiv:any;
@@ -282,13 +282,17 @@ goToPage(pageName:string):void{
   ngOnInit() {
 
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
     this.getAffaires();
 
 
-    
+    this.statusessEtat = [
+      {label: 'Affaire encore pas sortie de fournisseur', value: 'affaire_encore_pas_sortie_de_fournisseur'},
+      {label: 'Affaire arriver à la Diwan', value: 'affaire_arriver_a_la_diwan'},
+      {label: 'Affaire reçu et vérifier', value: 'affaire_reçu_et_verifier'}
+    ]
     this.cols = [
       { field: 'numAff', header: 'Numéro Aff~' },
       { field: 'datAff', header: 'Date Aff~' },
@@ -352,10 +356,6 @@ openWindowFilterDate(contentTemplate) {
   );
 }
 
-openWindowFormFilterDate() {
-  this.windowService.open(WindowDateFilterComponent, { title: `entrer les deux dates` });
-}
-
 openWindowFilterDateWithoutBackdrop() {
   this.windowService.open(
     this.disabledEscTemplate,
@@ -402,4 +402,133 @@ saveAsExcelFile(buffer: any, fileName: string): void {
 }
 
 /**stat export CSV & PDF & Excel window*/
+
+
+
+
+  testStatus :number = 1;
+    FilterDate(startDate,endDate){
+      console.log(startDate,endDate)
+      if (startDate !=null && endDate!=null && this.testStatus != 2) {
+      let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+      let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+      latest_startDate.toString();
+      latest_endDate.toString();
+      this.affaireService.getAllAffaireDAT_AFFBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+        this.filteredAffaires = data;
+        console.log(data);
+      });
+      this.testStatus = 2
+    }else {
+      this.testStatus = 2
+      this.getAffaires();
+      this.testStatus = 1
+    }
+  }
+  FilterDate1(startDate1,endDate1){
+    console.log(startDate1,endDate1)
+    if (startDate1 !=null && endDate1!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate1, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate1, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.affaireService.getAllAffaireDAT_PROFBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredAffaires = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getAffaires();
+    this.testStatus = 1
+  }
+}
+
+FilterDate2(startDate2,endDate2){
+  console.log(startDate2,endDate2)
+  if (startDate2 !=null && endDate2!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate2, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate2, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.affaireService.getAllAffaireDAT_CONFBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredAffaires = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getAffaires();
+  this.testStatus = 1
+}
+}
+
+FilterDate3(startDate3,endDate3){
+  console.log(startDate3,endDate3)
+  if (startDate3 !=null && endDate3!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate3, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate3, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.affaireService.getAllAffaireDAT_TRANSFBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredAffaires = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getAffaires();
+  this.testStatus = 1
+}
+}
+
+FilterDate4(startDate4,endDate4){
+  console.log(startDate4,endDate4)
+  if (startDate4 !=null && endDate4!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate4, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate4, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.affaireService.getAllAffaireDAT_ANALBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredAffaires = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getAffaires();
+  this.testStatus = 1
+}
+}
+
+FilterDate5(startDate5,endDate5){
+  console.log(startDate5,endDate5)
+  if (startDate5 !=null && endDate5!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate5, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate5, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.affaireService.getAllAffaireDAT_ANALBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredAffaires = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getAffaires();
+  this.testStatus = 1
+}
+}
+
+  /**end filter date */
+
+  getAllListEtat(selectedItems5: any){
+    if(selectedItems5!==null){
+       return this.filteredAffaires = this.affaires.filter(Affaire => 
+        Affaire.etat_affaire !== null && Affaire.etat_affaire.toString().indexOf(selectedItems5.toString()) !== -1);
+      }else if(selectedItems5==null){
+        console.log(selectedItems5);
+        return this.filteredAffaires = this.affaires;
+      }
+  }
 }

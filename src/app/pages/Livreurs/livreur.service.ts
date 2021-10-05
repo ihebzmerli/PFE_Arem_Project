@@ -38,7 +38,15 @@ export class LivreurService {
 
 
 
-
+  getAllEtatLivdat_reclamBydateBetween(startDate: string,endDate: string): Observable<Livreur[]> {
+    return this.http.get<Livreur[]>(`${this.url}/dat_reclamdateBetween/${startDate}to${endDate}`);
+  }
+  getAllEtatLivdat_reponBydateBetween(startDate: string,endDate: string): Observable<Livreur[]> {
+    return this.http.get<Livreur[]>(`${this.url}/dat_repondateBetween/${startDate}to${endDate}`);
+  }
+  getAllEtatLivdateBydateBetween(startDate: string,endDate: string): Observable<Livreur[]> {
+    return this.http.get<Livreur[]>(`${this.url}/datedateBetween/${startDate}to${endDate}`);
+  }
 
 
 

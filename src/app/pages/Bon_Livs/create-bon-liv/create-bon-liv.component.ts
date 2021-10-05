@@ -29,6 +29,11 @@ import { ShowcaseDialogComponent } from './showcase-dialog/showcase-dialog.compo
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { XcommandService } from '../../Xcommand/Xcommand.service';
+import { Xcommand } from '../../Xcommand/Xcommand';
+import { Model } from '../../Model/model';
+import { MarqueService } from '../../Marques/marque.service';
+import { Marque } from '../../Marques/marque';
 @Component({
   selector: 'ngx-create-bon-liv',
   templateUrl: './create-bon-liv.component.html',
@@ -47,6 +52,7 @@ bonLivForm: FormGroup;
 artLivDontExistForm: FormGroup;
 artLivExistForm: FormGroup;
 ArticleWindow : boolean;
+listeXcommand : Xcommand[];
 /** inisialisation de select list */
 
   /** teamplate Ajouter */
@@ -62,6 +68,8 @@ max: Date;
 items :any;
 livreur_frs : any;
 selectedCodFrs : any;
+userPost: Utilisateur;
+poste: any;
   /** ********************* */
   
   bonliv: Bon_liv = new Bon_liv();
@@ -71,8 +79,8 @@ selectedCodFrs : any;
 
   constructor(private authService: TokenStorageService,private formBuilder: FormBuilder,public datepipe: DatePipe,private toastrService: NbToastrService, private bonlivService: BonLivService,
       private router: Router, private fournisService:FournisService,protected dateService: NbDateService<Date>,private windowService: NbWindowService,
-      public articleService: ArticleService, public chariotService: ChariotService,public utilisateurService: UtilisateurService
-      ,private dialogService: NbDialogService) { 
+      public articleService: ArticleService, public chariotService: ChariotService,public xcommandService:XcommandService, public utilisateurService: UtilisateurService
+      ,private dialogService: NbDialogService, public marqueService: MarqueService) { 
         this.min = this.dateService.addDay(this.dateService.today(), -7);
         this.max = this.dateService.addDay(this.dateService.today(), 7);
       }
@@ -83,268 +91,275 @@ selectedCodFrs : any;
       
       this.getBonLivs();
       this.getArticles();
-      this.getArticleWithMarqueAdd(); 
       this.getArticleOfAdd();
       this.getFournissList();
-      this.article.derMvt = this.myDate;
+      this.getAllMarquesList();
+      this.getXcommands();
+
       const now = Date.now()
-      const myFormattedDate = this.datepipe.transform(now, 'yyyy-MM-dd hh:mm:ss');
-      const myFormattedDate2 = this.datepipe.transform(now, 'yyyy-MM-dd');
-        this.bonLivForm = this.formBuilder.group({
-            numBon: ['', Validators.compose([
-              Validators.maxLength(100),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$')
-            ])],
-            Destination: new FormControl("", Validators.required),
-            datBon: [new Date(), Validators.required],
-            nomprenomCli: new FormControl({ value: "", disabled: true }, Validators.compose([
-              Validators.maxLength(50),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])),
-            adresseCli: new FormControl({ value: "", disabled: true }, Validators.compose([
-              Validators.maxLength(249),
-              Validators.minLength(10),
-              Validators.required,
-              Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$')
-            ])),
-            codFrs: new FormControl({ value: "", disabled: true }),
-            numBonFrs: new FormControl({ value: "", disabled: true }, Validators.compose([
-              Validators.maxLength(50),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])),
-            raison:  ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            tauxRem: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            montRem: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            montTva: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            numFac: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            xbase0: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase6: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase10: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase17: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase29: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase7: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase12: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase21: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase36: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva6: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva10: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva17: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva29: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva7: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva12: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva21: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva36: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            plusV: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            tauxRes: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            montTrs: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            liv: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(2),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            command: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(2),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            /*
-            pointage: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(6),
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            */
-            poste: [''],
-            montIrpp: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            centre: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(4),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            xbase19: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva19: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase13: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva13: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase7A: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva7A: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            codeTva: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(4),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            trans_action: ['', Validators.required],
-            livreur_frs: ['']
-        });
+
+
+          const myFormattedDate = this.datepipe.transform(now, 'yyyy-MM-dd hh:mm:ss');
+          const myFormattedDate2 = this.datepipe.transform(now, 'yyyy-MM-dd');
+          this.article.derMvt = new Date(myFormattedDate);
+          
+
+
+          this.bonLivForm = this.formBuilder.group({
+              numBon: ['', Validators.compose([
+                Validators.maxLength(100),
+                Validators.minLength(5),
+                Validators.required,
+                Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$')
+              ])],
+              Destination: new FormControl("", Validators.required),
+              datBon: [new Date(myFormattedDate), Validators.required],
+              nomprenomCli: new FormControl({ value: "", disabled: true }, Validators.compose([
+                Validators.maxLength(50),
+                Validators.minLength(5),
+                Validators.required,
+                Validators.pattern('^[a-zA-Z0-9 ]+$')
+              ])),
+              adresseCli: new FormControl({ value: "", disabled: true }, Validators.compose([
+                Validators.maxLength(249),
+                Validators.minLength(10),
+                Validators.required,
+                Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$')
+              ])),
+              fournis: new FormControl({ value: "", disabled: true }),
+              numBonFrs: new FormControl({ value: "", disabled: true }, Validators.compose([
+                Validators.maxLength(50),
+                Validators.minLength(5),
+                Validators.required,
+                Validators.pattern('^[a-zA-Z0-9 ]+$')
+              ])),
+              raison:  ['', Validators.compose([
+                Validators.maxLength(30),
+                Validators.minLength(5),
+                Validators.required,
+                Validators.pattern('^[a-zA-Z0-9 ]+$')
+              ])],
+              tauxRem: ['', Validators.compose([
+                Validators.min(0),
+                Validators.max(999999),
+                Validators.required,
+                Validators.pattern('^(0|[1-9][0-9]*)$')
+              ])],
+              montRem: ['', Validators.compose([
+                Validators.min(0),
+                Validators.max(999999),
+                Validators.required,
+                Validators.pattern('^(0|[1-9][0-9]*)$')
+              ])],
+              montTva: ['', Validators.compose([
+                Validators.min(0),
+                Validators.max(999999),
+                Validators.required,
+                Validators.pattern('^(0|[1-9][0-9]*)$')
+              ])],
+              numFac: ['', Validators.compose([
+                Validators.min(0),
+                Validators.max(999999),
+                Validators.required,
+                Validators.pattern('^(0|[1-9][0-9]*)$')
+              ])],
+              xbase0: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase6: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase10: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase17: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase29: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase7: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase12: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase21: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase36: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva6: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva10: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva17: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva29: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva7: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva12: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva21: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva36: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              plusV: ['', Validators.compose([
+                Validators.min(0),
+                Validators.max(999999),
+                Validators.required,
+                Validators.pattern('^(0|[1-9][0-9]*)$')
+              ])],
+              tauxRes: ['', Validators.compose([
+                Validators.min(0),
+                Validators.max(999999),
+                Validators.required,
+                Validators.pattern('^(0|[1-9][0-9]*)$')
+              ])],
+              montTrs: ['', Validators.compose([
+                Validators.min(0),
+                Validators.max(999999),
+                Validators.required,
+                Validators.pattern('^(0|[1-9][0-9]*)$')
+              ])],
+              liv: ['', Validators.compose([
+                Validators.maxLength(30),
+                Validators.minLength(2),
+                Validators.required,
+                Validators.pattern('^[a-zA-Z0-9 ]+$')
+              ])],
+              numCom: [''],
+              poste: [''],
+              montIrpp: ['', Validators.compose([
+                Validators.min(0),
+                Validators.max(999999),
+                Validators.required,
+                Validators.pattern('^(0|[1-9][0-9]*)$')
+              ])],
+              centre: ['', Validators.compose([
+                Validators.maxLength(30),
+                Validators.minLength(4),
+                Validators.required,
+                Validators.pattern('^[a-zA-Z0-9 ]+$')
+              ])],
+              xbase19: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva19: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase13: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva13: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xbase7A: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              xtva7A: [0, Validators.compose([
+                Validators.min(0),
+                Validators.max(999999999999),
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+              ])],
+              codeTva: ['', Validators.compose([
+                Validators.maxLength(30),
+                Validators.minLength(4),
+                Validators.required,
+                Validators.pattern('^[a-zA-Z0-9 ]+$')
+              ])],
+              trans_action: ['', Validators.required],
+              livreur_frs: [''],
+              user:['']
+          });
+
+          this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {
+            this.utilisateurService.getUtilisateur(data1.toString()).subscribe(data => {
+              this.userPost = data;
+              this.poste = this.userPost.firstname+' '+this.userPost.lastname;
+              this.bonLivForm.patchValue({
+                poste: this.poste, 
+                user: this.userPost,
+              });
+            }, error => console.log(error));
+          }, error => console.log(error));
         this.artliv.qutStk = 0;
         this.artliv.qutStk2 = 0;
         this.artliv.stkGar = 0;
@@ -359,6 +374,9 @@ selectedCodFrs : any;
         this.artliv.stkReel = 0;
         this.artliv.stkRes = 0;
         this.artliv.stkNp = 0; 
+
+
+
     }
   // convenience getter for easy access to form fields
   get f1() { return this.bonLivForm.controls; }
@@ -393,8 +411,9 @@ selectedCodFrs : any;
       this.makeToast2();
         return;
     }
-  
-    var target=this.bonLivs.find(temp=>temp.numBon==this.bonLivForm.controls.numBon.value)
+    if(this.bonLivs){
+      var target=this.bonLivs.find(temp=>temp.numBon===this.bonLivForm.controls.numBon.value)
+    }
     if(target){
       return this.makeToast4();
     }else { 
@@ -411,20 +430,18 @@ selectedCodFrs : any;
   }
 
     saveBonliv() {
-      if(this.bonLivForm.controls.Destination.value == true){
-        this.bonLivForm.patchValue({
-          codFrs: this.selectedCodFrs, 
-        });
+      console.log(this.bonLivForm.value)
+      if(this.bonLivForm.controls.Destination.value == "true"){
+        console.log("yes")
         this.bonLivForm.patchValue({
           nomprenomCli: null, 
           adresseCli : null
         });
       }else{
         this.bonLivForm.patchValue({
-          codFrs: null, 
+          fournis: null, 
         });
-      }
-
+      }     
         this.bonlivService.createBon_liv(this.bonLivForm.value).subscribe( data =>{
           console.log(data);
         },
@@ -440,11 +457,19 @@ selectedCodFrs : any;
     }
     choise_existance:boolean;
     datBonSave:Date;
+    datBonSaveExist:Date;
       onReset() {
         this.submitted = false;
         this.datBonSave=this.bonLivForm.controls.datBon.value;
         this.bonLivForm.reset()
         this.bonLivForm.get('datBon').setValue(this.datBonSave);
+      } 
+
+      resetExist() {
+        this.submitted = false;
+        this.datBonSaveExist=this.article.derMvt;
+        this.artLivExistForm.reset()
+        this.article.derMvt=this.datBonSave;
       } 
       delay(ms: number) {
         return new Promise( resolve => setTimeout(resolve, ms) );
@@ -453,7 +478,7 @@ selectedCodFrs : any;
     async onSubmitArtBonExist() {
       await this.getArtLivs();
       console.log(this.getArtLivs());
-      if(this.artliv.typArt || (this.artliv.codArt && this.artliv.codArt=='0')){
+      if(this.artLivsList){
         var target=this.artLivsList.find(temp=>temp.codArt==this.artliv.codArt && temp.num_bon_liv==this.bonLivForm.controls.numBon.value);
       }
       console.log(target);
@@ -464,7 +489,7 @@ selectedCodFrs : any;
         return this.makeToast3();
       }else if(target){
         return this.makeToast6();
-      }else if(!this.artliv.typArt || (!this.artliv.codArt && this.artliv.codArt!='0')){
+      }else if(!this.artliv.typArt  || !this.artliv.codArt){
     
         return this.makeToast2();
       } else{
@@ -480,7 +505,7 @@ selectedCodFrs : any;
       async onResetArtLivExistForm() {
         await this.getArtLivs();
         console.log(this.getArtLivs());
-        if(this.artliv.typArt || (this.artliv.codArt && this.artliv.codArt=='0')){
+        if(this.artLivsList){
           var target=this.artLivsList.find(temp=>temp.codArt==this.artliv.codArt && temp.num_bon_liv==this.bonLivForm.controls.numBon.value);
         }
         console.log(target);
@@ -493,7 +518,7 @@ selectedCodFrs : any;
         }else if(target){
           return this.makeToast6();
 
-        }else if(!this.artliv.typArt || (!this.artliv.codArt && this.artliv.codArt!='0')){
+        }else if(!this.artliv.typArt  || !this.artliv.codArt){
           return this.makeToast2();
 
         } else{
@@ -524,7 +549,9 @@ selectedCodFrs : any;
 
   async onSubmitArtBonDontExist() {
     this.getArticles();
-    var target=this.articles.find(temp=>temp.codArt==this.article.codArt)
+    if(this.articles){
+      var target=this.articles.find(temp=>temp.codArt==this.article.codArt)
+    }
     if((this.article.qutStk== 0 || this.article.qutStk==null) && (this.article.qutStk2 == 0 || this.article.qutStk2==null) && (this.article.stkGar == 0 || this.article.stkGar==null) && (this.article.stkIni == 0 || this.article.stkIni==null) &&
     (this.article.analStk == 0 || this.article.analStk==null) && (this.article.nbjStk == 0 || this.article.nbjStk==null) && (this.article.vSstk == 0 || this.article.vSstk==null) && (this.article.comStk == 0 || this.article.comStk==null) &&
      (this.article.xanalStk == 0 || this.article.xanalStk==null) && (this.article.stkAtrsf == 0 || this.article.stkAtrsf==null)
@@ -533,7 +560,11 @@ selectedCodFrs : any;
     }
     else if(target){
       return this.makeToast6();
-    } else{
+    } else if(!this.artliv.typArt  || !this.artliv.codArt || this.article.refOrg || this.article.desArt || this.article.refRem || this.article.codNgp
+      || this.article.marque || this.article.model || this.article.prixAch || this.article.numCas){
+      return this.makeToast2();
+
+    }else{
       await this.saveArticle();
       await this.delay(3500);
       await this.prixUpdateBLDont();
@@ -548,7 +579,9 @@ selectedCodFrs : any;
 
   async onResetArtLivDontExistForm() {
     this.getArticles();
-    var target=this.articles.find(temp=>temp.codArt==this.article.codArt)
+    if(this.articles){
+      var target=this.articles.find(temp=>temp.codArt==this.article.codArt)
+    }
     if((this.article.qutStk== 0 || this.article.qutStk==null) && (this.article.qutStk2 == 0 || this.article.qutStk2==null) && (this.article.stkGar == 0 || this.article.stkGar==null) && (this.article.stkIni == 0 || this.article.stkIni==null) &&
     (this.article.analStk == 0 || this.article.analStk==null) && (this.article.nbjStk == 0 || this.article.nbjStk==null) && (this.article.vSstk == 0 || this.article.vSstk==null) && (this.article.comStk == 0 || this.article.comStk==null) &&
      (this.article.xanalStk == 0 || this.article.xanalStk==null) && (this.article.stkAtrsf == 0 || this.article.stkAtrsf==null)
@@ -557,7 +590,11 @@ selectedCodFrs : any;
   
     }else if(target){
       return this.makeToast6();
-    } else{
+    } else if(!this.artliv.typArt  || !this.artliv.codArt || this.article.refOrg || this.article.desArt || this.article.refRem || this.article.codNgp
+      || this.article.marque || this.article.model || this.article.prixAch || this.article.numCas){
+      return this.makeToast2();
+
+    }else{
       this.submittedDontExist = true;
       await this.saveArticle();
       await this.showModalDialogBarProgression();
@@ -867,6 +904,9 @@ selectedCodFrs : any;
         /** end msj de prix bon livraison */
 
     //form for Artticle
+    const now = Date.now()
+    const myFormattedDate = this.datepipe.transform(now, 'yyyy-MM-dd hh:mm:ss');
+    this.article.datCreat=new Date(myFormattedDate);
 
     this.articleService.createArticle(this.article).subscribe( data =>{
       console.log(data);
@@ -1058,7 +1098,6 @@ displayModalBarProgression: boolean;
 /**toaster show start */ 
 
   listmarquearticle;
-  MarqueArticleList: String[];
   ArticleListWithMarque: Article[];
   StockListWithArticle: any[] = [];
 
@@ -1075,19 +1114,6 @@ displayModalBarProgression: boolean;
       });
     }
   }
-  public getArticleOfFromMarqueAddForBonLiv(itemsMarque :any) {  
-    if(itemsMarque!=0){
-      this.bonlivService.getArticleOfFromMarqueAddForBonLiv(itemsMarque).subscribe(data => {
-        this.ArticleListWithMarque = data;
-      });
-    }
-  }
-
-  public getArticleWithMarqueAdd() {
-      this.bonlivService.getArticleWithMarqueAdd().subscribe(data => {
-        this.MarqueArticleList = data;
-      });
-  }
   public getArticleOfAdd() {
     this.bonlivService.getArticleOfAdd().subscribe(data => {
       this.ArticleList = data;
@@ -1098,19 +1124,26 @@ displayModalBarProgression: boolean;
       this.FournisList = data;
     });
   }
+
+  public getXcommands(){
+    this.xcommandService.getXcommandBlNull().subscribe(data1 => {
+      console.log(data1)
+      this.listeXcommand=data1;
+    }, error => console.log(error));
+  }
   showFrsLivreur: boolean
   ClientFrsValue;
 
   onSelectionChanged(value) {
     if (value === 'false') {
-      this.bonLivForm.get('codFrs').disable();
+      this.bonLivForm.get('fournis').disable();
       this.bonLivForm.get('numBonFrs').disable();
       this.bonLivForm.get('nomprenomCli').enable();
       this.bonLivForm.get('adresseCli').enable();
     } else {
       this.bonLivForm.get('nomprenomCli').disable();
       this.bonLivForm.get('adresseCli').disable();
-      this.bonLivForm.get('codFrs').enable();
+      this.bonLivForm.get('fournis').enable();
       this.bonLivForm.get('numBonFrs').enable();
     }
   }
@@ -1188,6 +1221,134 @@ formOption_Existe = new FormGroup({
 
 
 
+
+
+
+
+
+/** marque model article choise */
+
+
+ModelFromMarque:Model[];
+MarqueList: Marque[];
+public getAllMarquesList() {
+  this.marqueService.getMarquesList().subscribe(data => {
+    this.MarqueList = data;
+    console.log(this.MarqueList);
+  });
+}
+public getModeleFromMarque(itemsMarquee :any) {
+
+  if(itemsMarquee){ 
+    this.articleService.getAllModelByMarque(itemsMarquee.id).subscribe(data => {
+      this.ModelFromMarque = data;
+      console.log(data);
+    });
+  }
+}
+  public getArticleOfFromMarqueAddForBonPrep(itemsModel :any) {
+    console.log(itemsModel);
+    if(itemsModel!=0){
+      this.bonlivService.getArticleOfFromMarqueAddForBonLiv(itemsModel.id).subscribe(data => {
+        this.ArticleListWithMarque = data;
+        console.log(this.ArticleListWithMarque);
+        });
+      }
+  }
+
+  ModelSelected(itemsModel:any){
+    return this.artliv.typArt=this.value1+", Model:"+itemsModel.title;
+  }
+  value1:String;
+  MarqueSelected(itemsMarque:any){
+    return this.value1="Marque:"+itemsMarque.title;
+  }
+/** end marque model article choise */
+
+
+
+/***calcule sum */
+sumArticles:number;
+sumAllArticles:number;
+CalculeValueSum(){
+  this.sumArticles = this.artliv.qutStk+this.artliv.qutStk2+this.artliv.stkGar+this.artliv.stkIni+this.artliv.analStk+
+  this.artliv.nbjStk+this.artliv.vSstk+this.artliv.comStk+this.artliv.xanalStk+this.artliv.stkAtrsf+this.artliv.stkTrsf+
+  this.artliv.stkReel+this.artliv.stkRes+this.artliv.stkNp;
+
+  if(!this.ArticleGeted){
+    this.sumAllArticles=0;
+  }else{
+    this.sumAllArticles=this.sumArticles*this.ArticleGeted.prixVen;
+  }
+}
+
+/***end calcule sum */
+
+/***calcule sum DON T Exist */
+sumArticlesDont:number;
+sumAllArticlesDont:number;
+CalculeValueSumDont(){
+  if(this.article.qutStk==null || !this.article.qutStk || this.article.qutStk == 0){
+    this.article.qutStk=0;
+  }
+  if(this.article.qutStk2==null || !this.article.qutStk2 || this.article.qutStk2 == 0){
+    this.article.qutStk2=0;
+  }
+  if(this.article.stkGar==null || !this.article.stkGar || this.article.stkGar == 0){
+    this.article.stkGar=0;
+  }
+  if(this.article.stkIni==null || !this.article.stkIni || this.article.stkIni == 0){
+    this.article.stkIni=0;
+  }
+  if(this.article.analStk==null || !this.article.analStk || this.article.analStk == 0){
+    this.article.analStk=0;
+  }
+  if(this.article.nbjStk==null || !this.article.nbjStk || this.article.nbjStk == 0){
+    this.article.nbjStk=0;
+  }
+  if(this.article.vSstk==null || !this.article.vSstk || this.article.vSstk == 0){
+    this.article.vSstk=0;
+  }
+  if(this.article.comStk==null || !this.article.comStk || this.article.comStk == 0){
+    this.article.comStk=0;
+  }
+  if(this.article.xanalStk==null || !this.article.xanalStk || this.article.xanalStk == 0){
+    this.article.xanalStk=0;
+  }
+  if(this.article.stkAtrsf==null || !this.article.stkAtrsf || this.article.stkAtrsf == 0){
+    this.article.stkAtrsf=0;
+  }
+  if(this.article.stkTrsf==null || !this.article.stkTrsf || this.article.stkTrsf == 0){
+    this.article.stkTrsf=0;
+  }
+  if(this.article.stkReel==null || !this.article.stkReel || this.article.stkReel == 0){
+    this.article.stkReel=0;
+  }
+  if(this.article.stkRes==null || !this.article.stkRes || this.article.stkRes == 0){
+    this.article.stkRes=0;
+  }
+  if(this.article.stkNp==null || !this.article.stkNp || this.article.stkNp == 0){
+    this.article.stkNp=0;
+  }
+
+  this.sumArticlesDont = this.article.qutStk+this.article.qutStk2+this.article.stkGar+this.article.stkIni+this.article.analStk+
+  this.article.nbjStk+this.article.vSstk+this.article.comStk+this.article.xanalStk+this.article.stkAtrsf+this.article.stkTrsf+
+  this.article.stkReel+this.article.stkRes+this.article.stkNp;
+
+  if(!this.article.prixAch){
+    console.log("true baby")
+    this.sumAllArticlesDont=0;
+  }else{
+    console.log("false baby")
+    this.sumAllArticlesDont=this.sumArticlesDont*this.article.prixAch;
+  }
+  console.log(this.article.qutStk);
+  console.log(this.article.qutStk2);
+  console.log(this.sumArticlesDont)
+  console.log(this.sumAllArticlesDont)
+}
+
+/***end calcule sum DON T Exist */
 
 }
   

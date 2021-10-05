@@ -11,13 +11,13 @@ import { BonLivListComponent } from './bon-liv-list/bon-liv-list.component';
 import { FormsRoutingModule } from '../forms/forms-routing.module';
 import { DeleteBonLivDialogComponent } from './bon-liv-list/delete-dialog/delete-bon-liv-dialog.component';
 import { XbaseXtvaDialogComponent } from './bon-liv-list/window-xbase&tva/xbase&xtva-dialog.component';
-import { WindowDateFilterComponent } from './bon-liv-list/window-date-filter/window-date-filter.component';
 import { BonLivDetailComponent } from './bon-liv-detail/bon-liv-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShowcaseDialogComponent } from './create-bon-liv/showcase-dialog/showcase-dialog.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular2-chartjs';
+
 // search module
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {ButtonModule} from 'primeng/button'
@@ -36,6 +36,7 @@ import { EchartsBonLivPieComponent } from './echarts-bon-liv/echarts-bon-liv-pie
 import { EchartsBonLivBarComponent } from './echarts-bon-liv/echarts-bon-liv-bar.component';
 import { EchartsFournisBarComponent } from './echarts-bon-liv/echarts-fournis-bar.component';
 import { EchartsClientBarComponent } from './echarts-bon-liv/echarts-client-bar.component';
+import { BonLivService } from './bon-liv.service';
 @NgModule({
   declarations: [
     ...routedComponents,
@@ -44,7 +45,6 @@ import { EchartsClientBarComponent } from './echarts-bon-liv/echarts-client-bar.
     UpdateBonLivComponent,
     DeleteBonLivDialogComponent,
     XbaseXtvaDialogComponent,
-    WindowDateFilterComponent,
     BonLivDetailComponent,
     ShowcaseDialogComponent,
     EchartsBonLivBarComponent,

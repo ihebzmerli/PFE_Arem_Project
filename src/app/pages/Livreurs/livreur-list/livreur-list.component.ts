@@ -11,6 +11,7 @@ import { NbComponentShape, NbComponentSize, NbComponentStatus, NbDialogService ,
 import { DeleteLivreurDialogComponent } from './delete-dialog/delete-livreur-dialog.component';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-livreur-list',
@@ -148,7 +149,7 @@ export class LivreurListComponent implements OnInit {
     
 
   constructor(private authService: TokenStorageService,private dialogService: NbDialogService, private livreurService: LivreurService,
-    private router: Router,private service: SmartTableData) {
+    private router: Router,private service: SmartTableData,public datepipe: DatePipe) {
 
     }
 
@@ -157,7 +158,7 @@ export class LivreurListComponent implements OnInit {
 authority;
   ngOnInit(): void {
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
     this.getLivreurs();
@@ -209,5 +210,71 @@ authority;
           },
         });
       }
-  /* end the popap **/   
+  /* end the popap **/  
+  
+  
+
+    startDate;
+    endDate;
+    testStatus :number = 1;
+    FilterDate(startDate,endDate){
+      console.log(startDate,endDate)
+      if (startDate !=null && endDate!=null && this.testStatus != 2) {
+      let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+      let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+      latest_startDate.toString();
+      latest_endDate.toString();
+      this.livreurService.getAllEtatLivdat_reclamBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+        this.filteredLivreurs = data;
+        console.log(data);
+      });
+      this.testStatus = 2
+    }else {
+      this.testStatus = 2
+      this.getLivreurs();
+      this.testStatus = 1
+    }
+  }
+
+    startDate1;
+    endDate1;
+    FilterDate1(startDate1,endDate1){
+      console.log(startDate1,endDate1)
+      if (startDate1 !=null && endDate1!=null && this.testStatus != 2) {
+      let latest_startDate =this.datepipe.transform(startDate1, 'yyyy-MM-dd');
+      let latest_endDate =this.datepipe.transform(endDate1, 'yyyy-MM-dd');
+      latest_startDate.toString();
+      latest_endDate.toString();
+      this.livreurService.getAllEtatLivdat_reponBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+        this.filteredLivreurs = data;
+        console.log(data);
+      });
+      this.testStatus = 2
+    }else {
+      this.testStatus = 2
+      this.getLivreurs();
+      this.testStatus = 1
+    }
+  }
+
+    startDate2;
+    endDate2;
+    FilterDate2(startDate2,endDate2){
+      console.log(startDate2,endDate2)
+      if (startDate2 !=null && endDate2!=null && this.testStatus != 2) {
+      let latest_startDate =this.datepipe.transform(startDate2, 'yyyy-MM-dd');
+      let latest_endDate =this.datepipe.transform(endDate2, 'yyyy-MM-dd');
+      latest_startDate.toString();
+      latest_endDate.toString();
+      this.livreurService.getAllEtatLivdateBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+        this.filteredLivreurs = data;
+        console.log(data);
+      });
+      this.testStatus = 2
+    }else {
+      this.testStatus = 2
+      this.getLivreurs();
+      this.testStatus = 1
+    }
+  }
 }

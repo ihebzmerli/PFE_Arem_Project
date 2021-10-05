@@ -10,21 +10,17 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { ThemeModule } from '../../@theme/theme.module';
 import { CreateRectifComponent } from './create-rectif/create-rectif.component';
 import { UpdateRectifComponent } from './update-rectif/update-rectif.component';
-import { FsIconComponent } from './rectif-detail/rectif-detail.component';
 import { RectifListComponent } from './rectif-list/rectif-list.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteRectifDialogComponent } from '../Rectifs/rectif-list/delete-dialog/delete-rectif-dialog.component';
-import { WindowDateFilterComponent } from './rectif-list/window-date-filter/window-date-filter.component';
 
 @NgModule({
   declarations: [
     ...routedComponents,
-    FsIconComponent,
     CreateRectifComponent,
     RectifListComponent,
     UpdateRectifComponent,
     DeleteRectifDialogComponent,
-    WindowDateFilterComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +34,11 @@ import { WindowDateFilterComponent } from './rectif-list/window-date-filter/wind
     NbDatepickerModule,
     NbDialogModule,
     NbButtonModule,
+    ReactiveFormsModule,
+    NbRadioModule, 
+    NbSelectModule,
+    NbInputModule,
+    NbActionsModule,
     FormsModule,
     NbRadioModule, 
     NbUserModule,

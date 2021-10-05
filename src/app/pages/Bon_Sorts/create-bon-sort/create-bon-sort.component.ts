@@ -74,7 +74,8 @@ article: Article = new Article();
 bonsort: Bon_sort = new Bon_sort();
 artsort: Art_Sort = new Art_Sort();
 submitted = false;
-
+userPost: Utilisateur;
+poste: any;
 
 constructor(private authService: TokenStorageService,private toastrService: NbToastrService,public fb: FormBuilder,private bonlivService:BonLivService,public bonsortService: BonSortService,
   private router: Router,protected dateService: NbDateService<Date>,private windowService: NbWindowService,public articleService: ArticleService
@@ -100,8 +101,17 @@ constructor(private authService: TokenStorageService,private toastrService: NbTo
     this.getArticleOfAdd();
     this.getAllMarquesList();
     this.getListChariot();
+    this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {
+      this.utilisateurService.getUtilisateur(data1.toString()).subscribe(data => {
+        this.userPost = data;
+        this.poste = this.userPost.firstname+' '+this.userPost.lastname;
+        this.bonsort.user = this.userPost;
+        this.bonsort.poste =this.poste;
+      }, error => console.log(error));
+    }, error => console.log(error));
 
-    this.bonsort.datBon = new Date();
+    this.bonsort.datBon = new Date(Date().toLocaleString());
+    this.bonsort.datBon.setMinutes(this.bonsort.datBon.getMinutes() + this.bonsort.datBon.getTimezoneOffset() + 120);
 
     this.bonsort.xbase1 = 0;
     this.bonsort.xbase2 = 0;
@@ -135,7 +145,6 @@ saveBonsort() {
   
 
   this.bonsortService.createBon_sort(this.bonsort).subscribe( data =>{
-    this.bonsort.datBon = new Date();
     console.log(data);
     //this.gotoListBonsort();
   },

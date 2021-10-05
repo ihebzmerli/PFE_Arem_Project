@@ -1,4 +1,5 @@
 import { Chariot } from "../../Chariots/chariot";
+import { Utilisateur } from "../../Utilisateurs/utilisateur";
 
 export class Art_Prep {
 
@@ -16,16 +17,16 @@ export class Art_Prep {
     cumulRet:number;
     prixAch:number;
     qutPrep:number;
-    nonTrouve:Boolean;
-
+    nonTrouve:number;
+    qutValider:number;
     datPrep:Date;
     remExp:number;
     etage2:string;
     numCas:string;
     chrono:Date;
 
-    prep:string;
-    prepara:string;
+    prep:number;
+    prepara:Utilisateur;
     avPrep:string;
     qutPoint:number;
     poste:string;

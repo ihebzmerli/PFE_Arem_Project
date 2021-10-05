@@ -34,7 +34,7 @@
                     <label for="marque" class="label">marque</label>
                     <nb-select fullWidth fieldSize="small" [(selected)]="MarqueSelected" [(ngModel)]="vehiculemarque" (selectedChange)="getModeleFromMarque($event)" placeholder="marque">
                         <nb-option value="null">-Select</nb-option>
-                        <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsMarque.title }} </nb-option>
+                        <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><a><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsMarque.title }} </nb-option>
                       </nb-select>
 
                 </div>
@@ -42,7 +42,7 @@
                     <label for="modele" class="label">modele</label>
                     <nb-select fullWidth fieldSize="small" [(selected)]="ModelSelected" [(ngModel)]="vehiculemodel" placeholder="model">
                         <nb-option value="null">-Select</nb-option>
-                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsModel.title }} </nb-option>
+                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><a><img src="{{this.marqueService.host+'/'+itemsModel.marque.code+'/'+itemsModel.marque.fileName}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsModel.title }} </nb-option>
                       </nb-select>
                 </div>
                 </div>

@@ -10,7 +10,7 @@
           <nb-card-header>
                 <div><b style="text-decoration: underline overline rgb(15, 38, 104);">Numéro d'affaire</b> : {{ affaires.numAff }}</div>
   
-                <div><b style="text-decoration: underline overline rgb(15, 38, 104);">Date d'affaire</b> : {{ affaires.datAff | date: 'MMM d, y H:mm:ss' : '+0000'}}</div>
+                <div><b style="text-decoration: underline overline rgb(15, 38, 104);">Date d'affaire</b> : {{ affaires.datAff  | date: 'MMM d, y '}}</div>
             </nb-card-header>
            
         </div>
@@ -31,7 +31,7 @@
             
             <li>
               <b class="p-mb-3 p-text-light">type Document Achat: </b>   
-              <b *ngIf="affaires.achats==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogTypDoc('right')">Aucune Categorie</label></span></b>
+              <b *ngIf="affaires.achats==null || affaires.achats.typDoc==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogTypDoc('right')">Aucune Categorie</label></span></b>
               <b *ngIf="affaires.achats.typDoc=='BON_LIV' || affaires.achats.typDoc=='bon_liv'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(41, 221, 24);" ><label (click)="showPositionDialogTypDoc('right')">BON LIV</label></span></b>
               <b *ngIf="affaires.achats.typDoc=='AVOIR_BL' || affaires.achats.typDoc=='avoir_bl'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(177, 236, 15);" ><label (click)="showPositionDialogTypDoc('right')">AVOIR BL</label></span></b>
               <p-dialog header="Définition typDoc" [(visible)]="displayPositionTypDoc" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -122,11 +122,11 @@
               <div *ngIf="affaires.achats.user!==null">         
                 <div *ngIf="affaires.achats.user.lastname!==null && affaires.achats.user.firstname!==null">
                   <b class="p-mb-3 p-text-light">Responsable d'Achats : </b>
-                    <img (click)="showModalDialogUser('right')" src="{{this.utilisateurService.host+'/api/Imgusers/'+affaires.achats.user.id}}" width="50" style="vertical-align: middle" />
+                    <img (click)="showModalDialogUser('right')" src="{{this.utilisateurService.host+'/'+affaires.achats.user.codUser+'/'+affaires.achats.user.fileName}}" width="50" style="vertical-align: middle" />
 
                   <p-dialog header="details Responsable" [(visible)]="displayModalUser" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                   [draggable]="false" [resizable]="false">
-                  <p style="text-align: center"  class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+affaires.achats.user.id}}" style="width:150px;height: 180px;" class="article-image" /></p> 
+                  <p style="text-align: center"  class="p-m-0"><img src="{{this.utilisateurService.host+'/'+affaires.achats.user.codUser+'/'+affaires.achats.user.fileName}}" style="width:150px;height: 180px;" class="article-image" /></p> 
                   
                     <div style="text-align: center" >
                     <li>                        

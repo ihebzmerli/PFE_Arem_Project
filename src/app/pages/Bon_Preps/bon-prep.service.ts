@@ -47,7 +47,9 @@ export class BonPrepService {
   deleteAll(): Observable<any> {
     return this.http.delete(this.url);
   }
-
+  UpdateArtPrepPointage(numBon: string,COD_ART: string, value: any): Observable<Object> {
+    return this.http.put(`${this.url2}/artPreps/${numBon}And${COD_ART}`, value);
+  }
 
   /** drop list add prep */
   getAllStockByArticle(codArt: string): Observable<any> {

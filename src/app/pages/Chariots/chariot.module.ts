@@ -15,7 +15,6 @@ import { ChariotDetailComponent } from './chariot-detail/chariot-detail.componen
 import { FormsRoutingModule } from '../forms/forms-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteChariotDialogComponent } from '../Chariots/chariot-list/delete-dialog/delete-chariot-dialog.component';
-import { WindowDateFilterComponent } from '../Chariots/chariot-list/window-date-filter/window-date-filter.component';
 // search module
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -49,7 +48,6 @@ import { RetourServiceChariotDialogComponent } from './chariot-list/RetourServic
     UpdateChariotComponent,
     ChariotDetailComponent,
     DeleteChariotDialogComponent,
-    WindowDateFilterComponent,
     PointageChariotDialogComponent,
     RetourServiceChariotDialogComponent,
     ChartjsChariotPieComponent,

@@ -4,20 +4,20 @@
 
 <ng-template #formDisable>
   <form (ngSubmit) = "onSubmitUtilisateur()" #utilisateurForm="ngForm">
-    <h2>Profil de l'utilisateur</h2>
-    <div class="container rounded bg-white mt-5 mb-5">
+    <nb-card-body><h2>Profil de l'utilisateur</h2></nb-card-body>
+    <nb-card class="container rounded mt-5 mb-5">
       <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-              <img class="rounded-circle mt-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQF2psCzfbB611rnUhxgMi-lc2oB78ykqDGYb4v83xQ1pAbhPiB&usqp=CAU">
+              <img *ngIf="authority!=='ROLE_USER'" class="rounded-circle mt-5" id="myImage1" src="{{this.utilisateurService.host+'/'+utilisateur.codUser+'/'+utilisateur.fileName}}" style="width: 100px;height: 100px;"> 
               <span class="font-weight-bold">
                 <span *ngIf="utilisateur.firstname!=null || utilisateur.lastname!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.firstname}}&nbsp;{{utilisateur.lastname}} </b></span>  
                 <span *ngIf="utilisateur.firstname==null && utilisateur.lastname==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span> 
               </span>
-              <span class="text-black-50">                  
-                <span *ngIf="utilisateur.email!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.email}}</b></span>
+              <nb-card-body>                  
+                <span *ngIf="utilisateur.email!=null" class="image-text">{{utilisateur.email}}</span>
                 <span *ngIf="utilisateur.email==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span> 
-              </span>
+              </nb-card-body>
               <span class="text-black-50">    
                 <label class="label">Type Contrat:&nbsp;</label>
                 <span *ngIf="utilisateur.typeContrat!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.typeContrat}}</b></span>  
@@ -27,11 +27,11 @@
                 <span *ngIf="utilisateur.postV!=null" class="image-text"><b class="p-mb-3 p-text-light">{{utilisateur.postV}}</b></span>  
                 <span *ngIf="utilisateur.postV==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>                                       
               </span>
-              <span class="text-black-50"> 
+              <nb-card-body> 
                 <label class="label">Date Contrat:&nbsp;</label>                 
                 <span *ngIf="testConger!=null" class="image-text"><b class="p-mb-3 p-text-light">{{testConger}}</b></span>  
                 <span *ngIf="testConger==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></span>  
-              </span>
+              </nb-card-body>
               <span class="text-black-50">        
                 <label class="label">Role:&nbsp;</label>
                 <span *ngIf="utilisateur.roles==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label>Aucune Role</label></span></span>
@@ -645,6 +645,6 @@
             </div>    
         </div>
         -->
-    </div>
+    </nb-card>
   </form>
 </ng-template>

@@ -2,10 +2,22 @@
   <h5 class="text-primary">Vos Informations</h5>
   <p>
     <strong>Username:</strong> {{info.username}}<br/>
-    <strong>Roles:</strong> {{info.authorities}}<br />
-    <strong>Token:</strong> {{info.token}}.
   </p>
-  <button class="btn btn-secondary" (click)="logout()">Logout</button>
+
+
+  
+
+<!--
+<div [@popOverState]="stateName">
+  <img class="rounded-circle" width="46" height="51" src="{{this.articleService.host+'/'+artic.codArt+'/'+artic.fileName}}">
+  <p>Remise d'Article</p>
+</div>
+
+<button (click)="changePosition('move')" class="button">Toggle Translate</button>
+<button (click)="changePosition('spin')" class="button">Rotate</button>
+<button (click)="changePosition('enlarge')" class="button">Scale</button>
+<button (click)="changePosition(null)" class="button">Reset</button>
+-->
 
 <!--  
   <div class="row">

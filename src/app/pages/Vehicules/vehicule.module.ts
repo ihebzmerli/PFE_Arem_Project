@@ -15,7 +15,6 @@ import { VehiculeListComponent } from './vehicule-list/vehicule-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteVehiculeDialogComponent } from '../Vehicules/vehicule-list/delete-dialog/delete-vehicule-dialog.component';
 
-import { WindowDateFilterComponent } from './vehicule-list/window-date-filter/window-date-filter.component';
 
 
 // RECOMMENDED
@@ -47,7 +46,6 @@ import { HttpClientModule } from '@angular/common/http';
     CreateVehiculeComponent,
     VehiculeListComponent,
     UpdateVehiculeComponent,
-    WindowDateFilterComponent,
     VehiculeDetailComponent,
     DeleteVehiculeDialogComponent
   ],

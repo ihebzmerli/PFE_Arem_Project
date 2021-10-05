@@ -161,7 +161,7 @@ export class CreateLivreurComponent implements OnInit {
         }
   
         // display form values on success
-        alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.livreurForm.value, null, 4));
+        //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.livreurForm.value, null, 4));
         this.saveLivreur();
         this.makeToast(); 
     }

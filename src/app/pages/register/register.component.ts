@@ -47,6 +47,7 @@ export class RegisterComponent implements OnInit {
       this.form.typeContrat,
       this.form.typeConge,
       this.form.authorisation,
+      this.form.connected = 0,
       );
 
     this.authService.signUp(this.signupInfo).subscribe(

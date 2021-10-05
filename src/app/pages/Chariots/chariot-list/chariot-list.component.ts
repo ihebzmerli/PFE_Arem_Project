@@ -7,10 +7,10 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { NbComponentShape, NbComponentSize, NbComponentStatus, NbDialogService, NbWindowService } from '@nebular/theme';
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { DeleteChariotDialogComponent } from './delete-dialog/delete-chariot-dialog.component';
-import { WindowDateFilterComponent } from './window-date-filter/window-date-filter.component';
 import { PointageChariotDialogComponent } from './poitageChariot-dialog/pointage-chariot-dialog.component';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-chariot-list',
@@ -60,7 +60,7 @@ filtereChariotsCallChariot(seachBigint: string){
   /*********end seach fot anything */
   constructor(private authService: TokenStorageService,private chariotService: ChariotService,
     private router: Router, private windowService: NbWindowService,private dialogService: NbDialogService,
-    private service: SmartTableData) {
+    private service: SmartTableData,public datepipe: DatePipe) {
 
     }
     statusessPointage:any;
@@ -70,7 +70,7 @@ authority;
     ngOnInit(): void {
       
       this.authService.getAuthorities().forEach(authority => {
-        this.authority=authority;
+        this.authority=authority.toString();
         console.log(this.authority);
       });
 
@@ -94,6 +94,7 @@ authority;
     private getChariots() {
       this.chariotService.getChariotsList().subscribe(data => {
         this.chariots = data;
+        console.log(this.chariots);
         this.filteredChariots = this.chariots;
       });
     }
@@ -174,11 +175,7 @@ OpenMettreEnServicePopap(numChar) {
         },
       );
     }
-    
-    openWindowForm() {
-      this.windowService.open(WindowDateFilterComponent, { title: `Window` });
-    }
-    
+
     openWindowWithoutBackdrop() {
       this.windowService.open(
         this.disabledEscTemplate,
@@ -204,4 +201,30 @@ OpenMettreEnServicePopap(numChar) {
             this.getChariots();
           }
       }
+
+
+
+
+
+      startDate;
+      endDate;
+      testStatus :number = 1;
+      FilterDate(startDate,endDate){
+        console.log(startDate,endDate)
+        if (startDate !=null && endDate!=null && this.testStatus != 2) {
+        let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+        let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+        latest_startDate.toString();
+        latest_endDate.toString();
+        this.chariotService.getAllChariotBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+          this.filteredChariots = data;
+          console.log(data);
+        });
+        this.testStatus = 2
+      }else {
+        this.testStatus = 2
+        this.getChariots();
+        this.testStatus = 1
+      }
+    }
 }

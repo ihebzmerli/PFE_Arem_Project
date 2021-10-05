@@ -82,7 +82,6 @@ import { InputTextModule } from 'primeng/inputtext';
     NgxEchartsModule,
     NgxChartsModule,
     ChartModule,
-
     InputTextModule,
     NbProgressBarModule,
  

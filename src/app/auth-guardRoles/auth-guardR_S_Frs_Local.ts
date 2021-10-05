@@ -32,24 +32,4 @@ export class AuthGuardRSFrsLocal implements CanActivate {
       //this.router.navigateByUrl('/pages/dashboard');
       return false;
     }
-  /*  
-    authority;
-    canActivateRoleAdmin(
-      next: ActivatedRouteSnapshot,
-      state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> |
-      boolean | UrlTree {
-      const roles = this.auth.getAuthorities();
-      console.log(roles);
-      roles.every(role => {
-        this.authority=role;
-        ;})
-      if (this.authority=='ROLE_ADMIN') {
-      return true;
-      }
-      else {
-      this.router.navigateByUrl('/pages/dashboard');
-      return false;
-      }
-      }
-      */
 }

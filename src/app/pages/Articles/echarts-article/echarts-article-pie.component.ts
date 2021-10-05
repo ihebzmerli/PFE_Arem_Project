@@ -38,7 +38,7 @@ export class EchartsArticlePieComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.articleService.getSum1().subscribe(data => {
       this.Sum1 = Number(data);
-      console.log();
+      console.log(this.Sum1);
     })
     this.articleService.getSum2().subscribe(data => {
       this.Sum2 = Number(data);

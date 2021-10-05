@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NbActionsModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbDialogModule, NbIconModule, NbInputModule, NbRadioModule, NbSelectModule, NbTreeGridModule, NbUserModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { routedComponents, AchatsRoutingModule } from './achats-routing.module';
@@ -11,7 +11,6 @@ import { AchatsListComponent } from './achats-list/achats-list.component';
 import { AchatsDetailComponent } from './achats-detail/achats-detail.component';
 // search module
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { WindowDateFilterComponent } from './achats-list/window-date-filter/window-date-filter.component';
 import { ValiderAchatsDialogComponent } from './achats-list/valider-dialog/valider-achats-dialog.component';
 import { NotValiderAchatsDialogComponent } from './achats-list/Notvalider-dialog/notValider-achats-dialog.component';
 import { NbAccordionModule, NbAlertModule, NbPopoverModule, NbSearchModule } from '@nebular/theme';
@@ -35,13 +34,13 @@ import { EchartsAchatsComponent } from './echarts-achats/echarts.component';
 import { EchartsAchatsPieComponent } from './echarts-achats/echarts-achats-pie.component';
 import { EchartsAchatsBarComponent } from './echarts-achats/echarts-achats-bar.component';
 import { EchartsAchatsPretPieComponent } from './echarts-achats/echarts-achatsPret-pie.component';
+import { AchatsService } from './achats.service';
 @NgModule({
   declarations: [
     ...routedComponents,
     AchatsListComponent,
     AchatsDetailComponent,
     ValiderAchatsDialogComponent,
-    WindowDateFilterComponent,
     NotValiderAchatsDialogComponent,
     EchartsAchatsBarComponent,
     EchartsAchatsPieComponent,
@@ -88,6 +87,7 @@ import { EchartsAchatsPretPieComponent } from './echarts-achats/echarts-achatsPr
     ChartModule,
     NbDialogModule.forChild(),
 
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class AchatsModule { }

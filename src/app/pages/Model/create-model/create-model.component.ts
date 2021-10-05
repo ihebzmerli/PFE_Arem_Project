@@ -88,7 +88,7 @@ export class CreateModelComponent implements OnInit {
           return this.makeToast4();
         }else { 
         // display form values on success
-        alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.modelForm.value, null, 4));
+        //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.modelForm.value, null, 4));
         this.saveModel();
         this.makeToast(); 
         this.gotoListMarque();

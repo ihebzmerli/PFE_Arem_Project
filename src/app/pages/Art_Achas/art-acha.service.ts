@@ -22,7 +22,7 @@ export class ArtAchaService {
   }
 
   updateArt_acha(id: string, value: any): Observable<Object> {
-    return this.http.put(`${this.url}/${id}`, value);
+    return this.http.put(`${this.url}/QutNonTrouver/${id}`, value);
   }
 
   deleteArt_acha(id: bigint): Observable<any> {

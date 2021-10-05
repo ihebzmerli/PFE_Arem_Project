@@ -5,341 +5,341 @@
   
     <nb-card-body>
       <div class="container">
-        Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+        Recherche Table: <input nbInput style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
         <table class="table table-bordered table-striped">
           <thead>
           <tr>
             <th style="text-align: center">
               <label class="label">CodFrs</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By CodFrs"
+                <input type="text" nbInput class="form-control" placeholder="search By CodFrs"
                 style="width:150px" [(ngModel)]="searchTermCodFrs"/>
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">Raison</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By Raison"
+                <input type="text" nbInput class="form-control" placeholder="search By Raison"
                 style="width:150px" [(ngModel)]="searchTermRaison"/>
               </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Respon1</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Respon1"
+                  <input type="text" nbInput class="form-control" placeholder="search By Respon1"
                   style="width:150px" [(ngModel)]="searchTermRespon1"/>
                 </div>
               </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Respon2</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Respon2"
+                  <input type="text" nbInput class="form-control" placeholder="search By Respon2"
                   style="width:150px" [(ngModel)]="searchTermRespon2"/>
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">Adresse</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Adresse"
+                  <input type="text" nbInput class="form-control" placeholder="search By Adresse"
                   style="width:150px" [(ngModel)]="searchTermAdresse"/>
                 </div>
             </th>  
             <th style="text-align: center">
               <label class="label">Tel</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Tel"
+                  <input type="text" nbInput class="form-control" placeholder="search By Tel"
                   style="width:150px" [(ngModel)]="searchTermTel"/>
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">Fax</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Fax"
+                  <input type="text" nbInput class="form-control" placeholder="search By Fax"
                   style="width:150px" [(ngModel)]="searchTermFax"/>
                 </div>
             </th> 
             <th style="text-align: center">
               <label class="label">Paye</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Paye"
+                  <input type="text" nbInput class="form-control" placeholder="search By Paye"
                   style="width:150px" [(ngModel)]="searchTermPaye"/>
                 </div>
             </th>   
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">ModReg</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By ModReg"
+                  <input type="text" nbInput class="form-control" placeholder="search By ModReg"
                   style="width:150px" [(ngModel)]="searchTermModReg"/>
                 </div>
             </th>  
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Creance</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Creance"
+                  <input type="text" nbInput class="form-control" placeholder="search By Creance"
                   style="width:150px" [(ngModel)]="searchTermCreance"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">CumulAch</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By CumulAch"
+                  <input type="text" nbInput class="form-control" placeholder="search By CumulAch"
                   style="width:150px" [(ngModel)]="searchTermCumulAch"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">AffCours</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By AffCours"
+                  <input type="text" nbInput class="form-control" placeholder="search By AffCours"
                   style="width:150px" [(ngModel)]="searchTermAffCours"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Ristourne</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Ristourne"
+                  <input type="text" nbInput class="form-control" placeholder="search By Ristourne"
                   style="width:150px" [(ngModel)]="searchTermRistourne"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">CumulRis</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By CumulRis"
+                  <input type="text" nbInput class="form-control" placeholder="search By CumulRis"
                   style="width:150px" [(ngModel)]="searchTermCumulRis"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">CumulVen</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By CumulVen"
+                  <input type="text" nbInput class="form-control" placeholder="search By CumulVen"
                   style="width:150px" [(ngModel)]="searchTermCumulVen"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Marge</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Marge"
+                  <input type="text" nbInput class="form-control" placeholder="search By Marge"
                   style="width:150px" [(ngModel)]="searchTermMarge"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Remise</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Remise"
+                  <input type="text" nbInput class="form-control" placeholder="search By Remise"
                   style="width:150px" [(ngModel)]="searchTermRemise"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Fodec</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Fodec"
+                  <input type="text" nbInput class="form-control" placeholder="search By Fodec"
                   style="width:150px" [(ngModel)]="searchTermFodec"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">RemTarif</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By RemTarif"
+                  <input type="text" nbInput class="form-control" placeholder="search By RemTarif"
                   style="width:150px" [(ngModel)]="searchTermRemTarif"/>
                 </div>
             </th> 
             <th style="text-align: center">
               <label class="label">DelLiv</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By DelLiv"
+                  <input type="text" nbInput class="form-control" placeholder="search By DelLiv"
                   style="width:150px" [(ngModel)]="searchTermDelLiv"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Avoir</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Avoir"
+                  <input type="text" nbInput class="form-control" placeholder="search By Avoir"
                   style="width:150px" [(ngModel)]="searchTermAvoir"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">CumTva</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By CumTva"
+                  <input type="text" nbInput class="form-control" placeholder="search By CumTva"
                   style="width:150px" [(ngModel)]="searchTermCumTva"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">CumulBl</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By CumulBl"
+                  <input type="text" nbInput class="form-control" placeholder="search By CumulBl"
                   style="width:150px" [(ngModel)]="searchTermCumulBl"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Echeance</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Echeance"
+                  <input type="text" nbInput class="form-control" placeholder="search By Echeance"
                   style="width:150px" [(ngModel)]="searchTermEcheance"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">ChifAff</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By ChifAff"
+                  <input type="text" nbInput class="form-control" placeholder="search By ChifAff"
                   style="width:150px" [(ngModel)]="searchTermChifAff"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">FacInst</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By FacInst"
+                  <input type="text" nbInput class="form-control" placeholder="search By FacInst"
                   style="width:150px" [(ngModel)]="searchTermFacInst"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">EffNrec</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By EffNrec"
+                  <input type="text" nbInput class="form-control" placeholder="search By EffNrec"
                   style="width:150px" [(ngModel)]="searchTermEffNrec"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Obligation</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Obligation"
+                  <input type="text" nbInput class="form-control" placeholder="search By Obligation"
                   style="width:150px" [(ngModel)]="searchTermObligation"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">RegEsp</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By RegEsp"
+                  <input type="text" nbInput class="form-control" placeholder="search By RegEsp"
                   style="width:150px" [(ngModel)]="searchTermRegEsp"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">RegChq</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By RegChq"
+                  <input type="text" nbInput class="form-control" placeholder="search By RegChq"
                   style="width:150px" [(ngModel)]="searchTermRegChq"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">RegEff</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By RegEff"
+                  <input type="text" nbInput class="form-control" placeholder="search By RegEff"
                   style="width:150px" [(ngModel)]="searchTermRegEff"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">EffNech</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By EffNech"
+                  <input type="text" nbInput class="form-control" placeholder="search By EffNech"
                   style="width:150px" [(ngModel)]="searchTermEffNech"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">ChqCir</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By ChqCir"
+                  <input type="text" nbInput class="form-control" placeholder="search By ChqCir"
                   style="width:150px" [(ngModel)]="searchTermChqCir"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">CredDoc</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By CredDoc"
+                  <input type="text" nbInput class="form-control" placeholder="search By CredDoc"
                   style="width:150px" [(ngModel)]="searchTermCredDoc"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">ContAcc</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By ContAcc"
+                  <input type="text" nbInput class="form-control" placeholder="search By ContAcc"
                   style="width:150px" [(ngModel)]="searchTermContAcc"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Virement</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Virement"
+                  <input type="text" nbInput class="form-control" placeholder="search By Virement"
                   style="width:150px" [(ngModel)]="searchTermVirement"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">ContDoc</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By ContDoc"
+                  <input type="text" nbInput class="form-control" placeholder="search By ContDoc"
                   style="width:150px" [(ngModel)]="searchTermContDoc"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">SoldeDep</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By SoldeDep"
+                  <input type="text" nbInput class="form-control" placeholder="search By SoldeDep"
                   style="width:150px" [(ngModel)]="searchTermSoldeDep"/>
                 </div>
             </th> 
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Payement</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Payement"
+                  <input type="text" nbInput class="form-control" placeholder="search By Payement"
                   style="width:150px" [(ngModel)]="searchTermPayement"/>
                 </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Escompte</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Escompte"
+                  <input type="text" nbInput class="form-control" placeholder="search By Escompte"
                   style="width:150px" [(ngModel)]="searchTermEscompte"/>
                 </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Espece</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Espece"
+                  <input type="text" nbInput class="form-control" placeholder="search By Espece"
                   style="width:150px" [(ngModel)]="searchTermEspece"/>
                 </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Solde</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Solde"
+                  <input type="text" nbInput class="form-control" placeholder="search By Solde"
                   style="width:150px" [(ngModel)]="searchTermSolde"/>
                 </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">EffEch</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By EffEch"
+                  <input type="text" nbInput class="form-control" placeholder="search By EffEch"
                   style="width:150px" [(ngModel)]="searchTermEffEch"/>
                 </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">echEff</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By EchEff"
+                  <input type="text" nbInput class="form-control" placeholder="search By EchEff"
                   style="width:150px" [(ngModel)]="searchTermEchEff"/>
                 </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Posit</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Posit"
+                  <input type="text" nbInput class="form-control" placeholder="search By Posit"
                   style="width:150px" [(ngModel)]="searchTermPosit"/>
                 </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">TotRegl</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By TotRegl"
+                  <input type="text" nbInput class="form-control" placeholder="search By TotRegl"
                   style="width:150px" [(ngModel)]="searchTermTotRegl"/>
                 </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center">
               <label class="label">Retenue</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="search By Retenue"
+                  <input type="text" nbInput class="form-control" placeholder="search By Retenue"
                   style="width:150px" [(ngModel)]="searchTermRetenue"/>
                 </div>
             </th>
             
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR' || 'ROLE_LIVREUR')" style="text-align: center"><label class="label">Actions</label></th>
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR' || authority==='ROLE_LIVREUR'" style="text-align: center"><label class="label">Actions</label></th>
   
           </tr>
           </thead>
@@ -347,64 +347,64 @@
           <tr *ngFor="let fournis of filteredFourniss | filter:searchText">
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{fournis.codFrs}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.raison=='' || fournis.raison==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.raison!=='' || fournis.raison!==null">{{fournis.raison}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.respon1=='' || fournis.respon1==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.respon1!=='' || fournis.respon1!==null">{{fournis.respon1}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.respon2=='' || fournis.respon2==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.respon2!=='' || fournis.respon2!==null">{{fournis.respon2}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.respon1=='' || fournis.respon1==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.respon1!=='' || fournis.respon1!==null">{{fournis.respon1}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.respon2=='' || fournis.respon2==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.respon2!=='' || fournis.respon2!==null">{{fournis.respon2}}</p></span></td>
 
             <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.adresse=='' || fournis.adresse==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.adresse!=='' || fournis.adresse!==null">{{fournis.adresse}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.tel=='' || fournis.tel==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.tel!=='' || fournis.tel!==null">{{fournis.tel}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.fax=='' || fournis.fax==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.fax!=='' || fournis.fax!==null">{{fournis.fax}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.paye=='' || fournis.paye==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.paye!=='' || fournis.paye!==null">{{fournis.paye}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.modReg=='' || fournis.modReg==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.modReg!=='' || fournis.modReg!==null">{{fournis.modReg}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.creance===0 || fournis.creance==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.creance!==0">{{fournis.creance}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumulAch===0 || fournis.cumulAch==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumulAch!==0">{{fournis.cumulAch}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.affCours===0 || fournis.affCours==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.affCours!==0">{{fournis.affCours}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.modReg=='' || fournis.modReg==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.modReg!=='' || fournis.modReg!==null">{{fournis.modReg}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.creance===0 || fournis.creance==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.creance!==0">{{fournis.creance}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumulAch===0 || fournis.cumulAch==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumulAch!==0">{{fournis.cumulAch}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.affCours===0 || fournis.affCours==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.affCours!==0">{{fournis.affCours}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.ristourne===0 || fournis.ristourne==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.ristourne!==0">{{fournis.ristourne}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumulRis===0 || fournis.cumulRis==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumulRis!==0">{{fournis.cumulRis}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumulVen===0 || fournis.cumulVen==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumulVen!==0">{{fournis.cumulVen}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.marge===0 || fournis.marge==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.marge!==0">{{fournis.marge}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.ristourne===0 || fournis.ristourne==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.ristourne!==0">{{fournis.ristourne}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumulRis===0 || fournis.cumulRis==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumulRis!==0">{{fournis.cumulRis}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumulVen===0 || fournis.cumulVen==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumulVen!==0">{{fournis.cumulVen}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.marge===0 || fournis.marge==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.marge!==0">{{fournis.marge}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.remise===0 || fournis.remise==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.remise!==0">{{fournis.remise}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.fodec===0 || fournis.fodec==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.fodec!==0">{{fournis.fodec}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.remTarif===0 || fournis.remTarif==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.remTarif!==0">{{fournis.remTarif}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.remise===0 || fournis.remise==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.remise!==0">{{fournis.remise}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.fodec===0 || fournis.fodec==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.fodec!==0">{{fournis.fodec}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.remTarif===0 || fournis.remTarif==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.remTarif!==0">{{fournis.remTarif}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.delLiv===0 || fournis.delLiv==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.delLiv!==0">{{fournis.delLiv}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.avoir===0 || fournis.avoir==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.avoir!==0">{{fournis.avoir}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumTva===0 || fournis.cumTva==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumTva!==0">{{fournis.cumTva}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumulBl===0 || fournis.cumulBl==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumulBl!==0">{{fournis.cumulBl}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.echeance===0 || fournis.echeance==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.echeance!==0">{{fournis.echeance}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.avoir===0 || fournis.avoir==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.avoir!==0">{{fournis.avoir}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumTva===0 || fournis.cumTva==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumTva!==0">{{fournis.cumTva}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.cumulBl===0 || fournis.cumulBl==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.cumulBl!==0">{{fournis.cumulBl}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.echeance===0 || fournis.echeance==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.echeance!==0">{{fournis.echeance}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.chifAff===0 || fournis.chifAff==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.chifAff!==0">{{fournis.chifAff}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.facInst===0 || fournis.facInst==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.facInst!==0">{{fournis.facInst}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.effNrec===0 || fournis.effNrec==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.effNrec!==0">{{fournis.effNrec}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.obligation===0 || fournis.obligation==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.obligation!==0">{{fournis.obligation}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.chifAff===0 || fournis.chifAff==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.chifAff!==0">{{fournis.chifAff}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.facInst===0 || fournis.facInst==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.facInst!==0">{{fournis.facInst}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.effNrec===0 || fournis.effNrec==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.effNrec!==0">{{fournis.effNrec}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.obligation===0 || fournis.obligation==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.obligation!==0">{{fournis.obligation}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.regEsp===0 || fournis.regEsp==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.regEsp!==0">{{fournis.regEsp}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.regChq===0 || fournis.regChq==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.regChq!==0">{{fournis.regChq}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.regEff===0 || fournis.regEff==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.regEff!==0">{{fournis.regEff}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.effNech===0 || fournis.effNech==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.effNech!==0">{{fournis.effNech}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.regEsp===0 || fournis.regEsp==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.regEsp!==0">{{fournis.regEsp}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.regChq===0 || fournis.regChq==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.regChq!==0">{{fournis.regChq}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.regEff===0 || fournis.regEff==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.regEff!==0">{{fournis.regEff}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.effNech===0 || fournis.effNech==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.effNech!==0">{{fournis.effNech}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.chqCir===0 || fournis.chqCir==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.chqCir!==0">{{fournis.chqCir}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.credDoc===0 || fournis.credDoc==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.credDoc!==0">{{fournis.credDoc}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.contAcc===0 || fournis.contAcc==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.contAcc!==0">{{fournis.contAcc}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.virement===0 || fournis.virement==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.virement!==0">{{fournis.virement}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.chqCir===0 || fournis.chqCir==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.chqCir!==0">{{fournis.chqCir}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.credDoc===0 || fournis.credDoc==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.credDoc!==0">{{fournis.credDoc}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.contAcc===0 || fournis.contAcc==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.contAcc!==0">{{fournis.contAcc}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.virement===0 || fournis.virement==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.virement!==0">{{fournis.virement}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.contDoc===0 || fournis.contDoc==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.contDoc!==0">{{fournis.contDoc}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.soldeDep===0 || fournis.soldeDep==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.soldeDep!==0">{{fournis.soldeDep}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.payement===0 || fournis.payement==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.payement!==0">{{fournis.payement}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.escompte===0 || fournis.escompte==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.escompte!==0">{{fournis.escompte}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.contDoc===0 || fournis.contDoc==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.contDoc!==0">{{fournis.contDoc}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.soldeDep===0 || fournis.soldeDep==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.soldeDep!==0">{{fournis.soldeDep}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.payement===0 || fournis.payement==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.payement!==0">{{fournis.payement}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.escompte===0 || fournis.escompte==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.escompte!==0">{{fournis.escompte}}</p></span></td>
             
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.espece===0 || fournis.espece==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.espece!==0">{{fournis.espece}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.solde===0 || fournis.solde==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.solde!==0">{{fournis.solde}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.effEch===0 || fournis.effEch==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.effEch!==0">{{fournis.effEch}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.echEff==false" style="color: rgb(202, 19, 5);">non valider</p><p *ngIf="fournis.echEff==true">valider</p><p *ngIf="fournis.echEff==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);">Aucune</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.espece===0 || fournis.espece==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.espece!==0">{{fournis.espece}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.solde===0 || fournis.solde==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.solde!==0">{{fournis.solde}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.effEch===0 || fournis.effEch==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.effEch!==0">{{fournis.effEch}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.echEff==false" style="color: rgb(202, 19, 5);">non valider</p><p *ngIf="fournis.echEff==true">valider</p><p *ngIf="fournis.echEff==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);">Aucune</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.posit===0 || fournis.posit==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.posit!==0">{{fournis.posit}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.totRegl===0 || fournis.totRegl==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.totRegl!==0">{{fournis.totRegl}}</p></span></td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR')" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.retenue=='' || fournis.retenue==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.retenue!=='' || fournis.retenue!==null">{{fournis.retenue}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.posit===0 || fournis.posit==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.posit!==0">{{fournis.posit}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.totRegl===0 || fournis.totRegl==null" style="color: rgb(202, 19, 5);">0</p><p *ngIf="fournis.totRegl!==0">{{fournis.totRegl}}</p></span></td>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR'" style="text-align: center" class="field-multiple-drag"><span><p *ngIf="fournis.retenue=='' || fournis.retenue==null" style="color: rgb(160, 168, 160);">Aucun</p><p *ngIf="fournis.retenue!=='' || fournis.retenue!==null">{{fournis.retenue}}</p></span></td>
             
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_EXPEDITEUR' || 'ROLE_TRANSITAIRE' || 'ROLE_VENDEUR' || 'ROLE_LIVREUR' || 'ROLE_DECIDEUR_BP')" class="field-multiple-drag">
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_EXPEDITEUR' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_VENDEUR' || authority==='ROLE_LIVREUR' || authority==='ROLE_DECIDEUR_BP'" class="field-multiple-drag">
               <div class="buttons-row">
                 <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['fournis-detail',fournis.codFrs]" outline>
                 <i class="fa fa-search"></i>Details</button>

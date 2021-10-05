@@ -34,9 +34,14 @@ export class UpdateProfilComponent implements OnInit {
   sizes: NbComponentSize[] = ['tiny', 'small', 'medium', 'large', 'giant'];
   constructor(private authService: TokenStorageService,private toastrService: NbToastrService,private utilisateurService:UtilisateurService,private formBuilder: FormBuilder,public datepipe: DatePipe
     ,private route: ActivatedRoute,private router: Router) { }
-
+    retrieveResonse;
+    base64Data;
+    authority;
   ngOnInit() {
-
+    this.authService.getAuthorities().forEach(authority => {
+      this.authority=authority.toString();
+      console.log(this.authority);
+    });
     this.id_session = this.route.snapshot.params['id'];
 
       this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {

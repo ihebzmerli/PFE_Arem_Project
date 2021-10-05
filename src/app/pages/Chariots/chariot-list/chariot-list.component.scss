@@ -80,3 +80,15 @@
     padding: 10px;
   } 
 }
+
+::ng-deep .form {
+  display: flex;
+  flex-direction: column;
+
+  .text-label {
+    margin-top: 1.5rem;
+  }
+}
+.full-name-inputs {
+  width: 50%;
+}

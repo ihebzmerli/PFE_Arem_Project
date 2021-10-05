@@ -54,19 +54,22 @@
   }
 
   table {
-    table-layout: fixed;
-    width: 200px;
-  }
-  
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+}
   th,
   td {
-    width: 120px;
+    width: 175px;
     overflow: hidden;
-  }
+    border: 1px solid rgb(190, 190, 190);
+    padding: 10px;
+  }  
 
-  
-  .p-dialog-mask.p-component-overlay {
-    background-color: rgba(141, 131, 131, 0.4);
+  .result-from-dialog {
+    flex-direction: column;
   }
 
   :host ::ng-deep .p-button {
@@ -88,3 +91,24 @@ p {
     min-width: 6rem;
 }
 }
+.p-tableCss {
+  border-collapse: collapse;
+  border: 2px solid rgb(200, 200, 200);
+  letter-spacing: 1px;
+  font-family: sans-serif;
+  font-size: .8rem;
+  min-height: 330px;
+  table-layout: fixed;
+  width: 100%;
+}
+th,
+td {
+  width: 142px;
+  border: 1px solid rgb(190, 190, 190);
+  padding: 10px;
+  word-wrap: break-word;
+}
+.my-center-text {
+  text-align: center;
+  width: 100%;
+} 

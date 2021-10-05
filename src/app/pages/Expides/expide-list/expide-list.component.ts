@@ -14,6 +14,7 @@ import { Utilisateur } from '../../Utilisateurs/utilisateur';
 import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-expide-list',
@@ -54,6 +55,7 @@ export class ExpideListComponent implements OnInit {
   set searchTermTransp(value: string){
     this._searchTermTransp = value;
     this.filteredExpides = this.filtereExpidesTransp(value);
+
   }
   get searchTermMatAgent(): string {
     return this._searchTermMatAgent;
@@ -95,7 +97,7 @@ export class ExpideListComponent implements OnInit {
   /****************Filtrage des donner ***************/
 
   constructor(private authService: TokenStorageService,private dialogService: NbDialogService, private expideService: ExpideService,private utilisateurService:UtilisateurService,
-    private router: Router,private service: SmartTableData,private windowService: NbWindowService,private _Activatedroute :ActivatedRoute) {
+    private router: Router,private service: SmartTableData,private windowService: NbWindowService,private _Activatedroute :ActivatedRoute,public datepipe: DatePipe) {
 
     }
 
@@ -110,7 +112,7 @@ authority;
   ngOnInit() {
     
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
     this.getExpides();
@@ -235,8 +237,45 @@ openWindowWithoutBackdrop() {
       }
   }
 
+
   displayModalUser: boolean;
-  showModalDialogUser() {
+  image_id2: number;
+  image_idString2:string;
+  util:Utilisateur;
+  showModalDialogUser(clicked_id2) {
+    console.log(clicked_id2);
+    this.image_id2=clicked_id2;
+    this.image_idString2=this.image_id2.toString();
+    this.utilisateurService.getUtilisateur(this.image_idString2).subscribe(data => {
+      this.util = data;
+    });
     this.displayModalUser = true;
   }
+
+
+
+
+
+
+  startDate;
+  endDate;
+  testStatus :number = 1;
+  FilterDate(startDate,endDate){
+    console.log(startDate,endDate)
+    if (startDate !=null && endDate!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.expideService.getAllExpideBydateEXBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredExpides = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getExpides();
+    this.testStatus = 1
+  }
+}
 }

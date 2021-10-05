@@ -40,14 +40,14 @@
                             <div class="col-sm-4">
                                 Les Marques:<nb-select id="marque" name="marque" [(ngModel)]="article.marque" fullWidth fieldSize="small" (selectedChange)="getModeleFromMarque($event)" required #marque="ngModel" [ngModelOptions]="{standalone: true}">
                                           <nb-option value="0">-Select</nb-option>
-                                          <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
+                                          <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
                                         </nb-select>
 
                             </div>
                             <div class="col-sm-4">
                                 Les Modeles:<nb-select id="model" name="model" [(ngModel)]="article.model" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonLiv($event)" required #model="ngModel" [ngModelOptions]="{standalone: true}">
                                                 <nb-option value="0">-Select</nb-option>
-                                                <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
+                                                <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/'+itemsModel.marque.code+'/'+itemsModel.marque.fileName}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
                                             </nb-select>
                             </div>
                             <div class="col-sm-4">
@@ -79,7 +79,7 @@
                                 <h2>mercie de choisir un Article</h2>
                               </div>
                               <div *ngIf="ArticleGeted" class="image-gallery">
-                                  <img src="{{this.articleService.host+'/api/Imgarticles/'+ArticleGeted.codArt}}" height="400" width="400"/>
+                                  <img src="{{this.articleService.host+'/'+ArticleGeted.codArt+'/'+ArticleGeted.fileName}}" height="400" width="400"/>
                               </div>
                             </div>
                             
@@ -88,7 +88,7 @@
                                 <ng-template let-article pTemplate="item">
                                     <div class="article-item">
                                         <div class="image-container">
-                                                <img src="{{this.articleService.host+'/api/Imgarticles/'+article.codArt}}" [alt]="article.codArt" class="article-image" />
+                                                <img src="{{this.articleService.host+'/'+article.codArt+'/'+article.fileName}}" [alt]="article.codArt" class="article-image" />
                                         </div>
                                         <div class="article-list-detail">
                                             <h5 class="p-mb-2">{{article.codArt}}</h5>
@@ -110,58 +110,58 @@
                         <div class="full-name-inputs">
                           <div class="col-sm-6">
                             <label for="stock 1" class="label">Quantité d'Articles de stock 1:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.qutStk===0 || itemsQutStk.qutStk==null || itemsQutStk.qutStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.qutStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsQutStk.qutStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock 1" id="qutStk" [(ngModel)]="article.qutStk" class="form-control" min="0" max="StockListWithArticle.qutStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock 1" id="qutStk" [(ngModel)]="article.qutStk" class="form-control" min="0" max="StockListWithArticle.qutStk" [ngModelOptions]="{standalone: true}">
                           </div>
                           <div class="col-sm-6">
                             <label for="stock 2" class="label">Quantité d'Articles de stock 2:</label><b *ngFor="let itemsQutStk2 of StockListWithArticle"><span *ngIf="itemsQutStk2.qutStk2===0 || itemsQutStk2.qutStk2==null || itemsQutStk2.qutStk2==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk2.qutStk2 > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsQutStk2.qutStk2 }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock 2" class="form-control"  id="qutStk2" [(ngModel)]="article.qutStk2" class="form-control" min="0" max="StockListWithArticle.qutStk2" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock 2" class="form-control"  id="qutStk2" [(ngModel)]="article.qutStk2" class="form-control" min="0" max="StockListWithArticle.qutStk2" [ngModelOptions]="{standalone: true}">
                           </div>
                         </div> 
 
                         <div class="full-name-inputs">
                           <div class="col-sm-6">
                             <label for="stock Gar" class="label">Quantité d'Articles de stock Gar:</label><b *ngFor="let itemsStkGar of StockListWithArticle"><span *ngIf="itemsStkGar.stkGar===0 || itemsStkGar.stkGar==null || itemsStkGar.stkGar==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkGar.stkGar > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkGar.stkGar }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Gar" id="stkGar" [(ngModel)]="article.stkGar" class="form-control" min="0" max="StockListWithArticle.stkGar" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Gar" id="stkGar" [(ngModel)]="article.stkGar" class="form-control" min="0" max="StockListWithArticle.stkGar" [ngModelOptions]="{standalone: true}">
                           </div>
 
                           <div class="col-sm-6">
                             <label for="stock Initial" class="label">Quantité d'Articles de stock Initial:</label><b *ngFor="let itemsStkIni of StockListWithArticle"><span *ngIf="itemsStkIni.stkIni===0 || itemsStkIni.stkIni==null || itemsStkIni.stkIni==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkIni.stkIni > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkIni.stkIni }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Initial" id="stkIni" [(ngModel)]="article.stkIni" class="form-control" min="0" max="StockListWithArticle.stkIni" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Initial" id="stkIni" [(ngModel)]="article.stkIni" class="form-control" min="0" max="StockListWithArticle.stkIni" [ngModelOptions]="{standalone: true}">
                           </div>
                         </div> 
                         <div class="full-name-inputs">
                           <div class="col-sm-6">
                             <label for="stock Anal" class="label">Quantité d'Articles de stock Anal:</label><b *ngFor="let itemsAnalStk of StockListWithArticle"><span *ngIf="itemsAnalStk.analStk===0 || itemsAnalStk.analStk==null || itemsAnalStk.analStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsAnalStk.analStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsAnalStk.analStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Anal" id="analStk" [(ngModel)]="article.analStk" class="form-control"  min="0" max="StockListWithArticle.analStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Anal" id="analStk" [(ngModel)]="article.analStk" class="form-control"  min="0" max="StockListWithArticle.analStk" [ngModelOptions]="{standalone: true}">
                           </div>
 
                           <div class="col-sm-6">
                             <label for="stock Nbj" class="label">Quantité d'Articles de stock Nbj:</label><b *ngFor="let itemsNbjStk of StockListWithArticle"><span *ngIf="itemsNbjStk.nbjStk===0 || itemsNbjStk.nbjStk==null || itemsNbjStk.nbjStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsNbjStk.nbjStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsNbjStk.nbjStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Nbj" id="nbjStk" [(ngModel)]="article.nbjStk" class="form-control" min="0" max="StockListWithArticle.nbjStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Nbj" id="nbjStk" [(ngModel)]="article.nbjStk" class="form-control" min="0" max="StockListWithArticle.nbjStk" [ngModelOptions]="{standalone: true}">
                           </div>
                         </div>
                         <div class="full-name-inputs"> 
                           <div class="col-sm-6">
                             <label for="stock V_S" class="label">Quantité d'Articles de stock V_S:</label><b *ngFor="let itemsV_SStk of StockListWithArticle" ><span *ngIf="itemsV_SStk.vSstk===0 || itemsV_SStk.vSstk==null || itemsV_SStk.vSstk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsV_SStk.vSstk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsV_SStk.vSstk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock V_S" id="vSstk" [(ngModel)]="article.vSstk" class="form-control" min="0" max="StockListWithArticle.vSstk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock V_S" id="vSstk" [(ngModel)]="article.vSstk" class="form-control" min="0" max="StockListWithArticle.vSstk" [ngModelOptions]="{standalone: true}">
                           </div>
 
                           <div class="col-sm-6">
                             <label for="stock Com" class="label">Quantité d'Articles de stock Com:</label><b *ngFor="let itemsComStk of StockListWithArticle"><span *ngIf="itemsComStk.comStk===0 || itemsComStk.comStk==null || itemsComStk.comStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsComStk.comStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsComStk.comStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Com" id="comStk" [(ngModel)]="article.comStk" class="form-control"  min="0" max="StockListWithArticle.comStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Com" id="comStk" [(ngModel)]="article.comStk" class="form-control"  min="0" max="StockListWithArticle.comStk" [ngModelOptions]="{standalone: true}">
                           </div>
                         </div>     
 
                         <div class="full-name-inputs"> 
                           <div class="col-sm-6">
                             <label for="stock Xanal" class="label">Quantité d'Articles de stock Xanal:</label><b *ngFor="let itemsXanalStk of StockListWithArticle"><span *ngIf="itemsXanalStk.xanalStk===0 || itemsXanalStk.xanalStk==null || itemsXanalStk.xanalStk==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsXanalStk.xanalStk > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsXanalStk.xanalStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Xanal" id="xanalStk" [(ngModel)]="article.xanalStk" class="form-control" min="0" max="StockListWithArticle.xanalStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Xanal" id="xanalStk" [(ngModel)]="article.xanalStk" class="form-control" min="0" max="StockListWithArticle.xanalStk" [ngModelOptions]="{standalone: true}">
                           </div>
 
 
                           <div class="col-sm-6">
                             <label for="stock Atrsf" class="label">Quantité d'Articles de stock Atrsf:</label><b *ngFor="let itemsStkAtrsf of StockListWithArticle"><span *ngIf="itemsStkAtrsf.stkAtrsf===0 || itemsStkAtrsf.stkAtrsf==null || itemsStkAtrsf.stkAtrsf==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkAtrsf.stkAtrsf > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkAtrsf.stkAtrsf }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Atrsf" id="stkAtrsf" [(ngModel)]="article.stkAtrsf" class="form-control" min="0" max="StockListWithArticle.stkAtrsf" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Atrsf" id="stkAtrsf" [(ngModel)]="article.stkAtrsf" class="form-control" min="0" max="StockListWithArticle.stkAtrsf" [ngModelOptions]="{standalone: true}">
                           </div>
 
                         </div>
@@ -169,40 +169,42 @@
                         <div class="full-name-inputs">   
                           <div class="col-sm-6">
                             <label for="stock Trsf" class="label">Quantité d'Articles de stock Trsf:</label><b *ngFor="let itemsStkTrsf of StockListWithArticle"><span *ngIf="itemsStkTrsf.stkTrsf===0 || itemsStkTrsf.stkTrsf==null || itemsStkTrsf.stkTrsf==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkTrsf.stkTrsf > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkTrsf.stkTrsf }} </span> </b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Trsf" id="stkTrsf" [(ngModel)]="article.stkTrsf" class="form-control" min="0" max="StockListWithArticle.stkTrsf" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Trsf" id="stkTrsf" [(ngModel)]="article.stkTrsf" class="form-control" min="0" max="StockListWithArticle.stkTrsf" [ngModelOptions]="{standalone: true}">
                           </div>
 
                           <div class="col-sm-6">
                             <label for="stock Réel" class="label">Quantité d'Articles de stock Réel:</label><b *ngFor="let itemsStkReel of StockListWithArticle"><span *ngIf="itemsStkReel.stkReel===0 || itemsStkReel.stkReel==null || itemsStkReel.stkReel==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkReel.stkReel > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkReel.stkReel }} </span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Réel" id="stkReel" [(ngModel)]="article.stkReel" class="form-control" min="0" max="StockListWithArticle.stkReel" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Réel" id="stkReel" [(ngModel)]="article.stkReel" class="form-control" min="0" max="StockListWithArticle.stkReel" [ngModelOptions]="{standalone: true}">
                           </div>
                         </div>  
 
                         <div class="full-name-inputs"> 
                           <div class="col-sm-6">
                             <label for="stock Res" class="label">Quantité d'Articles de stock Res:</label><b *ngFor="let itemsStkRes of StockListWithArticle"><span *ngIf="itemsStkRes.stkRes===0 || itemsStkRes.stkRes==null || itemsStkRes.stkRes==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkRes.stkRes > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkRes.stkRes}} </span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Res" id="stkRes" [(ngModel)]="article.stkRes" class="form-control" min="0" max="StockListWithArticle.stkRes" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Res" id="stkRes" [(ngModel)]="article.stkRes" class="form-control" min="0" max="StockListWithArticle.stkRes" [ngModelOptions]="{standalone: true}">
                           </div>
 
 
                           <div class="col-sm-6">
                             <label for="stock Np" class="label">Quantité d'Articles de stock Np:</label><b *ngFor="let itemsStkNp of StockListWithArticle"><span *ngIf="itemsStkNp.stkNp===0 || itemsStkNp.stkNp==null || itemsStkNp.stkNp==''" style="color: darkred;">Totale Quantité: 0 </span><span *ngIf="itemsStkNp.stkNp > 0" style="color: rgb(8, 155, 3);">Totale Quantité:{{ itemsStkNp.stkNp}} </span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Np" id="stkNp" [(ngModel)]="article.stkNp" class="form-control" min="0" max="StockListWithArticle.stkNp" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Np" id="stkNp" [(ngModel)]="article.stkNp" class="form-control" min="0" max="StockListWithArticle.stkNp" [ngModelOptions]="{standalone: true}">
                           </div>
                         </div>
                         
-                        <div class="col-sm-6">
-                          <label for="calculeArticles" class="label">Calcule quantité d'Articles</label>
-                          <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumArticles" name="sumArticles" [(ngModel)]="sum" [ngModelOptions]="{standalone: true}" disabled />
-                        </div>
+                        <div class="full-name-inputs"> 
+                            <div class="col-sm-6">
+                            <label for="calculeArticles" class="label">Calcule quantité d'Articles</label>
+                            <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumArticles" name="sumArticles" [(ngModel)]="sumArticles" [ngModelOptions]="{standalone: true}" disabled />
+                            </div>
 
-                      <div class="col-sm-12">
-                        <label for="SumcalculeArticles" class="label">Calcule prix d'Achats des Articles</label>
-                        <input type="text" nbInput fullWidth placeholder="0" id="sumAllArticles" name="sumAllArticles" disabled />
-                      </div>
+                            <div class="col-sm-6">
+                            <label for="SumcalculeArticles" class="label">Calcule prix d'Achats des Articles</label>
+                            <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumAllArticles" name="sumAllArticles" [(ngModel)]="sumAllArticles" [ngModelOptions]="{standalone: true}" disabled />
+                            </div>
+                        </div>
                     </div>
-                  
-                    <nb-card>
+
+
                       <nb-card-header><label for="Actions" class="label">Actions</label></nb-card-header>
                       <nb-card-body>
                         <div class="full-name-inputs">
@@ -216,7 +218,6 @@
                           </div>
                         </div>
                       </nb-card-body>
-                    </nb-card>
                   </form>
                 </div>
                 <div *ngIf="f.Option_Existe.value == false">
@@ -293,21 +294,21 @@
                         </div> 
                         <div class="col-sm-4"> 
                             <label for="marque" class="label">marque</label>
-                            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_PREPARATEUR_BR')" nbButton (click)="OpenUploadMarquePopap()" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline> 
+                            <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_AGENT_CAB' || authority==='ROLE_PREPARATEUR_BR'" nbButton (click)="OpenUploadMarquePopap()" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline> 
                                 Nouveau Marque</button>
                             <nb-select fullWidth fieldSize="small" [(selected)]="MarqueSelected" formControlName="marque" (selectedChange)="getModeleFromMarque($event)" placeholder="marque" [ngClass]="{ 'is-invalid': submitted && f1.marque.errors }">
                                 <nb-option value="null">-Select</nb-option>
-                                <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsMarque.title }} </nb-option>
+                                <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><a><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsMarque.title }} </nb-option>
                               </nb-select>
 
                         </div>
                         <div class="col-sm-4"> 
                             <label for="modele" class="label">modele</label>
-                            <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_CAB' || 'ROLE_PREPARATEUR_BR')" nbButton (click)="OpenUploadModelPopap()" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline> 
+                            <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_AGENT_CAB' || authority==='ROLE_PREPARATEUR_BR'" nbButton (click)="OpenUploadModelPopap()" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline> 
                                 Nouveau Model</button>
                             <nb-select fullWidth fieldSize="small" [(selected)]="ModelSelected" formControlName="model" placeholder="model" [ngClass]="{ 'is-invalid': submitted && f1.model.errors }">
                                 <nb-option value="null">-Select</nb-option>
-                                <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><a><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsModel.title }} </nb-option>
+                                <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><a><img *ngIf="ModelFromMarque!==null" src="{{this.marqueService.host+'/'+itemsModel.marque.code+'/'+itemsModel.marque.fileName}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsModel.title }} </nb-option>
                               </nb-select>
                         </div>
                     </div> 
@@ -611,7 +612,8 @@
                                 <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
                                 </div>
                             </div>
-                            
+                        </div>
+                        <div class="row"> 
                             <div class="col-sm-6">
                                 <label for="prixEuro" class="label">prixEuro</label>&nbsp;en&nbsp;(<b>Dt</b>)
                                 <input type="number" nbInput fullWidth placeholder="prixEuro" class="form-control" formControlName="prixEuro" [ngClass]="{ 'is-invalid': submitted && f1.prixEuro.errors }" />
@@ -623,6 +625,16 @@
                                 <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
                                 </div>
                             </div>
+                            <div class="col-sm-6"> 
+                                <label for="zone" class="label">Zone:</label>
+                                <nb-select fullWidth type="text" formControlName="zone" [ngClass]="{ 'is-invalid': submitted && f1.zone.errors }" ng-options="items.zone for items in zonrList | unique:'zone'">
+                                  <nb-option value="0">-Select</nb-option>
+                                  <nb-option *ngFor="let items of zoneList" [value]="items.zone">{{ items.zone }}</nb-option>
+                                </nb-select>
+                                <div *ngIf="submitted && f1.zone.errors" class="invalid-feedback">
+                                  <div *ngIf="f1.zone.errors.required">La zone est obligatoire.</div>
+                                </div>
+                            </div> 
                         </div>
                     </nb-card-body>
     
@@ -650,7 +662,7 @@
                     <div class="row">
                         <div class="col-sm-4"> 
                             <label for="qutStk" class="label">qutStk</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="qutStk" [ngClass]="{ 'is-invalid': submitted && f1.qutStk.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="qutStk" [ngClass]="{ 'is-invalid': submitted && f1.qutStk.errors }" />
                             <div *ngIf="submitted && f1.qutStk.errors" class="invalid-feedback">
                                 <div *ngIf="f1.qutStk.errors.min">Le qutStk doit étre positive.</div>
                                 <div *ngIf="f1.qutStk.errors.max">Le qutStk ne doit pas dépasser les limite.</div>
@@ -659,7 +671,7 @@
                         </div>
                         <div class="col-sm-4"> 
                             <label for="qutStk2" class="label">qutStk2</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="qutStk2" [ngClass]="{ 'is-invalid': submitted && f1.qutStk2.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="qutStk2" [ngClass]="{ 'is-invalid': submitted && f1.qutStk2.errors }" />
                             <div *ngIf="submitted && f1.qutStk2.errors" class="invalid-feedback">
                                 <div *ngIf="f1.qutStk2.errors.min">Le qutStk2 doit étre positive.</div>
                                 <div *ngIf="f1.qutStk2.errors.max">Le qutStk2 ne doit pas dépasser les limite.</div>
@@ -669,7 +681,7 @@
                         </div>
                         <div class="col-sm-4"> 
                             <label for="stkGar" class="label">stkGar</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkGar" [ngClass]="{ 'is-invalid': submitted && f1.stkGar.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="stkGar" [ngClass]="{ 'is-invalid': submitted && f1.stkGar.errors }" />
                             <div *ngIf="submitted && f1.stkGar.errors" class="invalid-feedback">
                                 <div *ngIf="f1.stkGar.errors.min">Le stkGar doit étre positive.</div>
                                 <div *ngIf="f1.stkGar.errors.max">Le stkGar ne doit pas dépasser les limite.</div>
@@ -682,7 +694,7 @@
                     <div class="row">
                         <div class="col-sm-4"> 
                             <label for="stkIni" class="label">stkIni</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkIni" [ngClass]="{ 'is-invalid': submitted && f1.stkIni.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="stkIni" [ngClass]="{ 'is-invalid': submitted && f1.stkIni.errors }" />
                             <div *ngIf="submitted && f1.stkIni.errors" class="invalid-feedback">
                                 <div *ngIf="f1.stkIni.errors.min">Le stkIni doit étre positive.</div>
                                 <div *ngIf="f1.stkIni.errors.max">Le stkIni ne doit pas dépasser les limite.</div>
@@ -691,7 +703,7 @@
                         </div>
                         <div class="col-sm-4"> 
                             <label for="analStk" class="label">analStk</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="analStk" [ngClass]="{ 'is-invalid': submitted && f1.analStk.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="analStk" [ngClass]="{ 'is-invalid': submitted && f1.analStk.errors }" />
                             <div *ngIf="submitted && f1.analStk.errors" class="invalid-feedback">
                                 <div *ngIf="f1.analStk.errors.min">Le analStk doit étre positive.</div>
                                 <div *ngIf="f1.analStk.errors.max">Le analStk ne doit pas dépasser les limite.</div>
@@ -701,7 +713,7 @@
                         </div>
                         <div class="col-sm-4"> 
                             <label for="nbjStk" class="label">nbjStk</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="nbjStk" [ngClass]="{ 'is-invalid': submitted && f1.nbjStk.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="nbjStk" [ngClass]="{ 'is-invalid': submitted && f1.nbjStk.errors }" />
                             <div *ngIf="submitted && f1.nbjStk.errors" class="invalid-feedback">
                                 <div *ngIf="f1.nbjStk.errors.min">Le nbjStk doit étre positive.</div>
                                 <div *ngIf="f1.nbjStk.errors.max">Le nbjStk ne doit pas dépasser les limite.</div>
@@ -714,7 +726,7 @@
                     <div class="row">
                         <div class="col-sm-4"> 
                             <label for="vSstk" class="label">vSstk</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="vSstk" [ngClass]="{ 'is-invalid': submitted && f1.vSstk.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="vSstk" [ngClass]="{ 'is-invalid': submitted && f1.vSstk.errors }" />
                             <div *ngIf="submitted && f1.vSstk.errors" class="invalid-feedback">
                                 <div *ngIf="f1.vSstk.errors.min">Le vSstk doit étre positive.</div>
                                 <div *ngIf="f1.vSstk.errors.max">Le vSstk ne doit pas dépasser les limite.</div>
@@ -723,7 +735,7 @@
                         </div>
                         <div class="col-sm-4"> 
                             <label for="comStk" class="label">comStk</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="comStk" [ngClass]="{ 'is-invalid': submitted && f1.comStk.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="comStk" [ngClass]="{ 'is-invalid': submitted && f1.comStk.errors }" />
                             <div *ngIf="submitted && f1.comStk.errors" class="invalid-feedback">
                                 <div *ngIf="f1.comStk.errors.min">Le comStk doit étre positive.</div>
                                 <div *ngIf="f1.comStk.errors.max">Le comStk ne doit pas dépasser les limite.</div>
@@ -733,7 +745,7 @@
                         </div>
                         <div class="col-sm-4"> 
                             <label for="xanalStk" class="label">xanalStk</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="xanalStk" [ngClass]="{ 'is-invalid': submitted && f1.xanalStk.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="xanalStk" [ngClass]="{ 'is-invalid': submitted && f1.xanalStk.errors }" />
                             <div *ngIf="submitted && f1.xanalStk.errors" class="invalid-feedback">
                                 <div *ngIf="f1.xanalStk.errors.min">Le xanalStk doit étre positive.</div>
                                 <div *ngIf="f1.xanalStk.errors.max">Le xanalStk ne doit pas dépasser les limite.</div>
@@ -746,7 +758,7 @@
                     <div class="row">
                         <div class="col-sm-4"> 
                             <label for="stkAtrsf" class="label">stkAtrsf</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkAtrsf" [ngClass]="{ 'is-invalid': submitted && f1.stkAtrsf.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="stkAtrsf" [ngClass]="{ 'is-invalid': submitted && f1.stkAtrsf.errors }" />
                             <div *ngIf="submitted && f1.stkAtrsf.errors" class="invalid-feedback">
                                 <div *ngIf="f1.stkAtrsf.errors.min">Le stkAtrsf doit étre positive.</div>
                                 <div *ngIf="f1.stkAtrsf.errors.max">Le stkAtrsf ne doit pas dépasser les limite.</div>
@@ -755,7 +767,7 @@
                         </div>
                         <div class="col-sm-4"> 
                             <label for="stkTrsf" class="label">stkTrsf</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkTrsf" [ngClass]="{ 'is-invalid': submitted && f1.stkTrsf.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="stkTrsf" [ngClass]="{ 'is-invalid': submitted && f1.stkTrsf.errors }" />
                             <div *ngIf="submitted && f1.stkTrsf.errors" class="invalid-feedback">
                                 <div *ngIf="f1.stkTrsf.errors.min">Le stkTrsf doit étre positive.</div>
                                 <div *ngIf="f1.stkTrsf.errors.max">Le stkTrsf ne doit pas dépasser les limite.</div>
@@ -765,7 +777,7 @@
                         </div>
                         <div class="col-sm-4"> 
                             <label for="stkNp" class="label">stkNp</label>
-                            <input type="number" nbInput fullWidth class="form-control" formControlName="stkNp" [ngClass]="{ 'is-invalid': submitted && f1.stkNp.errors }" />
+                            <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="stkNp" [ngClass]="{ 'is-invalid': submitted && f1.stkNp.errors }" />
                             <div *ngIf="submitted && f1.stkNp.errors" class="invalid-feedback">
                                 <div *ngIf="f1.stkNp.errors.min">Le stkNp doit étre positive.</div>
                                 <div *ngIf="f1.stkNp.errors.max">Le stkNp ne doit pas dépasser les limite.</div>
@@ -777,7 +789,7 @@
                         <div class="row">
                             <div class="col-sm-4"> 
                                 <label for="stkRes" class="label">stkRes</label>
-                                <input type="number" nbInput fullWidth class="form-control" formControlName="stkRes" [ngClass]="{ 'is-invalid': submitted && f1.stkRes.errors }" />
+                                <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="stkRes" [ngClass]="{ 'is-invalid': submitted && f1.stkRes.errors }" />
                                 <div *ngIf="submitted && f1.stkRes.errors" class="invalid-feedback">
                                     <div *ngIf="f1.stkRes.errors.min">Le stkRes doit étre positive.</div>
                                     <div *ngIf="f1.stkRes.errors.max">Le stkRes ne doit pas dépasser les limite.</div>
@@ -786,7 +798,7 @@
                             </div>
                             <div class="col-sm-4"> 
                                 <label for="stkReel" class="label">stkReel</label>
-                                <input type="number" nbInput fullWidth class="form-control" formControlName="stkReel" [ngClass]="{ 'is-invalid': submitted && f1.stkReel.errors }" />
+                                <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth class="form-control" formControlName="stkReel" [ngClass]="{ 'is-invalid': submitted && f1.stkReel.errors }" />
                                 <div *ngIf="submitted && f1.stkReel.errors" class="invalid-feedback">
                                     <div *ngIf="f1.stkReel.errors.min">Le stkReel doit étre positive.</div>
                                     <div *ngIf="f1.stkReel.errors.max">Le stkReel ne doit pas dépasser les limite.</div>
@@ -794,21 +806,36 @@
                                 <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
                                 </div>
                             </div>
-                            <div class="col-sm-4"> 
+                            <div class="col-sm-6">
+                                <label for="calculeArticles" class="label">Calcule quantité d'Articles</label>
+                                <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumArticlesDont1" name="sumArticlesDont1" [(ngModel)]="sumArticlesDont1" [ngModelOptions]="{standalone: true}" disabled />
+                              </div>
+      
+                            <div class="col-sm-6">
+                              <label for="SumcalculeArticles" class="label">Calcule prix d'Achats des Articles</label>
+                              <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumAllArticlesDont1" name="sumAllArticlesDont1" [(ngModel)]="sumAllArticlesDont1" [ngModelOptions]="{standalone: true}" disabled />
                             </div>
                         </div> 
-                        </nb-card-body>
+                        
                     <div class="row">
                         <div class="col-sm-6">    
                             <label for="poste" class="label">Poste</label>
                             <input type="text" nbInput fullWidth placeholder="Poste" formControlName="poste" [ngClass]="{ 'is-invalid': submitted && f1.poste.errors }" disabled/>
                         </div>
                     </div>
-                    <div class="row">
-                        <label for="poste" class="label">ajouter Image</label>
-                        <input type="file" accept="image/*" (change)="onSelectFile($event)"/>
-                        <img [src]="imgURL" height="200" *ngIf="imgURL">
-                    </div>
+                </nb-card-body>
+                    <nb-card>
+                        <nb-card-header>Information optionnel</nb-card-header>
+                        <nb-card-body>
+                            <div class="col-sm-6"> 
+                                <label for="poste" class="label">ajouter Image</label>
+                                <input type="file" accept="image/jpeg || image/png" (change)="onSelectFile($event)"/>
+                            </div>
+                                <nb-card-body>       
+                                    <img [src]="imgURL" height="100" width="150" *ngIf="imgURL">
+                                </nb-card-body> 
+                        </nb-card-body>
+                    </nb-card>
                     <!--
                     liste chainé expide livreur
                     -->

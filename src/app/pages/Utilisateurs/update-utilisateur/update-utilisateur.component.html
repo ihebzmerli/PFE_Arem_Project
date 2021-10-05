@@ -200,13 +200,26 @@
                 </div>
               </div>
             </nb-card-body>
-            <div class="col-sm-6">
-              <button [disabled]=!utilisateurForm.form.valid type="submit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
-                Ajouter Utilisateur</button>
-              <button nbButton (click)="utilisateurForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
-                Annuler</button> 
-            </div>
           </nb-card>
+
+          <nb-card>
+            <nb-card-header>Information optionnel</nb-card-header>
+            <nb-card-body>
+              <div class="col-sm-6"> 
+                <label for="poste" class="label">Ajouter Image</label>
+                <input type="file" accept="image/jpeg || image/png" (change)="onSelectFile($event)"/>
+              </div>      
+              <nb-card-body>       
+                <img [src]="imgURL" height="200" width="200" *ngIf="imgURL">
+              </nb-card-body>
+            </nb-card-body>
+          </nb-card>
+          <div class="col-sm-6">
+            <button [disabled]=!utilisateurForm.form.valid type="submit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+              Ajouter Utilisateur</button>
+            <button nbButton (click)="utilisateurForm.reset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+              Annuler</button> 
+          </div>
         </div>
         <div class="col-lg-6">
             <nb-card>

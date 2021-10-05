@@ -61,7 +61,10 @@
   .actions-card {
     height: 8rem;
   }
-
+  .form-group{
+    display: flex;
+    justify-content: center;
+  }
   table {
     border-collapse: collapse;
     border: 2px solid rgb(200, 200, 200);
@@ -77,4 +80,15 @@
     border: 1px solid rgb(190, 190, 190);
     padding: 10px;
   }  
+}
+  ::ng-deep .form {
+    display: flex;
+    flex-direction: column;
+
+    .text-label {
+      margin-top: 1.5rem;
+    }
+  }
+  .full-name-inputs {
+    width: 50%;
 }

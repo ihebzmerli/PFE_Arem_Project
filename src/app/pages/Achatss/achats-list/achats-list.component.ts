@@ -7,7 +7,6 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { AchatsService } from '../achats.service';
-import { WindowDateFilterComponent } from './window-date-filter/window-date-filter.component';
 import { ValiderAchatsDialogComponent } from './valider-dialog/valider-achats-dialog.component';
 import { NotValiderAchatsDialogComponent } from './Notvalider-dialog/notValider-achats-dialog.component';
 
@@ -16,6 +15,7 @@ import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
 import { Utilisateur } from '../../Utilisateurs/utilisateur';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'ngx-achats-list',
   templateUrl: './achats-list.component.html',
@@ -215,7 +215,7 @@ goToPage(pageName:string):void{
   this.router.navigate([`${pageName}`]);
 }
 constructor(private authService: TokenStorageService,private achatsService: AchatsService,private dialogService: NbDialogService,private http: HttpClient,private router: Router,
-  private service: SmartTableData,private windowService: NbWindowService, private fb: FormBuilder,public utilisateurService: UtilisateurService) {
+  private service: SmartTableData,private windowService: NbWindowService, private fb: FormBuilder,public utilisateurService: UtilisateurService,public datepipe: DatePipe) {
 
    }
 
@@ -229,7 +229,7 @@ constructor(private authService: TokenStorageService,private achatsService: Acha
     ngOnInit() {
 
       this.authService.getAuthorities().forEach(authority => {
-        this.authority=authority;
+        this.authority=authority.toString();
         console.log(this.authority);
       });
       
@@ -335,9 +335,6 @@ this.utilisateurService.getUtilisateursList().subscribe(data => {
     );
   }
 
-  openWindowFormFilterDate() {
-    this.windowService.open(WindowDateFilterComponent, { title: `entrer les deux dates` });
-  }
 
   openWindowFilterDateWithoutBackdrop() {
     this.windowService.open(
@@ -421,6 +418,26 @@ saveAsExcelFile(buffer: any, fileName: string): void {
 
 //**LISTS  Fk */
 
-
+startDate;
+endDate;
+testStatus :number = 1;
+FilterDate(startDate,endDate){
+  console.log(startDate,endDate)
+  if (startDate !=null && endDate!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.achatsService.getAllAchatBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredAchatss = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getAchatss();
+  this.testStatus = 1
+}
+}
 
 }

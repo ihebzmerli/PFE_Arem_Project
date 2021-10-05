@@ -5,7 +5,6 @@ import { UtilisateursComponent } from './utilisateur.component';
 import { UtilisateurListComponent } from './utilisateur-list/utilisateur-list.component';
 import { CreateUtilisateurComponent } from './create-utilisateur/create-utilisateur.component';
 import { UpdateUtilisateurComponent } from './update-utilisateur/update-utilisateur.component';
-import { UtilisateurDetailComponent } from './utilisateur-detail/utilisateur-detail.component';
 import { ChartjsUtilisateurComponent } from './echarts-utilisateur/chartjs.component';
 import { AuthGuardCaissier } from '../../auth-guardRoles/auth-guardCaissier';
 import { AuthGuardAdmin } from '../../auth-guardRoles/auth-guardAdmin';
@@ -32,11 +31,6 @@ const routes: Routes = [{
       component: UpdateUtilisateurComponent,
     },
     {
-      path: 'utilisateur-detail',
-      data: {guards: [ AuthGuardAdmin , AuthGuardTransitaire ]}, canActivate: [AllGuard],
-      component: UtilisateurDetailComponent,
-    },
-    {
       path: 'echarts-utilisateur',
       component: ChartjsUtilisateurComponent,
     }
@@ -58,5 +52,4 @@ export const routedComponents = [
   UtilisateurListComponent,
   CreateUtilisateurComponent,
   UpdateUtilisateurComponent,
-  UtilisateurDetailComponent,
 ];

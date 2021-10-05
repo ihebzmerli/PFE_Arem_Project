@@ -33,7 +33,7 @@
                 <div class="form-row">
                   <div class="form-group col">
                     <label for="poste" class="label">ajouter Image</label><p>
-                      <input type="file" accept="image/*" (change)="onSelectFile($event)"/>
+                      <input type="file" accept="image/jpeg || image/png" (change)="onSelectFile($event)"/>
                       <div class="form-group">
                         <img [src]="imgURL" height="100" *ngIf="imgURL">
                       </div>

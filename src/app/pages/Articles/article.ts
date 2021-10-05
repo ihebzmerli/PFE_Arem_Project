@@ -153,5 +153,5 @@ export class Article {
     stkNp: number;
     galery: string;
     id_emba: bigint;
-    
+    zone:string;
 }

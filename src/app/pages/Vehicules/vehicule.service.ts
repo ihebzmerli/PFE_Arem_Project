@@ -50,4 +50,24 @@ export class VehiculeService {
     /**drop down list add for bon sort */
 
 
+    getAllVehiculeDT_ACQBydateBetween(startDate: string,endDate: string): Observable<Vehicule[]> {
+      return this.http.get<Vehicule[]>(`${this.url}/DT_ACQBetween/${startDate}to${endDate}`);
+    }
+
+    getAllVehiculedt1mc2BydateBetween(startDate: string,endDate: string): Observable<Vehicule[]> {
+      return this.http.get<Vehicule[]>(`${this.url}/t1mc2Between/${startDate}to${endDate}`);
+    }
+
+    getAllVehiculedt1mcBydateBetween(startDate: string,endDate: string): Observable<Vehicule[]> {
+      return this.http.get<Vehicule[]>(`${this.url}/dt1mcBetween/${startDate}to${endDate}`);
+    }
+
+    getAllVehiculedtfassBydateBetween(startDate: string,endDate: string): Observable<Vehicule[]> {
+      return this.http.get<Vehicule[]>(`${this.url}/dtfassBetween/${startDate}to${endDate}`);
+    }
+
+    getAllVehiculedtfvisitBydateBetween(startDate: string,endDate: string): Observable<Vehicule[]> {
+      return this.http.get<Vehicule[]>(`${this.url}/dtfvisitBetween/${startDate}to${endDate}`);
+    }
+
 }

@@ -24,6 +24,8 @@ import { DatePipe } from '@angular/common';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
 import { LivreurService } from '../../Livreurs/livreur.service';
+import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
+import { Utilisateur } from '../../Utilisateurs/utilisateur';
 
 @Component({
   selector: 'ngx-create-expide',
@@ -33,6 +35,7 @@ import { LivreurService } from '../../Livreurs/livreur.service';
 export class CreateExpideComponent implements OnInit,Validator {
   expideForm1: FormGroup;
   expideForm2: FormGroup;
+  expideForm3: FormGroup;
   /** teamplate Ajouter */
     starRate = 2;
     heartRate = 4;
@@ -40,6 +43,7 @@ export class CreateExpideComponent implements OnInit,Validator {
 
     min: Date;
     max: Date;
+    BonLivListComptoir: Bon_liv [];
     BonLivList: Bon_liv [];
     selectedBon: Bon_liv[];
     LivreurList: Livreur [];
@@ -54,13 +58,15 @@ export class CreateExpideComponent implements OnInit,Validator {
   expide: Expide = new Expide();
   livreur_expide: Livreur_Expide = new Livreur_Expide();
   submitted = false;
-  
+  userPost: Utilisateur;
+  poste: any;
+  ComptoirDisable:boolean=false;
   statuses: NbComponentStatus[] = ['primary', 'success', 'info', 'warning', 'danger'  ];
   shapes: NbComponentShape[] = [ 'rectangle', 'semi-round', 'round' ];
   sizes: NbComponentSize[] = ['tiny', 'small', 'medium', 'large', 'giant'];
   
   constructor(private livreurService: LivreurService,private authService: TokenStorageService,public datepipe: DatePipe,public bonlivService: BonLivService, private toastrService: NbToastrService, private expideService: ExpideService,
-      private router: Router,protected dateService: NbDateService<Date>) {
+      private router: Router,public utilisateurService:UtilisateurService,protected dateService: NbDateService<Date>) {
         this.min = this.dateService.addDay(this.dateService.today(), -5);
         this.max = this.dateService.addDay(this.dateService.today(), 5);
        }
@@ -74,7 +80,17 @@ export class CreateExpideComponent implements OnInit,Validator {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
       ngOnInit() {
-        
+        this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {
+          this.utilisateurService.getUtilisateur(data1.toString()).subscribe(data => {
+            this.userPost = data;
+            this.poste = this.userPost.firstname+' '+this.userPost.lastname;
+            this.expide.user = this.userPost;
+          }, error => console.log(error));
+        }, error => console.log(error));
+
+        this.expide.datExpedition = new Date(Date().toLocaleString());
+        this.expide.datExpedition.setMinutes(this.expide.datExpedition.getMinutes() + this.expide.datExpedition.getTimezoneOffset() + 120);
+
         const now = Date.now()
         const myFormattedDate = this.datepipe.transform(now, 'yyyy-MM-dd hh:mm:ss');
             this.getBonLivOfAdd();
@@ -82,13 +98,17 @@ export class CreateExpideComponent implements OnInit,Validator {
             this.getVehiculeOfAdd();
 
       }
-  
+
       isDisable:boolean=false;
       saveExpide() {
           this.expideService.createExpide(this.expide).subscribe( data =>{
             console.log(data);
           },
           error => console.log(error));
+          if(this.expide.typExp=='sur_comptoir'){
+            this.getBonLivOfComptoir();
+            this.ComptoirDisable=true;
+          }
           this.isDisable=true;
         }
 
@@ -225,9 +245,56 @@ public getVehiculeOfAdd() {
   });
 }
 /** */
+/**comptoir list */
+public getBonLivOfComptoir() {
+  this.bonlivService.getBLCompoir().subscribe(data => {
+    this.BonLivListComptoir = data;
+  });
+}
 
 
+/** */
+/**comptoir add */
+/** la livraison sur comptoir va faire l affectation avec le livreur de comptoir de la direction */
+selectedBonComptoir:Bon_liv[];
+public async AddSelectedBonComptoir() {
 
+  this.expideService.getLastId().subscribe(data => {
+    this.id_testExp = data;
+
+  
+  this.livreur_expide.id_expide=this.id_testExp[0];
+  this.livreurService.getLivreur("1").subscribe( data =>{
+    this.livreur_expide.id_livreur=data.id_livreur;
+
+  console.log(this.livreur_expide.id_livreur);
+  this.livreur_expide.matricule=null;
+
+    let counter = 0;
+    for (let i = 0; i < this.selectedBonComptoir.length; i++) {
+      counter++;
+    }
+  if(counter<=10 && counter>0){
+    for (let i = 0; i < this.selectedBonComptoir.length; i++) {
+      this.livreur_expide.bonLiv=this.selectedBonComptoir[i];
+      console.log(this.livreur_expide);
+      this.expideService.createLivreurs_Expides(this.livreur_expide).subscribe( data =>{
+        console.log(data);
+      },
+      error => console.log(error));
+        this.bonliv.cronoTime = new Date();
+        console.log(this.bonliv);
+        this.bonlivService.updateBonLivComptoir(this.selectedBonComptoir[i].numBon,this.bonliv).subscribe(data => {
+          console.log(data);
+      });
+    }
+    this.makeToast();
+  }else{
+    this.makeToast3();
+  } 
+});
+});
+}
 
 //*** affectation des livreur au B L */
 selectedLivreur1:Livreur;

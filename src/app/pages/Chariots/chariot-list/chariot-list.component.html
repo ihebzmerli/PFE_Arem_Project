@@ -4,34 +4,54 @@
     Chariot table
     <nb-card-body>
 
-        <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_AGENT_SAISIE_REG' || 'ROLE_DECIDEUR_BP' || 'ROLE_EXPEDITEUR' || 'ROLE_PREPARATEUR' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" class="btn btn-md btn-outline-primary" (click)="goToCharts()">
+        <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_AGENT_SAISIE_REG' || authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_EXPEDITEUR' || authority==='ROLE_PREPARATEUR' || authority==='ROLE_PREPARATEUR_BR' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" class="btn btn-md btn-outline-primary" (click)="goToCharts()">
           <i class="fa fa-user"></i>Statistiques</button>
     </nb-card-body>
   </nb-card-header>
 
   <nb-card-body>
     <div class="container">
-      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      Recherche Table:<p> <input style="width:230px" nbInput class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global"></p>
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
           <th style="text-align: center">
             <label class="label">NUM CHARIOT</label>
-            <div style="width:100px" class="form-group">
-              <input type="text" class="form-control" placeholder="search NumChar"
+            <div class="form-group">
+              <input nbInput type="text" class="form-control" placeholder="search NumChar"
               style="width:150px" style="align-items: center;" [(ngModel)]="searchTermNumChar" />
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">CALL CHARIOT</label>
+            <label class="label">CALL CHARIOT
+              <button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
             <div class="form-group">
-              <button (click)="openWindowForm()" class="btn btn-md btn-outline-primary">
-                <i class="fa fa-user"></i>Recherche entre date</button>  
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate"
+                [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate"
+                [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest></nb-datepicker>
+              </div> 
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ETAT CHARIOT</label>
-            <div style="width:130px" class="form-group">
+            <div class="form-group">
               <nb-select style="width:130px" id="listEtatCha" fullWidth fieldSize="small" (selectedChange)="getAllListEtatCha($event)">
                 <nb-option value="">-Annuler Filter-</nb-option>
                 <nb-option *ngFor="let itemsEtatCha of statusessEtatCha" [value]="itemsEtatCha.value">
@@ -41,7 +61,7 @@
               </nb-select>
             </div>
           </th>
-          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_DECIDEUR_BP' || 'ROLE_VALIDATEUR_DE_CHARIOT' || 'ROLE_PREPARATEUR' || 'ROLE_RESPONSABLE_POINTAGE' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+          <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_VALIDATEUR_DE_CHARIOT' || authority==='ROLE_PREPARATEUR' || authority==='ROLE_RESPONSABLE_POINTAGE' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="text-align: center">
             <label class="label">Pointage de Chariot</label>
             <div class="form-group">
               <nb-select style="width:170px" id="listPointage" fullWidth fieldSize="small" (selectedChange)="getAllListEtatCha($event)">
@@ -76,14 +96,14 @@
           </td>
 
 
-          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_VALIDATEUR_DE_CHARIOT' || 'ROLE_PREPARATEUR' || 'ROLE_RESPONSABLE_POINTAGE')" style="text-align: center" class="field-multiple-drag">
+          <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_VALIDATEUR_DE_CHARIOT' || authority==='ROLE_PREPARATEUR' || authority==='ROLE_RESPONSABLE_POINTAGE'" style="text-align: center" class="field-multiple-drag">
             <span><p>
                 
               <button nbButton *ngIf="chariot.etat_char=='en_attente'" type="button" [status]="success" class="btn btn-md btn-outline-success" disabled hero>
-                Chariot déja pointé
+                pointage Chariot
               </button>
               <button nbButton *ngIf="chariot.etat_char=='occuper'" type="button" (click)="OpenValidationPopap(chariot.numChar)" [status]="warning" class="btn btn-md btn-outline-warning" hero>
-                Valider pointage Chariot?
+                Valider pointage Chariot
               </button>
               <button nbButton *ngIf="chariot.etat_char=='en_panne'" type="button" (click)="OpenMettreEnServicePopap(chariot.numChar)" [status]="danger" class="btn btn-md btn-outline-danger" hero>
                 mettre le chariot en service
@@ -94,9 +114,9 @@
             <div class="buttons-row">
               <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['chariot-detail',chariot.numChar]" outline>
               <i class="fa fa-search"></i>Details</button>
-              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(chariot.numChar)" outline>
+              <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(chariot.numChar)" outline>
               <i class="fa fa-edit"></i>Modifier</button>
-              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(chariot.numChar)" outline>
+              <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(chariot.numChar)" outline>
               <i class="fa fa-remove"></i>Supprimer</button>
             </div>
           </td>

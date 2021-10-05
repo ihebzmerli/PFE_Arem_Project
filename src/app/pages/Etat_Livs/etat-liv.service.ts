@@ -36,13 +36,20 @@ export class EtatLivService {
     return this.http.delete(this.url);
   }
 
+
+  getEtatCronometre(startDate: string): Observable<any> {
+    return this.http.get(`${this.url}/chronometre/${startDate}`);
+  }
+
   /** drop list add prep */
   getAllEtatLivByBL(bon_liv: string): Observable<any> {
     return this.http.get(`${this.url}/etatLiv_BL/${bon_liv}`);
   }
 
 
-
+  getAllEtatLivBydateBetween(startDate: string,endDate: string): Observable<Etat_liv[]> {
+    return this.http.get<Etat_liv[]>(`${this.url}/etatLiv_Date/${startDate}to${endDate}`);
+  }
 
 
 

@@ -16,7 +16,7 @@
         </div>
         <p>table  des Articles appartient a la preparation</p>
         <p-table #dt1 [value]="artsorts" dataKey="id"
-            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" class="p-tableCss" styleClass="p-datatable-customers p-datatable-gridlines"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [globalFilterFields]="['codArt','qutSortie','remise','prixHt','tva','totHt','cumulRet','centre','poitageChariot','chariot_artsort.numChar','chariot_artsort.etat_char']">
             <ng-template pTemplate="caption">
@@ -126,12 +126,23 @@
             <ng-template pTemplate="body" let-artsort>
                   <tr>
                     <td>
-                      <span *ngIf="artsort.codArt!=null"><label (click)="showModalDialog()">{{ artsort.codArt }}</label></span>
-                      <span *ngIf="artsort.codArt==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label (click)="showModalDialog()"><b>Pas mentionné</b></label></p></span>
+                      <label *ngIf="artsort.codArt==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                      <label *ngIf="artsort.codArt!==null" (click)="showModalDialog(artsort.codArt)">{{ artsort.codArt }}</label>
+
                       <p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                       [draggable]="false" [resizable]="false">
-                      <p class="p-m-0"><img src="/assets/images/imgArticles/{{artsort.codArt}}/{{artsort.codArt}}.png" [alt]="artsort.codArt" class="article-image" /></p>
-                          <ng-template pTemplate="footer">
+                      <div style="text-align: center" class="field-multiple-drag" *ngIf="displayModal===true">
+                        <li>                
+                          <span class="image-text"><b class="p-mb-3 p-text-light"><nb-card-body>Marque article :</nb-card-body></b> <nb-card-body>{{artic.marque.title}}</nb-card-body>&nbsp;&nbsp;<img style="width:40px;height: 40px;" src="{{this.marqueService.host+'/'+artic.marque.code+'/'+artic.marque.fileName}}" [alt]="artic.marque.title"/></span>                      
+                        </li> 
+                        <li>
+                          <span class="image-text"><b class="p-mb-3 p-text-light"><nb-card-body>Model article :</nb-card-body></b>&nbsp;<nb-card-body>{{artic.model.title}}</nb-card-body></span>
+                        </li>
+                      </div>
+                      <div>
+                        <p style="text-align: center" class="field-multiple-drag"><img *ngIf="displayModal==true" src="{{this.articleService.host+'/'+artic.codArt+'/'+artic.fileName}}" style="width:250px;" /></p>
+                      </div>
+                      <ng-template pTemplate="footer">
                           <p-button icon="pi pi-check" (click)="displayModal=false" label="Annuler" styleClass="p-button-text"></p-button>
                           </ng-template>
                       </p-dialog>

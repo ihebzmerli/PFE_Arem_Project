@@ -5,7 +5,6 @@ import { BonSortService } from '../bon-sort.service';
 import { Bon_sort } from '../bon-sort';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Observable } from 'rxjs';
-import { WindowDateFilterComponent } from './window-date-filter/window-date-filter.component';
 import { XbaseXtvaDialogComponent } from './window-xbase&tva/xbase&xtva-dialog.component';
 import { DeleteBonSortDialogComponent } from './delete-dialog/delete-bon-sort-dialog.component';
 import { NbComponentShape, NbComponentSize, NbComponentStatus, NbDialogService, NbWindowService } from '@nebular/theme';
@@ -202,7 +201,7 @@ export class BonSortListComponent implements OnInit {
   authority;
     ngOnInit() {
       this.authService.getAuthorities().forEach(authority => {
-        this.authority=authority;
+        this.authority=authority.toString();
         console.log(this.authority);
       });
 
@@ -290,10 +289,6 @@ export class BonSortListComponent implements OnInit {
           },
         },
       );
-    }
-  
-    openWindowFormFilterDate() {
-      this.windowService.open(WindowDateFilterComponent, { title: `entrer les deux dates` });
     }
   
     openWindowFilterDateWithoutBackdrop() {
@@ -396,4 +391,29 @@ saveAsExcelFile(buffer: any, fileName: string): void {
 }
 
 /**stat export CSV & PDF & Excel window*/
+
+
+
+
+startDate;
+endDate;
+testStatus :number = 1;
+FilterDate(startDate,endDate){
+  console.log(startDate,endDate)
+  if (startDate !=null && endDate!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.bonsortService.getAllBonSortBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredBonSorts = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getBonSorts();
+  this.testStatus = 1
+}
+}
 }

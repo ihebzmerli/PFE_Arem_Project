@@ -12,7 +12,7 @@
           
           <div class="form-row">
               <div class="form-group col">
-                <label for="nom" class="label">NOM</label>
+                <label for="nom" class="label">Nom & Prenom</label>
                 <input type="text" nbInput fullWidth class="form-control" #nom="ngModel" id="nom" name="nom" required pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="6" [(ngModel)]="livreur.nom" />
                 <div style="font-size: 12px;" [hidden]="nom.valid || nom.pristine" class="alert alert-danger p-2">
                   <div [hidden]="!nom.hasError('minlength')">Nom doit étre au moin 6 lettres longue.</div>
@@ -56,16 +56,6 @@
 
             <div class="form-row">
               <div class="form-group col">
-                <label for="reclam" class="label">RECLAM</label>
-                <input type="number" min="0" nbInput fullWidth class="form-control" #reclam="ngModel" id="reclam" name="reclam" required pattern="^(0|[1-9][0-9]*)$" max="9999999" min="0" [(ngModel)]="livreur.reclam" />
-                <div style="font-size: 12px;" [hidden]="reclam.valid || reclam.pristine" class="alert alert-danger p-2">
-                  <div [hidden]="!reclam.hasError('min')">Reclam doit étre positive.</div>
-                  <div [hidden]="!reclam.hasError('max')">Reclam ne doit pas dépassé les limite.</div>
-                  <div [hidden]="!reclam.hasError('required')">Reclam est obligatoire.</div>
-                  <div [hidden]="!reclam.hasError('pattern')">Reclam ne doit contenir que des nombres.</div>
-                </div>
-              </div>
-              <div class="form-group col">
                 <label for="objectif" class="label">OBJECTIF</label>
                 <input type="number" nbInput fullWidth class="form-control" #objectif="ngModel" id="objectif" name="objectif" required pattern="^(0|[1-9][0-9]*)$" max="999999" min="0" [(ngModel)]="livreur.objectif" />
                 <div style="font-size: 12px;" [hidden]="objectif.valid || objectif.pristine" class="alert alert-danger p-2">
@@ -87,25 +77,17 @@
                 </div>
               </div>
               <div class="form-group col">
-                <label for="datrepon" class="label">DAT_REPON</label>
-                <input nbInput fullWidth [nbDatepicker]="dateTimePicker3"class="form-control" #datrepon="ngModel" id="datrepon" name="datrepon" required [(ngModel)]="livreur.datrepon" />
-                <nb-datepicker #dateTimePicker3></nb-datepicker>
-                <div style="font-size: 12px;" [hidden]="datrepon.valid || datrepon.pristine" class="alert alert-danger p-2">
-                  <div [hidden]="!datrepon.hasError('required')">Date repon est obligatoire.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group col">
                 <label for="obsreclam" class="label">OBS_RECLAM</label>
-                <input type="text" nbInput fullWidth class="form-control" #obsreclam="ngModel" id="obsreclam" name="obsreclam" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="4" [(ngModel)]="livreur.obsreclam" />
+                <textarea rows="3" nbInput fullWidth shape="round" class="form-control" #obsreclam="ngModel" id="obsreclam" name="obsreclam" pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="4" [(ngModel)]="livreur.obsreclam" ></textarea>
                 <div style="font-size: 12px;" [hidden]="obsreclam.valid || obsreclam.pristine" class="alert alert-danger p-2">
                   <div [hidden]="!obsreclam.hasError('minlength')">Obs reclam doit étre au moin 10 lettres longue.</div>
                   <div [hidden]="!obsreclam.hasError('maxlength')">Obs reclam ne doit pas dépassé les 200 lettres longue.</div>
                   <div [hidden]="!obsreclam.hasError('pattern')">Obs reclam ne doit contenir que des lettres et des nombres.</div>
                 </div>
               </div>
+            </div>
+
+            <div class="form-row">
               <div class="form-group col">
                 <label for="observ" class="label">OBSERV</label>
                 <input type="text" nbInput fullWidth class="form-control" #observ="ngModel" id="observ" name="observ" required pattern="^[a-zA-Z0-9 ]+$" maxlength="200" minlength="10" [(ngModel)]="livreur.observ" />
@@ -115,6 +97,10 @@
                   <div [hidden]="!observ.hasError('required')">observ est obligatoire.</div>
                   <div [hidden]="!observ.hasError('pattern')">observ ne doit contenir que des lettres et des nombres.</div>
                 </div>
+              </div>
+              <div class="form-group col">
+                <label for="typmvt" class="label">TYP_MVT</label>
+                <input type="text" nbInput fullWidth class="form-control" #typmvt="ngModel" id="typmvt" name="typmvt" [(ngModel)]="livreur.typmvt" disabled/>
               </div>
             </div>
 
@@ -143,9 +129,13 @@
 
               <div class="form-row">
 
-                <div class="col-sm-6"> 
-                  <label for="typmvt" class="label">TYP_MVT</label>
-                  <input type="text" nbInput fullWidth class="form-control" #typmvt="ngModel" id="typmvt" name="typmvt" [(ngModel)]="livreur.typmvt" disabled/>
+                <div class="form-group col">
+                  <label for="datrepon" class="label">DAT_REPON</label>
+                  <input nbInput fullWidth [nbDatepicker]="dateTimePicker3"class="form-control" #datrepon="ngModel" id="datrepon" name="datrepon" required [(ngModel)]="livreur.datrepon" />
+                  <nb-datepicker #dateTimePicker3></nb-datepicker>
+                  <div style="font-size: 12px;" [hidden]="datrepon.valid || datrepon.pristine" class="alert alert-danger p-2">
+                    <div [hidden]="!datrepon.hasError('required')">Date repon est obligatoire.</div>
+                  </div>
                 </div>
 
                 <div class="col-sm-6"> 

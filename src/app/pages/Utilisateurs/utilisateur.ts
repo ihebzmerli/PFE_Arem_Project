@@ -73,6 +73,7 @@ export class Utilisateur {
     tauxCom:number;
     reste:number;
     tauxRes:number;
+    connected:number;
     valRes:number;
     patron:string;
     rang:number;

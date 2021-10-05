@@ -35,4 +35,10 @@ export class PrimeService {
   deleteAll(): Observable<any> {
     return this.http.delete(this.url);
   }
+
+
+  getAllPrimeDER_MVTBydateBetween(startDate: string,endDate: string): Observable<Prime[]> {
+    return this.http.get<Prime[]>(`${this.url}/dat_reclamDER_MVTBetween/${startDate}to${endDate}`);
+  }
+  
 }

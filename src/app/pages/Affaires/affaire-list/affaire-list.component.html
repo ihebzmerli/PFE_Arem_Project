@@ -2,7 +2,7 @@
     <nb-card-header>
       Affaires Table
       <nb-card-body>
-        <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" class="border">
+        <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER'" class="border">
             <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
             <i class="fa fa-user"></i>Statistiques</button>
 
@@ -15,184 +15,305 @@
   
     <nb-card-body>
       <div *ngIf="!previewTableAllAffaireExcelPdf" class="container">
-        Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+        Recherche Table: <input style="width:230px" nbInput class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
         <table class="table table-bordered table-striped">
           <thead>
           <tr>
             <th style="text-align: center">
               <label class="label">NUM_AFF</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search NumAff"
+                <input type="text" nbInput class="form-control" placeholder="search NumAff"
                 style="width:150px" style="align-items: center;" [(ngModel)]="searchTermNumAff" />
               </div>
             </th>
             <th style="text-align: center">
-              <label class="label">DAT_AFF</label>
-               <div class="form-group">
-                <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
-                    <i class="fa fa-user"></i>Filter</button>  
-               </div>
+              <label class="label">DAT_AFF<button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate"
+                  [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker></nb-datepicker>
+                </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate"
+                  [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest></nb-datepicker>
+                </div> 
+              </div>
             </th>
             <th style="text-align: center">
               <label class="label">COD_FRS</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search CodFrs"
+                <input type="text" nbInput class="form-control" placeholder="search CodFrs"
                 style="width:150px" style="align-items: center;" [(ngModel)]="searchTermCodFrs" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">RAISON</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Raison"
+                <input type="text" nbInput class="form-control" placeholder="search Raison"
                 style="width:150px" style="align-items: center;" [(ngModel)]="searchTermRaison" />
               </div>
             </th>
             <th style="text-align: center">
-              <label class="label">DAT_PROF</label>
-                <div class="form-group">
-                    <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
-                        <i class="fa fa-user"></i>Filter</button>  
+              <label class="label">DAT_PROF<button (click)="FilterDate1(startDate1,endDate1)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate1"
+                  [nbDatepicker]="dateTimePicker1" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker1></nb-datepicker>
                 </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate1"
+                  [nbDatepicker]="formpickertest1" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest1></nb-datepicker>
+                </div> 
+              </div>
             </th>
             <th style="text-align: center">
-              <label class="label">DAT_CONF</label>
-                <div class="form-group">
-                    <button  style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
-                        <i class="fa fa-user"></i>Filter</button>  
+              <label class="label">DAT_CONF<button (click)="FilterDate2(startDate2,endDate2)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate2"
+                  [nbDatepicker]="dateTimePicker2" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker2></nb-datepicker>
                 </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate2"
+                  [nbDatepicker]="formpickertest2" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest2></nb-datepicker>
+                </div> 
+              </div>
             </th>
             <th style="text-align: center">
-              <label class="label">DAT_TRANSF</label>
-                <div class="form-group">
-                    <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
-                        <i class="fa fa-user"></i>Filter</button>  
+              <label class="label">DAT_TRANSF<button (click)="FilterDate3(startDate3,endDate3)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate3"
+                  [nbDatepicker]="dateTimePicker3" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker3></nb-datepicker>
                 </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate3"
+                  [nbDatepicker]="formpickertest3" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest3></nb-datepicker>
+                </div> 
+              </div>
             </th>
             <th style="text-align: center">
               <label class="label">PROVEN</label>
               <div class="form-group">
-                <input style="align-items: center;" type="text" class="form-control" placeholder="search Proven"
+                <input style="align-items: center;" nbInput type="text" class="form-control" placeholder="search Proven"
                 style="width:150px" [(ngModel)]="searchTermProven" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">NUM_PROF</label>
               <div class="form-group">
-                <input style="align-items: center;" type="text" class="form-control" placeholder="search NumProf"
+                <input style="align-items: center;" nbInput type="text" class="form-control" placeholder="search NumProf"
                 style="width:150px" [(ngModel)]="searchTermNumProf" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">TRANSFER</label>
               <div class="form-group">
-                <input style="align-items: center;" type="text" class="form-control" placeholder="search Transfer"
+                <input style="align-items: center;" nbInput type="text" class="form-control" placeholder="search Transfer"
                 style="width:150px" [(ngModel)]="searchTermTransfer" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">PROFORMA</label>
               <div class="form-group">
-                <input style="align-items: center;" type="text" class="form-control" placeholder="search Proforma"
+                <input style="align-items: center;" nbInput type="text" class="form-control" placeholder="search Proforma"
                 style="width:150px" [(ngModel)]="searchTermProforma" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">CONFIRMER</label>
               <div class="form-group">
-                <input style="align-items: center;" type="text" class="form-control" placeholder="search Confirmer"
+                <input style="align-items: center;" nbInput type="text" class="form-control" placeholder="search Confirmer"
                 style="width:150px" [(ngModel)]="searchTermConfirmer" />
               </div>
             </th>
             <th style="text-align: center">
-              <label class="label">DAT_ANAL</label>
-                <div class="form-group">
-                    <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
-                        <i class="fa fa-user"></i>Filter</button>  
+              <label class="label">DAT_ANAL<button (click)="FilterDate4(startDate4,endDate4)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate4"
+                  [nbDatepicker]="dateTimePicker4" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker4></nb-datepicker>
                 </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate4"
+                  [nbDatepicker]="formpickertest4" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest4></nb-datepicker>
+                </div> 
+              </div>
             </th>
 
             <th style="text-align: center">
               <label class="label">numFac</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search NumFac"
+                    <input type="text" nbInput class="form-control" placeholder="search NumFac"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermNumFac" />
                 </div>
             </th>
             <th style="text-align: center">
-              <label class="label">datFac</label>
-                <div class="form-group">
-                    <button style="width:150px" style="align-items: center;" (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
-                        <i class="fa fa-user"></i>Filter</button>  
+              <label class="label">datFac<button (click)="FilterDate5(startDate5,endDate5)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate5"
+                  [nbDatepicker]="dateTimePicker5" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker5></nb-datepicker>
                 </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate5"
+                  [nbDatepicker]="formpickertest5" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest5></nb-datepicker>
+                </div> 
+              </div>
             </th>
             <th style="text-align: center">
               <label class="label">montDev</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search MontDev"
+                    <input type="text" nbInput class="form-control" placeholder="search MontDev"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontDev" />
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">montDt</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search MontDt"
+                    <input type="text" nbInput class="form-control" placeholder="search MontDt"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontDt" />
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">montRev</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search MontRev"
+                    <input type="text" nbInput class="form-control" placeholder="search MontRev"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontRev" />
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">delaiLiv</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search DelaiLiv"
+                    <input type="text" nbInput class="form-control" placeholder="search DelaiLiv"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermDelaiLiv" />
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">MontTrsp</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search MontTrsp"
+                    <input type="text" nbInput class="form-control" placeholder="search MontTrsp"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontTrsp" />
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">montEmbl</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search MontEmba"
+                    <input type="text" nbInput class="form-control" placeholder="search MontEmba"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontEmba" />
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">montAff</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search MontAff"
+                    <input type="text" nbInput class="form-control" placeholder="search MontAff"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermMontAff" />
                 </div>
             </th>
            <th style="text-align: center">
             <label class="label">totalAff</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search TotalAff"
+                    <input type="text" nbInput class="form-control" placeholder="search TotalAff"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermTotalAff" />
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">devise</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search Devise"
+                    <input type="text" nbInput class="form-control" placeholder="search Devise"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermDevise" />
                 </div>
             </th>
             <th style="text-align: center">
               <label class="label">coef</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="search Coef"
+                    <input type="text" nbInput class="form-control" placeholder="search Coef"
                     style="width:150px" style="align-items: center;" [(ngModel)]="searchTermCoef" />
+                </div> 
+            </th>
+            <th style="text-align: center">
+              <label class="label">Etat d'Affaire</label>
+                <div class="form-group">
+                  <nb-select style="width:170px" id="listEtat" fullWidth fieldSize="small" (selectedChange)="getAllListEtat($event)" >
+                    <nb-option value="">-Annuler Filter-</nb-option>
+                    <nb-option *ngFor="let itemsEtat of statusessEtat" [value]="itemsEtat.value">                   
+                      <div style="width: 300px;" *ngIf="itemsEtat.label=='Affaire encore pas sortie de fournisseur'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color: rgb(120, 13, 134);" >Affaire encore pas sortie de fournisseur</div></span></div>
+                      <div style="width: 300px;" *ngIf="itemsEtat.label=='Affaire arriver à la Diwan'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:rgb(84, 181, 198);">Affaire arriver à la Diwan</div></span></div>
+                      <div style="width: 300px;" *ngIf="itemsEtat.label=='Affaire reçu et vérifier'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color: rgb(140, 194, 140);">Affaire reçu et vérifier </div></span></div>                  
+                    </nb-option>
+                  </nb-select>
                 </div> 
             </th>
             <th style="text-align: center"><label class="label">Actions</label></th>
@@ -202,7 +323,7 @@
           <tbody>
           <tr *ngFor="let affaire of filteredAffaires | filter:searchText">
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.numAff}}</p></span></td>
-            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datAff | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datAff  | date: 'MMM d, y '}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.codFrs}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.raison}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.datProf | date: 'medium'}}</p></span></td>
@@ -229,6 +350,11 @@
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.totalAff | currency:'TND ' : 'symbol'}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.devise}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{affaire.coef}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag">
+              <span *ngIf="affaire.etat_affaire=='affaire_encore_pas_sortie_de_fournisseur'"><p> Affaire encore pas sortie de fournisseur</p></span>
+              <span *ngIf="affaire.etat_affaire=='affaire_arriver_a_la_diwan'"><p> Affaire arriver à la Diwan</p></span>
+              <span *ngIf="affaire.etat_affaire=='affaire_reçu_et_verifier'"><p>Affaire reçu et verifier</p></span>
+            </td>
             <td class="field-multiple-drag">
               <div class="buttons-row">
               <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['affaire-detail',affaire.numAff]" outline>
@@ -268,7 +394,7 @@
                             <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
                             <span class="p-input-icon-left p-ml-auto">
                                 <i class="pi pi-search"></i>
-                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                                <input pInputText nbInput type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
                             </span>
                     </div>
                   </div>

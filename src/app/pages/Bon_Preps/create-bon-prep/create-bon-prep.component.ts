@@ -92,6 +92,11 @@ date: Date;
 item: string;
 items: SelectItem[];
 selectedCodFrs : any;
+userPost: Utilisateur;
+poste: any;
+agentsPointage:Utilisateur[];
+_searchTermUser:Utilisateur[];
+
 constructor(private authService: TokenStorageService, private fournisService:FournisService,private bonlivService:BonLivService,public datepipe: DatePipe,private toastrService: NbToastrService, private formBuilder: FormBuilder,
   private bonprepService: BonPrepService, private router: Router,protected dateService: NbDateService<Date>,
   private windowService: NbWindowService,public articleService: ArticleService, public chariotService: ChariotService
@@ -128,7 +133,11 @@ constructor(private authService: TokenStorageService, private fournisService:Fou
       return this.bonprep.totTtc=this.bonprep.netHt+(this.bonprep.montTva*this.bonprep.brutHt)/100;
      }
     ngOnInit(){
-      
+      this.utilisateurService.getUtilisateursList().subscribe(data => {
+        //this.agentsPointage = data.filter(Utilisateur => Utilisateur.roles[0].name=='ROLE_RESPONSABLE_POINTAGE');
+        this.agentsPointage = data;
+      });
+
       this.getArtPreps();
       this.getBonPreps();
       this.disableFrsDropdown = false;
@@ -138,267 +147,271 @@ constructor(private authService: TokenStorageService, private fournisService:Fou
       const now = Date.now()
       const myFormattedDate = this.datepipe.transform(now, 'yyyy-MM-dd hh:mm:ss');
       const myFormattedDate2 = this.datepipe.transform(now, 'yyyy-MM-dd');
-        this.bonPrepForm = this.formBuilder.group({
-            numBon: ['', Validators.compose([
-              Validators.maxLength(100),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$')
-            ])],
-            datBon: [ new Date(), Validators.required],
-            Destination: new FormControl("false", Validators.required),
-            nomprenomCli: new FormControl({ value: "", disabled: false }, Validators.compose([
-              Validators.maxLength(80),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])),
-            codFrs: [''],
-            raison:  ['', Validators.compose([
-              Validators.maxLength(200),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$')
-            ])],
-            tauxRem: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            montRem: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            montTva: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            tauxRes: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            montTrs: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            liv: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            pointage: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(6),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            natLiv: ['', Validators.compose([
-              Validators.required
-            ])],
-            natDoc: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            codeTva: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(4),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            adresse: ['', Validators.compose([
-              Validators.maxLength(100),
-              Validators.minLength(10),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9_.+-]+$')
-            ])],
-            point: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(10),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            aideMag: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(6),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            embal: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(6),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            poste: [''],
-            centre: ['', Validators.compose([
-              Validators.maxLength(30),
-              Validators.minLength(5),
-              Validators.required,
-              Validators.pattern('^[a-zA-Z0-9 ]+$')
-            ])],
-            plusV: ['', Validators.compose([
-              Validators.min(0),
-              Validators.max(999999),
-              Validators.required,
-              Validators.pattern('^(0|[1-9][0-9]*)$')
-            ])],
-            aven_tage: ['', Validators.compose([
-              Validators.minLength(1),
-              Validators.required,
-            ])],
-            xbase10: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva10: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase17: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva17: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase7: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva7: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase29: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva29: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase36: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva36: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase6: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva6: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase21: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva21: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase19: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva19: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase12: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva12: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase13: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva13: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase7A: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xtva7A: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
-            xbase0: [0, Validators.compose([
-              Validators.min(0),
-              Validators.max(999999999999),
-              Validators.required,
-              Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-            ])],
 
-        });
-    
+
+      this.bonPrepForm = this.formBuilder.group({
+        numBon: ['', Validators.compose([
+          Validators.maxLength(100),
+          Validators.minLength(5),
+          Validators.required,
+          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$')
+        ])],
+        datBon: [ myFormattedDate, Validators.required],
+        Destination: new FormControl(false, Validators.required),
+        nomprenomCli: new FormControl({ value: "", disabled: false }, Validators.compose([
+          Validators.maxLength(80),
+          Validators.minLength(5),
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ]+$')
+        ])),
+        codFrs: [''],
+        raison:  ['', Validators.compose([
+          Validators.maxLength(200),
+          Validators.minLength(5),
+          Validators.required,
+          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9 ]+$')
+        ])],
+        tauxRem: ['', Validators.compose([
+          Validators.min(0),
+          Validators.max(999999),
+          Validators.required,
+          Validators.pattern('^(0|[1-9][0-9]*)$')
+        ])],
+        montRem: ['', Validators.compose([
+          Validators.min(0),
+          Validators.max(999999),
+          Validators.required,
+          Validators.pattern('^(0|[1-9][0-9]*)$')
+        ])],
+        montTva: ['', Validators.compose([
+          Validators.min(0),
+          Validators.max(999999),
+          Validators.required,
+          Validators.pattern('^(0|[1-9][0-9]*)$')
+        ])],
+        tauxRes: ['', Validators.compose([
+          Validators.min(0),
+          Validators.max(999999),
+          Validators.required,
+          Validators.pattern('^(0|[1-9][0-9]*)$')
+        ])],
+        montTrs: ['', Validators.compose([
+          Validators.min(0),
+          Validators.max(999999),
+          Validators.required,
+          Validators.pattern('^(0|[1-9][0-9]*)$')
+        ])],
+        liv: ['', Validators.compose([
+          Validators.maxLength(30),
+          Validators.minLength(5),
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ]+$')
+        ])],
+        natLiv: ['', Validators.compose([
+          Validators.required
+        ])],
+        natDoc: ['', Validators.compose([
+          Validators.maxLength(30),
+          Validators.minLength(5),
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ]+$')
+        ])],
+        codeTva: ['', Validators.compose([
+          Validators.maxLength(30),
+          Validators.minLength(4),
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ]+$')
+        ])],
+        adresse: ['', Validators.compose([
+          Validators.maxLength(100),
+          Validators.minLength(10),
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9_.+-]+$')
+        ])],
+        point: [''],
+        aideMag: ['', Validators.compose([
+          Validators.maxLength(30),
+          Validators.minLength(6),
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ]+$')
+        ])],
+        embal: ['', Validators.compose([
+          Validators.maxLength(30),
+          Validators.minLength(6),
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ]+$')
+        ])],
+        poste: [''],
+        user: [''],
+        centre: ['', Validators.compose([
+          Validators.maxLength(30),
+          Validators.minLength(5),
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ]+$')
+        ])],
+        plusV: ['', Validators.compose([
+          Validators.min(0),
+          Validators.max(999999),
+          Validators.required,
+          Validators.pattern('^(0|[1-9][0-9]*)$')
+        ])],
+        aven_tage: ['', Validators.compose([
+          Validators.minLength(1),
+          Validators.required,
+        ])],
+        xbase10: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva10: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase17: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva17: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase7: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva7: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase29: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva29: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase36: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva36: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase6: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva6: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase21: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva21: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase19: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva19: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase12: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva12: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase13: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva13: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase7A: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xtva7A: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+        xbase0: [0, Validators.compose([
+          Validators.min(0),
+          Validators.max(999999999999),
+          Validators.required,
+          Validators.pattern('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
+        ])],
+
+    });
+    this.disableFrsDropdown = true;
+    this.bonPrepForm.get('nomprenomCli').enable();
+
+      this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {
+        this.utilisateurService.getUtilisateur(data1.toString()).subscribe(data => {
+          this.userPost = data;
+          this.poste = this.userPost.firstname+' '+this.userPost.lastname;
+          this.bonPrepForm.patchValue({
+            poste: this.poste, 
+            user: this.userPost,
+          });
+        }, error => console.log(error));
+      }, error => console.log(error));
         this.getListChariot();
 
         this.artprep.qutStk = 0;
@@ -415,6 +428,8 @@ constructor(private authService: TokenStorageService, private fournisService:Fou
         this.artprep.stkReel = 0;
         this.artprep.stkRes = 0;
         this.artprep.stkNp = 0; 
+
+        this.bonPrepForm.controls.value
     }
   // convenience getter for easy access to form fields
   get f() { return this.bonPrepForm.controls; }
@@ -439,6 +454,8 @@ constructor(private authService: TokenStorageService, private fournisService:Fou
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
   onSubmitBon() {
+    console.log(this.bonPrepForm.value);
+    console.log(this.bonPrepForm);
     this.submitted = true;
   
     // stop here if form is invalid
@@ -478,7 +495,7 @@ constructor(private authService: TokenStorageService, private fournisService:Fou
 
 
         this.artprep.numBon = this.bonPrepForm.controls.numBon.value;
-        this.artprep.poste = this.bonPrepForm.controls.poste.value;
+        this.artprep.poste = this.bonPrepForm.controls.point.value;
         this.artprep.datPrep = this.bonPrepForm.controls.datBon.value;
 
         if(this.artprep.qutStk==null || !this.artprep.qutStk || this.artprep.qutStk == 0){
@@ -528,9 +545,8 @@ constructor(private authService: TokenStorageService, private fournisService:Fou
         +this.artprep.nbjStk+this.artprep.vSstk+this.artprep.comStk+this.artprep.xanalStk+this.artprep.stkAtrsf+this.artprep.stkTrsf
         +this.artprep.stkReel+this.artprep.stkRes+this.artprep.stkNp;
 
-        if(this.bonPrepForm.controls.natLiv.value=="livraison"){
-          this.artprep.qutLiv=this.artprep.qutPrep;
-        }
+          this.artprep.qutLiv=0;
+
         
           if (this.ArticleGeted.prixVen > 0) {
             this.artprep.prixAch = this.ArticleGeted.prixVen*this.artprep.qutPrep;
@@ -613,10 +629,10 @@ ArticleWindow : boolean;
     this.saveArtprep();
     await this.delay(3500);
     this.prixUpdateBP();
-    await this.delay(1000);
+    await this.delay(100);
     await this.showModalDialogBarProgression();
     this.makeToast();
-    await this.delay(1000);
+    await this.delay(500);
     this.ChariotWindow=true;
     this.ArticleWindow=false;
     this.lastAdd=this.lastAdd+1;
@@ -677,7 +693,13 @@ onReset() {
 }
 
     saveBonprep() {
-      if(this.bonPrepForm.controls.Destination.value==true){
+      
+      this.bonPrepForm.patchValue({
+        datBon: new Date(), 
+      });
+      console.log(this.bonPrepForm.value);
+      if(this.bonPrepForm.controls.Destination.value=="true"){
+        console.log("yes")
         this.bonPrepForm.patchValue({
           codFrs: this.selectedCodFrs, 
         });
@@ -689,7 +711,13 @@ onReset() {
           codFrs: null, 
         });
       }
-      console.log(this.selectedCodFrs);
+      var data = this._searchTermUser.map(t=>t.firstname).join(",");
+      console.log(data);
+      if(data){
+        this.bonPrepForm.patchValue({
+          point: data,
+        });
+      }
       console.log(this.bonPrepForm.value);
         this.bonprepService.createBon_prep(this.bonPrepForm.value).subscribe( data =>{
           console.log(data);

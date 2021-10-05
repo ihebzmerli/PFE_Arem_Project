@@ -8,8 +8,9 @@ export class SignUpInfo {
     typeContrat: string;
     typeConge: string;
     authorisation: string;
+    connected: number;
 
-    constructor(lastname: string, firstname: string, username: string, email: string, password: string, typeContrat: string, typeConge: string, authorisation: string ) {
+    constructor(lastname: string, firstname: string, username: string, email: string, password: string, typeContrat: string, typeConge: string, authorisation: string, connected: number) {
         this.lastname = lastname;
         this.firstname = firstname
         this.username = username;
@@ -17,7 +18,8 @@ export class SignUpInfo {
         this.password = password;
         this.typeContrat = "indefini";
         this.typeConge = "indefini";
-        this.authorisation = "allow";
+        this.authorisation = "Allow";
         this.roles= ['user'];
+        this.connected = 0;
     }
 }

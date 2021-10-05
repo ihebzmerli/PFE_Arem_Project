@@ -28,7 +28,7 @@ export class DeleteMarqueDialogComponent {
       .subscribe(
         data => {
           console.log(data);
-          this.notify.ngOnInit();
+          window.location.reload();
         },
         error => console.log('ERROR: ' + error));
   }

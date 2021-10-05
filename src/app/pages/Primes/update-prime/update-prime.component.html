@@ -4,8 +4,14 @@
       <nb-card-header>
         <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des Prime?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../../prime-list']"/>
         <p></p>
-        Modification De Prime<p>Date de la dernière modification:<p>
-          &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{prime.derMvt | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+        Modification De Prime<p>Date de la dernière modification:<p>          
+          <div class="form-row">
+            <div class="form-group col">
+              <b style="position: center" class="p-mb-3 p-text-bold">{{prime.derMvt | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
+            </div>
+            <div class="form-group col"></div>
+          </div>
+
       </nb-card-header>
       <nb-card-body>
           

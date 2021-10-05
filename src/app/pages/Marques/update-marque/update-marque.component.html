@@ -35,13 +35,23 @@
             <div class="form-row">
               <div class="form-group col">
                 <label for="poste" class="label">ajouter Image</label><p>
-                  <input type="file" accept="image/*" (change)="onSelectFile($event)"/>
+                  <input type="file" accept="image/jpeg || image/png" (change)="onSelectFile($event)"/>
                   <div class="form-group">
                     <img [src]="imgURL" height="100" *ngIf="imgURL">
                   </div>
               </div>
             </div>
 
+      <!--  PROGRESSIVE  bar  -->
+
+          <p-dialog header="Chargement des données" [(visible)]="displayModalBarProgression" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+          <p class="p-m-0"> 
+            <nb-progress-bar [value]="progress" status="primary" [displayValue]="true"></nb-progress-bar>
+          </p>
+          </p-dialog>
+
+      <!--  PROGRESSIVE  bar  -->
       </nb-card-body>
     </nb-card>
     <div class="col-sm-6">

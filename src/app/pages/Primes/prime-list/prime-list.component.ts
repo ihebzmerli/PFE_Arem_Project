@@ -12,6 +12,7 @@ import { DeletePrimeDialogComponent } from './delete-dialog/delete-prime-dialog.
 import { trigger,style,transition,animate,keyframes,query,stagger, state} from '@angular/animations';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'ngx-prime-list',
   templateUrl: './prime-list.component.html',
@@ -189,7 +190,7 @@ set searchTermBloc(value: string){
   }
   /****************Filtrage des donner ***************/
   constructor(private authService: TokenStorageService,private dialogService: NbDialogService, private primeService: PrimeService,
-    private router: Router,private service: SmartTableData) {
+    private router: Router,private service: SmartTableData,public datepipe: DatePipe) {
 
     }
 
@@ -199,7 +200,7 @@ authority;
   ngOnInit(): void {
     
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
     this.getPrimes();
@@ -254,4 +255,29 @@ id:any;
 goToModifier(id: string ){
   this.router.navigate(['//pages/Primes/update-prime',id])
   }
+
+
+
+
+  startDate;
+  endDate;
+  testStatus :number = 1;
+  FilterDate(startDate,endDate){
+    console.log(startDate,endDate)
+    if (startDate !=null && endDate!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.primeService.getAllPrimeDER_MVTBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredPrimes = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getPrimes();
+    this.testStatus = 1
+  }
+}
 }

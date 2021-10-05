@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NbSortDirection, NbSortRequest, NbTreeGridDataSource, NbTreeGridDataSourceBuilder } from '@nebular/theme';
+import { NbComponentStatus, NbGlobalLogicalPosition, NbGlobalPhysicalPosition, NbGlobalPosition, NbSortDirection, NbSortRequest, NbToastrConfig, NbToastrService, NbTreeGridDataSource, NbTreeGridDataSourceBuilder } from '@nebular/theme';
 import { Utilisateur } from '../../Utilisateurs/utilisateur';
 import { Chariot } from '../chariot';
 import { trigger,style,transition,animate,keyframes,query,stagger, state} from '@angular/animations';
@@ -9,6 +9,8 @@ import { Table } from 'primeng/table';
 import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { BonPrepService } from '../../Bon_Preps/bon-prep.service';
+import { Art_Prep } from '../../Bon_Preps/Art_Preps/art-prep';
 @Component({
   selector: 'ngx-chariot-detail',
   templateUrl: './chariot-detail.component.html',
@@ -62,6 +64,7 @@ export class ChariotDetailComponent implements OnInit {
   chariot:Chariot;
   artpreps:any[] = [];
   chariots: any[] = [];
+  nonTrouverType: any[];
   artprep_chariot: any[] = [];
   users: Utilisateur[];
   numChar: string;
@@ -72,7 +75,7 @@ export class ChariotDetailComponent implements OnInit {
   activityValues: number[] = [0, 100];
   agentsPrepara:Utilisateur[];
   agentsPrep:Utilisateur[];
-  constructor(private authService: TokenStorageService,private chariotService: ChariotService,private utilisateurService:UtilisateurService , private router : Router,private _Activatedroute :ActivatedRoute) { }
+  constructor(private authService: TokenStorageService, private chariotService: ChariotService,private toastrService: NbToastrService ,private bonprepService: BonPrepService ,private utilisateurService:UtilisateurService , private router : Router,private _Activatedroute :ActivatedRoute) { }
 
   ngOnInit() {
     
@@ -96,6 +99,11 @@ export class ChariotDetailComponent implements OnInit {
       this.agentsPrep = data.filter(Utilisateur => Utilisateur.roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT');
       this.agentsPrepara = data.filter(Utilisateur => Utilisateur.roles[0].name=='ROLE_PREPARATEUR');
     });
+
+    this.nonTrouverType = [
+      {label: 'Trouver', value: null},
+      {label: 'Non trouver', value: true}
+    ]
   }
 
 
@@ -148,7 +156,12 @@ export class ChariotDetailComponent implements OnInit {
       this.position = position;
       this.displayPositionPrepara = true;
     }
-    showPositionDialogPrep(position: string) {
+
+    Alz1:Utilisateur;
+    Alz2:number;
+    showPositionDialogPrep(position: string,event:Utilisateur,event2:number) {
+      this.Alz1=event;
+      this.Alz2=event2;
       this.position = position;
       this.displayPositionPrep = true;
     }
@@ -160,4 +173,101 @@ export class ChariotDetailComponent implements OnInit {
       this.position = position;
       this.displayPositionCentre = true;
     }
+
+
+/**modification de validateur pointage */
+artPrep: Art_Prep = new Art_Prep();
+PointageChariot;
+displayModifierPointageChariot:boolean=false;
+  CumulRet:number;
+  ModifierPointageChariot(){
+    this.displayModifierPointageChariot=true;
+  }
+  ModifierPointageChariotEnter(cumulRet:number){
+      if(this.Alz1==null || !this.Alz1){
+        this.Alz1=null;
+      }
+      this.artPrep.prep =this.PointageChariot;
+      console.log(this.artPrep.prep);
+      this.bonprepService.UpdateArtPrep(this.Alz2,this.artPrep).subscribe(data => {
+          console.log(data); 
+          this.displayPositionPrep = false;
+          this.displayModifierPointageChariot=false;
+          this.PointageChariot=null;
+          this.ngOnInit();
+          this.makeToast();
+      }), error => console.log(error);
+  }
+
+  /**modification de validateur pointage  */
+
+
+
+
+
+         /** toaster show start */
+config: NbToastrConfig;
+
+index = 1;
+destroyByClick = true;
+duration = 4000;
+hasIcon = true;
+positionn: NbGlobalPosition = NbGlobalPhysicalPosition.BOTTOM_RIGHT;
+preventDuplicates = false;
+
+status: NbComponentStatus = 'success';
+
+title = 'La validation de Preparateur chariot!';
+content = `Preparateur chariot valier!`;
+
+status2: NbComponentStatus = 'danger';
+  
+title2 = 'La validation de Preparateur chariot!';
+content2 = `Preparateur chariot Non valier!`;
+
+types: NbComponentStatus[] = [
+  'primary',
+  'success',
+  'info',
+  'warning',
+  'danger',
+];
+
+positions: string[] = [
+  NbGlobalPhysicalPosition.TOP_RIGHT,
+  NbGlobalPhysicalPosition.TOP_LEFT,
+  NbGlobalPhysicalPosition.BOTTOM_LEFT,
+  NbGlobalPhysicalPosition.BOTTOM_RIGHT,
+  NbGlobalLogicalPosition.TOP_END,
+  NbGlobalLogicalPosition.TOP_START,
+  NbGlobalLogicalPosition.BOTTOM_END,
+  NbGlobalLogicalPosition.BOTTOM_START,
+];
+
+makeToast() {
+  this.showToast(this.status, this.title, this.content);
+}
+
+makeToast2() {
+  this.showToast(this.status2, this.title2, this.content2);
+}
+private showToast(type: NbComponentStatus, title: string, body: string) {
+  const config = {
+    status: type,
+    destroyByClick: this.destroyByClick,
+    duration: this.duration,
+    hasIcon: this.hasIcon,
+    position: this.positionn,
+    preventDuplicates: this.preventDuplicates,
+  };
+  const titleContent = title ? `. ${title}` : '';
+
+  this.index += 1;
+  this.toastrService.show(
+    body,
+    `Notif ${this.index}${titleContent}`,
+    config);
+}
+
+/**toaster show start */
 }

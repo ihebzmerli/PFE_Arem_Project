@@ -62,14 +62,17 @@ export class UpdateEtatLivComponent implements OnInit {
     });
     this.dateTest = this.etatliv.date;
   }
-  
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
   onSubmitBon() {
     this.updateEtat_liv();
     this.makeToast(); 
-    delay(4000);
+    delay(1000);
     this.etat_liv_list();
   } 
   updateEtat_liv(){
+    console.log(this.etatliv.bonLiv);
     this.etatlivService.updateEtat_liv(this.id,this.etatliv).subscribe(data => {
       console.log(data);
       this.etatliv = new Etat_liv();

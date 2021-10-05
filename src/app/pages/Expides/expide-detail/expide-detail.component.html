@@ -120,10 +120,16 @@
               <ng-template pTemplate="body" let-Livreur_Expide>
                     <tr>
                       <td>
-                        <img [alt]="Livreur_Expide.bonLiv.livreur.nom" src="assets/images/Livreur/{{Livreur_Expide.bonLiv.livreur.id_livreur}}.png" width="40" style="vertical-align: middle" />
-                        <span class="p-text-bold p-ml-2">
-                          <label (click)="showModalDialog()">{{ Livreur_Expide.bonLiv.livreur.nom }}</label>
-                        </span>
+                        <label *ngIf="Livreur_Expide.bonLiv.livreur==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                        <label *ngIf="Livreur_Expide.bonLiv.livreur!==null" (click)="showModalDialog(Livreur_Expide.bonLiv.livreur.id_livreur)">{{ Livreur_Expide.bonLiv.livreur.nom }}</label>
+  
+                        <p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>Nom de livreur !</p>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayModal=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
                       </td>
                       <td>
                         <label *ngIf="Livreur_Expide.matricule!=null" (click)="showPositionDialogM_V('right')">{{ Livreur_Expide.matricule }}</label>

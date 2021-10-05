@@ -38,7 +38,7 @@ max: Date;
 
         if(this.chariot.datchariot!=null){
           this.chariot.datchariot=new Date(this.chariot.datchariot.toLocaleString());
-          this.chariot.datchariot.setMinutes( this.chariot.datchariot.getMinutes() + this.chariot.datchariot.getTimezoneOffset());
+          this.chariot.datchariot.setMinutes( this.chariot.datchariot.getMinutes() + this.chariot.datchariot.getTimezoneOffset() + 120);
           }else{
             this.chariot.datchariot=null;
           }
@@ -46,12 +46,14 @@ max: Date;
           this.chariot = data;
         }, error => console.log(error));      
     }
-
-      onSubmitBon() {
+    delay(ms: number) {
+      return new Promise( resolve => setTimeout(resolve, ms) );
+    }
+      async onSubmitBon() {
   
         this.updateChariot();
         this.makeToast(); 
-        delay(4000);
+        delay(1500);
         this.chariot_list();
   
       } 
@@ -59,11 +61,6 @@ max: Date;
         console.log(this.chariot);
         this.chariotService.updateChariot(this.numChar,this.chariot).subscribe(data => {
 
-          if(this.chariot.datchariot!=null){
-            this.chariot.datchariot.setDate(this.chariot.datchariot.getDate() + 1);
-          }else{
-            this.chariot.datchariot=null ;
-          }
           console.log(data);
           this.chariot = new Chariot();
         }, error => console.log(error));

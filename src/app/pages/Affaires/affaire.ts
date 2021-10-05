@@ -32,5 +32,5 @@ export class Affaire {
     listDem: string;
     coef: bigint;
     achats:Achats;
-    
+    etat_affaire: string;
 }

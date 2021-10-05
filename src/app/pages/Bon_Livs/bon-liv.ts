@@ -1,6 +1,7 @@
 import { Fournis } from "../Fourniss/fournis";
 import { Livreur } from "../Livreurs/livreur";
 import { Utilisateur } from "../Utilisateurs/utilisateur";
+import { Xcommand } from "../Xcommand/Xcommand";
 
 export class Bon_liv {
 
@@ -52,10 +53,10 @@ export class Bon_liv {
     codeTva: string;
 
     trans_action: string;
-
+    cronoTime:Date;
     expide: bigint;
     fournis: Fournis;
     user: Utilisateur;
-    numCom: bigint;
+    numCom: Xcommand;
     livreur:Livreur;
 }

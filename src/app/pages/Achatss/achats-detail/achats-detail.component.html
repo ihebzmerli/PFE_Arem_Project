@@ -35,13 +35,13 @@
                         <div class="p-d-flex p-jc-between p-ai-center">
                           Code Article
                           <div>
-                            <p-columnFilter type="numeric" field="bonise" display="menu"></p-columnFilter>
+                            <p-columnFilter type="text" field="bonise" display="menu"></p-columnFilter>
                           </div>
                         </div>
                       </th>
                       <th>
                         <div class="p-d-flex p-jc-between p-ai-center">
-                          bonise
+                          Qut Article
                           <div>
                             <p-columnFilter type="numeric" field="bonise" display="menu"></p-columnFilter>
                           </div>
@@ -88,6 +88,16 @@
                           </div>
                         </div>
                       </th> 
+
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Non trouver
+                          <div>
+                            <p-columnFilter type="number" field="centre" display="menu" ></p-columnFilter>
+                            <sup style="color: blueviolet;">(Modifier)</sup>
+                          </div>
+                        </div>
+                      </th> 
                       
                   </tr>
               </ng-template>
@@ -96,7 +106,26 @@
               <ng-template pTemplate="body" let-artacha>
                     <tr>
                       <td>
-                        <label (click)="showModalDialog()">{{ artacha.cod_art }}</label>:&nbsp;<img src="/assets/images/imgArticles/{{artacha.cod_art}}/{{artacha.cod_art}}.png" [alt]="artacha.cod_art" height="70" width="70"/>
+                        <label *ngIf="artacha.cod_art==null"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                        <label *ngIf="artacha.cod_art!==null" (click)="showModalDialog(artacha.cod_art)">{{ artacha.cod_art }}</label>
+  
+                        <p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <div style="text-align: center" class="field-multiple-drag" *ngIf="displayModal===true">
+                          <li>                
+                            <span class="image-text"><b class="p-mb-3 p-text-light"><nb-card-body>Marque article :</nb-card-body></b> <nb-card-body>{{artic.marque.title}}</nb-card-body>&nbsp;&nbsp;<img style="width:40px;height: 40px;" src="{{this.marqueService.host+'/'+artic.marque.code+'/'+artic.marque.fileName}}" [alt]="artic.marque.title"/></span>                      
+                          </li> 
+                          <li>
+                            <span class="image-text"><b class="p-mb-3 p-text-light"><nb-card-body>Model article :</nb-card-body></b>&nbsp;<nb-card-body>{{artic.model.title}}</nb-card-body></span>
+                          </li>
+                        </div>
+                        <div>
+                          <p style="text-align: center" class="field-multiple-drag"><img *ngIf="displayModal==true" src="{{this.articleService.host+'/'+artic.codArt+'/'+artic.fileName}}" style="width:250px;" /></p>
+                        </div>
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayModal=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
                       </td>
                       <td>
                         <label (click)="showPositionDialogBonise('left')">{{ artacha.bonise }}</label>
@@ -159,6 +188,23 @@
                         </p-dialog>
                       </td>
                       
+                      <td>
+                        <label *ngIf="artacha.qutNonTrouver==null" (click)="showPositionDialogqutNonTrouver('left',artacha.qutNonTrouver,artacha.id)"><b class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);" >Pas mentionné</b></label>
+                        <label *ngIf="artacha.qutNonTrouver!==null" (click)="showPositionDialogqutNonTrouver('left',artacha.qutNonTrouver,artacha.id)" style="color: crimson;">{{ artacha.qutNonTrouver }}</label>
+                        <p-dialog header="Définition Quantité non trouver" [(visible)]="displayPositionQutNonTrouver" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                        [draggable]="false" [resizable]="false">
+                        <p>Quantité Non Trouver par le Prrparateur Bon de Réception.</p>
+                        <div *ngIf="displayModifierQutNonTrouver">
+                          <label for="QutNonTrouver" class="label">Quantité Non Trouver</label>
+                          <input type="number" nbInput fullWidth id="qutNonTrouver" name="qutNonTrouver" pattern="^(0|[1-9][0-9]*)$" max="100" min="0" [(ngModel)]="qutNonTrouver"/> 
+                        </div>
+                            <ng-template pTemplate="footer">
+                              <p-button *ngIf="!displayModifierQutNonTrouver" icon="pi pi-check" (click)="ModifierNonT()" type="button" label="Activer" styleClass="p-button-text"></p-button>
+                              <p-button *ngIf="displayModifierQutNonTrouver" icon="pi pi-check" (click)="ModifierNonTEnter(qutNonTrouver)" type="button" label="Modifier" styleClass="p-button-text"></p-button>
+                                <p-button icon="pi pi-check" (click)="displayPositionQutNonTrouver=false" label="Annuler" styleClass="p-button-text"></p-button>
+                            </ng-template>
+                        </p-dialog>
+                      </td>
                     </tr>
               </ng-template>
             

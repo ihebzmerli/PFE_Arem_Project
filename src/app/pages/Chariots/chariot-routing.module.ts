@@ -17,9 +17,10 @@ import { AuthGuardPreparateur } from '../../auth-guardRoles/auth-guardPreparateu
 import { AuthGuardPreparateurBr } from '../../auth-guardRoles/auth-guardPreparateur_Br';
 import { AuthGuardRDispatchingBp } from '../../auth-guardRoles/auth-guardR_Dispatching_Bp';
 import { AuthGuardRPointage } from '../../auth-guardRoles/auth-guardR_Pointage';
+import { AuthGuardValidateurDeChariot } from '../../auth-guardRoles/auth-guardValidateur_De_Chariot';
 const routes: Routes = [{
   path: '',
-  data: {guards: [ AuthGuardAdmin , AuthGuardAgentSaisieReg , AuthGuardDecideurBp , AuthGuardExpediteur , AuthGuardPreparateur , AuthGuardPreparateurBr , AuthGuardRDispatchingBp , AuthGuardRPointage ]}, canActivate: [AllGuard],
+  data: {guards: [ AuthGuardAdmin , AuthGuardAgentSaisieReg , AuthGuardDecideurBp , AuthGuardExpediteur , AuthGuardPreparateur , AuthGuardPreparateurBr , AuthGuardRDispatchingBp , AuthGuardRPointage , AuthGuardValidateurDeChariot ]}, canActivate: [AllGuard],
   component: ChariotsComponent,
   children: [
     {

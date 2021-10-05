@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NbAccordionModule, NbAlertModule, NbPopoverModule, NbProgressBarModule, NbSearchModule } from '@nebular/theme';
 import { NbActionsModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbDialogModule,NbIconModule, NbInputModule, NbRadioModule, NbSelectModule, NbTreeGridModule, NbUserModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -15,7 +15,6 @@ import { FormsRoutingModule } from '../forms/forms-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteBonSortDialogComponent } from './bon-sort-list/delete-dialog/delete-bon-sort-dialog.component';
 import { XbaseXtvaDialogComponent } from './bon-sort-list/window-xbase&tva/xbase&xtva-dialog.component';
-import { WindowDateFilterComponent } from './bon-sort-list/window-date-filter/window-date-filter.component';
 import { WindowTypeStockComponent } from './create-bon-sort/window-type-stock/window-type-stock.component';
 import { BonSortDetailComponent } from './bon-sort-detail/bon-sort-detail.component';
 // primering module
@@ -35,6 +34,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ChartModule } from 'angular2-chartjs';
+import { BonSortService } from './bon-sort.service';
 
 
 
@@ -45,7 +45,6 @@ import { ChartModule } from 'angular2-chartjs';
     BonSortListComponent,
     BonSortDetailComponent,
     UpdateBonSortComponent,
-    WindowDateFilterComponent,
     XbaseXtvaDialogComponent,
     DeleteBonSortDialogComponent,
     WindowTypeStockComponent
@@ -96,6 +95,7 @@ import { ChartModule } from 'angular2-chartjs';
     NgxEchartsModule,
     NgxChartsModule,
     ChartModule,
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class Bon_SortModule { }

@@ -130,17 +130,17 @@ constructor(private authService: TokenStorageService,private toastrService: NbTo
   
   status: NbComponentStatus = 'success';
   
-  title = 'La modification faite avec succée!';
+  title = 'L`addition faite avec succée!';
   content = `La prime a été modifier!`;
   
   status2: NbComponentStatus = 'danger';
   
-  title2 = 'La modification n est pas faite avec succée!';
+  title2 = 'L addition n`est pas faite avec succée!';
   content2 = `Erreur de modification!`;
   
   status3: NbComponentStatus = 'warning';
   
-  title3 = 'La modification n est pas faite!';
+  title3 = 'L`addition n est pas faite!';
   content3 = `La modification n'a rien changé!`;
 
   status4: NbComponentStatus = 'warning';

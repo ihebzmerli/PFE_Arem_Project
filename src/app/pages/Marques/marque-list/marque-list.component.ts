@@ -71,7 +71,7 @@ export class MarqueListComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
 
@@ -94,15 +94,6 @@ export class MarqueListComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
 
-
-
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
-  }
 
   /* delete popap*/
   id:any;

@@ -2,7 +2,7 @@
   <nb-card-header>
     Utilisateur Table
     <nb-card-body>
-      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" class="border">
+      <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER'" class="border">
         <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
           <i class="fa fa-user"></i>Statistiques</button>
       </div>
@@ -11,28 +11,28 @@
 
   <nb-card-body>
     <div class="container">
-      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      Recherche Table: <input nbInput style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
           <th style="text-align: center">
             <label class="label">nom</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By lastname"
+              <input type="text" nbInput class="form-control" placeholder="search By lastname"
               style="width:150px" [(ngModel)]="searchTermLastname"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">prenom</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Firstname"
+              <input type="text" nbInput class="form-control" placeholder="search By Firstname"
               style="width:150px" [(ngModel)]="searchTermFirstname"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">username</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By UserName"
+              <input type="text" nbInput class="form-control" placeholder="search By UserName"
               style="width:150px" [(ngModel)]="searchTermUserName"/>
             </div>
           </th>
@@ -44,100 +44,185 @@
           <th style="text-align: center">
             <label class="label">password</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Password"
+              <input type="text" nbInput class="form-control" placeholder="search By Password"
               style="width:150px" [(ngModel)]="searchTermPassword"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">email</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Email"
+              <input type="text" nbInput class="form-control" placeholder="search By Email"
               style="width:150px" [(ngModel)]="searchTermEmail"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">date_de_naissance</label>
+            <label class="label">date_de_naissance<button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate"
+                [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate"
+                [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest></nb-datepicker>
+              </div> 
+            </div>
           </th>
-          <th *ngIf="authority==('ROLE_ADMIN')" style="text-align: center">
+          <th *ngIf="authority==='ROLE_ADMIN'" style="text-align: center">
             <label class="label">CIN</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Cin"
+              <input type="text" nbInput class="form-control" placeholder="search By Cin"
               style="width:150px" [(ngModel)]="searchTermCin"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">address</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Address"
+              <input type="text" nbInput class="form-control" placeholder="search By Address"
               style="width:150px" [(ngModel)]="searchTermAddress"/>
             </div>
           </th>
-          <th *ngIf="authority==('ROLE_ADMIN')" style="text-align: center">
+          <th *ngIf="authority==='ROLE_ADMIN'" style="text-align: center">
             <label class="label">CPS</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Cps"
+              <input type="text" nbInput class="form-control" placeholder="search By Cps"
               style="width:150px" [(ngModel)]="searchTermCps"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">telephone</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Telephone"
+              <input type="text" nbInput class="form-control" placeholder="search By Telephone"
               style="width:150px" [(ngModel)]="searchTermTelephone"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">pseudo</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Pseudo"
+              <input type="text" nbInput class="form-control" placeholder="search By Pseudo"
               style="width:150px" [(ngModel)]="searchTermPseudo"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">Date_Rec</label>            
+            <label class="label">Date_Rec
+              <button (click)="FilterDate1(startDate1,endDate1)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label> 
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate1"
+                [nbDatepicker]="dateTimePicker1" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker1></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate1"
+                [nbDatepicker]="formpickertest1" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest1></nb-datepicker>
+              </div> 
+            </div>           
           </th>
           <th style="text-align: center">
             <label class="label">type_Contrat</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By TypeContrat"
+              <input type="text" nbInput class="form-control" placeholder="search By TypeContrat"
               style="width:150px" [(ngModel)]="searchTermTypeContrat"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">date_Contrat</label>
+            <label class="label">date_Contrat
+              <button (click)="FilterDate2(startDate2,endDate2)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate2"
+                [nbDatepicker]="dateTimePicker2" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker2></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate2"
+                [nbDatepicker]="formpickertest2" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest2></nb-datepicker>
+              </div> 
+            </div>
           </th>
           <th style="text-align: center">
             <label class="label">Famille</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Famille"
+              <input type="text" nbInput class="form-control" placeholder="search By Famille"
               style="width:150px" [(ngModel)]="searchTermFamille"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">salaire</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Salaire"
+              <input type="text" nbInput class="form-control" placeholder="search By Salaire"
               style="width:150px" [(ngModel)]="searchTermSalaire"/>
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Connexion</label>
+            <div class="form-group">
+              <nb-select style="width:170px" id="listEtat" fullWidth fieldSize="small" (selectedChange)="getAllListEtat($event)">
+                <nb-option [value]="null">-Annuler Filtre-</nb-option>
+                <nb-option *ngFor="let itemsEtat of connexionEtat" [value]="itemsEtat.value">
+                  <button *ngIf="itemsEtat.label=='actif'" style="border-radius: 0.75rem;width: 90px;height: 35px;" nbButton type="button" [status]="success" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-success" outline>
+                    Actif</button>
+                  <button *ngIf="itemsEtat.label=='inactif'" style="border-radius: 0.75rem;width: 90px;height: 35px;" nbButton type="button" [status]="danger" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-danger" outline>
+                    inactif</button>
+                </nb-option>
+              </nb-select>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Prime_De_Rendement</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By PrimeDeRendement"
+              <input type="text" nbInput class="form-control" placeholder="search By PrimeDeRendement"
               style="width:150px" [(ngModel)]="searchTermPrimeDeRendement"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Heures_De_Travail</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By HeuresDeTravail"
+              <input type="text" nbInput class="form-control" placeholder="search By HeuresDeTravail"
               style="width:150px" [(ngModel)]="searchTermHeuresDeTravail"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Vente_Par_Heure</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By VenteParHeure"
+              <input type="text" nbInput class="form-control" placeholder="search By VenteParHeure"
               style="width:150px" [(ngModel)]="searchTermVenteParHeure"/>
             </div>
           </th>
@@ -145,620 +230,711 @@
           <th style="text-align: center">
             <label class="label">Objectif_Par_Jour</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ObjectifParJour"
+              <input type="text" nbInput class="form-control" placeholder="search By ObjectifParJour"
               style="width:150px" [(ngModel)]="searchTermObjectifParJour"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Objectif_Par_Mois</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ObjectifParMois"
+              <input type="text" nbInput class="form-control" placeholder="search By ObjectifParMois"
               style="width:150px" [(ngModel)]="searchTermObjectifParMois"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">Date_Debut_Conge</label>         
+            <label class="label">Date_Debut_Conge
+              <button (click)="FilterDate3(startDate3,endDate3)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate3"
+                [nbDatepicker]="dateTimePicker3" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker3></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate3"
+                [nbDatepicker]="formpickertest3" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest3></nb-datepicker>
+              </div> 
+            </div>         
           </th>
           <th style="text-align: center">
-            <label class="label">Date_Fin_Conge</label>     
+            <label class="label">Date_Fin_Conge
+              <button (click)="FilterDate4(startDate4,endDate4)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label> 
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate4"
+                [nbDatepicker]="dateTimePicker4" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker4></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate4"
+                [nbDatepicker]="formpickertest4" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest4></nb-datepicker>
+              </div> 
+            </div>     
           </th>
           <th style="text-align: center">
             <label class="label">Type_Conge</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By TypeConge"
+              <input type="text" nbInput class="form-control" placeholder="search By TypeConge"
               style="width:150px" [(ngModel)]="searchTermTypeConge"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Prime_Dev</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By PrimeDev"
+              <input type="text" nbInput class="form-control" placeholder="search By PrimeDev"
               style="width:150px" [(ngModel)]="searchTermPrimeDev"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Prime_Global</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By PrimeGlobal"
+              <input type="text" nbInput class="form-control" placeholder="search By PrimeGlobal"
               style="width:150px" [(ngModel)]="searchTermPrimeGlobal"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Prime_Par_Client</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By PrimeParClient"
+              <input type="text" nbInput class="form-control" placeholder="search By PrimeParClient"
               style="width:150px" [(ngModel)]="searchTermPrimeParClient"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Prime_Stock</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By PrimeStock"
+              <input type="text" nbInput class="form-control" placeholder="search By PrimeStock"
               style="width:150px" [(ngModel)]="searchTermPrimeStock"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">PostV</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By PostV"
+              <input type="text" nbInput class="form-control" placeholder="search By PostV"
               style="width:150px" [(ngModel)]="searchTermPostV"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">COD_USER</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CodUser"
+              <input type="text" nbInput class="form-control" placeholder="search By CodUser"
               style="width:150px" [(ngModel)]="searchTermCodUser"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RAISON</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Raison"
+              <input type="text" nbInput class="form-control" placeholder="search By Raison"
               style="width:150px" [(ngModel)]="searchTermRaison"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Rc"
+              <input type="text" nbInput class="form-control" placeholder="search By Rc"
               style="width:150px" [(ngModel)]="searchTermRc"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RESPON1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Respon1"
+              <input type="text" nbInput class="form-control" placeholder="search By Respon1"
               style="width:150px" [(ngModel)]="searchTermRespon1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FONCTION1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Fonction1"
+              <input type="text" nbInput class="form-control" placeholder="search By Fonction1"
               style="width:150px" [(ngModel)]="searchTermFonction1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FAXS</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Faxs"
+              <input type="text" nbInput class="form-control" placeholder="search By Faxs"
               style="width:150px" [(ngModel)]="searchTermFaxs"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ADR_SIEGE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By AdrSiege"
+              <input type="text" nbInput class="form-control" placeholder="search By AdrSiege"
               style="width:150px" [(ngModel)]="searchTermAdrSiege"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RUEL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Ruel"
+              <input type="text" nbInput class="form-control" placeholder="search By Ruel"
               style="width:150px" [(ngModel)]="searchTermRuel"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">NUM_RUEL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By NumRuel"
+              <input type="text" nbInput class="form-control" placeholder="search By NumRuel"
               style="width:150px" [(ngModel)]="searchTermNumRuel"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CPL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Cpl"
+              <input type="text" nbInput class="form-control" placeholder="search By Cpl"
               style="width:150px" [(ngModel)]="searchTermCpl"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">VILLEL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Villel"
+              <input type="text" nbInput class="form-control" placeholder="search By Villel"
               style="width:150px" [(ngModel)]="searchTermVillel"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REGIONL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Regionl"
+              <input type="text" nbInput class="form-control" placeholder="search By Regionl"
               style="width:150px" [(ngModel)]="searchTermRegionl"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TELL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Tell"
+              <input type="text" nbInput class="form-control" placeholder="search By Tell"
               style="width:150px" [(ngModel)]="searchTermTell"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FAXL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Faxl"
+              <input type="text" nbInput class="form-control" placeholder="search By Faxl"
               style="width:150px" [(ngModel)]="searchTermFaxl"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ADR_LIV</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By AdrLiv"
+              <input type="text" nbInput class="form-control" placeholder="search By AdrLiv"
               style="width:150px" [(ngModel)]="searchTermAdrLiv"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REGION</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Region"
+              <input type="text" nbInput class="form-control" placeholder="search By Region"
               style="width:150px" [(ngModel)]="searchTermRegion"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TAXE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Taxe"
+              <input type="text" nbInput class="form-control" placeholder="search By Taxe"
               style="width:150px" [(ngModel)]="searchTermTaxe"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CCB1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Ccb1"
+              <input type="text" nbInput class="form-control" placeholder="search By Ccb1"
               style="width:150px" [(ngModel)]="searchTermCcb1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">BANK1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Bank1"
+              <input type="text" nbInput class="form-control" placeholder="search By Bank1"
               style="width:150px" [(ngModel)]="searchTermBank1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">AGENCE1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Agence1"
+              <input type="text" nbInput class="form-control" placeholder="search By Agence1"
               style="width:150px" [(ngModel)]="searchTermAgence1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">GARANTIES</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Garanties"
+              <input type="text" nbInput class="form-control" placeholder="search By Garanties"
               style="width:150px" [(ngModel)]="searchTermGaranties"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">COD_GRP</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CodGrp"
+              <input type="text" nbInput class="form-control" placeholder="search By CodGrp"
               style="width:150px" [(ngModel)]="searchTermCodGrp"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOD_REG</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ModReg"
+              <input type="text" nbInput class="form-control" placeholder="search By ModReg"
               style="width:150px" [(ngModel)]="searchTermModReg"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">DOM_BAN</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By DomBan"
+              <input type="text" nbInput class="form-control" placeholder="search By DomBan"
               style="width:150px" [(ngModel)]="searchTermDomBan"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ECHEANCE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Echeance"
+              <input type="text" nbInput class="form-control" placeholder="search By Echeance"
               style="width:150px" [(ngModel)]="searchTermEcheance"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CR_MAX</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CrMax"
+              <input type="text" nbInput class="form-control" placeholder="search By CrMax"
               style="width:150px" [(ngModel)]="searchTermCrMax"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">DER_MVT</label>
+            <label class="label">DER_MVT
+              <button (click)="FilterDate5(startDate5,endDate5)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By DetMvt"
-              style="width:150px" [(ngModel)]="searchTermDetMvt"/>
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate5"
+                [nbDatepicker]="dateTimePicker5" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker5></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate5"
+                [nbDatepicker]="formpickertest5" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest5></nb-datepicker>
+              </div> 
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CREDIT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Credit"
+              <input type="text" nbInput class="form-control" placeholder="search By Credit"
               style="width:150px" [(ngModel)]="searchTermCredit"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">PRE_VEN</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By PreVen"
+              <input type="text" nbInput class="form-control" placeholder="search By PreVen"
               style="width:150px" [(ngModel)]="searchTermPreVen"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CUMUL_ACH</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CumulAch"
+              <input type="text" nbInput class="form-control" placeholder="search By CumulAch"
               style="width:150px" [(ngModel)]="searchTermCumulAch"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CHIF_AFF1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ChifAff1"
+              <input type="text" nbInput class="form-control" placeholder="search By ChifAff1"
               style="width:150px" [(ngModel)]="searchTermChifAff1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CHIF_AFF2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ChifAff2"
+              <input type="text" nbInput class="form-control" placeholder="search By ChifAff2"
               style="width:150px" [(ngModel)]="searchTermChifAff2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CHIF_AFF3</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ChifAff3"
+              <input type="text" nbInput class="form-control" placeholder="search By ChifAff3"
               style="width:150px" [(ngModel)]="searchTermChifAff3"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TAUX_REM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By TauxRem"
+              <input type="text" nbInput class="form-control" placeholder="search By TauxRem"
               style="width:150px" [(ngModel)]="searchTermTauxRem"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TAUX_COM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By TauxCom"
+              <input type="text" nbInput class="form-control" placeholder="search By TauxCom"
               style="width:150px" [(ngModel)]="searchTermTauxCom"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RESTE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Reste"
+              <input type="text" nbInput class="form-control" placeholder="search By Reste"
               style="width:150px" [(ngModel)]="searchTermReste"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TAUX_RES</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By TauxRes"
+              <input type="text" nbInput class="form-control" placeholder="search By TauxRes"
               style="width:150px" [(ngModel)]="searchTermTauxRes"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">VAL_RES</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ValRes"
+              <input type="text" nbInput class="form-control" placeholder="search By ValRes"
               style="width:150px" [(ngModel)]="searchTermValRes"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">PATRON</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Patron"
+              <input type="text" nbInput class="form-control" placeholder="search By Patron"
               style="width:150px" [(ngModel)]="searchTermPatron"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RANG</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Rang"
+              <input type="text" nbInput class="form-control" placeholder="search By Rang"
               style="width:150px" [(ngModel)]="searchTermRang"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IMPAYE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Impaye"
+              <input type="text" nbInput class="form-control" placeholder="search By Impaye"
               style="width:150px" [(ngModel)]="searchTermImpaye"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CHQ_IMPAYE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ChqImpaye"
+              <input type="text" nbInput class="form-control" placeholder="search By ChqImpaye"
               style="width:150px" [(ngModel)]="searchTermChqImpaye"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">EF_PORT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By EfPort"
+              <input type="text" nbInput class="form-control" placeholder="search By EfPort"
               style="width:150px" [(ngModel)]="searchTermEfPort"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">EF_BANQUE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By EfBanque"
+              <input type="text" nbInput class="form-control" placeholder="search By EfBanque"
               style="width:150px" [(ngModel)]="searchTermEfBanque"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">EF_NRECU</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By EfNrecu"
+              <input type="text" nbInput class="form-control" placeholder="search By EfNrecu"
               style="width:150px" [(ngModel)]="searchTermEfNrecu"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">AV_COM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By AvCom"
+              <input type="text" nbInput class="form-control" placeholder="search By AvCom"
               style="width:150px" [(ngModel)]="searchTermAvCom"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CAUTION</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Caution"
+              <input type="text" nbInput class="form-control" placeholder="search By Caution"
               style="width:150px" [(ngModel)]="searchTermCaution"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">BENEFICE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Benefice"
+              <input type="text" nbInput class="form-control" placeholder="search By Benefice"
               style="width:150px" [(ngModel)]="searchTermBenefice"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TAUX_BENE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By TauxBene"
+              <input type="text" nbInput class="form-control" placeholder="search By TauxBene"
               style="width:150px" [(ngModel)]="searchTermTauxBene"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REC_FFF</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By RecFff"
+              <input type="text" nbInput class="form-control" placeholder="search By RecFff"
               style="width:150px" [(ngModel)]="searchTermRecFff"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TVA</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Tva"
+              <input type="text" nbInput class="form-control" placeholder="search By Tva"
               style="width:150px" [(ngModel)]="searchTermTva"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CLE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Cle"
+              <input type="text" nbInput class="form-control" placeholder="search By Cle"
               style="width:150px" [(ngModel)]="searchTermCle"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">SOLD_DEP</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By SoldDep"
+              <input type="text" nbInput class="form-control" placeholder="search By SoldDep"
               style="width:150px" [(ngModel)]="searchTermSoldDep"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">INTERET</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Interet"
+              <input type="text" nbInput class="form-control" placeholder="search By Interet"
               style="width:150px" [(ngModel)]="searchTermInteret"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REG_CHQ</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By RegChq"
+              <input type="text" nbInput class="form-control" placeholder="search By RegChq"
               style="width:150px" [(ngModel)]="searchTermRegChq"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REG_EFF</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By RegEff"
+              <input type="text" nbInput class="form-control" placeholder="search By RegEff"
               style="width:150px" [(ngModel)]="searchTermRegEff"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REG_ESP</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By RegEsp"
+              <input type="text" nbInput class="form-control" placeholder="search By RegEsp"
               style="width:150px" [(ngModel)]="searchTermRegEsp"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FAC_INST</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FacInst"
+              <input type="text" nbInput class="form-control" placeholder="search By FacInst"
               style="width:150px" [(ngModel)]="searchTermFacInst"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">AVOIR</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Avoir"
+              <input type="text" nbInput class="form-control" placeholder="search By Avoir"
               style="width:150px" [(ngModel)]="searchTermAvoir"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">EFF_INST</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By EffInst"
+              <input type="text" nbInput class="form-control" placeholder="search By EffInst"
               style="width:150px" [(ngModel)]="searchTermEffInst"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">SOLDE_BQ</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By SoldeBq"
+              <input type="text" nbInput class="form-control" placeholder="search By SoldeBq"
               style="width:150px" [(ngModel)]="searchTermSoldeBq"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CREANCE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Creance"
+              <input type="text" nbInput class="form-control" placeholder="search By Creance"
               style="width:150px" [(ngModel)]="searchTermCreance"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">EFF_ENC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By EffEnc"
+              <input type="text" nbInput class="form-control" placeholder="search By EffEnc"
               style="width:150px" [(ngModel)]="searchTermEffEnc"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">EFF_ESC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By EffEsc"
+              <input type="text" nbInput class="form-control" placeholder="search By EffEsc"
               style="width:150px" [(ngModel)]="searchTermEffEsc"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">COMISSION</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Comission"
+              <input type="text" nbInput class="form-control" placeholder="search By Comission"
               style="width:150px" [(ngModel)]="searchTermComission"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">BLOC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Bloc"
+              <input type="text" nbInput class="form-control" placeholder="search By Bloc"
               style="width:150px" [(ngModel)]="searchTermBloc"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CODE_TVA</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CodeTva"
+              <input type="text" nbInput class="form-control" placeholder="search By CodeTva"
               style="width:150px" [(ngModel)]="searchTermCodeTva"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REM_ORG</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By RemOrg"
+              <input type="text" nbInput class="form-control" placeholder="search By RemOrg"
               style="width:150px" [(ngModel)]="searchTermRemOrg"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">AVANCE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Avance"
+              <input type="text" nbInput class="form-control" placeholder="search By Avance"
               style="width:150px" [(ngModel)]="searchTermAvance"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CHQ_PF</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ChqPf"
+              <input type="text" nbInput class="form-control" placeholder="search By ChqPf"
               style="width:150px" [(ngModel)]="searchTermChqPf"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RETENUE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Retenue"
+              <input type="text" nbInput class="form-control" placeholder="search By Retenue"
               style="width:150px" [(ngModel)]="searchTermRetenue"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REG_VIR</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By RegVir"
+              <input type="text" nbInput class="form-control" placeholder="search By RegVir"
               style="width:150px" [(ngModel)]="searchTermRegVir"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">AV_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By AvN1"
+              <input type="text" nbInput class="form-control" placeholder="search By AvN1"
               style="width:150px" [(ngModel)]="searchTermAvN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CLASSE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Classe"
+              <input type="text" nbInput class="form-control" placeholder="search By Classe"
               style="width:150px" [(ngModel)]="searchTermClasse"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RISTOURNE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Ristourne"
+              <input type="text" nbInput class="form-control" placeholder="search By Ristourne"
               style="width:150px" [(ngModel)]="searchTermRistourne"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CA_PREV</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CaPrev"
+              <input type="text" nbInput class="form-control" placeholder="search By CaPrev"
               style="width:150px" [(ngModel)]="searchTermCaPrev"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">SOLDE_CPF</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By SoldeCpf"
+              <input type="text" nbInput class="form-control" placeholder="search By SoldeCpf"
               style="width:150px" [(ngModel)]="searchTermSoldeCpf"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">SOLDE_IMP</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By SoldeImp"
+              <input type="text" nbInput class="form-control" placeholder="search By SoldeImp"
               style="width:150px" [(ngModel)]="searchTermSoldeImp"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">SOLDE_EPF</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By SoldeEpf"
+              <input type="text" nbInput class="form-control" placeholder="search By SoldeEpf"
               style="width:150px" [(ngModel)]="searchTermSoldeEpf"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">DAT_F_FAC</label>
+            <label class="label">DAT_F_FAC<button (click)="FilterDate6(startDate6,endDate6)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate6"
+                [nbDatepicker]="dateTimePicker6" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker6></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate6"
+                [nbDatepicker]="formpickertest6" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest6></nb-datepicker>
+              </div> 
+            </div>
           </th>
           <th style="text-align: center">
             <label class="label">DAT_G_FAC</label>
@@ -766,210 +942,210 @@
           <th style="text-align: center">
             <label class="label">CA_MENS</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CaMens"
+              <input type="text" nbInput class="form-control" placeholder="search By CaMens"
               style="width:150px" [(ngModel)]="searchTermCaMens"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CR_IMAX</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CrImax"
+              <input type="text" nbInput class="form-control" placeholder="search By CrImax"
               style="width:150px" [(ngModel)]="searchTermCrImax"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FCRE_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FcreN1"
+              <input type="text" nbInput class="form-control" placeholder="search By FcreN1"
               style="width:150px" [(ngModel)]="searchTermFcreN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FCRE_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FcreN2"
+              <input type="text" nbInput class="form-control" placeholder="search By FcreN2"
               style="width:150px" [(ngModel)]="searchTermFcreN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FREGL_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FreglN1"
+              <input type="text" nbInput class="form-control" placeholder="search By FreglN1"
               style="width:150px" [(ngModel)]="searchTermFreglN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FREGL_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FreglN2"
+              <input type="text" nbInput class="form-control" placeholder="search By FreglN2"
               style="width:150px" [(ngModel)]="searchTermFreglN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FESC_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FescN1"
+              <input type="text" nbInput class="form-control" placeholder="search By FescN1"
               style="width:150px" [(ngModel)]="searchTermFescN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FESC_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FescN2"
+              <input type="text" nbInput class="form-control" placeholder="search By FescN2"
               style="width:150px" [(ngModel)]="searchTermFescN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FBK_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FbkN1"
+              <input type="text" nbInput class="form-control" placeholder="search By FbkN1"
               style="width:150px" [(ngModel)]="searchTermFbkN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FBK_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FbkN2"
+              <input type="text" nbInput class="form-control" placeholder="search By FbkN2"
               style="width:150px" [(ngModel)]="searchTermFbkN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FEFP_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FefpN1"
+              <input type="text" nbInput class="form-control" placeholder="search By FefpN1"
               style="width:150px" [(ngModel)]="searchTermFefpN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FEFP_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FefpN2"
+              <input type="text" nbInput class="form-control" placeholder="search By FefpN2"
               style="width:150px" [(ngModel)]="searchTermFefpN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FCHP_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FchpN1"
+              <input type="text" nbInput class="form-control" placeholder="search By FchpN1"
               style="width:150px" [(ngModel)]="searchTermFchpN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FCHP_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FchpN2"
+              <input type="text" nbInput class="form-control" placeholder="search By FchpN2"
               style="width:150px" [(ngModel)]="searchTermFchpN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FEFNR_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FefnrN1"
+              <input type="text" nbInput class="form-control" placeholder="search By FefnrN1"
               style="width:150px" [(ngModel)]="searchTermFefnrN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">FEFNR_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By FefnrN2"
+              <input type="text" nbInput class="form-control" placeholder="search By FefnrN2"
               style="width:150px" [(ngModel)]="searchTermFefnrN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ICRE_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IcreN1"
+              <input type="text" nbInput class="form-control" placeholder="search By IcreN1"
               style="width:150px" [(ngModel)]="searchTermIcreN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ICRE_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IcreN2"
+              <input type="text" nbInput class="form-control" placeholder="search By IcreN2"
               style="width:150px" [(ngModel)]="searchTermIcreN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IREGL_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IreglN1"
+              <input type="text" nbInput class="form-control" placeholder="search By IreglN1"
               style="width:150px" [(ngModel)]="searchTermIreglN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IREGL_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IreglN2"
+              <input type="text" nbInput class="form-control" placeholder="search By IreglN2"
               style="width:150px" [(ngModel)]="searchTermIreglN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IESC_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IescN1"
+              <input type="text" nbInput class="form-control" placeholder="search By IescN1"
               style="width:150px" [(ngModel)]="searchTermIescN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IESC_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IescN2"
+              <input type="text" nbInput class="form-control" placeholder="search By IescN2"
               style="width:150px" [(ngModel)]="searchTermIescN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IBK_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IbkN1"
+              <input type="text" nbInput class="form-control" placeholder="search By IbkN1"
               style="width:150px" [(ngModel)]="searchTermIbkN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IBK_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IbkN2"
+              <input type="text" nbInput class="form-control" placeholder="search By IbkN2"
               style="width:150px" [(ngModel)]="searchTermIbkN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IEFP_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IefpN1"
+              <input type="text" nbInput class="form-control" placeholder="search By IefpN1"
               style="width:150px" [(ngModel)]="searchTermIefpN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IEFP_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IefpN2"
+              <input type="text" nbInput class="form-control" placeholder="search By IefpN2"
               style="width:150px" [(ngModel)]="searchTermIefpN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ICHP_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IchpN1"
+              <input type="text" nbInput class="form-control" placeholder="search By IchpN1"
               style="width:150px" [(ngModel)]="searchTermIchpN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ICHP_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IchpN2"
+              <input type="text" nbInput class="form-control" placeholder="search By IchpN2"
               style="width:150px" [(ngModel)]="searchTermIchpN2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IEFNR_N1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IefnrN1"
+              <input type="text" nbInput class="form-control" placeholder="search By IefnrN1"
               style="width:150px" [(ngModel)]="searchTermIefnrN1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">IEFNR_N2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By IefnrN2"
+              <input type="text" nbInput class="form-control" placeholder="search By IefnrN2"
               style="width:150px" [(ngModel)]="searchTermIefnrN2"/>
             </div>
           </th>
@@ -979,140 +1155,140 @@
           <th style="text-align: center">
             <label class="label">COMMAND</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Command"
+              <input type="text" nbInput class="form-control" placeholder="search By Command"
               style="width:150px" [(ngModel)]="searchTermCommand"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REM_EXP</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By RemExp"
+              <input type="text" nbInput class="form-control" placeholder="search By RemExp"
               style="width:150px" [(ngModel)]="searchTermRemExp"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CHEF_MAG</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ChefMag"
+              <input type="text" nbInput class="form-control" placeholder="search By ChefMag"
               style="width:150px" [(ngModel)]="searchTermChefMag"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">JOUR_VISIT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By JourVisit"
+              <input type="text" nbInput class="form-control" placeholder="search By JourVisit"
               style="width:150px" [(ngModel)]="searchTermJourVisit"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">INSTANCE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Instance"
+              <input type="text" nbInput class="form-control" placeholder="search By Instance"
               style="width:150px" [(ngModel)]="searchTermInstance"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">COMPTANT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Comptant"
+              <input type="text" nbInput class="form-control" placeholder="search By Comptant"
               style="width:150px" [(ngModel)]="searchTermComptant"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">BL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Bl"
+              <input type="text" nbInput class="form-control" placeholder="search By Bl"
               style="width:150px" [(ngModel)]="searchTermBl"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">NAT_LIV</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By NatLiv"
+              <input type="text" nbInput class="form-control" placeholder="search By NatLiv"
               style="width:150px" [(ngModel)]="searchTermNatLiv"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois1"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois1"
               style="width:150px" [(ngModel)]="searchTermMois1"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois2"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois2"
               style="width:150px" [(ngModel)]="searchTermMois2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS3</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois3"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois3"
               style="width:150px" [(ngModel)]="searchTermMois3"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS4</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois4"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois4"
               style="width:150px" [(ngModel)]="searchTermMois4"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS5</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois5"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois5"
               style="width:150px" [(ngModel)]="searchTermMois5"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS6</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois6"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois6"
               style="width:150px" [(ngModel)]="searchTermMois6"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS7</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois7"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois7"
               style="width:150px" [(ngModel)]="searchTermMois7"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS8</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois8"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois8"
               style="width:150px" [(ngModel)]="searchTermMois8"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS9</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By MoiS9"
+              <input type="text" nbInput class="form-control" placeholder="search By MoiS9"
               style="width:150px" [(ngModel)]="searchTermMois9"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS10</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois10"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois10"
               style="width:150px" [(ngModel)]="searchTermMois10"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS11</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois11"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois11"
               style="width:150px" [(ngModel)]="searchTermMois11"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MOIS12</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Mois12"
+              <input type="text" nbInput class="form-control" placeholder="search By Mois12"
               style="width:150px" [(ngModel)]="searchTermMois12"/>
             </div>
           </th>
@@ -1122,49 +1298,49 @@
           <th style="text-align: center">
             <label class="label">MARGE_POUR</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By MargePour"
+              <input type="text" nbInput class="form-control" placeholder="search By MargePour"
               style="width:150px" [(ngModel)]="searchTermMargePour"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MARGE_VAL</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By MargeVal"
+              <input type="text" nbInput class="form-control" placeholder="search By MargeVal"
               style="width:150px" [(ngModel)]="searchTermMargeVal"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CREDBL_ENC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CredblEnc"
+              <input type="text" nbInput class="form-control" placeholder="search By CredblEnc"
               style="width:150px" [(ngModel)]="searchTermCredblEnc"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CREDINSTEC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Credinstec"
+              <input type="text" nbInput class="form-control" placeholder="search By Credinstec"
               style="width:150px" [(ngModel)]="searchTermCredinstec"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">OBSERVATIO</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Observatio"
+              <input type="text" nbInput class="form-control" placeholder="search By Observatio"
               style="width:150px" [(ngModel)]="searchTermObservatio"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">OBSERV</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Observ"
+              <input type="text" nbInput class="form-control" placeholder="search By Observ"
               style="width:150px" [(ngModel)]="searchTermObserv"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">GOUV1</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Gouv1"
+              <input type="text" nbInput class="form-control" placeholder="search By Gouv1"
               style="width:150px" [(ngModel)]="searchTermGouv1"/>
             </div>
             
@@ -1172,98 +1348,98 @@
           <th style="text-align: center">
             <label class="label">GOUV2</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Gouv2"
+              <input type="text" nbInput class="form-control" placeholder="search By Gouv2"
               style="width:150px" [(ngModel)]="searchTermGouv2"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">NATCAUTION</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Natcaution"
+              <input type="text" nbInput class="form-control" placeholder="search By Natcaution"
               style="width:150px" [(ngModel)]="searchTermNatcaution"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CHEQUE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Cheque"
+              <input type="text" nbInput class="form-control" placeholder="search By Cheque"
               style="width:150px" [(ngModel)]="searchTermCheque"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">ESPECE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Espece"
+              <input type="text" nbInput class="form-control" placeholder="search By Espece"
               style="width:150px" [(ngModel)]="searchTermEspece"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TRAITE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Traite"
+              <input type="text" nbInput class="form-control" placeholder="search By Traite"
               style="width:150px" [(ngModel)]="searchTermTraite"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CR_REF</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CrRef"
+              <input type="text" nbInput class="form-control" placeholder="search By CrRef"
               style="width:150px" [(ngModel)]="searchTermCrRef"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">SOLD_TERM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By SoldTerm"
+              <input type="text" nbInput class="form-control" placeholder="search By SoldTerm"
               style="width:150px" [(ngModel)]="searchTermSoldTerm"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CHQ_IMP</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By ChqImp"
+              <input type="text" nbInput class="form-control" placeholder="search By ChqImp"
               style="width:150px" [(ngModel)]="searchTermChqImp"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CRI_REF</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CriRef"
+              <input type="text" nbInput class="form-control" placeholder="search By CriRef"
               style="width:150px" [(ngModel)]="searchTermCriRef"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REM_FAM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By RemFam"
+              <input type="text" nbInput class="form-control" placeholder="search By RemFam"
               style="width:150px" [(ngModel)]="searchTermRemFam"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">REGLEMENT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Reglement"
+              <input type="text" nbInput class="form-control" placeholder="search By Reglement"
               style="width:150px" [(ngModel)]="searchTermReglement"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">DELAI</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Delai"
+              <input type="text" nbInput class="form-control" placeholder="search By Delai"
               style="width:150px" [(ngModel)]="searchTermDelai"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">NB_TRANCHE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By NbTranche"
+              <input type="text" nbInput class="form-control" placeholder="search By NbTranche"
               style="width:150px" [(ngModel)]="searchTermNbTranche"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">COD_STEQ</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CodSteq"
+              <input type="text" nbInput class="form-control" placeholder="search By CodSteq"
               style="width:150px" [(ngModel)]="searchTermCodSteq"/>
             </div>
           </th>
@@ -1271,32 +1447,32 @@
           <th style="text-align: center">
             <label class="label">REFERENCE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By Reference"
+              <input type="text" nbInput class="form-control" placeholder="search By Reference"
               style="width:150px" [(ngModel)]="searchTermReference"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">SANS_RET</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By SansRet"
+              <input type="text" nbInput class="form-control" placeholder="search By SansRet"
               style="width:150px" [(ngModel)]="searchTermSansRet"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CLI_GROUP</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By CliGroup"
+              <input type="text" nbInput class="form-control" placeholder="search By CliGroup"
               style="width:150px" [(ngModel)]="searchTermCliGroup"/>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TAUX_MARGE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search By TauxMarge"
+              <input type="text" nbInput class="form-control" placeholder="search By TauxMarge"
               style="width:150px" [(ngModel)]="searchTermTauxMarge"/>
             </div>
           </th>
-          <th *ngIf="authority==('ROLE_ADMIN')" style="text-align: center">
+          <th *ngIf="authority==='ROLE_ADMIN'" style="text-align: center">
             <label class="label">Actions</label>
           </th>
 
@@ -1307,13 +1483,13 @@
           
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{utilisateur.firstname}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{utilisateur.lastname}}</p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span><p>- - - - - -</p></span><button *ngIf="authority==('ROLE_ADMIN')" nbButton (click)="OpenShowUsernamePopap(utilisateur.username)" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline>afficher Nom d'utilisateur</button></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>- - - - - -</p></span><button *ngIf="authority==='ROLE_ADMIN'" nbButton (click)="OpenShowUsernamePopap(utilisateur.username)" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline>afficher Nom d'utilisateur</button></td>
           <div *ngIf="utilisateur.fileName">
-            <td style="text-align: center" class="field-multiple-drag"><img (click)="showModalDialogUserTable2(utilisateur.id)" src="{{this.utilisateurService.host+'/api/Imgusers/'+utilisateur.id}}" width="32" style="vertical-align: middle" /></td>
+            <td style="text-align: center" class="field-multiple-drag"><img (click)="showModalDialogUserTable2(utilisateur.id)" src="{{this.utilisateurService.host+'/'+utilisateur.codUser+'/'+utilisateur.fileName}}" width="32" style="vertical-align: middle" /></td>
             <div *ngIf="displayModalUserTable2==true">
-              <p-dialog header="{{util.lastname}} {{util.firstname}}" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              <p-dialog *ngIf="util" header="{{util.lastname}} {{util.firstname}}" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                             [draggable]="false" [resizable]="false">
-                            <p style="text-align: center" class="field-multiple-drag"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+image_id}}" style="width:250px;" /></p>
+                            <p style="text-align: center" class="field-multiple-drag"><img src="{{this.utilisateurService.host+'/'+util.codUser+'/'+util.fileName}}" style="width:250px;" /></p>
                             
                               <div style="text-align: center" class="field-multiple-drag">
                                 <li>                
@@ -1330,27 +1506,38 @@
             <div *ngIf="utilisateur.fileName==null">
               <td class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label>Aucune!</label></td>
             </div>
-          <td style="text-align: center" class="field-multiple-drag"><span><p>- - - - - -</p></span><button *ngIf="authority==('ROLE_ADMIN')" nbButton (click)="OpenShowPasswordPopap(utilisateur.showPassword)" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline>afficher mot de passe</button></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>- - - - - -</p></span><button *ngIf="authority==='ROLE_ADMIN'" nbButton (click)="OpenShowPasswordPopap(utilisateur.showPassword)" type="button" status="success" size="tiny" shape="round" class="btn btn-md btn-outline-success" outline>afficher mot de passe</button></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.email!=null"><p>{{utilisateur.email}}</p></span><span *ngIf="utilisateur.email==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateDeNaissance!=null"><p>{{utilisateur.dateDeNaissance}}</p></span><span *ngIf="utilisateur.dateDeNaissance==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td *ngIf="authority==('ROLE_ADMIN')" style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.cin!=null && utilisateur.cin!=0"><p>{{utilisateur.cin}}</p></span><span *ngIf="utilisateur.cin==null || utilisateur.cin==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateDeNaissance!=null"><p>{{utilisateur.dateDeNaissance  | date: 'MMM d, y '}}</p></span><span *ngIf="utilisateur.dateDeNaissance==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td *ngIf="authority==='ROLE_ADMIN'" style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.cin!=null && utilisateur.cin!=0"><p>{{utilisateur.cin}}</p></span><span *ngIf="utilisateur.cin==null || utilisateur.cin==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.address!=null"><p>{{utilisateur.address}}</p></span><span *ngIf="utilisateur.address==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td *ngIf="authority==('ROLE_ADMIN')" style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.cps!=null && utilisateur.cps!=0"><p>{{utilisateur.cps}}</p></span><span *ngIf="utilisateur.cps==null || utilisateur.cps==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td *ngIf="authority==='ROLE_ADMIN'" style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.cps!=null && utilisateur.cps!=0"><p>{{utilisateur.cps}}</p></span><span *ngIf="utilisateur.cps==null || utilisateur.cps==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.telephone!=null && utilisateur.telephone!=0"><p>{{utilisateur.telephone}}</p></span><span *ngIf="utilisateur.telephone==null || utilisateur.telephone==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.pseudo!=null"><p>{{utilisateur.pseudo}}</p></span><span *ngIf="utilisateur.pseudo==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateRec!=null"><p>{{utilisateur.dateRec}}</p></span><span *ngIf="utilisateur.dateRec==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateRec!=null"><p>{{utilisateur.dateRec  | date: 'MMM d, y '}}</p></span><span *ngIf="utilisateur.dateRec==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.typeContrat!=null"><p>{{utilisateur.typeContrat}}</p></span><span *ngIf="utilisateur.typeContrat==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateContrat!=null"><p>{{utilisateur.dateContrat}}</p></span><span *ngIf="utilisateur.dateContrat==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateContrat!=null"><p>{{utilisateur.dateContrat  | date: 'MMM d, y '}}</p></span><span *ngIf="utilisateur.dateContrat==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.famille!=null"><p>{{utilisateur.famille}}</p></span><span *ngIf="utilisateur.famille==null"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.salaire!=null && utilisateur.salaire!=0"><p>{{utilisateur.salaire}}</p></span><span *ngIf="utilisateur.salaire==null || utilisateur.salaire==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          
+          <td style="text-align: center" class="field-multiple-drag">
+            <div class="blink">
+              <span *ngIf="utilisateur.connected>0"><button style="border-radius: 0.75rem;width: 90px;height: 35px;" nbButton type="button" [status]="success" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-success" disabled outline>
+                Actif</button></span>
+              <span *ngIf="utilisateur.connected===0"><button style="border-radius: 0.75rem;width: 90px;height: 35px;" nbButton type="button" [status]="danger" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-danger" disabled outline>
+                inactif</button></span>
+            </div>
+          </td>
+          
+          
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.primeDeRendement!=null && utilisateur.primeDeRendement!=0"><p>{{utilisateur.primeDeRendement}}</p></span><span *ngIf="utilisateur.primeDeRendement==null || utilisateur.primeDeRendement==0 || utilisateur.primeDeRendement==0.0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.heuresDeTravail!=null"><p>{{utilisateur.heuresDeTravail}}</p></span><span *ngIf="utilisateur.heuresDeTravail==null || utilisateur.heuresDeTravail==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
 
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.venteParHeure!=null && utilisateur.venteParHeure!=0"><p>{{utilisateur.venteParHeure}}</p></span><span *ngIf="utilisateur.venteParHeure==null || utilisateur.venteParHeure==0 || utilisateur.venteParHeure==0.0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.objectifParJour!=null && utilisateur.objectifParJour!=0"><p>{{utilisateur.objectifParJour}}</p></span><span *ngIf="utilisateur.objectifParJour==null || utilisateur.objectifParJour==0 || utilisateur.objectifParJour==0.0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.objectifParMois!=null && utilisateur.objectifParMois!=0"><p>{{utilisateur.objectifParMois}}</p></span><span *ngIf="utilisateur.objectifParMois==null || utilisateur.objectifParMois==0 || utilisateur.objectifParMois==0.0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateDebutConge!=null"><p>{{utilisateur.dateDebutConge}}</p></span><span *ngIf="utilisateur.dateDebutConge==null || utilisateur.dateDebutConge==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateFinConge!=null"><p>{{utilisateur.dateFinConge}}</p></span><span *ngIf="utilisateur.dateFinConge==null || utilisateur.dateFinConge==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateDebutConge!=null"><p>{{utilisateur.dateDebutConge  | date: 'MMM d, y '}}</p></span><span *ngIf="utilisateur.dateDebutConge==null || utilisateur.dateDebutConge==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.dateFinConge!=null"><p>{{utilisateur.dateFinConge  | date: 'MMM d, y '}}</p></span><span *ngIf="utilisateur.dateFinConge==null || utilisateur.dateFinConge==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.typeConge!=null"><p>{{utilisateur.typeConge}}</p></span><span *ngIf="utilisateur.typeConge==null || utilisateur.typeConge==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.primeDev!=null && utilisateur.primeDev!=0"><p>{{utilisateur.primeDev}}</p></span><span *ngIf="utilisateur.primeDev==null || utilisateur.primeDev==0 || utilisateur.primeDev==0.0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.primeGlobal!=null && utilisateur.primeGlobal!=0"><p>{{utilisateur.primeGlobal}}</p></span><span *ngIf="utilisateur.primeGlobal==null || utilisateur.primeGlobal==0 || utilisateur.primeGlobal==0.0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
@@ -1383,7 +1570,7 @@
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.domBan!=null"><p>{{utilisateur.domBan}}</p></span><span *ngIf="utilisateur.domBan==null || utilisateur.domBan==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.echeance!=null"><p>{{utilisateur.echeance}}</p></span><span *ngIf="utilisateur.echeance==null || utilisateur.echeance==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.crMax!=null"><p>{{utilisateur.crMax}}</p></span><span *ngIf="utilisateur.crMax==null || utilisateur.crMax==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.derMvt!=null"><p>{{utilisateur.derMvt}}</p></span><span *ngIf="utilisateur.derMvt==null || utilisateur.derMvt==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.derMvt!=null"><p>{{utilisateur.derMvt  | date: 'MMM d, y '}}</p></span><span *ngIf="utilisateur.derMvt==null || utilisateur.derMvt==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.credit!=null"><p>{{utilisateur.credit}}</p></span><span *ngIf="utilisateur.credit==null || utilisateur.credit==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.preVen!=null"><p>{{utilisateur.preVen}}</p></span><span *ngIf="utilisateur.preVen==null || utilisateur.preVen==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.cumulAch!=null"><p>{{utilisateur.cumulAch}}</p></span><span *ngIf="utilisateur.cumulAch==null || utilisateur.cumulAch==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
@@ -1436,7 +1623,7 @@
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.soldeCpf!=null"><p>{{utilisateur.soldeCpf}}</p></span><span *ngIf="utilisateur.soldeCpf==null || utilisateur.soldeCpf==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.soldeImp!=null"><p>{{utilisateur.soldeImp}}</p></span><span *ngIf="utilisateur.soldeImp==null || utilisateur.soldeImp==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.soldeEpf!=null"><p>{{utilisateur.soldeEpf}}</p></span><span *ngIf="utilisateur.soldeEpf==null || utilisateur.soldeEpf==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.datFFac!=null"><p>{{utilisateur.datFFac}}</p></span><span *ngIf="utilisateur.datFFac==null || utilisateur.datFFac==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.datFFac!=null"><p>{{utilisateur.datFFac  | date: 'MMM d, y '}}</p></span><span *ngIf="utilisateur.datFFac==null || utilisateur.datFFac==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.datGFac!=null"><p>{{utilisateur.datGFac}}</p></span><span *ngIf="utilisateur.datGFac==null || utilisateur.datGFac==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.caMens!=null"><p>{{utilisateur.caMens}}</p></span><span *ngIf="utilisateur.caMens==null || utilisateur.caMens==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.crImax!=null"><p>{{utilisateur.crImax}}</p></span><span *ngIf="utilisateur.crImax==null || utilisateur.crImax==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
@@ -1474,8 +1661,8 @@
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.chefMag!=null"><p>{{utilisateur.chefMag}}</p></span><span *ngIf="utilisateur.chefMag==null || utilisateur.chefMag==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.jourVisit!=null"><p>{{utilisateur.jourVisit}}</p></span><span *ngIf="utilisateur.jourVisit==null || utilisateur.jourVisit==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.instance!=null"><p>{{utilisateur.instance}}</p></span><span *ngIf="utilisateur.instance==null || utilisateur.instance==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.comptant!=null"><p>{{utilisateur.comptant}}</p></span><span *ngIf="utilisateur.comptant==null || utilisateur.comptant==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.bl!=null"><p>{{utilisateur.bl}}</p></span><span *ngIf="utilisateur.bl==null || utilisateur.bl==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.comptant!=null && utilisateur.comptant!=0"><p>{{utilisateur.comptant}}</p></span><span *ngIf="utilisateur.comptant==null || utilisateur.comptant==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.bl!=null && utilisateur.bl!=0"><p>{{utilisateur.bl}}</p></span><span *ngIf="utilisateur.bl==null || utilisateur.bl==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.natLiv!=null"><p>{{utilisateur.natLiv}}</p></span><span *ngIf="utilisateur.natLiv==null || utilisateur.natLiv==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.mois1!=null"><p>{{utilisateur.mois1}}</p></span><span *ngIf="utilisateur.mois1==null || utilisateur.mois1==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.mois2!=null"><p>{{utilisateur.mois2}}</p></span><span *ngIf="utilisateur.mois2==null || utilisateur.mois2==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
@@ -1517,13 +1704,11 @@
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.cliGroup!=null"><p>{{utilisateur.cliGroup}}</p></span><span *ngIf="utilisateur.cliGroup==null || utilisateur.cliGroup==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span *ngIf="utilisateur.tauxMarge!=null"><p>{{utilisateur.tauxMarge}}</p></span><span *ngIf="utilisateur.tauxMarge==null || utilisateur.tauxMarge==0"><p class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
 
-          <td *ngIf="authority==('ROLE_ADMIN')" class="field-multiple-drag">
+          <td *ngIf="authority==='ROLE_ADMIN'" class="field-multiple-drag">
             <div class="buttons-row">
-              <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" outline>
-              <i class="fa fa-search"></i>Details</button>
               <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(utilisateur.id)"  outline>
               <i class="fa fa-edit"></i>Modifier</button>
-              <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" outline>
+              <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(utilisateur.id)" outline>
               <i class="fa fa-remove"></i>Supprimer</button>
             </div>
           </td>

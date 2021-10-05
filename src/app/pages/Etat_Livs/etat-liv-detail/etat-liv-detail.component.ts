@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Chronometer, StatusChonometer } from 'ngx-chronometer';
@@ -26,8 +27,10 @@ export class EtatLivDetailComponent implements OnInit {
 
   activityValues: number[] = [0, 100];
   chronometers: Array<Chronometer> = Array<Chronometer>();
-  constructor(private authService: TokenStorageService,private etatlivService: EtatLivService , private router : Router,private _Activatedroute :ActivatedRoute) { }
+  constructor(public datepipe: DatePipe, private authService: TokenStorageService,private etatlivService: EtatLivService , private router : Router,private _Activatedroute :ActivatedRoute) { }
 
+
+  starterCrono:string;
   ngOnInit() {
     
     this.etatliv = new Etat_liv();
@@ -36,30 +39,34 @@ export class EtatLivDetailComponent implements OnInit {
 
     this.etatlivService.getEtat_liv(this.id).subscribe(data => {
       this.etatliv = data;
+      let datetest = this.datepipe.transform(this.etatliv.date,'yyyy-MM-dd hh:mm:ss')
+      this.starterCrono = datetest;
+      this.etatlivService.getEtatCronometre(this.starterCrono).subscribe(data2 => {
+        this.starterCrono = data2;
+
+        if(this.etatliv.confirmation!="recu_est_verifier"){
+          this.chronometers = new Array<Chronometer>(
+            new Chronometer({
+                id: 3,
+                status: StatusChonometer.start,
+                second: this.starterCrono,
+            })
+          );
+        }else{
+          this.chronometers = new Array<Chronometer>(
+            new Chronometer({
+                id: 3,
+                status: StatusChonometer.pause,
+                second: this.starterCrono,
+            })
+          );
+        }
+
+
+    })
       this.loading = false;
       console.log(data)
     });
-
-
-
-    this.chronometers = new Array<Chronometer>(
-      new Chronometer({
-          id: 1,
-          status: StatusChonometer.start
-      }),
-      new Chronometer({
-          id: 2,
-          second: 400,
-          limitSecond: 1200  // limit second pause the chronometer
-      }),
-      new Chronometer({
-          id: 3,
-          status: StatusChonometer.start,
-          maxSecond: 20, // default 60
-          maxMinute: 40, // default 60
-          maxHour: 60 // default 60
-      })
-  );
   }
 
   run(chronometer: Chronometer, status: StatusChonometer) {

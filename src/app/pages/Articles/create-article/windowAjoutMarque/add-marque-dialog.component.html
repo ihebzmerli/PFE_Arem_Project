@@ -31,13 +31,15 @@
         <div class="form-row">
           <div class="form-group col">
             <label for="poste" class="label">Ajouter Image</label><p>
-            <input type="file" accept="image/*" (change)="onSelectFile($event)"/>
+            <input type="file" accept="image/jpeg || image/png" (change)="onSelectFile($event)"/>
           </div>
         </div>
         
       <div class="row">
         <div class="form-group">
-          <img [src]="imgURL" height="100" *ngIf="imgURL">
+          <nb-card-body>
+            <img [src]="imgURL" height="100" *ngIf="imgURL">
+          </nb-card-body>
         </div>
       </div>
       <!--------upload img------->

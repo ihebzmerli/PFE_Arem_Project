@@ -39,6 +39,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import {CalendarModule} from 'primeng/calendar';
 import { ShowPasswordDialogComponent } from './utilisateur-list/showPassword/show-password-dialog.component';
+import { DeleteUtilisateurDialogComponent } from './utilisateur-list/delete-dialog/delete-utilisateur-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { ShowPasswordDialogComponent } from './utilisateur-list/showPassword/sho
     CreateUtilisateurComponent,
     UtilisateurListComponent,
     UpdateUtilisateurComponent,
+    DeleteUtilisateurDialogComponent,
     ChartjsUtilisateurBarComponent,
     ChartjsUtilisateurBar2Component,
     ChartjsUtilisateurComponent,

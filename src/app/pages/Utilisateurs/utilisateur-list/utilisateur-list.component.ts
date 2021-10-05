@@ -13,11 +13,27 @@ import { NbComponentShape, NbComponentSize, NbComponentStatus, NbDialogService ,
 import { ShowPasswordDialogComponent } from './showPassword/show-password-dialog.component';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DeleteUtilisateurDialogComponent } from './delete-dialog/delete-utilisateur-dialog.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-utilisateur-list',
   templateUrl: './utilisateur-list.component.html',
-  styleUrls: ['./utilisateur-list.component.scss']
+  styleUrls: ['./utilisateur-list.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('in', style({ opacity: 1 })),
+      state('out', style({ opacity: 0 })),
+      transition('in => out',[ style({ opacity: 0 }), animate(600) ]),
+      transition('out => in', animate(600, style({ opacity: 0 })))
+    ]),
+    trigger('fade', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [ style({ opacity: 0 }), animate(600) ]),
+      transition(':leave', animate(600, style({ opacity: 0 })))
+    ])
+  ]
 })
 export class UtilisateurListComponent implements OnInit {
 
@@ -2007,20 +2023,27 @@ export class UtilisateurListComponent implements OnInit {
 //** */
   /****************Filtrage des donner ***************/
   constructor(private authService: TokenStorageService,private dialogService: NbDialogService, private utilisateurService: UtilisateurService,
-    private router: Router,private service: SmartTableData) {
+    private router: Router,private service: SmartTableData,public datepipe: DatePipe) {
 
     }
 
 
 /*  affichage all utilisateur ****************/
 authority;
+connexionEtat:any;
 ngOnInit(): void {
   this.authService.getAuthorities().forEach(authority => {
-    this.authority=authority;
+    this.authority=authority.toString();
     console.log(this.authority);
   });
   this.getUtilisateurs();
   console.log(this.utilisateurs)
+
+
+  this.connexionEtat= [
+    {label: 'inactif', value: 0},
+    {label: 'actif', value: 1}
+]
 }
 
 private getUtilisateurs() {
@@ -2030,15 +2053,6 @@ private getUtilisateurs() {
   });
 }
 /*  affichage all utilisateur ****************/
-
-  deleteUtilisateur(user_id: bigint) {
-    this.utilisateurService.deleteUtilisateur(user_id)
-      .subscribe(
-        data => {
-          console.log(data);
-        },
-        error => console.log('ERROR: ' + error));
-  }
 
   utilisateurDetails(NUM_BON: bigint){
     this.router.navigate(['details', NUM_BON]);
@@ -2078,10 +2092,11 @@ private getUtilisateurs() {
 
   /* delete popap*/
 
-  OpenDeletePopap() {
-    this.dialogService.open(DeletePrimeDialogComponent, {
+  idU:any;
+  OpenDeletePopap(idU) {
+    this.dialogService.open(DeleteUtilisateurDialogComponent, {
       context: {
-        title: 'This is a title passed to the dialog component',
+        title: idU,
       },
     });
   }
@@ -2110,4 +2125,169 @@ goToModifier(id: string ){
         },
       });
     }
+
+
+    displayAnnimationConnected:boolean;
+/* filter by suer actif */
+    getAllListEtat(selectedItems1: any){
+      if(selectedItems1!==null){
+         return this.filteredUtilisateurs = this.utilisateurs.filter(Obj => 
+          Obj.connected !== null &&  Obj.connected ==selectedItems1);
+        }else{
+          this.getUtilisateurs();
+        }
+    }
+
+
+
+
+    /***filtrage date */
+
+  startDate;
+  endDate;
+  testStatus :number = 1;
+  FilterDate(startDate,endDate){
+    console.log(startDate,endDate)
+    if (startDate !=null && endDate!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.utilisateurService.getAllUserdate_de_naissanceBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredUtilisateurs = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getUtilisateurs();
+    this.testStatus = 1
+  }
+}
+
+startDate1;
+endDate1;
+FilterDate1(startDate1,endDate1){
+  console.log(startDate1,endDate1)
+  if (startDate1 !=null && endDate1!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate1, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate1, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.utilisateurService.getAllUserdate_recBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredUtilisateurs = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getUtilisateurs();
+  this.testStatus = 1
+}
+}
+
+startDate2;
+endDate2;
+FilterDate2(startDate2,endDate2){
+  console.log(startDate2,endDate2)
+  if (startDate2 !=null && endDate2!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate2, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate2, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.utilisateurService.getAllUserdate_contratBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredUtilisateurs = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getUtilisateurs();
+  this.testStatus = 1
+}
+}
+
+startDate3;
+endDate3;
+FilterDate3(startDate3,endDate3){
+  console.log(startDate3,endDate3)
+  if (startDate3 !=null && endDate3!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate3, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate3, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.utilisateurService.getAllUserdate_debut_congeBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredUtilisateurs = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getUtilisateurs();
+  this.testStatus = 1
+}
+}
+
+startDate4;
+endDate4;
+FilterDate4(startDate4,endDate4){
+  console.log(startDate4,endDate4)
+  if (startDate4 !=null && endDate4!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate4, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate4, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.utilisateurService.getAllUserdate_fin_congeBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredUtilisateurs = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getUtilisateurs();
+  this.testStatus = 1
+}
+}
+
+startDate5;
+endDate5;
+FilterDate5(startDate5,endDate5){
+  console.log(startDate5,endDate5)
+  if (startDate5 !=null && endDate5!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate5, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate5, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.utilisateurService.getAllUserder_mvtBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredUtilisateurs = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getUtilisateurs();
+  this.testStatus = 1
+}
+}
+
+startDate6;
+endDate6;
+FilterDate6(startDate6,endDate6){
+  console.log(startDate6,endDate6)
+  if (startDate6 !=null && endDate6!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate6, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate6, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.utilisateurService.getAllUserdatffacBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredUtilisateurs = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getUtilisateurs();
+  this.testStatus = 1
+}
+}
 }

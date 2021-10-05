@@ -7,7 +7,6 @@ import { CreateBonLivComponent } from './create-bon-liv/create-bon-liv.component
 import { UpdateBonLivComponent } from './update-bon-liv/update-bon-liv.component';
 import { BonLivDetailComponent } from './bon-liv-detail/bon-liv-detail.component';
 import { EchartsBonLivComponent } from './echarts-bon-liv/echarts.component';
-import { WindowDateFilterComponent } from './bon-liv-list/window-date-filter/window-date-filter.component';
 import { AuthGuardAdmin } from '../../auth-guardRoles/auth-guardAdmin';
 import { AuthGuardAgentCab } from '../../auth-guardRoles/auth-guardAgent_Cab';
 import { AuthGuardEmballeur } from '../../auth-guardRoles/auth-guardEmballeur';

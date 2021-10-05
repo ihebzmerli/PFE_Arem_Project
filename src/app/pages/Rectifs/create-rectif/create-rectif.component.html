@@ -1,30 +1,162 @@
-<div class="row">
-  <form (ngSubmit) = "onSubmit()">
-    <div class="col-lg-6">
-      <nb-card>
-        <nb-card-header>Ajouter Rectif</nb-card-header>
-        <nb-card-body>
-          <input type="text" nbInput fullWidth placeholder="DATE" [(ngModel)]="rectif.date" id="DATE" name="DATE">
-          <input type="text" nbInput fullWidth placeholder="NUM_DOC" [(ngModel)]="rectif.numDoc" id="NUM_DOC" name="NUM_DOC">
-           <input type="text" nbInput fullWidth placeholder="QUT_ART" [(ngModel)]="rectif.qutArt" id="QUT_ART" name="QUT_ART">
-          <input type="text" nbInput fullWidth placeholder="PRIX_ACH" [(ngModel)]="rectif.prixAch" id="PRIX_ACH" name="PRIX_ACH">
-          <textarea rows="5" nbInput fullWidth shape="round"  placeholder="OBSERV" [(ngModel)]="rectif.observ" id="OBSERV" name="OBSERV"></textarea>
-          <input type="text" nbInput fullWidth placeholder="TYP_MVT" [(ngModel)]="rectif.typMvt" id="TYP_MVT" name="TYP_MVT">
-          <input type="text" nbInput fullWidth placeholder="NUM_REC" [(ngModel)]="rectif.numRec" id="NUM_REC" name="NUM_REC">
+<form [formGroup]="rectifForm" (ngSubmit) = "onSubmit()">
+  <div class="offset-sm-2 col-sm-9">
+        <nb-card>
+          <nb-card-header>
+            <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des réctifs ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../rectif-list']"/>
+            <p></p>
+             Ajouter Réctif <label for="date" class="label">Date de création:</label>
+             <div class="form-row">
+               <div class="form-group col">
+                 <input type="text" nbInput fullWidth placeholder="date" class="form-control" formControlName="date" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" disabled/>
+               </div>
+               <div class="form-group col"></div>
+             </div>
+          </nb-card-header>
+          <nb-card-body>
+              
+              <div class="form-row">
+                  <div class="form-group col">
+                    <label for="numDoc" class="label">N~ Doc</label>
+                    <input type="number" nbInput fullWidth placeholder="numDoc" class="form-control" formControlName="numDoc" [ngClass]="{ 'is-invalid': submitted && f.numDoc.errors }" />
+                    <div *ngIf="submitted && f.numDoc.errors" class="invalid-feedback">
+                      <div *ngIf="f.numDoc.errors.required">numDoc est obligatoire.</div>
+                      <div *ngIf="f.numDoc.errors.min">numDoc doit étre moin que 0.</div>
+                      <div *ngIf="f.numDoc.errors.pattern">numDoc ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="qutArt" class="label">Quantité Article</label>
+                    <input type="number" nbInput fullWidth placeholder="qutArt" class="form-control" formControlName="qutArt" [ngClass]="{ 'is-invalid': submitted && f.qutArt.errors }" />
+                    <div *ngIf="submitted && f.qutArt.errors" class="invalid-feedback">
+                      <div *ngIf="f.qutArt.errors.required">qutArt est obligatoire.</div>
+                      <div *ngIf="f.qutArt.errors.min">qutArt doit étre moin que 0.</div>
+                      <div *ngIf="f.qutArt.errors.pattern">qutArt ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
 
-          <input type="text" nbInput fullWidth placeholder="CENTRE" [(ngModel)]="rectif.centre" id="CENTRE" name="CENTRE">
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="prixAch" class="label">Prix Ach</label>
+                    <input type="number" nbInput fullWidth placeholder="prixAch" class="form-control" formControlName="prixAch" [ngClass]="{ 'is-invalid': submitted && f.prixAch.errors }" />
+                    <div *ngIf="submitted && f.prixAch.errors" class="invalid-feedback">
+                      <div *ngIf="f.prixAch.errors.required">prixAch est obligatoire.</div>
+                      <div *ngIf="f.prixAch.errors.min">prixAch doit étre moin que 0.</div>
+                      <div *ngIf="f.prixAch.errors.pattern">prixAch ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="observ" class="label">Observ</label>
+                    <input type="text" nbInput fullWidth placeholder="observ" class="form-control" formControlName="observ" [ngClass]="{ 'is-invalid': submitted && f.observ.errors }" />
+                    <div *ngIf="submitted && f.observ.errors" class="invalid-feedback">
+                      <div *ngIf="f.observ.errors.required">observ est obligatoire.</div>
+                      <div *ngIf="f.observ.errors.minlength">observ doit étre au moin 3 lettres longue.</div>
+                      <div *ngIf="f.observ.errors.maxlength">observ ne doit pas dépassé à 100 lettres longue.</div>
+                      <div *ngIf="f.observ.errors.pattern">observ ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                </div>
 
-          <input type="text" nbInput fullWidth placeholder="DAT_RECLAM" [(ngModel)]="rectif.datReclam" id="DAT_RECLAM" name="DAT_RECLAM">
-          <input type="text" nbInput fullWidth placeholder="RECLAM" [(ngModel)]="rectif.reclam" id="RECLAM" name="RECLAM">
-          <input type="text" nbInput fullWidth placeholder="CLOTURE" [(ngModel)]="rectif.cloture" id="CLOTURE" name="CLOTURE">
-          <input type="text" nbInput fullWidth placeholder="OBS_RECLAM" [(ngModel)]="rectif.obsReclam" id="OBS_RECLAM" name="OBS_RECLAM">
-          <input type="text" nbInput fullWidth placeholder="DAT_REPON" [(ngModel)]="rectif.datRepon" id="DAT_REPON" name="DAT_REPON">  
-          <input type="text" nbInput fullWidth placeholder="DAT_CLOTUR" [(ngModel)]="rectif.datClotur" id="DAT_CLOTUR" name="DAT_CLOTUR">
-        </nb-card-body>
-      </nb-card>
-      <button (click)="makeToast()" class="btn btn-md btn-outline-primary" type="onSubmit">
-        <i class="fa fa-user"></i>Submit</button>  
-    </div>
-  </form>
-</div>
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="typMvt" class="label">typMvt</label>
+                    <input type="text" nbInput fullWidth placeholder="typMvt" class="form-control" formControlName="typMvt" [ngClass]="{ 'is-invalid': submitted && f.typMvt.errors }" />
+                    <div *ngIf="submitted && f.typMvt.errors" class="invalid-feedback">
+                      <div *ngIf="f.typMvt.errors.required">typMvt est obligatoire.</div>
+                      <div *ngIf="f.typMvt.errors.minlength">typMvt doit étre au moin 3 lettres longue.</div>
+                      <div *ngIf="f.typMvt.errors.maxlength">typMvt ne doit pas dépassé à 100 lettres longue.</div>
+                      <div *ngIf="f.typMvt.errors.pattern">typMvt ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="numRec" class="label">numRec</label>
+                    <input type="number" nbInput fullWidth placeholder="numRec" class="form-control" formControlName="numRec" [ngClass]="{ 'is-invalid': submitted && f.numRec.errors }" />
+                    <div *ngIf="submitted && f.numRec.errors" class="invalid-feedback">
+                      <div *ngIf="f.numRec.errors.required">numRec est obligatoire.</div>
+                      <div *ngIf="f.numRec.errors.min">numRec doit étre moin que 3 .</div>
+                      <div *ngIf="f.numRec.errors.max">numRec ne doit pas dépassé le 100 .</div>
+                      <div *ngIf="f.numRec.errors.pattern">numRec ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="centre" class="label">centre</label>
+                    <input type="text" nbInput fullWidth placeholder="centre" class="form-control" formControlName="centre" [ngClass]="{ 'is-invalid': submitted && f.centre.errors }" />
+                    <div *ngIf="submitted && f.centre.errors" class="invalid-feedback">
+                      <div *ngIf="f.centre.errors.required">centre est obligatoire.</div>
+                      <div *ngIf="f.centre.errors.minlength">centre doit étre au moin 3 lettres longue.</div>
+                      <div *ngIf="f.centre.errors.maxlength">centre ne doit pas dépassé à 100 lettres longue.</div>
+                      <div *ngIf="f.centre.errors.pattern">centre ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="reclam" class="label">reclam</label>
+                    <input type="number" nbInput fullWidth placeholder="reclam" class="form-control" formControlName="reclam" [ngClass]="{ 'is-invalid': submitted && f.reclam.errors }" />
+                    <div *ngIf="submitted && f.reclam.errors" class="invalid-feedback">
+                      <div *ngIf="f.reclam.errors.required">reclam est obligatoire.</div>
+                      <div *ngIf="f.reclam.errors.min">reclam doit étre moin que 3.</div>
+                      <div *ngIf="f.reclam.errors.max">reclam ne doit pas dépassé le 100.</div>
+                      <div *ngIf="f.reclam.errors.pattern">reclam ne doit contenir que des nombres.</div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="cloture" class="label">cloture</label>
+                    <input type="number" nbInput fullWidth placeholder="cloture" class="form-control" formControlName="cloture" [ngClass]="{ 'is-invalid': submitted && f.cloture.errors }" />
+                    <div *ngIf="submitted && f.cloture.errors" class="invalid-feedback">
+                      <div *ngIf="f.cloture.errors.required">cloture est obligatoire.</div>
+                      <div *ngIf="f.cloture.errors.min">cloture doit étre moin que 0 .</div>
+                      <div *ngIf="f.cloture.errors.max">cloture ne doit pas dépassé 500.</div>
+                      <div *ngIf="f.cloture.errors.pattern">cloture ne doit contenir que des nombre.</div>
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="obsReclam" class="label">obsReclam</label>
+                    <input type="text" nbInput fullWidth placeholder="obsReclam" class="form-control" formControlName="obsReclam" [ngClass]="{ 'is-invalid': submitted && f.obsReclam.errors }" />
+                    <div *ngIf="submitted && f.obsReclam.errors" class="invalid-feedback">
+                      <div *ngIf="f.obsReclam.errors.required">obsReclam est obligatoire.</div>
+                      <div *ngIf="f.obsReclam.errors.minlength">obsReclam doit étre au moin 3 lettres longue.</div>
+                      <div *ngIf="f.obsReclam.errors.maxlength">obsReclam ne doit pas dépassé à 15 lettres longue.</div>
+                      <div *ngIf="f.obsReclam.errors.pattern">obsReclam ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <label for="datReclam" class="label">datReclam</label>
+                <input nbInput fullWidth class="form-control" placeholder="datReclam" formControlName="datReclam" [nbDatepicker]="pickerdatReclam" [ngClass]="{ 'is-invalid': submitted && f.datReclam.errors }" />
+                <nb-datepicker #pickerdatReclam></nb-datepicker>
+                <div *ngIf="submitted && f.datReclam.errors" class="invalid-feedback">
+                    <div *ngIf="f.datReclam.errors.required">Le datReclam est obligatoire.</div>
+                </div>
+
+                <label for="datRepon" class="label">datRepon</label>
+                <input nbInput fullWidth class="form-control" placeholder="datRepon" formControlName="datRepon" [nbDatepicker]="pickerdatRepon" [ngClass]="{ 'is-invalid': submitted && f.datRepon.errors }" />
+                <nb-datepicker #pickerdatRepon></nb-datepicker>
+                <div *ngIf="submitted && f.datRepon.errors" class="invalid-feedback">
+                    <div *ngIf="f.datRepon.errors.required">Le datRepon est obligatoire.</div>
+                </div>
+
+                <label for="datClotur" class="label">datClotur</label>
+                <input nbInput fullWidth class="form-control" placeholder="datClotur" formControlName="datClotur" [nbDatepicker]="pickerdatClotur" [ngClass]="{ 'is-invalid': submitted && f.datClotur.errors }" />
+                <nb-datepicker #pickerdatClotur></nb-datepicker>
+                <div *ngIf="submitted && f.datClotur.errors" class="invalid-feedback">
+                    <div *ngIf="f.datClotur.errors.required">Le datClotur est obligatoire.</div>
+                </div>
+          </nb-card-body>
+        </nb-card>
+        <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+          Ajouter réctif</button>
+          <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
+          Annuler</button>
+  </div>
+</form>
+
+
+
 

@@ -9,6 +9,8 @@ import { NbComponentShape, NbComponentSize, NbComponentStatus, NbDialogService ,
 import { DeleteEtatLivDialogComponent } from './delete-dialog/delete-etat-liv-dialog.component';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
+import { BonLivService } from '../../Bon_Livs/bon-liv.service';
 
 
 @Component({
@@ -61,7 +63,7 @@ export class EtatLivListComponent implements OnInit  {
   } 
   /****************Filtrage des donner ***************/
   constructor(private authService: TokenStorageService,private dialogService: NbDialogService, private etatlivService: EtatLivService,
-    private router: Router,private service: SmartTableData) {
+    private router: Router,private service: SmartTableData,public datepipe: DatePipe,private bonlivService: BonLivService) {
 
     }
 
@@ -71,7 +73,7 @@ statusessEtat:any;
 authority;
     ngOnInit(){
       this.authService.getAuthorities().forEach(authority => {
-        this.authority=authority;
+        this.authority=authority.toString();
         console.log(this.authority);
       });
       this.getEtatLivs();
@@ -87,6 +89,7 @@ authority;
     private getEtatLivs() {
       this.etatlivService.getEtat_livsList().subscribe(data => {
         this.etatlivs = data;
+        console.log(this.etatlivs)
         this.filteredEtatLivs = this.etatlivs;
       });
     }
@@ -132,4 +135,33 @@ authority;
         this.getEtatLivs();
       }
   }
+
+
+/*******FILTER DATE */
+
+
+
+
+startDate1;
+endDate1;
+  testStatus :number = 1;
+
+FilterDate1(startDate1,endDate1){
+  console.log(startDate1,endDate1)
+  if (startDate1 !=null && endDate1!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate1, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate1, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.etatlivService.getAllEtatLivBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredEtatLivs = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getEtatLivs();
+  this.testStatus = 1
+}
+}
 }

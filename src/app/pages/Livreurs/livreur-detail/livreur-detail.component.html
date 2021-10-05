@@ -15,82 +15,86 @@
          
       </div>
         <b>table des Prime de Livreur :</b>
-        <b *ngIf="!livreurs.prime" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(121, 126, 121);" ><label (click)="showPositionDialogCategorie('left')"> : Aucune prime n'est associer au Livreur!</label></span></b>  
-        <ul *ngIf="livreurs.prime">
-          <li>
-            <b class="p-mb-3 p-text-light">categorie : </b>   
-            <b *ngIf="livreurs.prime.categorie==''" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogCategorie('left')">Aucune Categorie</label></span></b>
-            <b *ngIf="livreurs.prime.categorie=='A' || livreurs.prime.categorie=='a'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(41, 221, 24);" ><label (click)="showPositionDialogCategorie('left')">{{ livreurs.prime.categorie | uppercase }}</label></span></b>
-            <b *ngIf="livreurs.prime.categorie=='B' || livreurs.prime.categorie=='b'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(177, 236, 15);" ><label (click)="showPositionDialogCategorie('left')">{{ livreurs.prime.categorie | uppercase  }}</label></span></b>
-            <b *ngIf="livreurs.prime.categorie=='C' || livreurs.prime.categorie=='c'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(221, 201, 24);" ><label (click)="showPositionDialogCategorie('left')">{{ livreurs.prime.categorie | uppercase  }}</label></span></b>
-            <b *ngIf="livreurs.prime.categorie=='D' || livreurs.prime.categorie=='d'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(209, 123, 25);" ><label (click)="showPositionDialogCategorie('left')">{{ livreurs.prime.categorie | uppercase  }}</label></span></b>
-            <p-dialog header="Définition Categorie" [(visible)]="displayPositionCategorie" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-            [draggable]="false" [resizable]="false">
-            <p>categorie de prime .</p>
-                <ng-template pTemplate="footer">
-                    <p-button icon="pi pi-check" (click)="displayPositionCategorie=false" label="Annuler" styleClass="p-button-text"></p-button>
-                </ng-template>
-            </p-dialog>
-          </li>
-          <li>
-            <b class="p-mb-3 p-text-light">raison : </b>
-            <b *ngIf="livreurs.prime.raison==''" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogRaison('left')">Aucune Raison</label></span></b>
-            <label (click)="showPositionDialogRaison('left')">{{ livreurs.prime.raison }}</label>
-            <p-dialog header="Définition Raison" [(visible)]="displayPositionRaison" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-            [draggable]="false" [resizable]="false">
-            <p>c'est la condition pour que la prime va étre associer a le livreur.</p>
-                <ng-template pTemplate="footer">
-                    <p-button icon="pi pi-check" (click)="displayPositionRaison=false" label="Annuler" styleClass="p-button-text"></p-button>
-                </ng-template>
-            </p-dialog>
-          </li>
-          <li>
-            <b class="p-mb-3 p-text-light">ca : </b>
-            <b *ngIf="livreurs.prime.ca==0" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogCa('left')">Aucune CA</label></span></b>
-            <label (click)="showPositionDialogCa('left')">{{ livreurs.prime.ca | currency:'TND ' : 'symbol'}}</label>
-            <p-dialog header="Définition Ca" [(visible)]="displayPositionCa" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-            [draggable]="false" [resizable]="false">
-            <p>ca c est la somme de services de livreur.</p>
-                <ng-template pTemplate="footer">
-                    <p-button icon="pi pi-check" (click)="displayPositionCa=false" label="Annuler" styleClass="p-button-text"></p-button>
-                </ng-template>
-            </p-dialog>
-          </li>
-          <li>
-            <b class="p-mb-3 p-text-light">caN1 : </b>
-            <b *ngIf="livreurs.prime.caN1==0" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogCaN1('left')">Aucune CA N1</label></span></b>
-            <label (click)="showPositionDialogCaN1('left')">{{ livreurs.prime.caN1 | currency:'TND ' : 'symbol'}}</label>
-            <p-dialog header="Définition CaN1" [(visible)]="displayPositionCaN1" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-            [draggable]="false" [resizable]="false">
-            <p>caN1.</p>
-                <ng-template pTemplate="footer">
-                    <p-button icon="pi pi-check" (click)="displayPositionCaN1=false" label="Annuler" styleClass="p-button-text"></p-button>
-                </ng-template>
-            </p-dialog>
-          </li>
-          <li>
-            <b class="p-mb-3 p-text-light">derMvt : </b>
-            <label (click)="showPositionDialogDerMvt('left')">{{ livreurs.prime.derMvt | date:'short'}}</label>
-            <p-dialog header="Définition DerMvt" [(visible)]="displayPositionDerMvt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-            [draggable]="false" [resizable]="false">
-            <p>la date d'association de prime à ce livreur.</p>
-                <ng-template pTemplate="footer">
-                    <p-button icon="pi pi-check" (click)="displayPositionDerMvt=false" label="Annuler" styleClass="p-button-text"></p-button>
-                </ng-template>
-            </p-dialog>
-          </li>
-          <li>
-            <b class="p-mb-3 p-text-light">prime : </b>
-            <b *ngIf="livreurs.prime.prime==0.000" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogPrime('left')">Aucune prime</label></span></b>
-            <label *ngIf="livreurs.prime.prime!=0.000" (click)="showPositionDialogPrime('left')">{{ livreurs.prime.prime | currency:'TND ' : 'symbol'}}</label>
-            <p-dialog header="Définition Prime" [(visible)]="displayPositionPrime" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-            [draggable]="false" [resizable]="false">
-            <p>Les primes sont liées au quotidien du salarié, et notamment aux difficultés qu'il peut rencontrer. La nature même du travail et ses conditions d'exercice sont concernées, dans ce cas des livreur la prime est de quantité livrais.</p>
-                <ng-template pTemplate="footer">
-                    <p-button icon="pi pi-check" (click)="displayPositionPrime=false" label="Annuler" styleClass="p-button-text"></p-button>
-                </ng-template>
-            </p-dialog>
-          </li>
-        </ul>
+        <div *ngIf="livreurs.prime===null; else somethingElse">
+          <b  class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(121, 126, 121);" ><label (click)="showPositionDialogCategorie('left')"> Aucune prime n'est associer au Livreur!</label></span></b>  
+        </div>
+        <ng-template #somethingElse>
+          <ul *ngIf="livreurs.prime!=null">
+            <li>
+              <b class="p-mb-3 p-text-light">categorie : </b>   
+              <b *ngIf="livreurs.prime.categorie==''" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogCategorie('left')">Aucune Categorie</label></span></b>
+              <b *ngIf="livreurs.prime.categorie=='A' || livreurs.prime.categorie=='a'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(41, 221, 24);" ><label (click)="showPositionDialogCategorie('left')">{{ livreurs.prime.categorie | uppercase }}</label></span></b>
+              <b *ngIf="livreurs.prime.categorie=='B' || livreurs.prime.categorie=='b'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(177, 236, 15);" ><label (click)="showPositionDialogCategorie('left')">{{ livreurs.prime.categorie | uppercase  }}</label></span></b>
+              <b *ngIf="livreurs.prime.categorie=='C' || livreurs.prime.categorie=='c'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(221, 201, 24);" ><label (click)="showPositionDialogCategorie('left')">{{ livreurs.prime.categorie | uppercase  }}</label></span></b>
+              <b *ngIf="livreurs.prime.categorie=='D' || livreurs.prime.categorie=='d'" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(209, 123, 25);" ><label (click)="showPositionDialogCategorie('left')">{{ livreurs.prime.categorie | uppercase  }}</label></span></b>
+              <p-dialog header="Définition Categorie" [(visible)]="displayPositionCategorie" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>categorie de prime .</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionCategorie=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+              <b class="p-mb-3 p-text-light">raison : </b>
+              <b *ngIf="livreurs.prime.raison==''" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogRaison('left')">Aucune Raison</label></span></b>
+              <label (click)="showPositionDialogRaison('left')">{{ livreurs.prime.raison }}</label>
+              <p-dialog header="Définition Raison" [(visible)]="displayPositionRaison" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>c'est la condition pour que la prime va étre associer a le livreur.</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionRaison=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+              <b class="p-mb-3 p-text-light">ca : </b>
+              <b *ngIf="livreurs.prime.ca==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogCa('left')">Aucune CA</label></span></b>
+              <label *ngIf="livreurs.prime.ca!=null" (click)="showPositionDialogCa('left')">{{ livreurs.prime.ca | currency:'TND ' : 'symbol'}}</label>
+              <p-dialog header="Définition Ca" [(visible)]="displayPositionCa" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>ca c est la somme de services de livreur.</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionCa=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+              <b class="p-mb-3 p-text-light">caN1 : </b>
+              <b *ngIf="livreurs.prime.caN1==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogCaN1('left')">Aucune CA N1</label></span></b>
+              <label *ngIf="livreurs.prime.caN1!=null" (click)="showPositionDialogCaN1('left')">{{ livreurs.prime.caN1 | currency:'TND ' : 'symbol'}}</label>
+              <p-dialog header="Définition CaN1" [(visible)]="displayPositionCaN1" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>caN1.</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionCaN1=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+              <b class="p-mb-3 p-text-light">derMvt : </b>
+              <label (click)="showPositionDialogDerMvt('left')">{{ livreurs.prime.derMvt | date:'short'}}</label>
+              <p-dialog header="Définition DerMvt" [(visible)]="displayPositionDerMvt" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>la date d'association de prime à ce livreur.</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionDerMvt=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+            <li>
+              <b class="p-mb-3 p-text-light">prime : </b>
+              <b *ngIf="livreurs.prime.prime==0.000" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogPrime('left')">Aucune prime</label></span></b>
+              <label *ngIf="livreurs.prime.prime!=0.000" (click)="showPositionDialogPrime('left')">{{ livreurs.prime.prime | currency:'TND ' : 'symbol'}}</label>
+              <p-dialog header="Définition Prime" [(visible)]="displayPositionPrime" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false">
+              <p>Les primes sont liées au quotidien du salarié, et notamment aux difficultés qu'il peut rencontrer. La nature même du travail et ses conditions d'exercice sont concernées, dans ce cas des livreur la prime est de quantité livrais.</p>
+                  <ng-template pTemplate="footer">
+                      <p-button icon="pi pi-check" (click)="displayPositionPrime=false" label="Annuler" styleClass="p-button-text"></p-button>
+                  </ng-template>
+              </p-dialog>
+            </li>
+          </ul>
+        </ng-template>
       </nb-card-body>
 </nb-card>

@@ -7,13 +7,18 @@
         <nb-card-body>   
           <div class="row">
             <div *ngFor="let chronometer of chronometers">
-                Time: <b [chronometer]="chronometer"></b>
-                <ion-button slot="start" (click)="run(chronometer, chronometer.status === 2 ? 1 : 2)">
-                    {{ chronometer.status === 2 ? 'Pause' : 'Start' }}
-                </ion-button>
-                <ion-button slot="end" (click)="run(chronometer, 4)">
-                    Restart
-                </ion-button>
+              <h6>Temps écoulé:</h6>
+              <div class="accordions-container row offset-sm-11 col-sm-16">
+                <b style="font-size: 30px;" [chronometer]="chronometer"></b>
+              </div>
+              <div class="full-name-inputs">
+                <div class="buttons-row">
+                  <button nbButton status="info" size="small" shape="round" class="btn btn-md btn-outline-info" *ngIf="etatliv.confirmation!='recu_est_verifier'" slot="start" (click)="run(chronometer, chronometer.status === 2 ? 1 : 2)" outline> 
+                    {{ chronometer.status === 2 ? 'Pause' : 'Start' }}</button>
+                  <button nbButton  type="button" status="info" size="small" shape="round" class="btn btn-md btn-outline-info" *ngIf="etatliv.confirmation!='recu_est_verifier'" slot="end" (click)="run(chronometer, 4)" outline> 
+                    Restart</button>
+                </div>
+              </div>
             </div>
           </div>
         </nb-card-body>

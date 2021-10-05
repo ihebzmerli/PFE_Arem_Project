@@ -4,7 +4,7 @@
     Expide table
     <nb-card-body>
 
-      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" class="border">
+      <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR'" class="border">
         <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
           <i class="fa fa-user"></i>Statistiques</button>
       </div>
@@ -14,22 +14,42 @@
 
   <nb-card-body>
     <div class="container">
-      <b>Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Start searching for a hero by id or name or country"></b>
+      <b>Recherche Table: <input nbInput style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Start searching for a hero by id or name or country"></b>
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
           <th style="text-align: center">
             <label class="label">Num_Expedition</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search DateNumExpedition"
+              <input type="text" nbInput class="form-control" placeholder="search DateNumExpedition"
               style="width:150px" [(ngModel)]="searchTermNunExpedition"/>
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">DATE_EXPEDITION</label>
+            <label class="label">DATE_EXPEDITION
+              <button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
             <div class="form-group">
-              <button style="width:150px" (click)="openWindowForm()" class="btn btn-md btn-outline-primary">
-              Recherche date</button>  
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate"
+                [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate"
+                [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest></nb-datepicker>
+              </div> 
             </div>
           </th>
           <th style="text-align: center"><label class="label">TYP_EXP</label>
@@ -45,19 +65,19 @@
           </th>
           <th style="text-align: center"><label class="label">TRANSP</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Transp"
+              <input type="text" nbInput class="form-control" placeholder="search Transp"
               style="width:150px" style="align-items: center;" [(ngModel)]="searchTermTransp"/>
             </div>
           </th>
           <th style="text-align: center"><label class="label">MAT_AGENT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search MatAgent"
+              <input type="text" nbInput class="form-control" placeholder="search MatAgent"
               style="width:150px" [(ngModel)]="searchTermMatAgent"/>
             </div>
           </th>
           <th style="text-align: center"><label class="label">TYPE_DOC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search TypeDoc"
+              <input type="text" nbInput class="form-control" placeholder="search TypeDoc"
               style="width:150px" [(ngModel)]="searchTermTypeDoc"/>
             </div>
           </th>
@@ -68,7 +88,7 @@
                 <nb-option [value]="">-Annuler Filter-</nb-option>
                 <nb-option *ngFor="let itemsAgents of agents" [value]="itemsAgents.firstname">
                   <span *ngIf="itemsAgents.firstname!==null || itemsAgents.lastname!==null || itemsAgents.codUser!==null">
-                    <img src="{{this.utilisateurService.host+'/api/Imgusers/'+itemsAgents.id}}" width="32" style="vertical-align: middle" />
+                    <img src="{{this.utilisateurService.host+'/'+itemsAgents.codUser+'/'+itemsAgents.fileName}}" width="32" style="vertical-align: middle" />
                     <span class="p-ml-1"><b>{{itemsAgents.firstname}}</b>&nbsp;<b>{{itemsAgents.lastname}}</b></span>
                   </span>
                 </nb-option>  
@@ -119,60 +139,60 @@
           <td *ngIf="!expide.typExp" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:rgb(187, 194, 181);" >n'existe pas</div></span></td>
           
           <td style="text-align: center" class="field-multiple-drag">
-            <span *ngIf="expide.transp!=null"><p>{{expide.transp}}</p></span>
-            <span *ngIf="expide.transp==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label><b>Pas mentionné</b></label></p></span>
+            <span *ngIf="expide.transp!==null && expide.transp!==''"><p>{{expide.transp}}</p></span>
+            <span *ngIf="expide.transp==null || expide.transp==''"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label><b>Pas mentionné</b></label></p></span>
           </td>
           <td style="text-align: center" class="field-multiple-drag">
-            <span *ngIf="expide.matAgent!=null"><p>{{expide.matAgent}}</p></span>
-            <span *ngIf="expide.matAgent==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label><b>Pas mentionné</b></label></p></span>
+            <span *ngIf="expide.matAgent!=null && expide.matAgent!==''"><p>{{expide.matAgent}}</p></span>
+            <span *ngIf="expide.matAgent==null || expide.matAgent==''"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label><b>Pas mentionné</b></label></p></span>
           </td>
           <td style="text-align: center" class="field-multiple-drag">
-            <span *ngIf="expide.typeDoc!=null"><p>{{expide.typeDoc}}</p></span>
-            <span *ngIf="expide.typeDoc==null"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label><b>Pas mentionné</b></label></p></span>
+            <span *ngIf="expide.typeDoc!==null && expide.typeDoc!==''"><p>{{expide.typeDoc}}</p></span>
+            <span *ngIf="expide.typeDoc==null || expide.typeDoc==''"><p class="p-mb-3 p-text-italic" style="color: rgb(177, 157, 157);"><label><b>Pas mentionné</b></label></p></span>
           </td>
 
           <td style="text-align: center" class="field-multiple-drag">
             <div *ngIf="expide.user!==null">
-              <img  (click)="showModalDialogUser()" src="{{this.utilisateurService.host+'/api/Imgusers/'+expide.user.id}}" width="32" style="vertical-align: middle" />
+              <img  (click)="showModalDialogUser(expide.user.id)" src="{{this.utilisateurService.host+'/'+expide.user.codUser+'/'+expide.user.fileName}}" width="32" style="vertical-align: middle" />
               <span class="image-text"><p>{{expide.user.lastname}} {{expide.user.firstname}}</p></span>
               
-              <p-dialog header="{{expide.user.lastname}} {{expide.user.firstname}}" [(visible)]="displayModalUser" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+              <p-dialog *ngIf="util" header="{{util.lastname}} {{util.firstname}}" [(visible)]="displayModalUser" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
               [draggable]="false" [resizable]="false">
-              <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+expide.user.id}}" style="width:150px;height: 180px;" [alt]="expide.user.codUser" class="article-image" /></p>
+              <p class="p-m-0"><img src="{{this.utilisateurService.host+'/'+util.codUser+'/'+util.fileName}}" style="width:150px;height: 180px;" [alt]="util.codUser" class="article-image" /></p>
                   
                 <div>
                   <li>                        
-                    <span class="image-text"><b class="p-mb-3 p-text-light">Nom et Prénom Responsable :</b> {{expide.user.firstname}}&nbsp;{{expide.user.lastname}}</span>                      
+                    <span class="image-text"><b class="p-mb-3 p-text-light">Nom et Prénom Responsable :</b> {{util.firstname}}&nbsp;{{util.lastname}}</span>                      
                   </li> 
                   <li>
-                    <span class="image-text"><b class="p-mb-3 p-text-light">Email Responsable :</b> {{expide.user.email}}</span>
+                    <span class="image-text"><b class="p-mb-3 p-text-light">Email Responsable :</b> {{util.email}}</span>
                   </li>
                   <li>  
-                    <span class="image-text"><b class="p-mb-3 p-text-light">Telephone Responsable :</b> {{expide.user.telephone}}</span>
+                    <span class="image-text"><b class="p-mb-3 p-text-light">Telephone Responsable :</b> {{util.telephone}}</span>
                   </li>
                   <li>
                     <b class="p-mb-3 p-text-light">Role : </b>
-                    <b *ngIf="expide.user.roles[0].name==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogUserRole('right')">Aucune Role</label></span></b>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_ADMIN'">Administrateur</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_CAISSIER'">Caissier</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_CLIENT'">Client</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_USER'">Utilisateur</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
-                    <span style="color: rgb(114, 212, 16);" *ngIf="expide.user.roles!==null && expide.user.roles[0].name=='ROLE_LIVREUR'">Livreur</span>
+                    <b *ngIf="util.roles[0].name==null" class="field-multiple-drag"><span class="p-mb-3 p-text-normal" style="color: rgb(86, 90, 86);" ><label (click)="showPositionDialogUserRole('right')">Aucune Role</label></span></b>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_ADMIN'">Administrateur</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_AGENT_CAB'">Agent code a barre</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_AGENT_SAISIE_REG'">Agent saisir reg</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_CAISSIER'">Caissier</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_CLIENT'">Client</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_DECIDEUR_BP'">Decideur Bon Preparation</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_EMBALLEUR'">Emballeur</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_EXPEDITEUR'">Expediteur</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_PREPARATEUR'">Preparateur</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_PREPARATEUR_BR'">Preparateur BR</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_RESPONSABLE_DISPATCHING_BP'">Responsable dispatching BG</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_RESPONSABLE_POINTAGE'">Responsable pointage</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_ETRANGER'">Responsable service fournisseur etranger</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_RESPONSABLE_SERVICE_FRS_LOCAL'">Responsable service fournisseur etranger</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_TRANSITAIRE'">Transitaire</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_USER'">Utilisateur</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_VALIDATEUR_DE_CHARIOT'">Validateur de chariot</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_VENDEUR'">Vendeur</span>
+                    <span style="color: rgb(114, 212, 16);" *ngIf="util.roles!==null && util.roles[0].name=='ROLE_LIVREUR'">Livreur</span>
                   </li>
                 </div>
               
@@ -218,11 +238,11 @@
 
           <td class="field-multiple-drag">
             <div class="buttons-row">
-              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR' || 'ROLE_DECIDEUR_BP')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['expide-detail',expide.id]" outline>
+              <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR' || authority==='ROLE_DECIDEUR_BP'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="info" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-info" [routerLink]="['expide-detail',expide.id]" outline>
                 <i class="fa fa-search"></i>Details</button>
-              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(expide.id)" outline>
+              <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(expide.id)" outline>
                 <i class="fa fa-edit"></i>Modifier</button>
-              <button *ngIf="authority==('ROLE_ADMIN' || 'ROLE_EXPEDITEUR')" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(expide.id)" outline>
+              <button *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_EXPEDITEUR'" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(expide.id)" outline>
                 <i class="fa fa-remove"></i>Supprimer</button>
             </div>
           </td>

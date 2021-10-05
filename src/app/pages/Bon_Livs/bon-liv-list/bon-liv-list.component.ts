@@ -12,7 +12,6 @@ import { HttpClient } from '@angular/common/http';
 import { XbaseXtvaDialogComponent } from './window-xbase&tva/xbase&xtva-dialog.component';
 import { DeleteBonLivDialogComponent } from './delete-dialog/delete-bon-liv-dialog.component';
 import { FormBuilder } from '@angular/forms';
-import { WindowDateFilterComponent } from './window-date-filter/window-date-filter.component';
 import { SpecialMDialogComponent } from '../../Articles/article-list/window-special-M/special-m-dialog.component';
 import { Table } from 'primeng/table';
 import { Utilisateur } from '../../Utilisateurs/utilisateur';
@@ -21,6 +20,22 @@ import { FournisService } from '../../Fourniss/fournis.service';
 import { Fournis } from '../../Fourniss/fournis';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import * as FileSaver from 'file-saver';
+import { Art_liv } from '../Art_Livs/art-liv';
+import { DatePipe } from '@angular/common';
+declare let pdfMake: any ;
+/*
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+*/
+/*
+import pdfmake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfmake.vfs =
+pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfmake.vfs;
+*/
 @Component({
   selector: 'ngx-bon-liv-list',
   templateUrl: './bon-liv-list.component.html',
@@ -36,7 +51,6 @@ export class BonLivListComponent implements OnInit {
   exportColumns: any[];
   selectedBonlivs: Bon_liv[];
   dialogVisible: boolean;
-
 
   statuses: NbComponentStatus[] = ['info' ];
   shapes: NbComponentShape[] = [ 'rectangle' ];
@@ -80,7 +94,9 @@ get searchTermNumBon(): string {
 }
 set searchTermNumBon(value: string){
   this._searchTermNumBon = value;
-  this.filteredBonLivs = this.filtereBonLivsNumBon(value);
+  this.filtereBonLivsNumBon(value).then((vals) => {
+    this.filteredBonLivs = vals
+  });
 }
 
 get searchTermCodCli(): string {
@@ -254,8 +270,11 @@ set searchTermUserId(value: string){
 }
 
 
-filtereBonLivsNumBon(seachString: string){
-  return this.bonlivs.filter(Bon_liv => Bon_liv.numBon.toLowerCase().indexOf(seachString.toLowerCase()) !== -1);
+filtereBonLivsNumBon(seachString: string): Promise <Bon_liv[]>{
+  return new Promise((resolve,reject) => {
+   resolve(this.bonlivs.filter(Bon_liv => Bon_liv.numBon.toLowerCase().indexOf(seachString.toLowerCase()) !== -1));
+  })
+ // return this.bonlivs.filter(Bon_liv => Bon_liv.numBon.toLowerCase().indexOf(seachString.toLowerCase()) !== -1);
 }
 filtereBonLivsNomprenomCli(seachBigint: string){
   return this.bonlivs.filter(Bon_liv => Bon_liv.nomprenomCli.toString().toLowerCase().indexOf(seachBigint.toLowerCase()) !== -1);
@@ -346,7 +365,7 @@ filtereBonLivsDate(testini:boolean){
   _searchTermMarque;
   constructor(private authService: TokenStorageService,private dialogService: NbDialogService,private http: HttpClient,private bonlivService: BonLivService,
     private router: Router,private service: SmartTableData,private windowService: NbWindowService, private fb: FormBuilder,
-    private _route:ActivatedRoute,public utilisateurService: UtilisateurService,public fournisService:FournisService) {
+    private _route:ActivatedRoute,public utilisateurService: UtilisateurService,public fournisService:FournisService,public datepipe: DatePipe) {
 
     }
 
@@ -384,7 +403,7 @@ filtereBonLivsDate(testini:boolean){
     ngOnInit() {
       
       this.authService.getAuthorities().forEach(authority => {
-        this.authority=authority;
+        this.authority=authority.toString();
         console.log(this.authority);
       });
       
@@ -498,10 +517,6 @@ filtereBonLivsDate(testini:boolean){
     );
   }
 
-  openWindowFormFilterDate() {
-    this.windowService.open(WindowDateFilterComponent, { title: `entrer les deux dates` });
-  }
-
   openWindowFilterDateWithoutBackdrop() {
     this.windowService.open(
       this.disabledEscTemplate,
@@ -525,6 +540,16 @@ getAllListFournis(selectedItems: any){
       Bon_liv.fournis !== null &&  Bon_liv.fournis.codFrs.toString().indexOf(selectedItems.toString()) !== -1);
     }else{
       this.getBonLivs();
+    }
+}
+
+getAllListTransaction(selectedItems5: any){
+  if(selectedItems5!==null){
+     return this.filteredBonLivs = this.bonlivs.filter(Bon_liv => 
+      Bon_liv.trans_action !== null && Bon_liv.trans_action.toString().indexOf(selectedItems5.toString()) !== -1);
+    }else if(selectedItems5==null){
+      console.log(selectedItems5);
+      return this.filteredBonLivs = this.bonlivs;
     }
 }
 /**stat xbase & tva window*/
@@ -574,6 +599,7 @@ togglepreviewTableBonLiv(){
 }
 exportCSV
 
+
 exportExcel() {
   import("xlsx").then(xlsx => {
       const worksheet = xlsx.utils.json_to_sheet(this.bonlivs);
@@ -595,4 +621,560 @@ saveAsExcelFile(buffer: any, fileName: string): void {
 }
 
 /**stat export CSV & PDF & Excel window*/
+
+/**bon de livraison imprimer pdf */
+articlesPdf:Art_liv[];
+artTermsPdf;
+BonlivPdf:Bon_liv
+generatePdf(numBon:string){
+  console.log(numBon);
+  console.log(pdfMake);
+
+  const document = this.getDocumentDefinition(numBon);
+  pdfMake.createPdf(document).open();
+  //pdfMake.createPdf(document).download();
+
+
+}
+
+
+
+  /**pdf  */
+resume="balbalbal";
+objArticle:any;
+objArticle2:any;
+lesElement:any;
+getDocumentDefinition(numBon: string) {
+  
+  this.bonlivService.getArtLivForBonLiv(numBon).subscribe(reponse =>{
+    this.articlesPdf=reponse;
+
+    this.bonlivService.getArtTermForBonLiv(numBon).subscribe(reponse1 =>{
+      this.artTermsPdf=reponse1;
+
+      this.bonlivService.getBon_liv(numBon).subscribe(reponse2 =>{
+        this.BonlivPdf=reponse2;
+
+        console.log(this.articlesPdf);
+        console.log(this.artTermsPdf);
+        console.log(this.BonlivPdf);
+      sessionStorage.setItem('articlesPdf', JSON.stringify(this.articlesPdf));
+      sessionStorage.setItem('artTermsPdf', JSON.stringify(this.artTermsPdf));
+      sessionStorage.setItem('BonlivPdf', JSON.stringify(this.BonlivPdf));
+      sessionStorage.setItem('resume', JSON.stringify(this.resume));
+      this.objArticle = this.articlesPdf.map( obj => {
+        if(obj.codArt==null){
+          obj.codArt = "Aucun"
+        }
+        if(obj.typArt==null){
+          obj.typArt = "Aucun"
+        }
+        if(obj.qutLiv==null || obj.qutLiv==0){
+          obj.qutLiv = 0
+        }
+        if(obj.prixHt==null || obj.prixHt==0){
+          obj.prixHt = 0
+        }
+        if(obj.prixArem==null || obj.prixArem==0){
+          obj.prixArem = 0
+        }
+        if(obj.remExp==null || obj.remExp==0){
+          obj.remExp = 0
+        }
+        if(obj.tva==null || obj.tva==0){
+          obj.tva = 0
+        }
+        return [obj.codArt, obj.typArt, obj.qutLiv, obj.prixHt, obj.prixArem, obj.remExp, obj.tva]
+      })
+    });
+  });
+});
+if(this.BonlivPdf.fournis!=null)
+{
+  if(this.BonlivPdf.totTtc==null || this.BonlivPdf.totTtc==0){
+    this.BonlivPdf.totTtc=0;
+  }
+  if(this.BonlivPdf.montRem==null || this.BonlivPdf.montRem==0){
+    this.BonlivPdf.montRem=0;
+  }
+  if(this.BonlivPdf.montTva==null || this.BonlivPdf.montTva==0){
+    this.BonlivPdf.montTva=0;
+  }
+  if(this.BonlivPdf.brutHt==null || this.BonlivPdf.brutHt==0){
+    this.BonlivPdf.brutHt=0;
+  }
+  if(this.BonlivPdf.netHt==null || this.BonlivPdf.netHt==0){
+    this.BonlivPdf.netHt=0;
+  }
+  if(this.BonlivPdf.fournis.matFisc==null || this.BonlivPdf.fournis.matFisc==''){
+    this.BonlivPdf.fournis.matFisc="Aucune";
+  }
+  return {
+    content:[{
+      columns: [
+        [{
+            text: 'Centre : '+this.BonlivPdf.centre,
+            style: 'name'
+          },
+          {
+            text: 'N~ facture : '+ this.BonlivPdf.numFac,
+          },
+          {
+            text: 'Tel 1 : '+ this.BonlivPdf.user.telephone +', Tel 2 : '+ this.BonlivPdf.user.tell,
+            color: 'blue',
+          },
+          {
+            text: 'Fax 1 : '+ this.BonlivPdf.user.faxl +', Fax 2 : '+ this.BonlivPdf.user.faxs,
+            color: 'blue',
+          },
+          {
+            text: ' ',
+            style: 'header'
+          },
+          {
+            text: ' ',
+            style: 'header'
+          },
+          {
+            text: 'Bon de Livraison',
+            bold: true,
+            fontSize: 20,
+            alignment: 'center',
+            margin: [0, 20,20, 20]
+          },
+          {
+            text: ' ',
+            style: 'header'
+          },
+          {
+            text: 'Numero : '+ this.BonlivPdf.numBon ,
+            style: 'ligne',
+            margin: [0,10, 0, 0]
+          },
+          {
+            text: 'Date : ' + this.datepipe.transform(this.BonlivPdf.datBon, 'yyyy-MM-dd hh:mm:ss'),
+            style: 'ligne' ,
+            margin: [0,10, 0, 0]
+          },
+          {
+            text: 'Code : '+ this.BonlivPdf.fournis.codFrs ,
+            style: 'ligne1',
+          },
+          {
+            text: 'Client : '+ this.BonlivPdf.fournis.raison ,
+            style: 'ligne1',
+          },
+          {
+            text: 'Adresse :  '+ this.BonlivPdf.fournis.adresse ,
+            style: 'ligne1',
+          },
+          {
+            text: 'Tel :  '+ this.BonlivPdf.fournis.tel ,
+            style: 'ligne1',
+          },
+          {
+            text: 'Mat Fiscale :  '+ this.BonlivPdf.fournis.matFisc ,
+            style: 'ligne1',
+          },
+          {
+            text: ' ',
+            style: 'header'
+          },
+        ],      
+      ],
+    },
+  [
+    {
+      text: ' ',
+      style: 'header'
+    },
+    { width:  '*', text: ''},
+        {
+          width: 'auto',
+          table: {
+          body: [
+            [
+              {
+                text: 'Article',
+                style: 'tableHeader'
+              },
+              {
+                text: 'type Article',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Quantité',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Prix ht',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Prix Arem',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Rem Exp',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Tva',
+                style: 'tableHeader'
+              },
+            ],
+            
+            ...this.articlesPdf.map(obj => {
+              if(obj.codArt==null){
+                obj.codArt = "Aucun"
+              }
+              if(obj.typArt==null){
+                obj.typArt = "Aucun"
+              }
+              if(obj.qutLiv==null || obj.qutLiv==0){
+                obj.qutLiv = 0
+              }
+              if(obj.prixHt==null || obj.prixHt==0){
+                obj.prixHt = 0
+              }
+              if(obj.prixArem==null || obj.prixArem==0){
+                obj.prixArem = 0
+              }
+              if(obj.remExp==null || obj.remExp==0){
+                obj.remExp = 0
+              }
+              if(obj.tva==null || obj.tva==0){
+                obj.tva = 0
+              }
+              return [obj.codArt, obj.typArt, obj.qutLiv, obj.prixHt, obj.prixArem, obj.remExp, obj.tva];
+            })
+          ],
+          alignment: "center"
+          },
+          
+        },
+        { width:  '*', text: ''},
+    {
+      text: ' ',
+      style: 'header'
+    },
+
+    {
+      text: ' Tot ht : '+ this.BonlivPdf.totTtc + '      Mont Rem : '+ this.BonlivPdf.montRem + '      Tot Tva : '+ this.BonlivPdf.montTva +
+      '      Tot brut Ht : '+ this.BonlivPdf.brutHt + '      Tot net Ht : '+ this.BonlivPdf.netHt,
+      style: 'total',
+    },
+    {
+      text: ' ',
+      style: 'header'
+    },
+    {
+      text: ' Signature',
+      style: 'sign',
+      alignment : 'right'
+    },
+  ]
+ 
+],
+  styles: {
+    header: {
+      fontSize: 18,
+      bold: true,
+
+      alignment: 'center',
+    },
+    name:{
+      fontSize: 16,
+      bold:true
+    },
+    total: {
+      fontSize: 12,
+      bold: true,
+      italics: true,
+
+    },
+    ligne: {
+      fontSize: 12,
+      bold: true,
+      italics: true, 
+    },
+    ligne1: {
+      fontSize: 12,
+      bold: true,
+      italics: true, 
+      margin: [300,10,0,0]
+    },
+    sign: {
+      margin: [0, 50, 20, 10],
+      alignment: 'right',
+      italics: true, 
+    },
+    tableHeader: {
+      bold: true,
+      fontSize: 15,
+      alignment: 'center', 
+    }
+  }
+};
+}else{
+  if(this.BonlivPdf.user.telephone==null || this.BonlivPdf.user.telephone==0){
+    this.BonlivPdf.user.telephone=0;
+  }
+  if(this.BonlivPdf.user.tell==null || !this.BonlivPdf.user.tell){
+    this.BonlivPdf.user.tell="Aucun";
+  }
+  if(this.BonlivPdf.user.faxl==null || !this.BonlivPdf.user.faxl){
+    this.BonlivPdf.user.faxl="Aucun";
+  }
+  if(this.BonlivPdf.user.faxs==null || !this.BonlivPdf.user.faxs){
+    this.BonlivPdf.user.faxs="Aucun";
+  }
+  if(this.BonlivPdf.numFac==null || !this.BonlivPdf.numFac){
+    this.BonlivPdf.numFac=BigInt(0);
+  }
+  if(this.BonlivPdf.totTtc==null || this.BonlivPdf.totTtc==0){
+    this.BonlivPdf.totTtc=0;
+  }
+  if(this.BonlivPdf.montRem==null || this.BonlivPdf.montRem==0){
+    this.BonlivPdf.montRem=0;
+  }
+  if(this.BonlivPdf.montTva==null || this.BonlivPdf.montTva==0){
+    this.BonlivPdf.montTva=0;
+  }
+  if(this.BonlivPdf.brutHt==null || this.BonlivPdf.brutHt==0){
+    this.BonlivPdf.brutHt=0;
+  }
+  if(this.BonlivPdf.netHt==null || this.BonlivPdf.netHt==0){
+    this.BonlivPdf.netHt=0;
+  }
+    return { 
+      content:[{
+        columns: [
+        [
+          {
+            text: 'Centre : '+this.BonlivPdf.centre,
+            style: 'name'
+          },
+          {
+            text: 'N~ facture : '+ this.BonlivPdf.numFac,
+          },
+          {
+            text: 'Tel 1 : '+ this.BonlivPdf.user.telephone +', Tel 2 : '+ this.BonlivPdf.user.tell,
+            color: 'blue',
+          },
+          {
+            text: 'Fax 1 : '+ this.BonlivPdf.user.faxl +', Fax 2 : '+ this.BonlivPdf.user.faxs,
+            color: 'blue',
+          },
+          {
+            text: ' ',
+            style: 'header'
+          },
+          {
+            text: ' ',
+            style: 'header'
+          },
+          {
+            text: 'Bon de Livraison',
+            bold: true,
+            fontSize: 20,
+            alignment: 'center',
+            margin: [0, 20,20, 20]
+          },
+          {
+            text: ' ',
+            style: 'header'
+          },
+          {
+            text: 'Numero : '+ this.BonlivPdf.numBon ,
+            style: 'ligne',
+            margin: [0,10, 0, 0]
+          },
+          {
+            text: 'Date : ' + this.datepipe.transform(this.BonlivPdf.datBon, 'yyyy-MM-dd hh:mm:ss'),
+            style: 'ligne' ,
+            margin: [0,10, 0, 0]
+          },
+          {
+            text: 'Code : '+ this.BonlivPdf.nomprenomCli.slice(this.BonlivPdf.nomprenomCli.search(" : "),this.BonlivPdf.nomprenomCli.length) ,
+            style: 'ligne1',
+          },
+          {
+            text: 'Client : '+ this.BonlivPdf.nomprenomCli.slice(0,this.BonlivPdf.nomprenomCli.search(" : ")) ,
+            style: 'ligne1',
+          },
+          {
+            text: 'Adresse :  '+ this.BonlivPdf.adresseCli ,
+            style: 'ligne1',
+          },
+          {
+            text: ' ',
+            style: 'header'
+          },
+        ],
+      ],
+    },
+    
+      [
+        {
+          text: ' ',
+          style: 'header'
+        },
+        { width:  '*', text: ''},
+        {
+          width: 'auto',
+          table: {
+          body: [
+            [
+              {
+                text: 'Article',
+                style: 'tableHeader'
+              },
+              {
+                text: 'type Article',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Quantité',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Prix ht',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Prix Arem',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Rem Exp',
+                style: 'tableHeader'
+              },
+              {
+                text: 'Tva',
+                style: 'tableHeader'
+              },
+            ],
+            
+            ...this.articlesPdf.map(obj => {
+              if(obj.codArt==null){
+                obj.codArt = "Aucun"
+              }
+              if(obj.typArt==null){
+                obj.typArt = "Aucun"
+              }
+              if(obj.qutLiv==null || obj.qutLiv==0){
+                obj.qutLiv = 0
+              }
+              if(obj.prixHt==null || obj.prixHt==0){
+                obj.prixHt = 0
+              }
+              if(obj.prixArem==null || obj.prixArem==0){
+                obj.prixArem = 0
+              }
+              if(obj.remExp==null || obj.remExp==0){
+                obj.remExp = 0
+              }
+              if(obj.tva==null || obj.tva==0){
+                obj.tva = 0
+              }
+              return [obj.codArt, obj.typArt, obj.qutLiv, obj.prixHt, obj.prixArem, obj.remExp, obj.tva];
+            })
+          ],
+          alignment: "center"
+          },
+          
+        },
+        { width:  '*', text: ''},
+        {
+          text: ' ',
+          style: 'header'
+        },
+
+        {
+          text: ' Tot tc : '+ this.BonlivPdf.totTtc + '      Mont Rem : '+ this.BonlivPdf.montRem + '      Tot Tva : '+ this.BonlivPdf.montTva +
+          '      Tot brut Ht : '+ this.BonlivPdf.brutHt + '      Tot net Ht : '+ this.BonlivPdf.netHt,
+          style: 'total',
+        },
+        {
+          text: ' ',
+          style: 'header'
+        },
+        {
+          text: ' Signature',
+          style: 'sign',
+          alignment : 'right'
+        },
+      ]
+  ],
+    styles: {
+      header: {
+        fontSize: 18,
+        bold: true,
+
+        alignment: 'center',
+      },
+      name:{
+        fontSize: 16,
+        bold:true
+      },
+      total: {
+        fontSize: 12,
+        bold: true,
+        italics: true,
+
+      },
+      ligne: {
+        fontSize: 12,
+        bold: true,
+        italics: true, 
+      },
+      ligne1: {
+        fontSize: 12,
+        bold: true,
+        italics: true, 
+        margin: [300,10,0,0]
+      },
+      sign: {
+        margin: [0, 50, 20, 10],
+        alignment: 'right',
+        italics: true, 
+      },
+      tableHeader: {
+        bold: true,
+        fontSize: 15,
+        alignment: 'center', 
+      }
+    }
+  };
+}
+}
+
+
+  /** end pdf */
+
+
+
+
+    startDate;
+    endDate;
+    testStatus :number = 1;
+    FilterDate(startDate,endDate){
+      console.log(startDate,endDate)
+      if (startDate !=null && endDate!=null && this.testStatus != 2) {
+      let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+      let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+      latest_startDate.toString();
+      latest_endDate.toString();
+      this.bonlivService.getAllBonLivBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+        this.filteredBonLivs = data;
+        console.log(data);
+      });
+      this.testStatus = 2
+    }else {
+      this.testStatus = 2
+      this.getBonLivs();
+      this.testStatus = 1
+    }
+  }
 }

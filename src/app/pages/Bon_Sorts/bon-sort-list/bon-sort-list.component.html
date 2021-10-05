@@ -5,7 +5,7 @@
 
 
     <nb-card-body>
-      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_RESPONSABLE_POINTAGE')" class="border">
+      <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_PREPARATEUR_BR' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_RESPONSABLE_POINTAGE'" class="border">
           <button type="button" (click)="togglepreviewTableBonSort()" class="btn btn-outline-info">
             {{previewTableAllBonsortExcelPdf? "tableau detailé ": "tableau minimiser "}}
           </button>
@@ -16,92 +16,102 @@
 
   <nb-card-body>
     <div *ngIf="!previewTableAllBonsortExcelPdf" class="container">
-      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      Recherche Table: <input nbInput style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
           <th style="text-align: center">
             <label class="label">NUM_BON_SORT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search NumBon"
+              <input type="text" nbInput class="form-control" placeholder="search NumBon"
               style="width:135px" [(ngModel)]="searchTermNumBon" />
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">DAT_BON</label>
+            <label class="label">DAT_BON<button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
             <div class="form-group">
-              <button (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
-                Recherche date</button>  
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate"
+                [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate"
+                [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest></nb-datepicker>
+              </div> 
             </div>
-            <!--
-            <div class="form-group">
-              <input nbInput style="width:150px" [(ngModel)]="searchTermDatBon" placeholder="Form Picker" [nbDatepicker]="formpicker">
-              <nb-datepicker #formpicker></nb-datepicker>
-              <input nbInput style="width:150px" [(ngModel)]="searchTermDatBon" placeholder="Form Picker" [nbDatepicker]="formpicker">
-              <nb-datepicker #formpicker></nb-datepicker>
-            </div>
-            -->
           </th>
           <th style="text-align: center">
             <label class="label">RAISON</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Raison"
+              <input type="text" nbInput class="form-control" placeholder="search Raison"
               style="width:135px" [(ngModel)]="searchTermRaison" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">BRUT_HT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Brut_Ht"
+              <input type="text" nbInput class="form-control" placeholder="search Brut_Ht"
               style="width:135px" [(ngModel)]="searchTermBrutHt" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TAUX_REM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Taux_Rem"
+              <input type="text" nbInput class="form-control" placeholder="search Taux_Rem"
               style="width:135px" [(ngModel)]="searchTermTauxRem" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MONT_REM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Mont_Rem"
+              <input type="text" nbInput class="form-control" placeholder="search Mont_Rem"
               style="width:135px" [(ngModel)]="searchTermMontRem" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">NET_HT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Net_Ht"
+              <input type="text" nbInput class="form-control" placeholder="search Net_Ht"
               style="width:135px" [(ngModel)]="searchTermNetHt" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MONT_TVA</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Mont_Tva"
+              <input type="text" nbInput class="form-control" placeholder="search Mont_Tva"
               style="width:135px" [(ngModel)]="searchTermMontTva" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TOT_TTC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Tot_Ttc"
+              <input type="text" nbInput class="form-control" placeholder="search Tot_Ttc"
               style="width:135px" [(ngModel)]="searchTermTotTtc" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CENTRE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Centre"
+              <input type="text" nbInput class="form-control" placeholder="search Centre"
               style="width:135px" [(ngModel)]="searchTermCentre" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">OBSERV</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Observ"
+              <input type="text" nbInput class="form-control" placeholder="search Observ"
               style="width:135px" [(ngModel)]="searchTermObserv" />
             </div>
           </th>
@@ -112,28 +122,28 @@
                 <nb-option [value]="">-Annuler Filter-</nb-option>
                 <nb-option *ngFor="let itemsVehicules of Vehiculelists" [value]="itemsVehicules.matricule">
                   <span>
-                    <img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsVehicules.marque.id}}" width="32" style="vertical-align: middle" />
+                    <img src="{{this.marqueService.host+'/'+itemsVehicules.marque.code+'/'+itemsVehicules.marque.fileName}}" width="32" style="vertical-align: middle" />
                     <span class="p-ml-1"><b>{{itemsVehicules.matricule}}</b></span>
                   </span>
                 </nb-option>  
               </nb-select>
             </div>
           </th>
-          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+          <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_PREPARATEUR_BR'" style="text-align: center">
             <label class="label">Nom&Prenom respensable Bon</label>
             <div class="form-group">
               <nb-select style="width:170px" id="listitemsAgents" [(ngModel)]="_searchTermMarquee" fullWidth fieldSize="small" (selectedChange)="getAllListItemsAgents($event)" [ngModelOptions]="{standalone: true}">
                 <nb-option [value]="">-Annuler Filter-</nb-option>
                 <nb-option *ngFor="let itemsAgents of agents" [value]="itemsAgents.firstname">
                   <span *ngIf="itemsAgents.firstname!==null || itemsAgents.lastname!==null || itemsAgents.codUser!==null">
-                    <img src="{{this.utilisateurService.host+'/api/Imgusers/'+itemsAgents.id}}" width="32" style="vertical-align: middle" />
+                    <img src="{{this.utilisateurService.host+'/'+itemsAgents.codUser+'/'+itemsAgents.fileName}}" width="32" style="vertical-align: middle" />
                     <span class="p-ml-1"><b>{{itemsAgents.firstname}}</b>&nbsp;<b>{{itemsAgents.lastname}}</b></span>
                   </span>
                 </nb-option>  
               </nb-select>
             </div>
           </th>
-          <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+          <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_PREPARATEUR_BR'" style="text-align: center">
             <label class="label">Post respensable Bon</label>
             <div class="form-group">
               <nb-select style="width:170px" id="listitemsRoles" [(ngModel)]="_searchTermRole" fullWidth fieldSize="small" (selectedChange)="getAllListItemsRoles($event)" [ngModelOptions]="{standalone: true}">
@@ -191,15 +201,15 @@
             </ng-template>
           </td>
 
-          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_PREPARATEUR_BR')" style="text-align: center" class="field-multiple-drag"><span>
+          <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_PREPARATEUR_BR'" style="text-align: center" class="field-multiple-drag"><span>
 
             <div *ngIf="bonsort.user!==null">
-              <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.getTest+'/Imgusers/'+bonsort.user.id}}" width="32" style="vertical-align: middle" />
+              <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.host+'/'+bonsort.user.codUser+'/'+bonsort.user.fileName}}" width="32" style="vertical-align: middle" />
               <span class="image-text"><p>{{bonsort.user.lastname}}&nbsp;{{bonsort.user.firstname}}</p></span>
 
               <p-dialog header="{{bonsort.user.lastname}} {{bonsort.user.firstname}}" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
               [draggable]="false" [resizable]="false">
-              <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+bonsort.user.id}}" style="width:250px" class="article-image" /></p>
+              <p class="p-m-0"><img src="{{this.utilisateurService.host+'/'+bonsort.user.codUser+'/'+bonsort.user.fileName}}" style="width:250px" class="article-image" /></p>
                   
               <div>
                 <li>                        
@@ -245,7 +255,7 @@
             <span *ngIf="bonsort.user==null" class="p-mb-3 p-text-normal" style="color: rgb(121, 126, 121);" ><label>Aucune!</label></span> 
           </span>
           </td>
-          <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_PREPARATEUR_BR')" style="text-align: center">
+          <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_PREPARATEUR_BR'" style="text-align: center">
             <div style="text-align: center" class="field-multiple-drag">
               <div *ngIf="bonsort.user!=null">
                 <span *ngIf="bonsort.user.roles[0].name=='ROLE_ACHETEUR'">Acheteur</span>
@@ -284,7 +294,7 @@
                 <button (click)="openWindowXbaseXtva(bonsort.numBon)" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [shape]="semi-round" [size]="medium" [status]="primary" class="btn btn-md btn-outline-primary" outline>
                   XBASE & XTVA</button>
               </div>
-              <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_RESPONSABLE_POINTAGE')" class="form-groupe">
+              <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_PREPARATEUR_BR' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_RESPONSABLE_POINTAGE'" class="form-groupe">
                 <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(bonsort.numBon)" outline>
                   <i class="fa fa-edit"></i>Modifier</button>
                 <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(bonsort.numBon)" outline>
@@ -303,7 +313,7 @@
   <nb-card-body>
     <div *ngIf="previewTableAllBonsortExcelPdf">
         <p-table #dt [columns]="cols" [value]="filteredBonSorts" selectionMode="multiple" [(selection)]="selectedBonsorts"
-        dataKey="numBon" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        dataKey="numBon" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" class="p-tableCss" styleClass="p-datatable-customers p-datatable-gridlines"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['numBon','datBon','raison','brutHt','tauxRem','montRem','netHt','montTva','totTtc','centre',
         'observ','vehicule.matricule','user.firstname','user.codUser']">
@@ -361,7 +371,7 @@
                                 <p-multiSelect [ngModel]="value" [options]="Vehiculelists" placeholder="Any" (onChange)="filter($event.value)" optionLabel="matricule">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
-                                          <img [alt]="option.label" src="{{this.marqueService.host+'/api/Imgmarques/'+option.marque.id}}" width="32" style="vertical-align: middle" />
+                                          <img [alt]="option.label" src="{{this.marqueService.host+'/'+option.marque.code+'/'+option.marque.fileName}}" width="32" style="vertical-align: middle" />
                                             <span class="p-ml-1"><b>{{option.matricule}}</b></span>
                                         </div>
                                     </ng-template>
@@ -381,7 +391,7 @@
                                 <p-multiSelect [ngModel]="value" [options]="agents" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
-                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                             <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                         </div>
                                     </ng-template>
@@ -424,7 +434,7 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
               <tr [pSelectableRow]="rowData">
                   <td *ngFor="let col of columns">
-                      <div class="field-multiple-drag" *ngIf="col.field!=='datBon' && col.field!=='user' && col.header!=='Actions' && col.header!=='Consultation'">                       
+                      <div class="field-multiple-drag" *ngIf="col.field!=='vehicule' && col.field!=='datBon' && col.field!=='user' && col.header!=='Actions' && col.header!=='Consultation'">                       
                         <div *ngIf="rowData[col.field]==null || rowData[col.field]=='' && rowData[col.field]!==0">
                           <span class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label> Aucune!</label></span>
                         </div>
@@ -439,15 +449,18 @@
                       <div *ngIf="col.field=='datBon'">
                         {{rowData[col.field] | date: 'MMM d, y H:mm:ss' : '+0000'}}
                       </div>
+                      <div *ngIf="col.field=='vehicule'">
+                        {{rowData[col.field].matricule}}
+                      </div>
                       <div style="text-align: center" class="field-multiple-drag" *ngIf="col.field=='user' && col.header=='Nom&Prenom respensable Bon'">
                         
                         <div *ngIf="rowData[col.field]!==null">
-                          <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" width="32" style="vertical-align: middle" />
+                          <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.host+'/'+rowData[col.field].codUser+'/'+rowData[col.field].fileName}}" width="32" style="vertical-align: middle" />
                           <span class="image-text"><p>{{rowData[col.field].lastname}}&nbsp;{{rowData[col.field].firstname}}</p></span>
             
                           <p-dialog header="{{rowData[col.field].lastname}} {{rowData[col.field].firstname}}" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                           [draggable]="false" [resizable]="false">
-                          <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" style="width:150px;height: 180px;" class="article-image" /></p>
+                          <p class="p-m-0"><img src="{{this.utilisateurService.host+'/'+rowData[col.field].codUser+'/'+rowData[col.field].fileName}}" style="width:150px;height: 180px;" class="article-image" /></p>
                               
                           <div>
                             <li>                        

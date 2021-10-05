@@ -1,4 +1,4 @@
-<div class="accordions-container row offset-sm-2 col-sm-9" *ngIf="!ArticleWindow && !ChariotWindow">
+<div class="accordions-container offset-sm-2 col-sm-8" *ngIf="!ArticleWindow && !ChariotWindow">
   <form (ngSubmit) = "onSubmitBon()" #bonSortForm="ngForm">
     <nb-accordion>
       <nb-accordion-item #item>
@@ -96,6 +96,15 @@
                     <nb-option value="NULL">-Select</nb-option>
                     <nb-option *ngFor="let itemsVehicule of VehiculeList" [value]="itemsVehicule"><span>{{ itemsVehicule.matricule }}</span></nb-option>
                   </nb-select>
+                </div>
+              </div>
+              <div class="full-name-inputs"> 
+                <div class="col-sm-6"> 
+                  <label for="poste" class="label">Poste</label> 
+                  <input type="text" nbInput fullWidth placeholder="poste" [(ngModel)]="bonsort.poste" #poste="ngModel" name="poste" id="poste" disabled/>
+                </div>
+                <div class="col-sm-6">
+
                 </div>
               </div>
 
@@ -217,7 +226,7 @@
 
 
 
-<div class="accordions-container row offset-sm-2 col-sm-9" *ngIf="ArticleWindow">
+<div class="accordions-container offset-sm-2 col-sm-8" *ngIf="ArticleWindow">
   <form (ngSubmit) = "onSubmitArtBon()" #artSortForm="ngForm">
     <nb-accordion>
       <nb-accordion-item #item>
@@ -233,14 +242,14 @@
                     <div class="col-sm-4">
                 Les Marques:<nb-select fullWidth fieldSize="small" [(ngModel)]="article.marque" required (selectedChange)="getModeleFromMarque($event)" [ngModelOptions]="{standalone: true}">
                       <nb-option value="0">-Select</nb-option>
-                      <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
+                      <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
                     </nb-select>
                     </div>
 
                     <div class="col-sm-4">
                       Les Modeles:<nb-select id="model" name="model" [(ngModel)]="article.model" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonSort($event)" required #model="ngModel" [ngModelOptions]="{standalone: true}">
                         <nb-option value="0">-Select</nb-option>
-                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
+                        <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/'+itemsModel.marque.code+'/'+itemsModel.marque.fileName}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
                     </nb-select>
                     </div>
 
@@ -273,7 +282,7 @@
                       <h2>mercie de choisir un Article</h2>
                     </div>
                     <div *ngIf="ArticleGeted" class="image-gallery">
-                      <img src="assets/images/imgArticles/{{ArticleGeted.codArt}}/{{ArticleGeted.codArt}}.png" height="400" width="400"/>
+                      <img src="{{this.articleService.host+'/'+ArticleGeted.codArt+'/'+ArticleGeted.fileName}}" height="400" width="400"/>
                   </div>
                   </div>
               
@@ -282,7 +291,7 @@
                     <ng-template let-article pTemplate="item">
                         <div class="article-item">
                             <div class="image-container">
-                                    <img src="/assets/images/imgArticles/{{article.codArt}}/{{article.codArt}}.png" [alt]="article.codArt" class="article-image" />
+                                    <img src="{{this.articleService.host+'/'+article.codArt+'/'+article.fileName}}" [alt]="article.codArt" class="article-image" />
                             </div>
                             <div class="article-list-detail">
                                 <h5 class="p-mb-2">{{article.codArt}}</h5>

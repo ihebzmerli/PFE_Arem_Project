@@ -43,13 +43,13 @@ export class BonSortService {
   }
 
 
+  getAllBonSortBydateBetween(startDate: string,endDate: string): Observable<Bon_sort[]> {
+    return this.http.get<Bon_sort[]>(`${this.url}/dateBetween/${startDate}to${endDate}`);
+  }
   /**drop down list add for bon sort */
 
   getFournisOfAdd(): Observable<any> {
     return this.http.get(`${this.url}/cod_frs`);
-  }
-  getArticleWithMarqueAdd(): Observable<any> {
-    return this.http.get(`${this.url}/AllListMarqueNoDuplication`);
   }
   getArticleOfFromMarqueAddForBonSort(marque: string): Observable<any> {
     return this.http.get(`${this.url}/AllListArticleByMarque/${marque}`);

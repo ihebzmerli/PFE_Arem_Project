@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { NbComponentShape, NbComponentSize, NbComponentStatus, NbDialogService, NbWindowService } from '@nebular/theme';
 import { ArticleService } from '../article.service';
-import { WindowDateFilterComponent } from './window-date-filter/window-date-filter.component';
 
 /**primering imports */
 import {SelectItem} from 'primeng/api';
@@ -23,6 +22,7 @@ import { ModelService } from '../../Model/model.service';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
 import { async } from '@angular/core/testing';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'ngx-article-list',
   templateUrl: './article-list.component.html',
@@ -1463,7 +1463,7 @@ filtereArticlesDerP_Dev(seachString: string){
  
 
   constructor(private authService: TokenStorageService,private dialogService: NbDialogService, private primengConfig: PrimeNGConfig,private http: HttpClient,private articleService: ArticleService,
-    private router: Router, private modelService:ModelService, private marqueService:MarqueService, private galleryService:GalleryService, private service: SmartTableData,private windowService: NbWindowService, private fb: FormBuilder) {
+    private router: Router,public datepipe: DatePipe , private modelService:ModelService, private marqueService:MarqueService, private galleryService:GalleryService, private service: SmartTableData,private windowService: NbWindowService, private fb: FormBuilder) {
       this.stateOptions = [{label: 'Off', value: 'off'}, {label: 'On', value: 'on'}];
     }
 
@@ -1494,7 +1494,7 @@ filtereArticlesDerP_Dev(seachString: string){
     ngOnInit() {
 
       this.authService.getAuthorities().forEach(authority => {
-        this.authority=authority;
+        this.authority=authority.toString();
         console.log(this.authority);
       });
 
@@ -1598,42 +1598,6 @@ this.getArticles();
       this.data = searchObj
       console.log(this.data);
     }
-    openWindowFormFilterDateDAT_CREAT() {
-      this.windowService.open(WindowDateFilterComponent, {
-            context: {
-        title: 'DAT_CREAT',
-      }});
-    }
-    async openWindowFormFilterDateDER_ACH() {
-      await this.windowService.open(WindowDateFilterComponent,
-        {
-          context: {
-      title: 'DER_ACH',
-      }});
-    }
-    openWindowFormFilterDateDER_MVT() {
-      this.windowService.open(WindowDateFilterComponent,
-        {
-          context: {
-      title: 'DER_MVT',
-      }});
-    }
-    openWindowFormFilterDateDAT_RUP() {
-      this.windowService.open(WindowDateFilterComponent,
-        {
-          context: {
-      title: 'DAT_RUP',
-      }});
-    }
-    openWindowFormFilterDateDAT_PACH() {
-      this.windowService.open(WindowDateFilterComponent,
-        {
-          context: {
-      title: 'DAT_PACH',
-      }});
-    }
-
-    /**end filter date */
 
 
 /**end filter date */
@@ -1687,6 +1651,103 @@ openWindowSpecialM(codArt) {
 
 
 
+/***filter date */
 
 
+  testStatus :number = 1;
+
+  FilterDate(startDate,endDate){
+    console.log(startDate,endDate)
+    if (startDate !=null && endDate!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.articleService.getAllArticleBydateBetweenDAT_CREAT(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredArticles = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getArticles();
+    this.testStatus = 1
+  }
+  }
+
+  FilterDate1(startDate1,endDate1){
+    console.log(startDate1,endDate1)
+    if (startDate1 !=null && endDate1!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate1, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate1, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.articleService.getAllArticleBydateBetweenDER_ACH(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredArticles = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getArticles();
+    this.testStatus = 1
+  }
+  }
+
+  FilterDate2(startDate2,endDate2){
+    console.log(startDate2,endDate2)
+    if (startDate2 !=null && endDate2!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate2, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate2, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.articleService.getAllArticleBydateBetweenDER_MVT(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredArticles = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getArticles();
+    this.testStatus = 1
+  }
+  }
+
+  FilterDate3(startDate3,endDate3){
+    console.log(startDate3,endDate3)
+    if (startDate3 !=null && endDate3!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate3, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate3, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.articleService.getAllArticleBydateBetweenDAT_RUP(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredArticles = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getArticles();
+    this.testStatus = 1
+  }
+  }
+
+  FilterDate4(startDate4,endDate4){
+    console.log(startDate4,endDate4)
+    if (startDate4 !=null && endDate4!=null && this.testStatus != 2) {
+    let latest_startDate =this.datepipe.transform(startDate4, 'yyyy-MM-dd');
+    let latest_endDate =this.datepipe.transform(endDate4, 'yyyy-MM-dd');
+    latest_startDate.toString();
+    latest_endDate.toString();
+    this.articleService.getAllArticleBydateBetweenDAT_PACH(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+      this.filteredArticles = data;
+      console.log(data);
+    });
+    this.testStatus = 2
+  }else {
+    this.testStatus = 2
+    this.getArticles();
+    this.testStatus = 1
+  }
+  }
 }

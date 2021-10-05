@@ -2,7 +2,7 @@
     <nb-card-header>
       Achats Table
       <nb-card-body>
-        <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" class="border">
+        <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER'" class="border">
           <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
             <i class="fa fa-user"></i>Statistiques</button>
             <button type="button" (click)="togglepreviewTableAchats()" class="btn btn-outline-info">
@@ -14,95 +14,113 @@
   
     <nb-card-body>
       <div *ngIf="!previewTableAllAchatsExcelPdf" class="container">
-        Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+        Recherche Table: <input nbInput style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
         <table class="table table-bordered table-striped">
           <thead>
           <tr>
             <th style="text-align: center">
               <label class="label">NUM_DOC</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search NumDoc"
+                <input type="text" nbInput class="form-control" placeholder="search NumDoc"
                 style="width:150px" [(ngModel)]="searchTermNumDoc" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">TYP_DOC</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search TypDoc"
+                <input type="text" nbInput class="form-control" placeholder="search TypDoc"
                 style="width:150px" [(ngModel)]="searchTermTypDoc" /> 
               </div>
             </th>
             <th style="text-align: center">
-              <label class="label">DATE</label>
-                <div class="form-group">
-                    <button (click)="openWindowFormFilterDate()" class="btn btn-md btn-outline-primary">
-                      <i class="fa fa-user"></i>Filter</button>  
+              <label class="label">DATE<button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate"
+                  [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker></nb-datepicker>
                 </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate"
+                  [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest></nb-datepicker>
+                </div> 
+              </div>
             </th>
             <th style="text-align: center">
               <label class="label">COD_FRS</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search CodFrs"
+                <input type="text" nbInput class="form-control" placeholder="search CodFrs"
                 style="width:150px" [(ngModel)]="searchTermCodFrs" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">MONTANT</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Montant"
+                <input type="text" nbInput class="form-control" placeholder="search Montant"
                 style="width:150px" [(ngModel)]="searchTermMontant" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">MONT_HT</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search MontHt"
+                <input type="text" nbInput class="form-control" placeholder="search MontHt"
                 style="width:150px" [(ngModel)]="searchTermMontHt" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">TVA</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Tva"
+                <input type="text" nbInput class="form-control" placeholder="search Tva"
                 style="width:150px" [(ngModel)]="searchTermTva" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">SOLDE</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search Solde"
+                <input type="text" nbInput class="form-control" placeholder="search Solde"
                 style="width:150px" [(ngModel)]="searchTermSolde" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">NUM_COM</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search NumCom"
+                <input type="text" nbInput class="form-control" placeholder="search NumCom"
                 style="width:150px" [(ngModel)]="searchTermNumCom" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">TYP_REG</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search TypReg"
+                <input type="text" nbInput class="form-control" placeholder="search TypReg"
                 style="width:150px" [(ngModel)]="searchTermTypReg" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">MONT_REG</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search MontReg"
+                <input type="text" nbInput class="form-control" placeholder="search MontReg"
                 style="width:150px" [(ngModel)]="searchTermMontReg" />
               </div>
             </th>
             <th style="text-align: center">
               <label class="label">DOC_REG</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search DocReg"
+                <input type="text" nbInput class="form-control" placeholder="search DocReg"
                 style="width:150px" [(ngModel)]="searchTermDocReg" />
               </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER'" style="text-align: center">
               <label class="label">Payment</label>
               <div class="form-group">
                 <nb-select style="width:170px" id="listPaymentarticle" fullWidth fieldSize="small" (selectedChange)="getAllListPayment($event)" >
@@ -114,7 +132,7 @@
                 </nb-select>
               </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="text-align: center">
               <label class="label">Achat Validation</label>
               <div class="form-group">
                 <nb-select style="width:170px" id="listValidationarticle" fullWidth fieldSize="small" (selectedChange)="getAllListValidation($event)" >
@@ -138,7 +156,7 @@
           <tr *ngFor="let achat of filteredAchatss | filter:searchText">
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.numDocAchat}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.typDoc}}</p></span></td>
-            <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.date | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
+            <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.date  | date: 'MMM d, y '}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{achat.codFrs}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.montant!=0 && achat.montant!=null">{{achat.montant | currency:'TND ' : 'symbol'}}</p><p *ngIf="achat.montant===0" style="color: rgb(236, 28, 0);">0</p><p *ngIf="achat.montant==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p *ngIf="achat.montHt!=0 && achat.montHt!=null">{{achat.montHt | currency:'TND ' : 'symbol'}}</p><p *ngIf="achat.montHt===0" style="color: rgb(236, 28, 0);">0</p><p *ngIf="achat.montHt==null" class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);"><label>Aucune!</label></p></span></td>
@@ -156,7 +174,7 @@
                 <span class="p-mb-3 p-text-normal" style="color: rgb(160, 168, 160);" ><label> Aucune!</label></span>
               </div>
             </td>
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER')" style="text-align: center" class="field-multiple-drag">
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER'" style="text-align: center" class="field-multiple-drag">
               <span>
                 <p>
                   <img *ngIf="achat.pret=='payer'" src="assets/images/toulsImages/Valider.png" height="50" width="50"/>
@@ -165,12 +183,12 @@
               </span>
             </td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_CAISSIER' || 'ROLE_DECIDEUR_BP' || 'ROLE_RESPONSABLE_DISPATCHING_BP')" style="text-align: center" class="field-multiple-drag"><span><p>
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_CAISSIER' || authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" style="text-align: center" class="field-multiple-drag"><span><p>
               
-                <button [disabled]="authority!==('ROLE_ADMIN' || 'ROLE_CAISSIER')" nbButton *ngIf="achat.validation=='valider'" type="button" (click)="OpenValidationPopap(achat.numDocAchat)" [status]="success" class="btn btn-md btn-outline-success" hero>
+                <button [disabled]="authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" nbButton *ngIf="achat.validation=='valider'" type="button" (click)="OpenValidationPopap(achat.numDocAchat)" [status]="success" class="btn btn-md btn-outline-success" hero>
                   Valider
                 </button>
-                <button [disabled]="authority!==('ROLE_ADMIN' || 'ROLE_CAISSIER')" nbButton *ngIf="achat.validation=='non_valider'" type="button" (click)="OpenNotValidationPopap(achat.numDocAchat)" [status]="warning" class="btn btn-md btn-outline-warning" hero>
+                <button [disabled]="authority==='ROLE_DECIDEUR_BP' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP'" nbButton *ngIf="achat.validation=='non_valider'" type="button" (click)="OpenNotValidationPopap(achat.numDocAchat)" [status]="warning" class="btn btn-md btn-outline-warning" hero>
                    non Valider
                 </button>
             </p></span>
@@ -216,7 +234,7 @@
                               <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
                               <span class="p-input-icon-left p-ml-auto">
                                   <i class="pi pi-search"></i>
-                                  <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                                  <input pInputText nbInput type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
                               </span>
                       </div>
                     </div>
@@ -319,7 +337,7 @@
                                   <p-multiSelect [ngModel]="value" [options]="agents" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                       <ng-template let-option pTemplate="item">
                                           <div class="p-multiselect-representative-option">
-                                              <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                              <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                               <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                           </div>
                                       </ng-template>
@@ -356,7 +374,7 @@
                         </div>
 
                         <div *ngIf="col.field=='date'">
-                          {{rowData[col.field] | date: 'dd/MM/yyyy' : '+0000'}}
+                          {{rowData[col.field] | date: 'MMM d, y '}}
                         </div>
 
                         <div style="text-align: center" *ngIf="col.field=='pret'">
@@ -376,12 +394,12 @@
                         <div style="text-align: center" class="field-multiple-drag" *ngIf="col.field=='user' && col.header=='Nom&Prenom respensable Achats'">
                           
                           <div *ngIf="rowData[col.field]!==null">
-                            <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" width="50" style="vertical-align: middle" />
+                            <img  (click)="showModalDialogUserTable2()" src="{{this.utilisateurService.host+'/'+rowData[col.field].codUser+'/'+rowData[col.field].fileName}}" width="50" style="vertical-align: middle" />
                             <span class="image-text"><p>{{rowData[col.field].firstname}}&nbsp;{{rowData[col.field].lastname}}</p></span>
               
                             <p-dialog header="details Responsable" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                             [draggable]="false" [resizable]="false">
-                            <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" style="width:150px;height: 180px;" class="article-image" /></p>
+                            <p class="p-m-0"><img src="{{this.utilisateurService.host+'/'+rowData[col.field].codUser+'/'+rowData[col.field].fileName}}" style="width:150px;height: 180px;" class="article-image" /></p>
                               <div>
                                 <li>                        
                                   <span class="image-text"><b class="p-mb-3 p-text-light">Nom et Prénom Responsable :</b> {{rowData[col.field].firstname}}&nbsp;{{rowData[col.field].lastname}}</span>                      
@@ -419,7 +437,7 @@
                 
                                   <p-dialog header="Définition Role" [(visible)]="displayPositionUserRole" [position]="position" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                                   [draggable]="false" [resizable]="false">
-                                  <p>CodUser:&nbsp;<b *ngIf="rowData[col.field]!==null && rowData[col.field].roles[0].name!=='ROLE_ADMIN'">{{rowData[col.field].codUser}}</b><b *ngIf="rowData[col.field]==null">Anucun code User</b><b *ngIf="rowData[col.field].roles[0].name=='ROLE_ADMIN'">les informations n est pas visible que pour les administrateurs</b>.</p>
+                                  <p>CodUser:&nbsp;<b *ngIf="rowData[col.field]!==null && rowData[col.field].roles[0].name==='ROLE_ADMIN'">{{rowData[col.field].codUser}}</b><b *ngIf="rowData[col.field]==null">Anucun code User</b><b *ngIf="rowData[col.field].roles[0].name!=='ROLE_ADMIN'">les informations n est pas visible que pour les administrateurs</b>.</p>
                                       <ng-template pTemplate="footer">
                                           <p-button icon="pi pi-check" (click)="displayPositionUserRole=false" label="Annuler" styleClass="p-button-text"></p-button>
                                       </ng-template>

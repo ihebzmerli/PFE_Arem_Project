@@ -3,7 +3,7 @@
     Bon Livraison Table
 
     <nb-card-body>
-      <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_RESPONSABLE_POINTAGE')" class="border">
+      <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_PREPARATEUR_BR' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_RESPONSABLE_POINTAGE'" class="border">
           <button class="btn btn-md btn-outline-primary" (click)="goToCharts()">
           <i class="fa fa-user"></i>Statistiques</button>
 
@@ -16,22 +16,41 @@
 
   <nb-card-body>
     <div *ngIf="!previewTableAllBonlivExcelPdf" class="container">
-      Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+      Recherche Table: <input nbInput style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
           <th style="text-align: center">
             <label class="label">NUM_BON</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search NumBon"
+              <input type="text" nbInput class="form-control" placeholder="search NumBon"
               style="width:150px" [(ngModel)]="searchTermNumBon" />
             </div>
           </th>
           <th style="text-align: center">
-            <label class="label">DAT_BON</label>
+            <label class="label">DAT_BON
+              <button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
             <div class="form-group">
-              <button (click)="openWindowFormFilterDate()" style="width:150px" class="btn btn-md btn-outline-primary">
-                Recherche date</button>  
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate"
+                [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate"
+                [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest></nb-datepicker>
+              </div> 
             </div>
             <!--
             <div class="form-group">
@@ -45,14 +64,14 @@
           <th style="text-align: center">
             <label class="label">COD_CLI</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search CodCli"
+              <input type="text" nbInput class="form-control" placeholder="search CodCli"
               style="width:150px" [(ngModel)]="searchTermCodCli" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">Adresse Client</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Adresse Cli"
+              <input type="text" nbInput class="form-control" placeholder="search Adresse Cli"
               style="width:150px" [(ngModel)]="searchTermAdresseCli" />
             </div>
           </th>
@@ -68,56 +87,56 @@
           <th style="text-align: center">
             <label class="label">numBonFrs</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search num_Bon_Frs"
+              <input type="text" nbInput class="form-control" placeholder="search num_Bon_Frs"
               style="width:150px" [(ngModel)]="searchTermNumBonFrs" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">RAISON</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Raison"
+              <input type="text" nbInput class="form-control" placeholder="search Raison"
               style="width:150px" [(ngModel)]="searchTermRaison" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">BRUT_HT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Brut_Ht"
+              <input type="text" nbInput class="form-control" placeholder="search Brut_Ht"
               style="width:150px" [(ngModel)]="searchTermBrutHt" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TAUX_REM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Taux_Rem"
+              <input type="text" nbInput class="form-control" placeholder="search Taux_Rem"
               style="width:150px" [(ngModel)]="searchTermTauxRem" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MONT_REM</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Mont_Rem"
+              <input type="text" nbInput class="form-control" placeholder="search Mont_Rem"
               style="width:150px" [(ngModel)]="searchTermMontRem" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">NET_HT</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Net_Ht"
+              <input type="text" nbInput class="form-control" placeholder="search Net_Ht"
               style="width:150px" [(ngModel)]="searchTermNetHt" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MONT_TVA</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Mont_Tva"
+              <input type="text" nbInput class="form-control" placeholder="search Mont_Tva"
               style="width:150px" [(ngModel)]="searchTermMontTva" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">TOT_TTC</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Tot_Ttc"
+              <input type="text" nbInput class="form-control" placeholder="search Tot_Ttc"
               style="width:150px" [(ngModel)]="searchTermTotTtc" />
             </div>
           </th>
@@ -127,35 +146,48 @@
           <th style="text-align: center">
             <label class="label">TAUX_RES</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Taux_Res"
+              <input type="text" nbInput class="form-control" placeholder="search Taux_Res"
               style="width:150px" [(ngModel)]="searchTermTauxRes" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">MONT_TRS</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Mont_Trs"
+              <input type="text" nbInput class="form-control" placeholder="search Mont_Trs"
               style="width:150px" [(ngModel)]="searchTermMontTrs" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">LIV</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Liv"
+              <input type="text" nbInput class="form-control" placeholder="search Liv"
               style="width:150px" [(ngModel)]="searchTermLiv" />
+            </div>
+          </th>
+          <th style="text-align: center">
+            <label class="label">Transaction</label>
+            <div class="form-group">
+              <nb-select style="width:170px" id="listTransaction" fullWidth fieldSize="small" (selectedChange)="getAllListTransaction($event)" >
+                <nb-option value="">-Annuler Filter-</nb-option>
+                <nb-option *ngFor="let itemsTransaction of statusessTransaction" [value]="itemsTransaction.value"> 
+                  <div style="width: 300px;" *ngIf="itemsTransaction.label=='Reçu'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color: rgb(120, 13, 134);" >le Bon Livraison est reçu</div></span></div>
+                  <div style="width: 300px;" *ngIf="itemsTransaction.label=='Envoyer'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:rgb(6, 105, 122);">le Bon Livraison est envoyer</div></span></div>
+                  <div style="width: 300px;" *ngIf="itemsTransaction.label==''" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color: rgb(160, 168, 160);">L'etat de bon livraison n'est pas definie </div></span></div>                  
+                </nb-option>
+              </nb-select>
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">COMMAND</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Command"
+              <input type="text" nbInput class="form-control" placeholder="search Command"
               style="width:150px" [(ngModel)]="searchTermCommand" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">POINTAGE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Pointage"
+              <input type="text" nbInput class="form-control" placeholder="search Pointage"
               style="width:150px" [(ngModel)]="searchTermPointage" />
             </div>
           </th>
@@ -165,28 +197,28 @@
           <th style="text-align: center">
             <label class="label">POSTE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Poste"
+              <input type="text" nbInput class="form-control" placeholder="search Poste"
               style="width:150px" [(ngModel)]="searchTermPoste" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CENTRE</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Centre"
+              <input type="text" nbInput class="form-control" placeholder="search Centre"
               style="width:150px" [(ngModel)]="searchTermCentre" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">CODE_TVA</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Code_Tva"
+              <input type="text" nbInput class="form-control" placeholder="search Code_Tva"
               style="width:150px" [(ngModel)]="searchTermCodeTva" />
             </div>
           </th>
           <th style="text-align: center">
             <label class="label">PLUS_V</label>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="search Plus_V"
+              <input type="text" nbInput class="form-control" placeholder="search Plus_V"
               style="width:150px" [(ngModel)]="searchTermPlusV" />
             </div>
           </th>
@@ -220,16 +252,18 @@
         </thead>
         <tbody>
         <tr *ngFor="let bonliv of filteredBonLivs | filter:searchText">
-          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.numBon}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.numBon}}</p></span>
+            <img src="assets/images/toulsImages/print.png" width="32" style="vertical-align: middle" (click)="generatePdf(bonliv.numBon)" nbPopover="Imprimer le bon de livraison?" nbPopoverTrigger="hint" nbPopoverPlacement="right"/>
+          </td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.datBon | date: 'MMM d, y H:mm:ss' : '+0000'}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.nomprenomCli}}</p></span></td>
           <td><span><p>{{bonliv.adresseCli}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag">
             <ng-container *ngIf="bonliv.fournis; else newDeb" >
-              {{bonliv.fournis.codFrs}}
+              <p>{{bonliv.fournis.codFrs}}</p>
           </ng-container>
           <ng-template #newDeb>
-              ...
+            <p>...</p>
           </ng-template>
           </td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.numBonFrs}}</p></span></td>
@@ -244,7 +278,14 @@
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.tauxRes}} %</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.montTrs | currency:'TND ' : 'symbol'}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.liv}}</p></span></td>
-          <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.command}}</p></span></td>
+          <td style="text-align: center" class="field-multiple-drag">
+            <div *ngIf="bonliv.trans_action">
+              <div style="width: 300px;" *ngIf="bonliv.trans_action=='recu'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color: rgb(120, 13, 134);" >le Bon Livraison est reçu</div></span></div>
+              <div style="width: 300px;" *ngIf="bonliv.trans_action=='envoyer'" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color:rgb(6, 105, 122);">le Bon Livraison est envoyer</div></span></div>
+              <div style="width: 300px;" *ngIf="bonliv.trans_action==''" style="text-align: center" class="field-multiple-drag"><span><div class="p-mb-3 p-text-italic" style="color: rgb(160, 168, 160);">L'etat de bon livraison n'est pas definie </div></span></div>  
+            </div> 
+          </td>
+          <td style="text-align: center" class="field-multiple-drag"><span *ngIf="bonliv.numCom!==null"><p>{{bonliv.numCom.numCom}} : {{bonliv.numCom.raison}}</p></span><span *ngIf="bonliv.numCom===null"><p>Aucune</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.pointage}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.montIrpp}}</p></span></td>
           <td style="text-align: center" class="field-multiple-drag"><span><p>{{bonliv.poste}}</p></span></td>
@@ -284,7 +325,7 @@
                   <button (click)="openWindowXbaseXtva(bonliv.numBon)" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [shape]="semi-round" [size]="medium" [status]="primary" class="btn btn-md btn-outline-primary" outline>
                     XBASE & XTVA</button>
               </div>
-              <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_RESPONSABLE_POINTAGE')" class="form-groupe">
+              <div *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_PREPARATEUR_BR' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_RESPONSABLE_POINTAGE'" class="form-groupe">
                 <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(bonliv.numBon)" outline>
                   <i class="fa fa-edit"></i>Modifier</button>
                 <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" [size]="medium" [status]="danger" (click)="OpenDeletePopap(bonliv.numBon)" outline>
@@ -301,7 +342,7 @@
   <nb-card-body>
     <div *ngIf="previewTableAllBonlivExcelPdf">
         <p-table #dt [columns]="cols" [value]="filteredBonLivs" selectionMode="multiple" [(selection)]="selectedBonlivs" 
-        dataKey="numBon" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        dataKey="numBon" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" class="p-tableCss" styleClass="p-datatable-customers p-datatable-gridlines"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['numBon','nomprenomCli','adresseCli','datBon','numCom.fournis.codFrs','numCom.fournis.raison','numBonFrs','livreur.nom','raison','brutHt','tauxRem','montRem','netHt',
         'montTva','totTtc','tauxRes','montTrs','liv','trans_action','montIrpp','centre','user.firstname','numCom.user.firstname','user.roles[0].name','numCom.user.roles[0].name']">
@@ -317,11 +358,11 @@
                     </div>
                     <div class="col">
                       <button type="button" pButton pRipple icon="pi pi-filter" (click)="dt.exportCSV({selectionOnly:true})" class="p-button-secondary p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher CSV?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
-                      <button type="button" pButton pRipple icon="pi pi-bookmark" (click)="dt.exportExcel({selectionOnly:true})" class="p-button-help p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
+                      <button type="button" pButton pRipple icon="pi pi-bookmark" (click)="dt.exportExcel({selectionOnly:true})" class="p-button-success p-ml-auto" pTooltip="Selection Only" tooltipPosition="bottom" nbPopover="Télécharger les colones selectionner en un ficher Excel?" nbPopoverTrigger="hint" nbPopoverPlacement="top"></button>
                             <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
                             <span class="p-input-icon-left p-ml-auto">
                                 <i class="pi pi-search"></i>
-                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                                <input pInputText nbInput type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
                             </span>
                     </div>
                   </div>
@@ -441,7 +482,7 @@
                                 <p-multiSelect [ngModel]="value" [options]="agents" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
-                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                             <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                         </div>
                                     </ng-template>
@@ -510,7 +551,7 @@
                                 <p-multiSelect [ngModel]="value" [options]="agents" placeholder="Any" (onChange)="filter($event.value)" optionLabel="firstname">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
-                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/api/Imgusers/'+option.id}}" width="32" style="vertical-align: middle" />
+                                            <img [alt]="option.label" src="{{this.utilisateurService.host+'/'+option.codUser+'/'+option.fileName}}" width="32" style="vertical-align: middle" />
                                             <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
                                         </div>
                                     </ng-template>
@@ -600,12 +641,12 @@
                     <div style="text-align: center" class="field-multiple-drag" *ngIf="col.field=='user' && col.header=='Nom&Prenom respensable Bon'">
                         
                       <div *ngIf="rowData[col.field]!==null">
-                        <img  (click)="showModalDialogUserTable2(rowData[col.field].id)" src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].id}}" width="32" style="vertical-align: middle" />
+                        <img  (click)="showModalDialogUserTable2(rowData[col.field].id)" src="{{this.utilisateurService.host+'/'+rowData[col.field].codUser+'/'+rowData[col.field].fileName}}" width="32" style="vertical-align: middle" />
                         <span class="image-text"><p>{{rowData[col.field].lastname}}&nbsp;{{rowData[col.field].firstname}}</p></span>
                         <div *ngIf="displayModalUserTable2==true">
                           <p-dialog header="{{util.lastname}} {{util.firstname}}" [(visible)]="displayModalUserTable2" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                           [draggable]="false" [resizable]="false">
-                          <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+image_id}}" style="width:150px;height: 180px;" class="article-image" /></p>
+                          <p class="p-m-0"><img src="{{this.utilisateurService.host+'/'+util.codUser+'/'+util.fileName}}" style="width:150px;height: 180px;" class="article-image" /></p>
                             
                             <div>
                               <li>                        
@@ -714,12 +755,12 @@
                     <div style="text-align: center" class="field-multiple-drag" *ngIf="col.field=='numCom' && col.header=='Nom&Prenom respensable de Commmand'">
                       <div *ngIf="rowData[col.field]!==null">
 
-                        <img  (click)="showModalDialogUserTable2Command(rowData[col.field].user.id)" src="{{this.utilisateurService.host+'/api/Imgusers/'+rowData[col.field].user.id}}" width="32" style="vertical-align: middle" />
+                        <img  (click)="showModalDialogUserTable2Command(rowData[col.field].user.id)" src="{{this.utilisateurService.host+'/'+rowData[col.field].user.codUser+'/'+rowData[col.field].user.fileName}}" width="32" style="vertical-align: middle" />
                         <span class="image-text"><p>{{rowData[col.field].user.lastname}}&nbsp;{{rowData[col.field].user.firstname}}</p></span>
                         <div *ngIf="displayModalUserTable2Command==true">
                           <p-dialog header="{{util2.lastname}} {{util2.firstname}}" [(visible)]="displayModalUserTable2Command" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
                           [draggable]="false" [resizable]="false">
-                          <p class="p-m-0"><img src="{{this.utilisateurService.host+'/api/Imgusers/'+image_id2}}" style="width:250px" class="article-image" /></p>
+                          <p class="p-m-0"><img src="{{this.utilisateurService.host+'/'+util2.codUser+'/'+util2.fileName}}" style="width:250px" class="article-image" /></p>
                           
                             <div>
                               <li>                        
@@ -817,7 +858,7 @@
                         <button (click)="openWindowXbaseXtva(rowData[col.field])" style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [shape]="semi-round" size="small" [status]="primary" class="btn btn-md btn-outline-primary" outline>
                             XBASE & XTVA</button>
                       </div>
-                      <div *ngIf="col.header=='Actions' && col.field=='numBon' && authority==('ROLE_ADMIN' || 'ROLE_PREPARATEUR_BR' || 'ROLE_RESPONSABLE_DISPATCHING_BP' || 'ROLE_RESPONSABLE_POINTAGE')">
+                      <div *ngIf="col.header=='Actions' && col.field=='numBon' && (authority==='ROLE_ADMIN' || authority==='ROLE_PREPARATEUR_BR' || authority==='ROLE_RESPONSABLE_DISPATCHING_BP' || authority==='ROLE_RESPONSABLE_POINTAGE')">
                         <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" size="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(rowData[col.field])" outline>
                           <i class="fa fa-edit"></i>Modifier</button>
                         <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton class="btn btn-md btn-outline-danger" type="button" [shape]="semi-round" size="small" [status]="danger" (click)="OpenDeletePopap(rowData[col.field])" outline>

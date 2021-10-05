@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { NbUserModule,NbSelectModule,NbRadioModule,NbDatepickerModule,NbCheckboxModule,NbButtonModule,NbActionsModule,NbCardModule, NbIconModule, NbInputModule, NbTreeGridModule, NbDialogModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -88,6 +88,7 @@ import { EchartsEtatlivComponent } from './echarts-etatliv/echarts.component';
     NgxChartsModule,
     ChartModule,
     NbDialogModule.forChild(),
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class Etat_LivModule { }

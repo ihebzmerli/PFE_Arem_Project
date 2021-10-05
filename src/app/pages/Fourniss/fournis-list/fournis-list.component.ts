@@ -559,7 +559,7 @@ export class FournisListComponent implements OnInit {
 authority;
   ngOnInit(){
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
     this.getFourniss();

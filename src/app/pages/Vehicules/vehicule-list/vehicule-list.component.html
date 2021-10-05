@@ -2,29 +2,25 @@
     <nb-card-header>
       Vehicule table
       <nb-card-body>
-  
-        <div *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_EXPEDITEUR')" class="border">
-          <button class="btn btn-md btn-outline-primary">
-            <i class="fa fa-user"></i>Statistiques</button>
-        </div>
+
       </nb-card-body>
     </nb-card-header>
   
     <nb-card-body>
       <div class="container">
-        Recherche Table: <input style="width:230px" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
+        Recherche Table: <input style="width:230px" nbInput class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Recherche Global">
         <table class="table table-bordered table-striped">
           <thead>
           <tr>
             <th style="text-align: center"><label class="label">MATRICULE</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By Matricule"
+                <input type="text" nbInput class="form-control" placeholder="search By Matricule"
                 style="width:150px" [(ngModel)]="searchTermMatricule"/>
               </div>
             </th>
             <th style="text-align: center"><label class="label">MAT_AGENT</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By MatAgent"
+                <input type="text" nbInput class="form-control" placeholder="search By MatAgent"
                 style="width:150px" [(ngModel)]="searchTermMatAgent"/>
               </div>
             </th>
@@ -33,7 +29,7 @@
               <div class="form-group">
                 <nb-select style="width:200px" id="listmarquearticle" [(ngModel)]="_searchTermMarq" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonLiv($event)" [ngModelOptions]="{standalone: true}">
                   <nb-option value="">-Annuler Filter-</nb-option>
-                  <nb-option *ngFor="let itemsMarque of marqueAllList" [value]="itemsMarque.code"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="32" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
+                  <nb-option *ngFor="let itemsMarque of marqueAllList" [value]="itemsMarque.code"><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" width="32" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
                 </nb-select>
               </div>
             </th>
@@ -42,12 +38,12 @@
               <p-dropdown [options]="modeleAllList" (onChange)="getArticleOfFromModelAddForBonLiv($event)" [(ngModel)]="selectedMode" optionLabel="title" [filter]="true" filterBy="title" [showClear]="true" placeholder="Select a Modele">
                 <ng-template pTemplate="selectedItem">
                     <div class="country-item country-item-value"  *ngIf="selectedMode">
-                        <img src="{{this.marqueService.host+'/api/Imgmarques/'+selectedMode.marque.id}}" width="28"/><sapn>{{selectedMode.title}}</sapn>
+                        <img src="{{this.marqueService.host+'/'+selectedMode.marque.code+'/'+selectedMode.marque.fileName}}" width="28"/><sapn>{{selectedMode.title}}</sapn>
                     </div>
                 </ng-template>
                 <ng-template let-model pTemplate="item">
                     <div class="country-item">
-                        <img src="{{this.marqueService.host+'/api/Imgmarques/'+model.marque.id}}" width="28" /><sapn>{{model.title}}</sapn>
+                        <img src="{{this.marqueService.host+'/'+model.marque.code+'/'+model.marque.fileName}}" width="28" /><sapn>{{model.title}}</sapn>
                     </div>
                 </ng-template>
             </p-dropdown>
@@ -60,60 +56,174 @@
                 </nb-select>
               </div>
             </th>
-            <th style="text-align: center"><label class="label">DT_1_MC</label>
+            <th style="text-align: center"><label class="label">DT_1_MC<button (click)="FilterDate(startDate,endDate)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button></label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate"
+                  [nbDatepicker]="dateTimePicker" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker></nb-datepicker>
+                </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate"
+                  [nbDatepicker]="formpickertest" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest></nb-datepicker>
+                </div> 
+              </div>
             </th>
-            <th style="text-align: center"><label class="label">DT_ACQ</label>
+            <th style="text-align: center"><label class="label">DT_ACQ<button (click)="FilterDate1(startDate1,endDate1)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+              <div class="form-group">
+                <div>
+                  <label class="label">Date Debut: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="startDate1"
+                  [nbDatepicker]="dateTimePicker1" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #dateTimePicker1></nb-datepicker>
+                </div>
+                <div>
+                  <label class="label">Date Fin: </label>
+                  <input 
+                  style="width:110px"
+                  nbInput
+                  placeholder="Form Picker"
+                  [(ngModel)]="endDate1"
+                  [nbDatepicker]="formpickertest1" [ngModelOptions]="{standalone: true}">
+                  <nb-datepicker #formpickertest1></nb-datepicker>
+                </div> 
+              </div>
             </th>
             <th style="text-align: center"><label class="label">PATTC</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By Pattc"
+                <input type="text" nbInput class="form-control" placeholder="search By Pattc"
                 style="width:150px" [(ngModel)]="searchTermPattc"/>
               </div>
             </th>
 
             <th style="text-align: center"><label class="label">ESS</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By Ess"
+                <input type="text" nbInput class="form-control" placeholder="search By Ess"
                 style="width:150px" [(ngModel)]="searchTermEss"/>
               </div>
             </th>
-            <th style="text-align: center"><label class="label">DT_F_ASS</label>
+            <th style="text-align: center"><label class="label">DT_F_ASS<button (click)="FilterDate2(startDate2,endDate2)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate2"
+                [nbDatepicker]="dateTimePicker2" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker2></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate2"
+                [nbDatepicker]="formpickertest2" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest2></nb-datepicker>
+              </div> 
+            </div>
             </th>
-            <th style="text-align: center"><label class="label">DT_F_VISIT</label>
+            <th style="text-align: center"><label class="label">DT_F_VISIT<button (click)="FilterDate3(startDate3,endDate3)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate3"
+                [nbDatepicker]="dateTimePicker3" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker3></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate3"
+                [nbDatepicker]="formpickertest3" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest3></nb-datepicker>
+              </div> 
+            </div>
             </th>
             <th style="text-align: center"><label class="label">KM_COUR</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By KmCour"
+                <input type="text" nbInput class="form-control" placeholder="search By KmCour"
                 style="width:150px" [(ngModel)]="searchTermKmCour"/>
               </div>
             </th>
             <th style="text-align: center"><label class="label">DR_KM_VIDA</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By DrKmVida"
+                <input type="text" nbInput class="form-control" placeholder="search By DrKmVida"
                 style="width:150px" [(ngModel)]="searchTermDrKmVida"/>
               </div>
             </th>
             <th style="text-align: center"><label class="label">DR_KM_CH</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By DrKmCh"
+                <input type="text" nbInput class="form-control" placeholder="search By DrKmCh"
                 style="width:150px" [(ngModel)]="searchTermDrKmCh"/>
               </div>
             </th>
             <th style="text-align: center"><label class="label">OBSERVATION</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By Observation"
+                <input type="text" nbInput class="form-control" placeholder="search By Observation"
                 style="width:150px" [(ngModel)]="searchTermObservation"/>
               </div>
             </th>
             <th style="text-align: center"><label class="label">TONNAGE</label>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="search By Tonnage"
+                <input type="text" nbInput class="form-control" placeholder="search By Tonnage"
                 style="width:150px" [(ngModel)]="searchTermTonnage"/>
               </div>
             </th>
-            <th style="text-align: center"><label class="label">dt1mc2</label>
+            <th style="text-align: center"><label class="label">dt1mc2<button (click)="FilterDate4(startDate4,endDate4)" class="btn btn-md btn-outline-warning">{{ testStatus === 1 ? 'Filter' : 'Annuler' }}</button>
+            </label>
+            <div class="form-group">
+              <div>
+                <label class="label">Date Debut: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="startDate4"
+                [nbDatepicker]="dateTimePicker4" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #dateTimePicker4></nb-datepicker>
+              </div>
+              <div>
+                <label class="label">Date Fin: </label>
+                <input 
+                style="width:110px"
+                nbInput
+                placeholder="Form Picker"
+                [(ngModel)]="endDate4"
+                [nbDatepicker]="formpickertest4" [ngModelOptions]="{standalone: true}">
+                <nb-datepicker #formpickertest4></nb-datepicker>
+              </div> 
+            </div>
             </th>
-            <th *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_EXPEDITEUR')" style="text-align: center">
+            <th *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_EXPEDITEUR'" style="text-align: center">
               <label class="label">Actions</label>
             </th>
 
@@ -158,7 +268,7 @@
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{vehicule.tonnage}}</p></span></td>
             <td style="text-align: center" class="field-multiple-drag"><span><p>{{vehicule.dt1Mc2 | date:'fullDate'}}</p></span></td>
 
-            <td *ngIf="authority==('ROLE_ADMIN' || 'ROLE_TRANSITAIRE' || 'ROLE_EXPEDITEUR')" class="field-multiple-drag">
+            <td *ngIf="authority==='ROLE_ADMIN' || authority==='ROLE_TRANSITAIRE' || authority==='ROLE_EXPEDITEUR'" class="field-multiple-drag">
               <div class="buttons-row">
                 <div class="form-group">
                   <button style="border-radius: 0.75rem;width: 110px;height: 38px;" nbButton type="button" [status]="warning" [size]="small" [shape]="semi-round" class="btn btn-md btn-outline-warning" (click)="goToModifier(vehicule.matricule)" outline>

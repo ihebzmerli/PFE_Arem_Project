@@ -102,10 +102,9 @@ if(event.target.files.length > 0){
   this.userFile =file;
 
   var mimeType = event.target.files[0].type;
-  if(mimeType.match(/image\/*/) == null){
-    console.log("Only images are supported.");
-    return;
-  }
+  if(mimeType.match(/image\/jpeg/) === null && mimeType.match(/image\/png/) === null){
+    this.makeToast3();
+  }else{
 
   var reader = new FileReader();
   
@@ -114,6 +113,7 @@ if(event.target.files.length > 0){
   reader.onload = (_event) => {
     this.imgURL = reader.result;
   }
+}
 }
 }
 
@@ -138,7 +138,11 @@ if(event.target.files.length > 0){
     
         title2 = 'HI there!';
         content2 = `des probleme de saisi!`;
-    
+        
+        status3: NbComponentStatus = 'warning';
+
+        title3 = 'Image doit etre de type png,jpg,jpeg!';
+        content3 = `Fichier de type eronée!`;
         types: NbComponentStatus[] = [
           'primary',
           'success',
@@ -163,6 +167,9 @@ if(event.target.files.length > 0){
         }
         makeToast2() {
           this.showToast(this.status2, this.title2, this.content2);
+        }
+        makeToast3() {
+          this.showToast(this.status3, this.title3, this.content3);
         }
         private showToast(type: NbComponentStatus, title: string, body: string) {
           const config = {

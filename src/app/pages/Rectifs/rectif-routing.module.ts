@@ -5,7 +5,6 @@ import { RectifsComponent } from './rectif.component';
 import { RectifListComponent } from './rectif-list/rectif-list.component';
 import { CreateRectifComponent } from './create-rectif/create-rectif.component';
 import { UpdateRectifComponent } from './update-rectif/update-rectif.component';
-import { RectifDetailComponent } from './rectif-detail/rectif-detail.component';
 import { AuthGuardAdmin } from '../../auth-guardRoles/auth-guardAdmin';
 import { AllGuard } from '../../auth-guardRoles/auth-guardModules.ts/AllGuard';
 import { AuthGuardPreparateurBr } from '../../auth-guardRoles/auth-guardPreparateur_Br';
@@ -31,14 +30,9 @@ const routes: Routes = [{
       component: CreateRectifComponent,
     },
     {
-      path: 'update-rectif',
+      path: 'update-rectif/:id',
       data: {guards: [ AuthGuardAdmin , AuthGuardPreparateurBr , AuthGuardRDispatchingBp , AuthGuardTransitaire ]}, canActivate: [AllGuard],
       component: UpdateRectifComponent,
-    },
-    {
-      path: 'rectif-list/rectif-detail/:id_rectif',
-      data: {guards: [ AuthGuardAdmin , AuthGuardPreparateurBr , AuthGuardRDispatchingBp , AuthGuardTransitaire ]}, canActivate: [AllGuard],
-      component: RectifDetailComponent,
     },
   ],
 }];
@@ -58,5 +52,4 @@ export const routedComponents = [
   RectifListComponent,
   CreateRectifComponent,
   UpdateRectifComponent,
-  RectifDetailComponent,
 ];

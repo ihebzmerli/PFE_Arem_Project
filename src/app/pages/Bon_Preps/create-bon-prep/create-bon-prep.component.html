@@ -1,4 +1,4 @@
-<div class="accordions-container row offset-sm-2 col-sm-9" *ngIf="!ArticleWindow && !ChariotWindow">
+<div class="accordions-container offset-sm-2 col-sm-8" *ngIf="!ArticleWindow && !ChariotWindow">
   <form [formGroup]="bonPrepForm" (ngSubmit) = "onSubmitBon()">
     <nb-accordion>
       <nb-accordion-item #item>
@@ -8,25 +8,23 @@
         <h6>Ajouter Bon De Preparation</h6>
         </nb-accordion-item-header>
         <nb-accordion-item-body>
-          <div class="row">
-            <div class="full-name-inputs">
-              <div class="col-sm-6"> 
-                <label for="numBon" class="label">N° BON</label>
-                <input type="text" nbInput fullWidth placeholder="N° BON" class="form-control" formControlName="numBon" [ngClass]="{ 'is-invalid': submitted && f.numBon.errors }" />
-                <div *ngIf="submitted && f.numBon.errors" class="invalid-feedback">
-                  <div *ngIf="f.numBon.errors.required">Le Numero est obligatoire.</div>
-                  <div *ngIf="f.numBon.errors.minlength">Le Numero doit étre au moin 5 lettres longue.</div>
-                  <div *ngIf="f.numBon.errors.maxlength">Le Numero ne doit pas dépassé à 100 lettres longue.</div>
-                  <div *ngIf="f.numBon.errors.pattern">Le Numero ne doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>
-                <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
-                </div>
+              <div class="row">
+                  <div class="col-sm-6"> 
+                    <label for="numBon" class="label">N° BON</label>
+                    <input type="text" nbInput fullWidth placeholder="N° BON" class="form-control" formControlName="numBon" [ngClass]="{ 'is-invalid': submitted && f.numBon.errors }" />
+                    <div *ngIf="submitted && f.numBon.errors" class="invalid-feedback">
+                      <div *ngIf="f.numBon.errors.required">Le Numero est obligatoire.</div>
+                      <div *ngIf="f.numBon.errors.minlength">Le Numero doit étre au moin 5 lettres longue.</div>
+                      <div *ngIf="f.numBon.errors.maxlength">Le Numero ne doit pas dépassé à 100 lettres longue.</div>
+                      <div *ngIf="f.numBon.errors.pattern">Le Numero ne doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>
+                    <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="datBon" class="label">Date BON</label>
+                    <input type="text" nbInput fullWidth class="form-control" formControlName="datBon" [ngClass]="{ 'is-invalid': submitted && f.datBon.errors }" disabled/>
+                  </div>
               </div>
-              <div>
-                <label for="datBon" class="label">Date BON</label>
-                <input type="text" nbInput fullWidth class="form-control" formControlName="datBon" [ngClass]="{ 'is-invalid': submitted && f.datBon.errors }" disabled/>
-              </div>
-            </div>
-          </div>
             
                 <b><label for="raison" class="label">Raison</label></b>
                 <textarea rows="5" nbInput fullWidth shape="round" placeholder="Raison" class="form-control" formControlName="raison" [ngClass]="{ 'is-invalid': submitted && f.raison.errors }"></textarea>
@@ -63,7 +61,7 @@
                 <div class="col-sm-6"> 
                   <label fullWidth for="codFrs" class="label">Code Fournisseur:</label>
 
-                  <p-dropdown fullWidth [options]="FournisList" [(ngModel)]="selectedCodFrs" optionLabel="raison" [filter]="true" filterBy="raison" [showClear]="true" placeholder="Choisir Fournisseur" [ngModelOptions]="{standalone: true}" [disabled]="disableFrsDropdown">
+                  <p-dropdown autoWidth="false" [style]="{'width':'100%'}" fullWidth [options]="FournisList" [(ngModel)]="selectedCodFrs" optionLabel="raison" [filter]="true" filterBy="raison" [showClear]="true" placeholder="Choisir Fournisseur" [ngModelOptions]="{standalone: true}" [disabled]="disableFrsDropdown">
                     <ng-template pTemplate="selectedCodFrs">
                         <div class="country-item country-item-value"  *ngIf="selectedCodFrs">
                             <div>{{selectedCodFrs.raison}}</div><span>{{selectedCodFrs.codFrs}}</span>
@@ -164,15 +162,7 @@
                   </div>
                 </div>
                 <div class="col-sm-6"> 
-                  <label for="pointage" class="label">Pointage</label>  
-                  <input type="text" nbInput fullWidth placeholder="Pointage" class="form-control" formControlName="pointage" [ngClass]="{ 'is-invalid': submitted && f.pointage.errors }" />
-                  <div *ngIf="submitted && f.pointage.errors" class="invalid-feedback">
-                    <div *ngIf="f.pointage.errors.required">Le Pointage est obligatoire.</div>
-                    <div *ngIf="f.pointage.errors.minlength">Le Pointage doit étre au moin 6 lettres longue.</div>
-                    <div *ngIf="f.pointage.errors.maxlength">Le Pointage ne doit pas dépassé à 30 lettres longue.</div>
-                    <div *ngIf="f.pointage.errors.pattern">Le Pointage ne doit contenir que des lettres et des nombre.</div>
-                  <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
-                  </div>
+
                 </div>
 
             </div>
@@ -212,18 +202,29 @@
                     <div *ngIf="f.adresse.errors.minlength">Le adresse doit étre au moin 5 lettres longue.</div>
                     <div *ngIf="f.adresse.errors.maxlength">Le adresse ne doit pas dépassé à 30 lettres longue.</div>
                     <div *ngIf="f.adresse.errors.pattern">Le adresse ne doit contenir au moin une lettre majuscule,une lettre minuscule et un nombre.</div>
-                  <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                  <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
                   </div>
                 </div> 
                 <div class="col-sm-6">  
                   <label for="point" class="label">Pointage</label>
-                  <input type="text" nbInput fullWidth placeholder="Pointage" class="form-control" formControlName="point" [ngClass]="{ 'is-invalid': submitted && f.point.errors }" />
-                  <div *ngIf="submitted && f.point.errors" class="invalid-feedback">
-                    <div *ngIf="f.point.errors.required">Le point est obligatoire.</div>
-                    <div *ngIf="f.point.errors.minlength">Le point doit étre au moin 5 lettres longue.</div>
-                    <div *ngIf="f.point.errors.maxlength">Le point ne doit pas dépassé à 30 lettres longue.</div>
-                    <div *ngIf="f.point.errors.pattern">Le point ne doit contenir au moin une lettre majuscule,une lettre minuscule et un nombre.</div>
-                  <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
+                  <div class="form-group"> 
+  <!--                   <nb-select style="width:270px" id="listitemsAgents" name="listitemsAgents" [(ngModel)]="_searchTermUser" fullWidth fieldSize="small" [ngModelOptions]="{standalone: true}"> 
+                      <nb-option [value]="">-Annuler Filter-</nb-option> 
+                      <nb-option *ngFor="let itemsAgents of agentsPointage" [value]="itemsAgents.firstname+' '+itemsAgents.lastname"> 
+                        <span *ngIf="itemsAgents.firstname!==null || itemsAgents.lastname!==null || itemsAgents.codUser!==null"> 
+                          <img src="{{this.utilisateurService.host+'/api/ImgUsers/'+itemsAgents.codUser}}" width="32" style="vertical-align: middle" alt=""/> 
+                          <span class="p-ml-1"><b>{{itemsAgents.firstname}}</b>&nbsp;<b>{{itemsAgents.lastname}}</b></span> 
+                        </span> 
+                      </nb-option> 
+                    </nb-select>
+  -->
+                    <p-multiSelect autoWidth="false" [style]="{'width':'100%'}" [(ngModel)]="_searchTermUser" [options]="agentsPointage" placeholder="Any" optionLabel="firstname" [ngModelOptions]="{standalone: true}">
+                      <ng-template let-option pTemplate="item">
+                          <div style="width: 100px;" class="p-multiselect-representative-option">
+                              <span class="p-ml-1"><b>{{option.firstname}}</b>&nbsp;<b>{{option.lastname}}</b></span>
+                          </div>
+                      </ng-template>
+                  </p-multiSelect>
                   </div>
                 </div>
             </div>
@@ -593,7 +594,7 @@
 
 
 
-<div class="accordions-container row offset-sm-2 col-sm-9" *ngIf="ArticleWindow">
+<div class="accordions-container offset-sm-2 col-sm-8" *ngIf="ArticleWindow">
   <form (ngSubmit) = "onSubmitArtBon()" #artPrepForm="ngForm">
     <nb-accordion>
       <nb-accordion-item #item>
@@ -607,14 +608,14 @@
               <div class="col-sm-4">
           Les Marques:<nb-select fullWidth fieldSize="small" id="selectedMarque" (selectedChange)="MarqueSelected($event)" required (selectedChange)="getModeleFromMarque($event)">
                 <nb-option value="0">-Select</nb-option>
-                <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsMarque.id}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
+                <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
               </nb-select>
               </div>
 
               <div class="col-sm-4">
                 Les Modeles:<nb-select id="model" name="model" (selectedChange)="ModelSelected($event)" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonPrep($event)" required>
                   <nb-option value="0">-Select</nb-option>
-                  <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/api/Imgmarques/'+itemsModel.marque.id}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
+                  <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/'+itemsModel.marque.code+'/'+itemsModel.marque.fileName}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
               </nb-select>
               </div>
 
@@ -668,7 +669,7 @@
                                 <h2>mercie de choisir un Article</h2>
                               </div>
                               <div *ngIf="ArticleGeted" class="image-gallery">
-                                  <img src="assets/images/imgArticles/{{ArticleGeted.codArt}}/{{ArticleGeted.codArt}}.png" height="400" width="400"/>
+                                  <img src="{{this.articleService.host+'/'+ArticleGeted.codArt+'/'+ArticleGeted.fileName}}" height="400" width="400"/>
                               </div>
                             </div>
                             
@@ -677,7 +678,7 @@
                             <ng-template let-article pTemplate="item">
                                 <div class="article-item">
                                     <div class="image-container">
-                                            <img src="/assets/images/imgArticles/{{article.codArt}}/{{article.codArt}}.png" [alt]="article.codArt" class="article-image" />
+                                            <img src="{{this.articleService.host+'/'+article.codArt+'/'+article.fileName}}" [alt]="article.codArt" class="article-image" />
                                     </div>
                                     <div class="article-list-detail">
                                         <h5 class="p-mb-2">{{article.codArt}}</h5>
@@ -988,7 +989,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur0="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_0($event)" [(ngModel)]="preparateurAdd0" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList0" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList0" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1044,7 +1045,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur1="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_1($event)" [(ngModel)]="preparateurAdd1" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList1" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList1" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1099,7 +1100,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur2="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_2($event)" [(ngModel)]="preparateurAdd2" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList2" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList2" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1154,7 +1155,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur3="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_3($event)" [(ngModel)]="preparateurAdd3" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList3" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList3" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1208,7 +1209,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur4="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_4($event)" [(ngModel)]="preparateurAdd4" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList4" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList4" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1263,7 +1264,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur5="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_5($event)" [(ngModel)]="preparateurAdd5" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList5" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList5" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1318,7 +1319,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur6="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_6($event)" [(ngModel)]="preparateurAdd6" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList6" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList6" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1375,7 +1376,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur7="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_7($event)" [(ngModel)]="preparateurAdd7" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList7" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList7" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1432,7 +1433,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur8="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_8($event)" [(ngModel)]="preparateurAdd8" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList8" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList8" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1488,7 +1489,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur9="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_9($event)" [(ngModel)]="preparateurAdd9" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList9" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList9" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 
@@ -1544,7 +1545,7 @@
                               <div>
                                   <nb-select style="max-width: 100%;width: 100%;padding: 8px;" size="small" fullWidth fieldSize="small"  #preparateur10="ngModel" placeholder="Preparateur" (selectedChange)="PrepSwitchDisable_10($event)" [(ngModel)]="preparateurAdd10" required [ngModelOptions]="{standalone: true}">
                                       <nb-option value="NULL">-Select</nb-option>
-                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList10" [value]="itemsPreparateur.id">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
+                                      <nb-option *ngFor="let itemsPreparateur of PreparateurList10" [value]="itemsPreparateur">{{ itemsPreparateur.firstname }} {{ itemsPreparateur.lastname }}</nb-option>
                                   </nb-select>
                               </div>
                             </td> 

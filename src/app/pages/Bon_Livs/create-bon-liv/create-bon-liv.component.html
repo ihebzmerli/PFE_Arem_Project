@@ -1,4 +1,4 @@
-<div class="accordions-container row offset-sm-2 col-sm-9" *ngIf="!ArticleWindow">
+<div class="accordions-container offset-sm-2 col-sm-8" *ngIf="!ArticleWindow">
   <form [formGroup]="bonLivForm" (ngSubmit) = "onSubmitBon()">
     <nb-accordion>
       <nb-accordion-item #item>
@@ -14,23 +14,21 @@
               -->
 
               <div class="row">
-                <div class="full-name-inputs">
-                  <div class="col-sm-6">
-                    <label for="numBon" class="label">N° BON</label> 
-                    <input type="text" nbInput fullWidth placeholder="N° BON" class="form-control" formControlName="numBon" [ngClass]="{ 'is-invalid': submitted && f1.numBon.errors }" />
-                    <div *ngIf="submitted && f1.numBon.errors" class="invalid-feedback">
-                      <div *ngIf="f1.numBon.errors.required">Le Numero Bon est obligatoire.</div>
-                      <div *ngIf="f1.numBon.errors.minlength">Le Numero Bon doit étre au moin 5 lettres longue.</div>
-                      <div *ngIf="f1.numBon.errors.maxlength">Le Numero Bon ne doit pas dépassé à 100 lettres longue.</div>
-                      <div *ngIf="f1.numBon.errors.pattern">Le Numero Bon ne doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>
+                <div class="col-sm-6">
+                  <label for="numBon" class="label">N° BON</label> 
+                  <input type="text" nbInput fullWidth placeholder="N° BON" class="form-control" formControlName="numBon" [ngClass]="{ 'is-invalid': submitted && f1.numBon.errors }" />
+                  <div *ngIf="submitted && f1.numBon.errors" class="invalid-feedback">
+                    <div *ngIf="f1.numBon.errors.required">Le Numero Bon est obligatoire.</div>
+                    <div *ngIf="f1.numBon.errors.minlength">Le Numero Bon doit étre au moin 5 lettres longue.</div>
+                    <div *ngIf="f1.numBon.errors.maxlength">Le Numero Bon ne doit pas dépassé à 100 lettres longue.</div>
+                    <div *ngIf="f1.numBon.errors.pattern">Le Numero Bon ne doit contenir au moin une lettre majuscule,une lettre minuscule, et un nombre.</div>
                     <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
-                    </div>
                   </div>
-                  <div class="col-sm-6">
-                    <label for="datBon" class="label">Date BON</label>
-                    <input type="text" nbInput fullWidth class="form-control" formControlName="datBon" [ngClass]="{ 'is-invalid': submitted && f1.datBon.errors }" disabled/>
-                  </div>  
-                </div>  
+                </div>
+                <div class="col-sm-6">
+                  <label for="datBon" class="label">Date BON</label>
+                  <input type="text" nbInput fullWidth class="form-control" formControlName="datBon" [ngClass]="{ 'is-invalid': submitted && f1.datBon.errors }" disabled/>
+                </div>
               </div>
 
               <div class="row">
@@ -46,9 +44,9 @@
               <div class="row">
                   <div class="col-sm-6"> 
                     <label fullWidth for="codFrs" class="label">Code Fournisseur:</label>
-                    <nb-select fullWidth type="text" selected="selectedCodFrs" formControlName="codFrs" [ngClass]="{ 'is-invalid': submitted && f1.codFrs.errors }">
+                    <nb-select fullWidth type="text" selected="selectedCodFrs" formControlName="fournis" [ngClass]="{ 'is-invalid': submitted && f1.fournis.errors }">
                       <nb-option value="NULL">-Select</nb-option>
-                      <nb-option *ngFor="let items of FournisList" [value]="items.codFrs" nbPopover="{{items.raison}}" nbPopoverTrigger="hint" nbPopoverPlacement="right">{{ items.codFrs }}</nb-option>
+                      <nb-option *ngFor="let items of FournisList" [value]="items" nbPopover="{{items.raison}}" nbPopoverTrigger="hint" nbPopoverPlacement="right">{{ items.codFrs }}</nb-option>
                     </nb-select>
                   </div> 
                   <div class="col-sm-6"> 
@@ -206,25 +204,18 @@
                 <div class="row">
                   <div class="col-sm-6">                 
                     <label for="command" class="label">COMMAND</label>
-                    <input type="text" nbInput fullWidth placeholder="COMMAND" class="form-control" formControlName="command" [ngClass]="{ 'is-invalid': submitted && f1.command.errors }" />
-                    <div *ngIf="submitted && f1.command.errors" class="invalid-feedback">
-                      <div *ngIf="f1.command.errors.required">Le command est obligatoire.</div>
-                      <div *ngIf="f1.command.errors.minlength">Le command doit contenir au moin 2 lettres.</div>
-                      <div *ngIf="f1.command.errors.maxlength">Le command ne doit pas dépassé 30 lettres.</div>
-                      <div *ngIf="f1.command.errors.pattern">Le command ne doit contenir que des lettres ou des nombres.</div>
-                    <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
-                    </div>
+                    <nb-select fullWidth type="text" selected="selectedCommand" formControlName="numCom" [ngClass]="{ 'is-invalid': submitted && f1.numCom.errors }">
+                      <nb-option value="NULL">-Select</nb-option>
+                      <nb-option *ngFor="let items of listeXcommand" [value]="items" nbPopover="{{items.typCom}}" nbPopoverTrigger="hint" nbPopoverPlacement="right">{{ items.numCom }}:{{ items.raison }}</nb-option>
+                    </nb-select>
                   </div>                  
                   <div class="col-sm-6">   
-                    <label for="liv" class="label">liv</label>
-                    <input type="text" nbInput fullWidth placeholder="LIV" class="form-control" formControlName="liv" [ngClass]="{ 'is-invalid': submitted && f1.liv.errors }"/>  
-                    <div *ngIf="submitted && f1.liv.errors" class="invalid-feedback">
-                      <div *ngIf="f1.liv.errors.required">Le liv est obligatoire.</div>
-                      <div *ngIf="f1.liv.errors.minlength">Le liv doit contenir au moin 2 lettres.</div>
-                      <div *ngIf="f1.liv.errors.maxlength">Le liv ne doit pas dépassé 30 lettres .</div>
-                      <div *ngIf="f1.liv.errors.pattern">Le liv ne doit contenir que des lettres ou des nombres.</div>
-                    <!-- <div *ngIf="f.raison.errors.validPrime">Votre Raison deja existant</div> -->
-                    </div>
+                    <label for="liv" class="label">Type Liv</label>
+                    <nb-select fullWidth type="text" formControlName="liv" [ngClass]="{ 'is-invalid': submitted && f1.liv.errors }">
+                      <nb-option value="NULL">-Select</nb-option>
+                      <nb-option value="livraison_voiture">Livraison voiture</nb-option>
+                      <nb-option value="sur_comptoir">Sur comptoir</nb-option>
+                    </nb-select>
                   </div>
                 </div>
                 
@@ -578,7 +569,7 @@
 </div>
 
 
-<div class="accordions-container row offset-sm-2 col-sm-9" *ngIf="ArticleWindow">
+<div class="accordions-container offset-sm-2 col-sm-8" *ngIf="ArticleWindow">
     <nb-accordion>
           <nb-accordion-item>
               <nb-accordion-item-header>
@@ -622,6 +613,39 @@
                             <input type="text" nbInput fullWidth  name="derMvt" [(ngModel)]="article.derMvt" #derMvt="ngModel" [ngModelOptions]="{standalone: true}" disabled/>
                         </div>
                     </nb-card-header>
+
+
+
+
+
+
+
+                    <div>
+                      <div class="full-name-inputs">
+                        <div class="col-sm-4">
+                    Les Marques:<nb-select fullWidth fieldSize="small" id="selectedMarque" (selectedChange)="MarqueSelected($event)" required (selectedChange)="getModeleFromMarque($event)">
+                          <nb-option value="0">-Select</nb-option>
+                          <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" width="29" style="vertical-align: middle" /> {{ itemsMarque.title }} </nb-option>
+                        </nb-select>
+                        </div>
+          
+                        <div class="col-sm-4">
+                          Les Modeles:<nb-select id="model" name="model" (selectedChange)="ModelSelected($event)" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonPrep($event)" required>
+                            <nb-option value="0">-Select</nb-option>
+                            <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><img src="{{this.marqueService.host+'/'+itemsModel.marque.code+'/'+itemsModel.marque.fileName}}" width="29" style="vertical-align: middle" /> {{ itemsModel.title }} </nb-option>
+                        </nb-select>
+                        </div>
+          
+                        <div class="col-sm-4">
+                    Les Articles:<nb-select fullWidth fieldSize="small" id="selectedArticleByMarque" [(ngModel)]="artliv.codArt" required (selectedChange)="getAllStockByArticle($event)" [ngModelOptions]="{standalone: true}">
+                        <nb-option value="0">-Select</nb-option>
+                        <nb-option *ngFor="let itemsArticle of ArticleListWithMarque" [value]="itemsArticle.codArt"><span *ngIf="(itemsArticle.qutStk===0 || itemsArticle.qutStk==null) && (itemsArticle.qutStk2===0 || itemsArticle.qutStk2==null) && (itemsArticle.stkGar===0 || itemsArticle.stkGar==null) && (itemsArticle.stkIni===0 || itemsArticle.stkIni==null) && (itemsArticle.analStk===0 || itemsArticle.analStk==null) && (itemsArticle.nbjStk===0 || itemsArticle.nbjStk==null) && (itemsArticle.vSstk===0 || itemsArticle.vSstk==null) && (itemsArticle.comStk===0 || itemsArticle.comStk==null) && (itemsArticle.xanalStk===0 || itemsArticle.xanalStk==null) && (itemsArticle.stkAtrsf===0 || itemsArticle.stkAtrsf==null) && (itemsArticle.stkTrsf===0 || itemsArticle.stkTrsf==null) && (itemsArticle.stkReel===0 || itemsArticle.stkReel==null) && (itemsArticle.stkRes===0 || itemsArticle.stkRes==null) && (itemsArticle.stkNp===0 || itemsArticle.stkNp==null); else stockExiste" style="color: darkred;">Code Article: {{ itemsArticle.codArt}} </span><ng-template #stockExiste>Code Article: {{ itemsArticle.codArt}} </ng-template></nb-option>
+                        </nb-select>
+                        </div>
+                    </div>  
+                  </div>
+
+                    <!--
                           <div class="full-name-inputs">
                             <div class="col-sm-6">
                                 Les Marques:<nb-select id="listmarquearticle" [(ngModel)]="artliv.typArt" fullWidth fieldSize="small" (selectedChange)="getArticleOfFromMarqueAddForBonLiv($event)" [ngModelOptions]="{standalone: true}">
@@ -636,7 +660,9 @@
                                         <nb-option *ngFor="let itemsArticle of ArticleListWithMarque" [value]="itemsArticle.codArt"><span *ngIf="(itemsArticle.qutStk===0 || itemsArticle.qutStk==null) && (itemsArticle.qutStk2===0 || itemsArticle.qutStk2==null) && (itemsArticle.stkGar===0 || itemsArticle.stkGar==null) && (itemsArticle.stkIni===0 || itemsArticle.stkIni==null) && (itemsArticle.analStk===0 || itemsArticle.analStk==null) && (itemsArticle.nbjStk===0 || itemsArticle.nbjStk==null) && (itemsArticle.vSstk===0 || itemsArticle.vSstk==null) && (itemsArticle.comStk===0 || itemsArticle.comStk==null) && (itemsArticle.xanalStk===0 || itemsArticle.xanalStk==null) && (itemsArticle.stkAtrsf===0 || itemsArticle.stkAtrsf==null) && (itemsArticle.stkTrsf===0 || itemsArticle.stkTrsf==null) && (itemsArticle.stkReel===0 || itemsArticle.stkReel==null) && (itemsArticle.stkRes===0 || itemsArticle.stkRes==null) && (itemsArticle.stkNp===0 || itemsArticle.stkNp==null); else stockExiste" style="color: darkred;">Code Article: {{ itemsArticle.codArt}} </span><ng-template #stockExiste>Code Article: {{ itemsArticle.codArt}} </ng-template></nb-option>
                                       </nb-select>
                             </div>
-                        </div>  
+                        </div> 
+                      --> 
+
                         <div>
                           <button type="button" (click)="togglepreviewPhotoArticle()" class="btn btn-outline-primary">
                             {{previewPhotoArticle? "Hide ": "Show "}} Article
@@ -659,7 +685,7 @@
                                 <h2>mercie de choisir un Article</h2>
                               </div>
                               <div *ngIf="ArticleGeted" class="image-gallery">
-                                  <img src="assets/images/imgArticles/{{ArticleGeted.codArt}}/{{ArticleGeted.codArt}}.png" height="400" width="400"/>
+                                  <img src="{{this.articleService.host+'/'+ArticleGeted.codArt+'/'+ArticleGeted.fileName}}" height="400" width="400"/>
                               </div>
                             </div>
                             
@@ -668,7 +694,7 @@
                                 <ng-template let-article pTemplate="item">
                                     <div class="article-item">
                                         <div class="image-container">
-                                                <img src="/assets/images/imgArticles/{{article.codArt}}/{{article.codArt}}.png" [alt]="article.codArt" class="article-image" />
+                                                <img src="{{this.articleService.host+'/'+article.codArt+'/'+article.fileName}}" [alt]="article.codArt" class="article-image" />
                                         </div>
                                         <div class="article-list-detail">
                                             <h5 class="p-mb-2">{{article.codArt}}</h5>
@@ -690,7 +716,7 @@
                         <div class="full-name-inputs">
                           <div class="col-sm-6">
                             <label for="stock 1" class="label">Quantité des Articles de stock 1:</label><b *ngFor="let itemsQutStk of StockListWithArticle"><span *ngIf="itemsQutStk.qutStk===0 || itemsQutStk.qutStk==null || itemsQutStk.qutStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk.qutStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk.qutStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock 1" id="qutStk" [(ngModel)]="artliv.qutStk" class="form-control" #qutStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.qutStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock 1" id="qutStk" [(ngModel)]="artliv.qutStk" class="form-control" #qutStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.qutStk" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="qutStk.valid || qutStk.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!qutStk.hasError('min')">Qut Stk doit étre positive.</div>
                               <div [hidden]="!qutStk.hasError('max')">Qut Stk doit étre inferieur au max de Stock.</div>
@@ -699,7 +725,7 @@
                           </div>
                           <div class="col-sm-6">
                             <label for="stock 2" class="label">Quantité des Articles de stock 2:</label><b *ngFor="let itemsQutStk2 of StockListWithArticle"><span *ngIf="itemsQutStk2.qutStk2===0 || itemsQutStk2.qutStk2==null || itemsQutStk2.qutStk2==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsQutStk2.qutStk2 > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsQutStk2.qutStk2 }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock 2" class="form-control"  id="qutStk2" [(ngModel)]="artliv.qutStk2" class="form-control" #qutStk2="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.qutStk2" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock 2" class="form-control"  id="qutStk2" [(ngModel)]="artliv.qutStk2" class="form-control" #qutStk2="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.qutStk2" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="qutStk2.valid || qutStk2.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!qutStk2.hasError('min')">Qut Stk2 doit étre positive.</div>
                               <div [hidden]="!qutStk2.hasError('max')">Qut Stk2 doit étre inferieur au max de Stock.</div>
@@ -711,7 +737,7 @@
                         <div class="full-name-inputs">
                           <div class="col-sm-6">
                             <label for="stock Gar" class="label">Quantité des Articles de stock Gar:</label><b *ngFor="let itemsStkGar of StockListWithArticle"><span *ngIf="itemsStkGar.stkGar===0 || itemsStkGar.stkGar==null || itemsStkGar.stkGar==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsStkGar.stkGar > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsStkGar.stkGar }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Gar" id="stkGar" [(ngModel)]="artliv.stkGar" class="form-control" #stkGar="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkGar" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Gar" id="stkGar" [(ngModel)]="artliv.stkGar" class="form-control" #stkGar="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkGar" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="stkGar.valid || stkGar.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!stkGar.hasError('min')">Stk Gar doit étre positive.</div>
                               <div [hidden]="!stkGar.hasError('max')">Stk Gar doit étre inferieur au max de Stock.</div>
@@ -721,7 +747,7 @@
 
                           <div class="col-sm-6">
                             <label for="stock Initial" class="label">Quantité des Articles de stock Initial:</label><b *ngFor="let itemsStkIni of StockListWithArticle"><span *ngIf="itemsStkIni.stkIni===0 || itemsStkIni.stkIni==null || itemsStkIni.stkIni==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsStkIni.stkIni > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsStkIni.stkIni }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Initial" id="stkIni" [(ngModel)]="artliv.stkIni" class="form-control" #stkIni="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkIni" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Initial" id="stkIni" [(ngModel)]="artliv.stkIni" class="form-control" #stkIni="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkIni" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="stkIni.valid || stkIni.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!stkIni.hasError('min')">Stk Ini doit étre positive.</div>
                               <div [hidden]="!stkIni.hasError('max')">Stk Ini doit étre inferieur au max de Stock.</div>
@@ -732,7 +758,7 @@
                         <div class="full-name-inputs">
                           <div class="col-sm-6">
                             <label for="stock Anal" class="label">Quantité des Articles de stock Anal:</label><b *ngFor="let itemsAnalStk of StockListWithArticle"><span *ngIf="itemsAnalStk.analStk===0 || itemsAnalStk.analStk==null || itemsAnalStk.analStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsAnalStk.analStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsAnalStk.analStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Anal" id="analStk" [(ngModel)]="artliv.analStk" class="form-control" #analStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.analStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Anal" id="analStk" [(ngModel)]="artliv.analStk" class="form-control" #analStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.analStk" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="analStk.valid || analStk.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!analStk.hasError('min')">Anal Stk doit étre positive.</div>
                               <div [hidden]="!analStk.hasError('max')">Anal Stk doit étre inferieur au max de Stock.</div>
@@ -742,7 +768,7 @@
 
                           <div class="col-sm-6">
                             <label for="stock Nbj" class="label">Quantité des Articles de stock Nbj:</label><b *ngFor="let itemsNbjStk of StockListWithArticle"><span *ngIf="itemsNbjStk.nbjStk===0 || itemsNbjStk.nbjStk==null || itemsNbjStk.nbjStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsNbjStk.nbjStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsNbjStk.nbjStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Nbj" id="nbjStk" [(ngModel)]="artliv.nbjStk" class="form-control" #nbjStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.nbjStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Nbj" id="nbjStk" [(ngModel)]="artliv.nbjStk" class="form-control" #nbjStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.nbjStk" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="nbjStk.valid || nbjStk.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!nbjStk.hasError('min')">Nbj Stk doit étre positive.</div>
                               <div [hidden]="!nbjStk.hasError('max')">Nbj Stk doit étre inferieur au max de Stock.</div>
@@ -753,7 +779,7 @@
                         <div class="full-name-inputs"> 
                           <div class="col-sm-6">
                             <label for="stock V_S" class="label">Quantité des Articles de stock V_S:</label><b *ngFor="let itemsV_SStk of StockListWithArticle" ><span *ngIf="itemsV_SStk.vSstk===0 || itemsV_SStk.vSstk==null || itemsV_SStk.vSstk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsV_SStk.vSstk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsV_SStk.vSstk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock V_S" id="vSstk" [(ngModel)]="artliv.vSstk" class="form-control" #vSstk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.vSstk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock V_S" id="vSstk" [(ngModel)]="artliv.vSstk" class="form-control" #vSstk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.vSstk" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="vSstk.valid || vSstk.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!vSstk.hasError('min')">vS stk doit étre positive.</div>
                               <div [hidden]="!vSstk.hasError('max')">vS stk doit étre inferieur au max de Stock.</div>
@@ -763,7 +789,7 @@
 
                           <div class="col-sm-6">
                             <label for="stock Com" class="label">Quantité des Articles de stock Com:</label><b *ngFor="let itemsComStk of StockListWithArticle"><span *ngIf="itemsComStk.comStk===0 || itemsComStk.comStk==null || itemsComStk.comStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsComStk.comStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsComStk.comStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Com" id="comStk" [(ngModel)]="artliv.comStk" class="form-control" #comStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.comStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Com" id="comStk" [(ngModel)]="artliv.comStk" class="form-control" #comStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.comStk" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="comStk.valid || comStk.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!comStk.hasError('min')">Com Stk doit étre positive.</div>
                               <div [hidden]="!comStk.hasError('max')">Com Stk doit étre inferieur au max de Stock.</div>
@@ -775,7 +801,7 @@
                         <div class="full-name-inputs"> 
                           <div class="col-sm-6">
                             <label for="stock Xanal" class="label">Quantité des Articles de stock Xanal:</label><b *ngFor="let itemsXanalStk of StockListWithArticle"><span *ngIf="itemsXanalStk.xanalStk===0 || itemsXanalStk.xanalStk==null || itemsXanalStk.xanalStk==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsXanalStk.xanalStk > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsXanalStk.xanalStk }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Xanal" id="xanalStk" [(ngModel)]="artliv.xanalStk" class="form-control" #xanalStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.xanalStk" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Xanal" id="xanalStk" [(ngModel)]="artliv.xanalStk" class="form-control" #xanalStk="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.xanalStk" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="xanalStk.valid || xanalStk.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!xanalStk.hasError('min')">X Anal Stk doit étre positive.</div>
                               <div [hidden]="!xanalStk.hasError('max')">X Anal Stk doit étre inferieur au max de Stock.</div>
@@ -786,7 +812,7 @@
 
                           <div class="col-sm-6">
                             <label for="stock Atrsf" class="label">Quantité des Articles de stock Atrsf:</label><b *ngFor="let itemsStkAtrsf of StockListWithArticle"><span *ngIf="itemsStkAtrsf.stkAtrsf===0 || itemsStkAtrsf.stkAtrsf==null || itemsStkAtrsf.stkAtrsf==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsStkAtrsf.stkAtrsf > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsStkAtrsf.stkAtrsf }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Atrsf" id="stkAtrsf" [(ngModel)]="artliv.stkAtrsf" class="form-control" #stkAtrsf="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkAtrsf" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Atrsf" id="stkAtrsf" [(ngModel)]="artliv.stkAtrsf" class="form-control" #stkAtrsf="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkAtrsf" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="stkAtrsf.valid || stkAtrsf.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!stkAtrsf.hasError('min')">Stk Atrsf doit étre positive.</div>
                               <div [hidden]="!stkAtrsf.hasError('max')">Stk Atrsf doit étre inferieur au max de Stock.</div>
@@ -799,7 +825,7 @@
                         <div class="full-name-inputs">   
                           <div class="col-sm-6">
                             <label for="stock Trsf" class="label">Quantité des Articles de stock Trsf:</label><b *ngFor="let itemsStkTrsf of StockListWithArticle"><span *ngIf="itemsStkTrsf.stkTrsf===0 || itemsStkTrsf.stkTrsf==null || itemsStkTrsf.stkTrsf==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsStkTrsf.stkTrsf > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsStkTrsf.stkTrsf }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Trsf" id="stkTrsf" [(ngModel)]="artliv.stkTrsf" class="form-control" #stkTrsf="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkTrsf" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Trsf" id="stkTrsf" [(ngModel)]="artliv.stkTrsf" class="form-control" #stkTrsf="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkTrsf" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="stkTrsf.valid || stkTrsf.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!stkTrsf.hasError('min')">Stk Trsf doit étre positive.</div>
                               <div [hidden]="!stkTrsf.hasError('max')">Stk Trsf doit étre inferieur au max de Stock.</div>
@@ -809,7 +835,7 @@
 
                           <div class="col-sm-6">
                             <label for="stock Réel" class="label">Quantité des Articles de stock Réel:</label><b *ngFor="let itemsStkReel of StockListWithArticle"><span *ngIf="itemsStkReel.stkReel===0 || itemsStkReel.stkReel==null || itemsStkReel.stkReel==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsStkReel.stkReel > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsStkReel.stkReel }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Réel" id="stkReel" [(ngModel)]="artliv.stkReel" class="form-control" #stkReel="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkReel" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Réel" id="stkReel" [(ngModel)]="artliv.stkReel" class="form-control" #stkReel="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkReel" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="stkReel.valid || stkReel.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!stkReel.hasError('min')">Stk Reel doit étre positive.</div>
                               <div [hidden]="!stkReel.hasError('max')">Stk Reel doit étre inferieur au max de Stock.</div>
@@ -821,7 +847,7 @@
                         <div class="full-name-inputs"> 
                           <div class="col-sm-6">
                             <label for="stock Res" class="label">Quantité des Articles de stock Res:</label><b *ngFor="let itemsStkRes of StockListWithArticle"><span *ngIf="itemsStkRes.stkRes===0 || itemsStkRes.stkRes==null || itemsStkRes.stkRes==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsStkRes.stkRes > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsStkRes.stkRes }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Res" id="stkRes" [(ngModel)]="artliv.stkRes" class="form-control" #stkRes="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkRes" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Res" id="stkRes" [(ngModel)]="artliv.stkRes" class="form-control" #stkRes="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkRes" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="stkRes.valid || stkRes.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!stkRes.hasError('min')">Stk Res doit étre positive.</div>
                               <div [hidden]="!stkRes.hasError('max')">Stk Res doit étre inferieur au max de Stock.</div>
@@ -832,7 +858,7 @@
 
                           <div class="col-sm-6">
                             <label for="stock Np" class="label">Quantité des Articles de stock Np:</label><b *ngFor="let itemsStkNp of StockListWithArticle"><span *ngIf="itemsStkNp.stkNp===0 || itemsStkNp.stkNp==null || itemsStkNp.stkNp==''" style="color: darkred;font-size: 10px;">Totale Quantité: 0 </span><span *ngIf="itemsStkNp.stkNp > 0" style="color: rgb(8, 155, 3);font-size: 10px;">Totale Quantité:{{ itemsStkNp.stkNp }}</span></b>
-                            <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Np" id="stkNp" [(ngModel)]="artliv.stkNp" class="form-control" #stkNp="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkNp" [ngModelOptions]="{standalone: true}">
+                            <input (keyup)="CalculeValueSum($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Np" id="stkNp" [(ngModel)]="artliv.stkNp" class="form-control" #stkNp="ngModel" pattern="^(0|[1-9][0-9]*)$" min="0" max="article.stkNp" [ngModelOptions]="{standalone: true}">
                             <div style="font-size: 12px;" [hidden]="stkNp.valid || stkNp.pristine" class="alert alert-danger p-2">
                               <div [hidden]="!stkNp.hasError('min')">Stk Np doit étre positive.</div>
                               <div [hidden]="!stkNp.hasError('max')">Stk Np doit étre inferieur au max de Stock.</div>
@@ -843,12 +869,12 @@
                         
                         <div class="col-sm-6">
                           <label for="calculeArticles" class="label">Calcule des Articles</label>
-                          <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumArticles" name="sumArticles" [(ngModel)]="sum" [ngModelOptions]="{standalone: true}" disabled />
+                          <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumArticles" name="sumArticles" [(ngModel)]="sumArticles" [ngModelOptions]="{standalone: true}" disabled />
                         </div>
-                      <div class="col-sm-12">
-                        <label for="SumcalculeArticles" class="label">Calcule la sum des Articles</label>
-                        <input type="text" nbInput fullWidth placeholder="0" id="sumAllArticles" name="sumAllArticles" disabled />
-                      </div>
+                        <div class="col-sm-6">
+                          <label for="SumcalculeArticles" class="label">Calcule TOT TTC des Articles</label>
+                          <input type="text" nbInput fullWidth placeholder="0" fieldSize="small" id="sumAllArticles" name="sumAllArticles"  [(ngModel)]="sumAllArticles" [ngModelOptions]="{standalone: true}" disabled />
+                        </div>
                     </div>
                   
                     <nb-card>
@@ -860,7 +886,7 @@
                               Ajouter d'autre Article</button>
                             <button [disabled]=!artLivExistForm.form.valid type="onSubmit" nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
                               Ajouter dérniére Article</button>
-                            <button nbButton type="reset" (click)="artLivExistForm.reset()" status="danger" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
+                            <button nbButton type="button" (click)="resetExist()" status="danger" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
                               Annuler</button>
                           </div>
                         </div>
@@ -931,25 +957,25 @@
                       </div>
 
                       <div class="full-name-inputs">
-                        <div class="col-sm-6">
-                          <label for="marque" class="label">MARQUE</label>
-                          <input type="text" nbInput fullWidth fieldSize="small" placeholder="MARQUE" class="form-control" id="marque" [(ngModel)]="article.marque" [ngModelOptions]="{standalone: true}" required pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" #marque="ngModel" />
-                          <div style="font-size: 12px;" [hidden]="marque.valid || marque.pristine" class="alert alert-danger p-2">
-                            <div [hidden]="!marque.hasError('minlength')">marque doit étre au moin 3 lettres longue.</div>
-                            <div [hidden]="!marque.hasError('maxlength')">marque ne doit pas dépassé les 50 lettres longue.</div>
-                            <div [hidden]="!marque.hasError('required')">marque est obligatoire.</div>
-                            <div [hidden]="!marque.hasError('pattern')">marque doit contenir que des lettres et des nombres.</div>
-                          </div>
+                        <div class="col-sm-6"> 
+                          <label for="marqueNothere" class="label">marque</label>
+                          <nb-select fullWidth fieldSize="small" [(selected)]="marqueNothereSelected" (selectedChange)="getModeleFromMarque($event)" placeholder="marque" [(ngModel)]="article.marque" [ngModelOptions]="{standalone: true}" required #marque="ngModel">
+                              <nb-option value="null">-Select</nb-option>
+                              <nb-option *ngFor="let itemsMarque of MarqueList" [value]="itemsMarque"><a><img src="{{this.marqueService.host+'/'+itemsMarque.code+'/'+itemsMarque.fileName}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsMarque.title }} </nb-option>
+                            </nb-select>
+                            <div style="font-size: 12px;" [hidden]="marque.valid || marque.pristine" class="alert alert-danger p-2">
+                              <div [hidden]="!marque.hasError('required')">marque Ach est obligatoire.</div>
+                            </div>
                         </div>
-                        <div class="col-sm-6">
-                          <label for="numCas" class="label">NUM_CAS</label>
-                          <input type="text" nbInput fullWidth fieldSize="small" placeholder="NUM_CAS" class="form-control" id="numCas" [(ngModel)]="article.numCas" [ngModelOptions]="{standalone: true}" required pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" #numCas="ngModel" />
-                          <div style="font-size: 12px;" [hidden]="numCas.valid || numCas.pristine" class="alert alert-danger p-2">
-                            <div [hidden]="!numCas.hasError('minlength')">num Cas doit étre au moin 3 lettres longue.</div>
-                            <div [hidden]="!numCas.hasError('maxlength')">num Cas ne doit pas dépassé les 50 lettres longue.</div>
-                            <div [hidden]="!numCas.hasError('required')">num Cas est obligatoire.</div>
-                            <div [hidden]="!numCas.hasError('pattern')">num Cas doit contenir que des lettres et des nombres.</div>
-                          </div>
+                        <div class="col-sm-6"> 
+                            <label for="modeleNothere" class="label">modele</label>
+                            <nb-select fullWidth fieldSize="small" [(selected)]="ModelSelected" placeholder="model" [(ngModel)]="article.model" [ngModelOptions]="{standalone: true}" required #model="ngModel">
+                                <nb-option value="null">-Select</nb-option>
+                                <nb-option *ngFor="let itemsModel of ModelFromMarque" [value]="itemsModel"><a><img *ngIf="ModelFromMarque!==null" src="{{this.marqueService.host+'/'+itemsModel.marque.code+'/'+itemsModel.marque.fileName}}" style="height: 30px;width: 30px" alt=""/></a>{{ itemsModel.title }} </nb-option>
+                              </nb-select>
+                              <div style="font-size: 12px;" [hidden]="model.valid || model.pristine" class="alert alert-danger p-2">
+                                <div [hidden]="!model.hasError('required')">model Ach est obligatoire.</div>
+                              </div>
                         </div>
                       </div>
 
@@ -964,13 +990,21 @@
                           </div>
                         </div>
                         <div class="col-sm-6">
+                          <label for="numCas" class="label">NUM_CAS</label>
+                          <input type="text" nbInput fullWidth fieldSize="small" placeholder="NUM_CAS" class="form-control" id="numCas" [(ngModel)]="article.numCas" [ngModelOptions]="{standalone: true}" required pattern="^[a-zA-Z0-9 ]+$" maxlength="50" minlength="3" #numCas="ngModel" />
+                          <div style="font-size: 12px;" [hidden]="numCas.valid || numCas.pristine" class="alert alert-danger p-2">
+                            <div [hidden]="!numCas.hasError('minlength')">num Cas doit étre au moin 3 lettres longue.</div>
+                            <div [hidden]="!numCas.hasError('maxlength')">num Cas ne doit pas dépassé les 50 lettres longue.</div>
+                            <div [hidden]="!numCas.hasError('required')">num Cas est obligatoire.</div>
+                            <div [hidden]="!numCas.hasError('pattern')">num Cas doit contenir que des lettres et des nombres.</div>
+                          </div>
                         </div>
                       </div>
 
                     <div class="full-name-inputs">
                       <div class="col-sm-6">
                         <label for="stock 1" class="label">Quantité des Articles de stock 1:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock 1" class="form-control" id="qutStk" [(ngModel)]="article.qutStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #qutStk="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock 1" class="form-control" id="qutStk" [(ngModel)]="article.qutStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #qutStk="ngModel" />
                         <div style="font-size: 12px;" [hidden]="qutStk.valid || qutStk.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!qutStk.hasError('min')">Qut Stk doit étre positive.</div>
                           <div [hidden]="!qutStk.hasError('pattern')">Qut Stk ne doit contenir que des nombres.</div>
@@ -978,7 +1012,7 @@
                       </div>
                       <div class="col-sm-6">
                         <label for="stock 2" class="label">Quantité des Articles de stock 2:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock 2" class="form-control" id="qutStk2" [(ngModel)]="article.qutStk2" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #qutStk2="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock 2" class="form-control" id="qutStk2" [(ngModel)]="article.qutStk2" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #qutStk2="ngModel" />
                         <div style="font-size: 12px;" [hidden]="qutStk2.valid || qutStk2.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!qutStk2.hasError('min')">Qut Stk2 doit étre positive.</div>
                           <div [hidden]="!qutStk2.hasError('pattern')">Qut Stk2 ne doit contenir que des nombres.</div>
@@ -989,7 +1023,7 @@
                     <div class="full-name-inputs">
                       <div class="col-sm-6">
                         <label for="stock Gar" class="label">Quantité des Articles de stock Gar:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Gar" class="form-control" id="stkGar" [(ngModel)]="article.stkGar" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkGar="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Gar" class="form-control" id="stkGar" [(ngModel)]="article.stkGar" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkGar="ngModel" />
                         <div style="font-size: 12px;" [hidden]="stkGar.valid || stkGar.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!stkGar.hasError('min')">Stk Gar doit étre positive.</div>
                           <div [hidden]="!stkGar.hasError('pattern')">Stk Gar ne doit contenir que des nombres.</div>
@@ -998,7 +1032,7 @@
 
                       <div class="col-sm-6">
                         <label for="stock Initial" class="label">Quantité des Articles de stock Initial:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Initial" class="form-control" id="stkIni" [(ngModel)]="article.stkIni" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkIni="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Initial" class="form-control" id="stkIni" [(ngModel)]="article.stkIni" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkIni="ngModel" />
                         <div style="font-size: 12px;" [hidden]="stkIni.valid || stkIni.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!stkIni.hasError('min')">Stk Ini doit étre positive.</div>
                           <div [hidden]="!stkIni.hasError('pattern')">Stk Ini ne doit contenir que des nombres.</div>
@@ -1008,7 +1042,7 @@
                     <div class="full-name-inputs">
                       <div class="col-sm-6">
                         <label for="stock Anal" class="label">Quantité des Articles de stock Anal:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Anal" class="form-control" id="analStk" [(ngModel)]="article.analStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #analStk="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Anal" class="form-control" id="analStk" [(ngModel)]="article.analStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #analStk="ngModel" />
                         <div style="font-size: 12px;" [hidden]="analStk.valid || analStk.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!analStk.hasError('min')">Anal Stk doit étre positive.</div>
                           <div [hidden]="!analStk.hasError('pattern')">Anal Stk ne doit contenir que des nombres.</div>
@@ -1017,7 +1051,7 @@
 
                       <div class="col-sm-6">
                         <label for="stock Nbj" class="label">Quantité des Articles de stock Nbj:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Nbj" class="form-control" id="nbjStk" [(ngModel)]="article.nbjStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #nbjStk="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Nbj" class="form-control" id="nbjStk" [(ngModel)]="article.nbjStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #nbjStk="ngModel" />
                         <div style="font-size: 12px;" [hidden]="nbjStk.valid || nbjStk.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!nbjStk.hasError('min')">Nbj Stk doit étre positive.</div>
                           <div [hidden]="!nbjStk.hasError('pattern')">Nbj Stk ne doit contenir que des nombres.</div>
@@ -1027,7 +1061,7 @@
                     <div class="full-name-inputs"> 
                       <div class="col-sm-6">
                         <label for="stock V_S" class="label">Quantité des Articles de stock V_S:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock V_S" class="form-control" id="vSstk" [(ngModel)]="article.vSstk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #vSstk="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock V_S" class="form-control" id="vSstk" [(ngModel)]="article.vSstk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #vSstk="ngModel" />
                         <div style="font-size: 12px;" [hidden]="vSstk.valid || vSstk.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!vSstk.hasError('min')">vS stk doit étre positive.</div>
                           <div [hidden]="!vSstk.hasError('pattern')">vS stk ne doit contenir que des nombres.</div>
@@ -1036,7 +1070,7 @@
 
                       <div class="col-sm-6">
                         <label for="stock Com" class="label">Quantité des Articles de stock Com:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Com" class="form-control" id="comStk" [(ngModel)]="article.comStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #comStk="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Com" class="form-control" id="comStk" [(ngModel)]="article.comStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #comStk="ngModel" />
                         <div style="font-size: 12px;" [hidden]="comStk.valid || comStk.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!comStk.hasError('min')">Com Stk doit étre positive.</div>
                           <div [hidden]="!comStk.hasError('pattern')">Com Stk ne doit contenir que des nombres.</div>
@@ -1047,7 +1081,7 @@
                     <div class="full-name-inputs"> 
                       <div class="col-sm-6">
                         <label for="stock Xanal" class="label">Quantité des Articles de stock Xanal:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Xanal" class="form-control" id="xanalStk" [(ngModel)]="article.xanalStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #xanalStk="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Xanal" class="form-control" id="xanalStk" [(ngModel)]="article.xanalStk" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #xanalStk="ngModel" />
                         <div style="font-size: 12px;" [hidden]="xanalStk.valid || xanalStk.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!xanalStk.hasError('min')">X Anal Stk doit étre positive.</div>
                           <div [hidden]="!xanalStk.hasError('pattern')">X Anal Stk ne doit contenir que des nombres.</div>
@@ -1057,7 +1091,7 @@
 
                       <div class="col-sm-6">
                         <label for="stock Atrsf" class="label">Quantité des Articles de stock Atrsf:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Atrsf" class="form-control" id="stkAtrsf" [(ngModel)]="article.stkAtrsf" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkAtrsf="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Atrsf" class="form-control" id="stkAtrsf" [(ngModel)]="article.stkAtrsf" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkAtrsf="ngModel" />
                         <div style="font-size: 12px;" [hidden]="stkAtrsf.valid || stkAtrsf.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!stkAtrsf.hasError('min')">Stk Atrsf doit étre positive.</div>
                           <div [hidden]="!stkAtrsf.hasError('pattern')">Stk Atrsf ne doit contenir que des nombres.</div>
@@ -1069,7 +1103,7 @@
                     <div class="full-name-inputs">   
                       <div class="col-sm-6">
                         <label for="stock Trsf" class="label">Quantité des Articles de stock Trsf:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Trsf" class="form-control" id="stkTrsf" [(ngModel)]="article.stkTrsf" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkTrsf="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Trsf" class="form-control" id="stkTrsf" [(ngModel)]="article.stkTrsf" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkTrsf="ngModel" />
                         <div style="font-size: 12px;" [hidden]="stkTrsf.valid || stkTrsf.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!stkTrsf.hasError('min')">Stk Trsf doit étre positive.</div>
                           <div [hidden]="!stkTrsf.hasError('pattern')">Stk Trsf ne doit contenir que des nombres.</div>
@@ -1078,7 +1112,7 @@
 
                       <div class="col-sm-6">
                         <label for="stock Réel" class="label">Quantité des Articles de stock Réel:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Réel" class="form-control" id="stkReel" [(ngModel)]="article.stkReel" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkReel="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Réel" class="form-control" id="stkReel" [(ngModel)]="article.stkReel" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkReel="ngModel" />
                         <div style="font-size: 12px;" [hidden]="stkTrsf.valid || stkTrsf.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!stkTrsf.hasError('min')">Stk Trsf doit étre positive.</div>
                           <div [hidden]="!stkTrsf.hasError('pattern')">Stk Trsf ne doit contenir que des nombres.</div>
@@ -1089,7 +1123,7 @@
                     <div class="full-name-inputs"> 
                       <div class="col-sm-6">
                         <label for="stock Res" class="label">Quantité des Articles de stock Res:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Res" class="form-control" id="stkRes" [(ngModel)]="article.stkRes" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkRes="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Res" class="form-control" id="stkRes" [(ngModel)]="article.stkRes" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkRes="ngModel" />
                         <div style="font-size: 12px;" [hidden]="stkRes.valid || stkRes.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!stkRes.hasError('min')">Stk Res doit étre positive.</div>
                           <div [hidden]="!stkRes.hasError('pattern')">Stk Res ne doit contenir que des nombres.</div>
@@ -1099,13 +1133,25 @@
 
                       <div class="col-sm-6">
                         <label for="stock Np" class="label">Quantité des Articles de stock Np:</label>
-                        <input type="number" nbInput fullWidth fieldSize="small" placeholder="stock Np" class="form-control" id="stkNp" [(ngModel)]="article.stkNp" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkNp="ngModel" />
+                        <input (keyup)="CalculeValueSumDont($event)" type="number" nbInput fullWidth fieldSize="small" placeholder="stock Np" class="form-control" id="stkNp" [(ngModel)]="article.stkNp" [ngModelOptions]="{standalone: true}" pattern="^(0|[1-9][0-9]*)$" min="0" #stkNp="ngModel" />
                         <div style="font-size: 12px;" [hidden]="stkNp.valid || stkNp.pristine" class="alert alert-danger p-2">
                           <div [hidden]="!stkNp.hasError('min')">Stk Np doit étre positive.</div>
                           <div [hidden]="!stkNp.hasError('pattern')">Stk Np ne doit contenir que des nombres.</div>
                         </div>
                       </div>
                   </div>
+
+                  <div class="full-name-inputs"> 
+                    <div class="col-sm-6">
+                      <label for="calculeArticlesDont" class="label">Calcule des Articles</label>
+                      <input type="text" nbInput fullWidth fieldSize="small" placeholder="0" id="sumArticlesDont" name="sumArticlesDont" [(ngModel)]="sumArticlesDont" [ngModelOptions]="{standalone: true}" disabled />
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="SumcalculeArticlesDont" class="label">Calcule PRIX ACH des Articles</label>
+                      <input type="text" nbInput fullWidth placeholder="0" fieldSize="small" id="sumAllArticlesDont" name="sumAllArticlesDont"  [(ngModel)]="sumAllArticlesDont" [ngModelOptions]="{standalone: true}" disabled />
+                    </div>
+                  </div>
+
                   <nb-card>
                     <nb-card-header><label for="Actions" class="label">Actions</label></nb-card-header>
                     <nb-card-body>

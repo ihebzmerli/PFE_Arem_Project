@@ -1,7 +1,6 @@
 import { Component, OnInit , TemplateRef , ViewChild } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
-import { WindowDateFilterComponent } from './window-date-filter/window-date-filter.component';
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { Rectif } from '../rectif';
 import { Observable } from 'rxjs';
@@ -163,7 +162,7 @@ export class RectifListComponent implements OnInit {
   ngOnInit(): void {
 
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
 
@@ -241,10 +240,6 @@ export class RectifListComponent implements OnInit {
         );
       }
     
-      openWindowFormFilterDate() {
-        this.windowService.open(WindowDateFilterComponent, { title: `entrer les deux dates` });
-      }
-    
       openWindowFilterDateWithoutBackdrop() {
         this.windowService.open(
           this.disabledEscTemplate,
@@ -269,7 +264,9 @@ export class RectifListComponent implements OnInit {
   }
 /* end the popap **/  
 
-
+goToModifier(id: string ){
+  this.router.navigate(['//pages/Rectifs/update-rectif',id])
+  }
 
 /**stat export CSV & PDF & Excel window*/
 

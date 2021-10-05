@@ -3,12 +3,13 @@ import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeServ
 
 import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
-import { map, takeUntil } from 'rxjs/operators';
+import { delay, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 import { TokenStorageService } from '../../../pages/auth/token-storage.service';
 import { Router } from '@angular/router';
 import { UtilisateurService } from '../../../pages/Utilisateurs/utilisateur.service';
+import { Utilisateur } from '../../../pages/Utilisateurs/utilisateur';
 
 @Component({
   selector: 'ngx-header',
@@ -17,6 +18,7 @@ import { UtilisateurService } from '../../../pages/Utilisateurs/utilisateur.serv
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   info: any;
+  utilisateur: Utilisateur = new Utilisateur();
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: {};
@@ -64,14 +66,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     });
   }
-
+profilUser:Utilisateur;
+authority;
+delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
   ngOnInit() {
     this.info = {
       token: this.token.getToken(),
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
-    
+    this.token.getAuthorities().forEach(authority => {
+      this.authority=authority.toString();
+      console.log(this.authority);
+    });
+    this.utilisateurService.getIdUserByUsername(this.token.getUsername()).subscribe(data1 => {
+      let id=data1.toString()
+      this.utilisateurService.getUtilisateur(id)
+      .subscribe(data => {
+        this.profilUser = data;
+        console.log(this.profilUser);
+      });
+      
+    });
+
     this.currentTheme = this.themeService.currentTheme;
 
     this.userService.getUsers()
@@ -125,8 +144,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(navigationDetails);
     }, error => console.log(error));
   }
-  changeUserM(themeName: string) {
+
+  id:string;
+  async changeUserM(themeName: string) {
     if(themeName=="false"){
+      
+      this.utilisateurService.getIdUserByUsername(this.token.getUsername()).subscribe(data1 => {
+        this.utilisateur = new Utilisateur();
+        this.id=data1.toString()
+          this.utilisateurService.getUtilisateur(this.id)
+            .subscribe(async data => {
+              this.utilisateur = data;
+              this.utilisateur.connected =0;
+              console.log(this.utilisateur.connected+'////'+this.id);
+              await this.utilisateurService.updateUtilisateurConnected(this.id,this.utilisateur)
+            .subscribe(data => {
+              console.log(data);
+            });
+          });
+        });
+        await this.delay(1500);
       this.token.signOut();
       window.location.reload();
     }else if(themeName=="true"){

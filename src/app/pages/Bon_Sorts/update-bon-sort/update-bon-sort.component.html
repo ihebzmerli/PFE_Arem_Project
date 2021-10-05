@@ -1,4 +1,4 @@
-<div class="accordions-container row offset-sm-2 col-sm-9">
+<div class="accordions-container offset-sm-2 col-sm-">
   <form (ngSubmit) = "onSubmitBon()" #bonSortForm="ngForm">
     <nb-accordion>
       <nb-accordion-item #item>
@@ -17,7 +17,6 @@
                 <label for="datBon" class="label">Date BON</label>                    <p>
                   &nbsp;&nbsp;&nbsp;&nbsp;<b style="position: center" class="p-mb-3 p-text-bold">{{bonsort.datBon | date: 'MMM d, y H:mm:ss' : '+0000'}}</b>
                   
-                <input type="text" nbInput fullWidth class="form-control" id="datBon" name="datBon" [(ngModel)]="bonsort.datBon" disabled/>
               </div>
             </div>
           </div>
@@ -106,7 +105,7 @@
             <div class="full-name-inputs">
               <div class="col-sm-6">        
                 <label for="observ" class="label">Observ</label> 
-                <input type="text" nbInput fullWidth class="form-control" [(ngModel)]="bonsort.observ" #observ="ngModel" name="centre" id="observ" pattern="^[a-zA-Z0-9\s]+$" required minlength="5" maxlength="48" />  
+                <input type="text" nbInput fullWidth class="form-control" [(ngModel)]="bonsort.observ" #observ="ngModel" name="observ" id="observ" pattern="^[a-zA-Z0-9\s]+$" required minlength="5" maxlength="48" />  
                 <div style="font-size: 12px;" [hidden]="observ.valid || observ.pristine" class="alert alert-danger p-2">
                   <div [hidden]="!observ.hasError('minlength')">observ doit étre au moin 5 lettres longue.</div>
                   <div [hidden]="!observ.hasError('maxlength')">observ ne doit pas dépassé les 48 lettres longue.</div>
@@ -127,20 +126,20 @@
             </div>
           </div>
           <div class="row">
-            <div class="example-items-rows">
               <div class="full-name-inputs "> 
                 <div class="col-sm-6">
                   <label for="vehicule" class="label">Vehicule</label> 
-                  <input type="text" nbInput fullWidth class="form-control" #vehicule="ngModel" [(ngModel)]="bonsort.vehicule" name="vehicule" id="vehicule" pattern="^[a-zA-Z0-9\s]+$" required minlength="5" maxlength="49" />
-                  <div style="font-size: 12px;" [hidden]="vehicule.valid || vehicule.pristine" class="alert alert-danger p-2">
-                    <div [hidden]="!vehicule.hasError('minlength')">Vehicule doit étre au moin 5 lettres longue.</div>
-                    <div [hidden]="!vehicule.hasError('maxlength')">Vehicule ne doit pas dépassé les 49 lettres longue.</div>
-                    <div [hidden]="!vehicule.hasError('required')">Vehicule est obligatoire.</div>
-                    <div [hidden]="!vehicule.hasError('pattern')">Le Vehicule ne doit contenir que des lettres majuscule et des nombres.</div>
-                  </div>
+                  <nb-select fullWidth selected="SelectVehicule" [(ngModel)]="bonsort.vehicule" placeholder="Vehicule" required [ngModelOptions]="{standalone: true}">
+                    <nb-option value="NULL">-Select</nb-option>
+                    <nb-option *ngFor="let itemsVehicule of VehiculeList" [value]="itemsVehicule"><span>{{ itemsVehicule.matricule }}</span></nb-option>
+                  </nb-select>
+                </div>
+              
+                <div class="col-sm-6"> 
+                  <label for="poste" class="label">Poste</label> 
+                  <input type="text" nbInput fullWidth placeholder="poste" [(ngModel)]="bonsort.poste" #poste="ngModel" name="poste" id="poste" disabled/>
                 </div>
               </div>
-            </div>
           </div>
 
         </nb-accordion-item-body>

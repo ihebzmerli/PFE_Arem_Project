@@ -3,7 +3,7 @@ import { Livreur } from '../livreur';
 import { LivreurService } from '../livreur.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NbComponentStatus, NbGlobalLogicalPosition, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrConfig, NbToastrService } from '@nebular/theme';
+import { NbComponentStatus, NbDialogService, NbGlobalLogicalPosition, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrConfig, NbToastrService } from '@nebular/theme';
 import { DatePipe } from '@angular/common';
 import { delay } from 'rxjs/operators';
 import { Prime } from '../../Primes/prime';
@@ -24,10 +24,15 @@ export class UpdateLivreurComponent implements OnInit {
   nature: any;
   PrimeList: Prime[];
   selectedPrime: Prime;
-  constructor(private authService: TokenStorageService,private primeService: PrimeService ,private toastrService: NbToastrService,private formBuilder: FormBuilder,public datepipe: DatePipe,private route: ActivatedRoute,private router: Router,
+  authority;
+  constructor(private authService: TokenStorageService,private primeService: PrimeService ,private dialogService: NbDialogService,private toastrService: NbToastrService,private formBuilder: FormBuilder,public datepipe: DatePipe,private route: ActivatedRoute,private router: Router,
     private livreurService: LivreurService) { }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.authService.getAuthorities().forEach(authority => {
+      this.authority=authority.toString();
+      console.log(this.authority);
+    });
     this.getLivreurOfAdd();
     this.livreur = new Livreur();
 
@@ -37,6 +42,20 @@ export class UpdateLivreurComponent implements OnInit {
       .subscribe(data => {
         console.log(data)
         this.livreur = data;
+
+        if(this.livreur.datreclam!=null){
+          this.livreur.datreclam=new Date(this.livreur.datreclam.toLocaleString());
+          this.livreur.datreclam.setMinutes(this.livreur.datreclam.getMinutes() + this.livreur.datreclam.getTimezoneOffset());
+          }else{
+            this.livreur.datreclam=null;
+          }
+          if(this.livreur.datrepon!=null){
+            this.livreur.datrepon=new Date(this.livreur.datrepon.toLocaleString());
+            this.livreur.datrepon.setMinutes(this.livreur.datrepon.getMinutes() + this.livreur.datrepon.getTimezoneOffset());
+            }else{
+              this.livreur.datrepon=null;
+            }
+
       }, error => console.log(error));
   }
 
@@ -48,6 +67,16 @@ export class UpdateLivreurComponent implements OnInit {
   }
 
   updateLivreur(){  
+    if(this.livreur.datreclam!=null){
+      this.livreur.datreclam.setDate(this.livreur.datreclam.getDate() + 1);
+    }else{
+      this.livreur.datreclam=null ;
+    }
+    if(this.livreur.datrepon!=null){
+      this.livreur.datrepon.setDate(this.livreur.datrepon.getDate() + 1);
+    }else{
+      this.livreur.datrepon=null ;
+    } 
     this.livreurService.updateLivreur(this.id_livreur,this.livreur).subscribe(data => {
       console.log(data);
       this.livreur = new Livreur();
@@ -137,4 +166,5 @@ public getLivreurOfAdd() {
     this.PrimeList = data;
   });
 }
+
 }

@@ -11,6 +11,7 @@ import { Livreur } from '../../Livreurs/livreur';
 import { Livreur_Expide } from '../LivreurBonliv/Livreur_Expide';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
 
 @Component({
   selector: 'ngx-expide-detail',
@@ -32,7 +33,7 @@ export class ExpideDetailComponent implements OnInit {
 
   activityValues: number[] = [0, 100];
   
-  constructor(private authService: TokenStorageService,private expideService: ExpideService ,private livreurservice: LivreurService ,private router : Router,private _Activatedroute :ActivatedRoute) { }
+  constructor(private authService: TokenStorageService,public utilisateurService: UtilisateurService,private expideService: ExpideService ,private livreurservice: LivreurService ,private router : Router,private _Activatedroute :ActivatedRoute) { }
 
   statusessTrans_action:any;
   ngOnInit() {
@@ -79,7 +80,17 @@ export class ExpideDetailComponent implements OnInit {
   displayPositionTrans_action: boolean;
   displayPositionM_V: boolean;
   
-  showModalDialog() {
+  image_id: number;
+  image_idString:string;
+  util:Utilisateur;
+  showModalDialog(clicked_id) {
+    console.log(clicked_id);
+    this.image_id=clicked_id;
+    this.image_idString=this.image_id.toString();
+    this.utilisateurService.getUtilisateur(this.image_idString).subscribe(data => {
+      this.util = data;
+      console.log(this.util);
+    });
     this.displayModal = true;
   }
   showPositionDialog(position: string) {

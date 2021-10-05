@@ -8,5 +8,5 @@ export class Art_acha {
     date: Date;
     prixAMp: bigint;
     centre: string;
-
+    qutNonTrouver: number;
 }

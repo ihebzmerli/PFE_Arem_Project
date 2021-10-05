@@ -83,7 +83,7 @@ export class ModelListComponent implements OnInit {
   ngOnInit(): void {
 
     this.authService.getAuthorities().forEach(authority => {
-      this.authority=authority;
+      this.authority=authority.toString();
       console.log(this.authority);
     });
 

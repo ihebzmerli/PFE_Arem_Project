@@ -20,10 +20,25 @@ export class AffaireService {
   getAffaireList(): Observable<Affaire[]> {
     return this.http.get<Affaire[]>(`${this.url}`);
   }
-  getAllAffaireBydateBetween(startDate: string,endDate: string): Observable<Affaire[]> {
-    return this.http.get<Affaire[]>(`${this.url}/dateBetween/${startDate}to${endDate}`);
+  getAllAffaireDAT_AFFBydateBetween(startDate: string,endDate: string): Observable<Affaire[]> {
+    return this.http.get<Affaire[]>(`${this.url}/DAT_AFFdateBetween/${startDate}to${endDate}`);
   }
-
+  getAllAffaireDAT_PROFBydateBetween(startDate: string,endDate: string): Observable<Affaire[]> {
+    return this.http.get<Affaire[]>(`${this.url}/DAT_PROFdateBetween/${startDate}to${endDate}`);
+  }
+  getAllAffaireDAT_CONFBydateBetween(startDate: string,endDate: string): Observable<Affaire[]> {
+    return this.http.get<Affaire[]>(`${this.url}/DAT_CONFdateBetween/${startDate}to${endDate}`);
+  }
+  getAllAffaireDAT_TRANSFBydateBetween(startDate: string,endDate: string): Observable<Affaire[]> {
+    return this.http.get<Affaire[]>(`${this.url}/DAT_TRANSFdateBetween/${startDate}to${endDate}`);
+  }
+  getAllAffaireDAT_ANALBydateBetween(startDate: string,endDate: string): Observable<Affaire[]> {
+    return this.http.get<Affaire[]>(`${this.url}/DAT_ANALdateBetween/${startDate}to${endDate}`);
+  }
+  getAllAffaireDAT_FACBydateBetween(startDate: string,endDate: string): Observable<Affaire[]> {
+    return this.http.get<Affaire[]>(`${this.url}/DAT_FACdateBetween/${startDate}to${endDate}`);
+  }
+  
     /**STATISTIQUE Article */
 
     getSumAvg1(): Observable<Object> {

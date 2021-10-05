@@ -8,6 +8,10 @@ import { DatePipe } from '@angular/common';
 import { delay } from 'rxjs/operators';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
+import { Utilisateur } from '../../Utilisateurs/utilisateur';
+import { FournisService } from '../../Fourniss/fournis.service';
+import { Fournis } from '../../Fourniss/fournis';
 
 @Component({
   selector: 'ngx-update-bon-prep',
@@ -20,25 +24,47 @@ export class UpdateBonPrepComponent implements OnInit {
   bonprep: Bon_prep = new Bon_prep();
   bonprepGet: Bon_prep;
   submitted = false;
-  constructor(private authService: TokenStorageService,private toastrService: NbToastrService,private formBuilder: FormBuilder,public datepipe: DatePipe,private route: ActivatedRoute,private router: Router,
+  userPost: Utilisateur;
+  poste: any;
+  selectedCodFrs:Fournis;
+  agentsPointage:Utilisateur[];
+  _searchTermUser:Utilisateur[];
+  constructor(private authService: TokenStorageService, private fournisService:FournisService,public utilisateurService: UtilisateurService,private toastrService: NbToastrService,private formBuilder: FormBuilder,public datepipe: DatePipe,private route: ActivatedRoute,private router: Router,
     private bonprepService: BonPrepService) { }
 
     delay(ms: number) {
       return new Promise( resolve => setTimeout(resolve, ms) );
     }
   ngOnInit() {
-    
+    this.getFournissList();
+    this.utilisateurService.getUtilisateursList().subscribe(data => {
+      this.agentsPointage = data.filter(Utilisateur => Utilisateur.roles[0].name=='ROLE_RESPONSABLE_POINTAGE');
+    });
     this.bonprep = new Bon_prep();
 
     this.numBon = this.route.snapshot.params['numBon'];
-    
-    this.bonprepService.getBon_prep(this.numBon).subscribe(data => {
-        console.log(data)
-        this.bonprep = data;
-        if(this.bonprep.nomprenomCli){
-          var n = this.bonprep.nomprenomCli.search(" : ");
-          this.bonprep.nomprenomCli = this.bonprep.nomprenomCli.slice(0, n);   
-        }
+    this.utilisateurService.getIdUserByUsername(this.authService.getUsername()).subscribe(data1 => {
+      this.utilisateurService.getUtilisateur(data1.toString()).subscribe(data => {
+        this.userPost = data;
+        this.poste = this.userPost.firstname+' '+this.userPost.lastname;    
+        this.bonprepService.getBon_prep(this.numBon).subscribe(data => {
+            console.log(data)
+            this.bonprep = data;
+            this.bonprep.poste =  this.poste;
+            this.selectedCodFrs = this.bonprep.codFrs;
+            if(this.bonprep.codFrs!=null){
+              this.Destination = "true";
+              this.disableFrsDropdown=false;
+            }else{
+              this.Destination = "false";
+              this.disableFrsDropdown=true;
+            }
+            if(this.bonprep.nomprenomCli){
+              var n = this.bonprep.nomprenomCli.search(" : ");
+              this.bonprep.nomprenomCli = this.bonprep.nomprenomCli.slice(0, n);   
+            }
+          }, error => console.log(error));
+        }, error => console.log(error));
       }, error => console.log(error));
   }
 
@@ -50,6 +76,16 @@ export class UpdateBonPrepComponent implements OnInit {
       this.bon_prep_list();
     } 
     updateBon_prep(){
+      if(this._searchTermUser){
+        var data = this._searchTermUser.map(t=>t.firstname).join(",");
+        console.log(data);
+          this.bonprep.point = data
+        }
+        console.log(this.Destination);
+        if(this.Destination = "true"){
+          this.bonprep.codFrs =this.selectedCodFrs; 
+          this.bonprep.nomprenomCli =null        
+        }
       this.bonprepService.updateBon_prep(this.numBon,this.bonprep).subscribe(data => {
         console.log(data);
         this.bonprep = new Bon_prep();
@@ -146,22 +182,88 @@ displayModalBarProgression: boolean;
   this.progress=0;
   this.displayModalBarProgression = true;
   this.makeToast5();
-  await this.delay(1000);
+  await this.delay(750);
   this.progress=15;
-  await this.delay(1000);
+  await this.delay(750);
   this.progress=37;
-  await this.delay(1000);
+  await this.delay(750);
   this.progress=62;
-  await this.delay(1000);
+  await this.delay(750);
   this.progress=87;
-  await this.delay(1000);
+  await this.delay(750);
   this.progress=99;
   await this.delay(500);
   this.progress=100;
-  this.delay(1500);
   this.displayModalBarProgression=false;
 }
 
 
 /**end progression bar */
+
+FournisList: Fournis[];
+public getFournissList() {
+  this.fournisService.getFournissList().subscribe(data => {
+    this.FournisList = data;
+  });
+}
+
+disableFrsDropdown: boolean;
+Destination;
+onSelectionChanged(value) {
+  console.log(value);
+  if (value === 'false') {
+    this.disableFrsDropdown = true;
+  } else {
+    this.disableFrsDropdown = false;
+  }
+}
+
+displayModalPointeur: boolean;
+lat1:string;
+lat2:string;
+lat3:string;
+lat4:string;
+lat5:string;
+lat6:string;
+showModalDialogPointeur() {
+  this.displayModalPointeur = true;
+
+  if(this.bonprep.point!=null){
+        if(this.bonprep.point.replace(/[^,]/g, "").length==0){
+          this.lat1 = this.bonprep.point.substring(0,this.bonprep.point.length);
+        }
+        if(this.bonprep.point.replace(/[^,]/g, "").length==1){
+          this.lat1 = this.bonprep.point.substring(0,this.bonprep.point.indexOf(','));
+          this.lat2 = this.bonprep.point.substring(this.lat1.length+1,this.bonprep.point.length);
+        }
+        if(this.bonprep.point.replace(/[^,]/g, "").length==2){
+          this.lat1 = this.bonprep.point.substring(0,this.bonprep.point.indexOf(','));
+          this.lat2 = this.bonprep.point.substring(this.lat1.length+1,this.bonprep.point.indexOf(',',this.lat1.length+2));
+          this.lat3 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1,this.bonprep.point.length);
+        }
+        if(this.bonprep.point.replace(/[^,]/g, "").length==3){
+          this.lat1 = this.bonprep.point.substring(0,this.bonprep.point.indexOf(','));
+          this.lat2 = this.bonprep.point.substring(this.lat1.length+1,this.bonprep.point.indexOf(',',this.lat1.length+2));
+          this.lat3 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1,this.bonprep.point.indexOf(',',this.lat1.length+1+this.lat2.length+1));
+          this.lat4 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1+this.lat3.length+1,this.bonprep.point.length);
+        }
+        if(this.bonprep.point.replace(/[^,]/g, "").length==4){
+          this.lat1 = this.bonprep.point.substring(0,this.bonprep.point.indexOf(','));
+          this.lat2 = this.bonprep.point.substring(this.lat1.length+1,this.bonprep.point.indexOf(',',this.lat1.length+2));
+          this.lat3 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1,this.bonprep.point.indexOf(',',this.lat1.length+1+this.lat2.length+1));
+          this.lat4 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1+this.lat3.length+1,this.bonprep.point.indexOf(',',this.lat1.length+1+this.lat2.length+1+this.lat3.length+1));
+          this.lat5 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1+this.lat3.length+1+this.lat4.length+1,this.bonprep.point.length);
+        }
+        if(this.bonprep.point.replace(/[^,]/g, "").length==5){
+          this.lat1 = this.bonprep.point.substring(0,this.bonprep.point.indexOf(','));
+          this.lat2 = this.bonprep.point.substring(this.lat1.length+1,this.bonprep.point.indexOf(',',this.lat1.length+2));
+          this.lat3 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1,this.bonprep.point.indexOf(',',this.lat1.length+1+this.lat2.length+1));
+          this.lat4 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1+this.lat3.length+1,this.bonprep.point.indexOf(',',this.lat1.length+1+this.lat2.length+1+this.lat3.length+1));
+          this.lat5 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1+this.lat3.length+1+this.lat4.length+1,this.bonprep.point.indexOf(',',this.lat1.length+1+this.lat2.length+1+this.lat3.length+1+this.lat4.length+1));
+          this.lat6 = this.bonprep.point.substring(this.lat1.length+1+this.lat2.length+1+this.lat3.length+1+this.lat4.length+1+this.lat5.length+1,this.bonprep.point.length);
+        }
+
+        console.log(this.lat1+'.......'+this.lat2+'.......'+this.lat3+'.......'+this.lat4+'.......'+this.lat5+'.......'+this.lat6)
+      }
+}
 }

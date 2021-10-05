@@ -17,20 +17,20 @@ import { TokenStorageService } from '../../auth/token-storage.service';
 export class UpdatePrimeComponent implements OnInit {
   primeForm: FormGroup;
   submitted = false;
-  prime: Prime;
+  prime: Prime = new Prime();
   id: string;
 
   constructor(private authService: TokenStorageService,private toastrService: NbToastrService,private _Activatedroute :ActivatedRoute,private formBuilder: FormBuilder,public datepipe: DatePipe,private router: Router,
     private primeService: PrimeService) { }
 
   ngOnInit() {
-    this.prime = new Prime();
 
+    this.prime = new Prime();
     this.id = this._Activatedroute.snapshot.params['id'];
     
     this.primeService.getPrime(this.id).subscribe(data => {
-        this.prime = data;
-        console.log(this.prime)
+      console.log(data)
+      this.prime = data;
       }, error => console.log(error));
   }
 
@@ -44,7 +44,6 @@ export class UpdatePrimeComponent implements OnInit {
   updatePrime(){  
     this.primeService.updatePrime(this.id,this.prime).subscribe(data => {
       console.log(data);
-      this.prime = new Prime();
     }, error => console.log(error));
 }
 prime_list(){

@@ -17,6 +17,7 @@ import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
 import { Utilisateur } from '../../Utilisateurs/utilisateur';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-bon-prep-list',
@@ -24,9 +25,9 @@ import { TokenStorageService } from '../../auth/token-storage.service';
   styleUrls: ['./bon-prep-list.component.scss']
 })
 export class BonPrepListComponent implements OnInit {
-  statuses: NbComponentStatus[] = ['info' ];
-  shapes: NbComponentShape[] = [ 'rectangle' ];
-  sizes: NbComponentSize[] = ['medium'];
+  statuses: NbComponentStatus[] = ['primary', 'success', 'info', 'warning', 'danger'  ];
+  shapes: NbComponentShape[] = [ 'rectangle', 'semi-round', 'round' ];
+  sizes: NbComponentSize[] = ['tiny', 'small', 'medium', 'large', 'giant'];
   searchText;
   bonpreps: Bon_prep[];
   exportColumns: any[];
@@ -421,7 +422,7 @@ openWindowWithoutBackdrop() {
   /****************Filtrage des donner ***************/
   constructor(private authService: TokenStorageService, protected dateService: NbDateService<Date>,private bonprepService: BonPrepService,
     private router: Router,private service: SmartTableData,private dialogService: NbDialogService,private windowService: NbWindowService
-    ,private fournisService:FournisService,private utilisateurService:UtilisateurService) {
+    ,private fournisService:FournisService,private utilisateurService:UtilisateurService,public datepipe: DatePipe) {
 
     }
 
@@ -439,7 +440,7 @@ openWindowWithoutBackdrop() {
     authority;
     ngOnInit() {
       this.authService.getAuthorities().forEach(authority => {
-        this.authority=authority;
+        this.authority=authority.toString();
         console.log(this.authority);
       });
       this.getBonPreps();
@@ -690,5 +691,31 @@ saveAsExcelFile(buffer: any, fileName: string): void {
 postMessage(messageFromChild:any) {
   console.log(messageFromChild);
   //call service/api to post message
+}
+
+
+
+/**FILTER date */
+
+startDate;
+endDate;
+testStatus :number = 1;
+FilterDate(startDate,endDate){
+  console.log(startDate,endDate)
+  if (startDate !=null && endDate!=null && this.testStatus != 2) {
+  let latest_startDate =this.datepipe.transform(startDate, 'yyyy-MM-dd');
+  let latest_endDate =this.datepipe.transform(endDate, 'yyyy-MM-dd');
+  latest_startDate.toString();
+  latest_endDate.toString();
+  this.bonprepService.getAllBonPrepBydateBetween(latest_startDate.toString(),latest_endDate.toString()).subscribe(data => {
+    this.filteredBonPreps = data;
+    console.log(data);
+  });
+  this.testStatus = 2
+}else {
+  this.testStatus = 2
+  this.getBonPreps();
+  this.testStatus = 1
+}
 }
 }

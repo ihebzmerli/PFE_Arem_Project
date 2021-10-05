@@ -79,7 +79,7 @@ constructor(private authService: TokenStorageService,protected dateService: NbDa
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
       this.submitted = true;
 
       // stop here if form is invalid
@@ -92,10 +92,10 @@ constructor(private authService: TokenStorageService,protected dateService: NbDa
       return this.makeToast3();
     }else {
       // display form values on success
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.chariotForm.value, null, 4));
+      //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.chariotForm.value, null, 4));
       this.saveChariot();
       this.makeToast(); 
-      delay(3000);
+      await this.delay(1000);
       this.gotoListChariot();
     }
   }

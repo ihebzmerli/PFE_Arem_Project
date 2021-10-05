@@ -1,15 +1,16 @@
-<div class="accordions-container row offset-sm-2 col-sm-9">
       <form [formGroup]="livreurForm" (ngSubmit) = "onSubmit()">
+        <div class="offset-sm-2 col-sm-9">
         <nb-card>
           <nb-card-header>
             <img src="assets/images/toulsImages/fleshe.png" width="32" style="vertical-align: middle" nbPopover="Retourner à la liste des livreurs ?" nbPopoverTrigger="hint" nbPopoverPlacement="right" [routerLink]="['../livreur-list']"/>
-            <p></p> Ajouter Livreur<p>Date de création:<input type="text" nbInput class="form-control" formControlName="date" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" disabled/></p></nb-card-header>
+            <p></p> Ajouter Livreur<p>Date de création:
+              <input type="text" nbInput class="form-control" formControlName="date" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" disabled/></p>
+            </nb-card-header>
           <nb-card-body>
-            <div class="accordions-container row offset-sm-2 col-sm-9">
               
               <div class="form-row">
                   <div class="form-group col">
-                    <b>NOM</b>
+                    <label for="nom" class="label">Nom & Prenom</label>
                     <input type="text" nbInput fullWidth placeholder="NOM" class="form-control" formControlName="nom" [ngClass]="{ 'is-invalid': submitted && f.nom.errors }" />
                     <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
                       <div *ngIf="f.nom.errors.required">Nom est obligatoire.</div>
@@ -19,7 +20,7 @@
                     </div>
                   </div>
                   <div class="form-group col">
-                    <b>NUM_REC</b>
+                    <label for="NUM_REC" class="label">NUM_REC:</label>
                     <input type="number" min="0" nbInput fullWidth placeholder="NUM_REC" class="form-control" formControlName="numrec" [ngClass]="{ 'is-invalid': submitted && f.numrec.errors }" />
                     <div *ngIf="submitted && f.numrec.errors" class="invalid-feedback">
                       <div *ngIf="f.numrec.errors.required">NUM_REC est obligatoire.</div> 
@@ -28,9 +29,10 @@
                   </div>
                 </div>
 
+
                 <div class="form-row">
                   <div class="form-group col">
-                    <b>CENTRE</b>
+                    <label for="CENTRE" class="label">CENTRE:</label>
                     <input type="text" nbInput fullWidth placeholder="CENTRE" class="form-control" formControlName="centre" [ngClass]="{ 'is-invalid': submitted && f.centre.errors }" />
                     <div *ngIf="submitted && f.centre.errors" class="invalid-feedback">
                       <div *ngIf="f.centre.errors.required">la centre est obligatoire.</div> 
@@ -39,11 +41,8 @@
                       <div *ngIf="f.centre.errors.pattern">Nom ne doit contenir au moin une lettre majuscule,une lettre minuscule.</div>             
                     </div>
                   </div>
-                </div>
-
-                <div class="form-row">
                   <div class="form-group col">
-                    <b>OBJECTIF</b>
+                    <label for="OBJECTIF" class="label">OBJECTIF:</label>
                     <input type="number" step="50" nbInput fullWidth placeholder="OBJECTIF" class="form-control" formControlName="objectif" [ngClass]="{ 'is-invalid': submitted && f.objectif.errors }" />
                     <div *ngIf="submitted && f.objectif.errors" class="invalid-feedback">
                       <div *ngIf="f.objectif.errors.required">OBJECTIF est obligatoire.</div> 
@@ -51,10 +50,9 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="form-row">
                   <div class="form-group col">
-                    <b>DAT_RECLAM</b>
+                    <label for="DAT_RECLAM" class="label">DAT_RECLAM:</label>
                     <input nbInput fullWidth [nbDatepicker]="dateTimePicker2" placeholder="DAT_RECLAM" class="form-control" formControlName="datreclam" [ngClass]="{ 'is-invalid': submitted && f.datreclam.errors }" />
                     <nb-datepicker #dateTimePicker2></nb-datepicker>
                     <div *ngIf="submitted && f.datreclam.errors" class="invalid-feedback">
@@ -62,7 +60,7 @@
                     </div>
                   </div>
                   <div class="form-group col">
-                    <b>DAT_REPON</b>
+                    <label for="DAT_REPON" class="label">DAT_REPON:</label>
                     <input nbInput fullWidth [nbDatepicker]="dateTimePicker3" placeholder="DAT_REPON" class="form-control" formControlName="datrepon" [ngClass]="{ 'is-invalid': submitted && f.datrepon.errors }" />
                     <nb-datepicker #dateTimePicker3></nb-datepicker>
                     <div *ngIf="submitted && f.datrepon.errors" class="invalid-feedback">
@@ -73,7 +71,7 @@
 
                 <div class="form-row">
                   <div class="form-group col">
-                    <label for="OBS_RECLAM" class="label">OBS_RECLAM</label>
+                    <label for="OBS_RECLAM" class="label">OBS_RECLAM:</label>
                     <input type="text" nbInput fullWidth placeholder="OBS_RECLAM" class="form-control" formControlName="obsreclam" [ngClass]="{ 'is-invalid': submitted && f.obsreclam.errors }" />
                     <div *ngIf="submitted && f.obsreclam.errors" class="invalid-feedback">
                       <div *ngIf="f.obsreclam.errors.required">OBS_RECLAM est obligatoire.</div>
@@ -93,8 +91,15 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="form-row">
+                  <div class="form-group col">
+                    <label for="RECLAM" class="label">RECLAM</label>
+                    <input type="number" step="50" min="0" nbInput fullWidth placeholder="RECLAM" class="form-control" formControlName="reclam" [ngClass]="{ 'is-invalid': submitted && f.reclam.errors }" />
+                    <div *ngIf="submitted && f.reclam.errors" class="invalid-feedback">
+                      <div *ngIf="f.reclam.errors.required">RECLAM est obligatoire.</div> 
+                      <div *ngIf="f.reclam.errors.pattern">RECLAM doit étre un nombre positive.</div>            
+                    </div>
+                  </div>
                   <div class="form-group col">
                     <label for="QUT_ART" class="label">QUT_ART</label>
                     <input type="number" step="50" min="0" nbInput fullWidth placeholder="QUT_ART" class="form-control" formControlName="qutart" [ngClass]="{ 'is-invalid': submitted && f.qutart.errors }" />
@@ -107,14 +112,6 @@
 
                   <div class="form-row">
                     <div class="form-group col">
-                      <label for="RECLAM" class="label">RECLAM</label>
-                      <input type="number" step="50" min="0" nbInput fullWidth placeholder="RECLAM" class="form-control" formControlName="reclam" [ngClass]="{ 'is-invalid': submitted && f.reclam.errors }" />
-                      <div *ngIf="submitted && f.reclam.errors" class="invalid-feedback">
-                        <div *ngIf="f.reclam.errors.required">RECLAM est obligatoire.</div> 
-                        <div *ngIf="f.reclam.errors.pattern">RECLAM doit étre un nombre positive.</div>            
-                      </div>
-                    </div>
-                    <div class="form-group col">
                       <label for="TYP_MVT" class="label">TYP_MVT</label>
                       <input type="text" nbInput fullWidth placeholder="TYP_MVT" class="form-control" formControlName="typmvt" [ngClass]="{ 'is-invalid': submitted && f.typmvt.errors }" />
                       <div *ngIf="submitted && f.typmvt.errors" class="invalid-feedback">
@@ -123,12 +120,12 @@
                         <div *ngIf="f.typmvt.errors.pattern">TYP_MVT ne doit contenir que des lettres et des chiffre.</div>            
                       </div>
                     </div>
-                  </div>
-                  <div class="form-row">
                     <div class="form-group col">
                       <label for="TYP_MVT" class="label">TYP_MVT</label>
-                      <input type="text" nbInput class="form-control" formControlName="nature" [ngClass]="{ 'is-invalid': submitted && f.nature.errors }" disabled/>
+                      <input type="text" nbInput fullWidth class="form-control" formControlName="nature" [ngClass]="{ 'is-invalid': submitted && f.nature.errors }" disabled/>
                     </div>
+                  </div>
+                  <div class="form-row">
                     <div class="form-group col">
                       <label for="prime" class="label">Prime</label>
                         <p-dropdown [style]="{'minWidth':'100%'}" [options]="PrimeList" [(ngModel)]="selectedPrime" optionLabel="raison" [filter]="true" filterBy="raison" [showClear]="true" placeholder="Choisir Prime" [ngModelOptions]="{standalone: true}">
@@ -144,14 +141,15 @@
                           </ng-template>
                       </p-dropdown> 
                     </div>
+                    <div class="form-group col">
+                    </div>
                   </div>
-            </div>
           </nb-card-body>
         </nb-card>
         <button nbButton status="primary" size="small" shape="round" class="btn btn-md btn-outline-info" outline> 
           Ajouter livreur</button>
           <button nbButton (click)="onReset()" type="button" status="danger" size="small" shape="round" class="btn btn-md btn-outline-danger" outline> 
           Annuler</button>
+        </div>
       </form>
-</div>
 

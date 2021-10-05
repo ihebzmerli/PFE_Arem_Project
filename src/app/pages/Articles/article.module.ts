@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NbAccordionModule, NbProgressBarModule, NbWindowService } from '@nebular/theme';
 import { NbActionsModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbDialogModule, NbIconModule, NbInputModule, NbRadioModule, NbSelectModule, NbTreeGridModule, NbUserModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -13,7 +13,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ArticleListComponent } from './article-list/article-list.component';
 import { CreateArticleComponent } from './create-article/create-article.component';
 import { UpdateArticleComponent } from './update-article/update-article.component';
-import { WindowDateFilterComponent } from './article-list/window-date-filter/window-date-filter.component';
 import { SpecialMDialogComponent } from './article-list/window-special-M/special-m-dialog.component';
 import { ResetArticleDialogComponent } from './article-list/reset-dialog/reset-article-dialog.component'
 // RECOMMENDED
@@ -46,12 +45,12 @@ import { EchartsArticleComponent } from './echarts-article/echarts.component';
 import { UploadImgArticleDialogComponent } from './article-list/uploadImg/uploadImg-article-dialog.component';
 import { AddModelDialogComponent } from './create-article/windowAjoutModel/add-model-dialog.component';
 import { AddMarqueDialogComponent } from './create-article/windowAjoutMarque/add-marque-dialog.component';
+import { ArticleService } from './article.service';
 @NgModule({
   declarations: [
     ...routedComponents,
     ArticleListComponent,
     CreateArticleComponent,
-    WindowDateFilterComponent,
     SpecialMDialogComponent,
     UpdateArticleComponent,
     ResetArticleDialogComponent,
@@ -104,6 +103,7 @@ import { AddMarqueDialogComponent } from './create-article/windowAjoutMarque/add
     FileUploadModule,
     HttpClientModule,
     NbDialogModule.forChild(),
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class ArticleModule { }

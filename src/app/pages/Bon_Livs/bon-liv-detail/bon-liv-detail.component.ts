@@ -28,7 +28,6 @@ export class BonLivDetailComponent implements OnInit {
   statuses: any[];
   NumDocList:any[];
   loading: boolean = true;
-
   activityValues: number[] = [0, 100];
 
   constructor(private authService: TokenStorageService,private bonlivService: BonLivService , private marqueService : MarqueService,private articleService : ArticleService,private router : Router,private _Activatedroute :ActivatedRoute) { }

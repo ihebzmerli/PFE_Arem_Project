@@ -37,7 +37,7 @@ export class ChartjsBonPrepBarHorizontalComponent implements OnDestroy {
               console.log(data);
 
       this.data = {
-        labels: [this.currentYear-4,this.currentYear-3,this.currentYear-1, this.currentYear],
+        labels: [this.currentYear-3,this.currentYear-2,this.currentYear-1, this.currentYear],
         datasets: [{
             label: 'Année '+(this.currentYear-3).toString(),
             backgroundColor: colors.infoLight,

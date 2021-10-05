@@ -5,6 +5,7 @@ import { AffaireService } from '../affaire.service';
 import { Table } from 'primeng/table';
 import { PagesComponent } from '../../pages.component';
 import { TokenStorageService } from '../../auth/token-storage.service';
+import { UtilisateurService } from '../../Utilisateurs/utilisateur.service';
 
 @Component({
   selector: 'ngx-affaires-detail',
@@ -24,7 +25,7 @@ export class AffairesDetailComponent implements OnInit {
   numAff: string;
   activityValues: number[] = [0, 100];
 
-  constructor(private authService: TokenStorageService,private affaireService: AffaireService , private router : Router,private _Activatedroute :ActivatedRoute) { }
+  constructor(private authService: TokenStorageService,private affaireService: AffaireService , private router : Router,private _Activatedroute :ActivatedRoute,private utilisateurService:UtilisateurService) { }
 
   ngOnInit() {
     

@@ -52,7 +52,9 @@ export class ChariotService {
   ChangeChrono(numChar: string): Observable<any> {
     return this.http.get(`${this.url2}/ChangeChrono/${numChar}`);
   }
-
+  getAllChariotBydateBetween(startDate: string,endDate: string): Observable<Chariot[]> {
+    return this.http.get<Chariot[]>(`${this.url}/dateBetween/${startDate}to${endDate}`);
+  }
 
 
 

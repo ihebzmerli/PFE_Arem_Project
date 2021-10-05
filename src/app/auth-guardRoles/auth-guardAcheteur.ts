@@ -21,7 +21,6 @@ export class AuthGuardAcheteur implements CanActivate {
         let roles=this.auth.getAuthorities()
         roles.every(role => {
           this.authority=role;
-          console.log(this.authority);
         });
         
       if (this.authority == 'ROLE_ACHETEUR') {
@@ -32,24 +31,4 @@ export class AuthGuardAcheteur implements CanActivate {
       //this.router.navigateByUrl('/pages/dashboard');
       return false;
     }
-  /*  
-    authority;
-    canActivateRoleAdmin(
-      next: ActivatedRouteSnapshot,
-      state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> |
-      boolean | UrlTree {
-      const roles = this.auth.getAuthorities();
-      console.log(roles);
-      roles.every(role => {
-        this.authority=role;
-        ;})
-      if (this.authority=='ROLE_ADMIN') {
-      return true;
-      }
-      else {
-      this.router.navigateByUrl('/pages/dashboard');
-      return false;
-      }
-      }
-      */
 }

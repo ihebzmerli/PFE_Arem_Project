@@ -43,6 +43,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular2-chartjs';
 import { ChartjsBonPrepBarHorizontalComponent } from './echarts-bon-prep/chartjs-bon-prep-bar-horizontal.component';
+import { BonPrepService } from './bon-prep.service';
 
 @NgModule({
   declarations: [
